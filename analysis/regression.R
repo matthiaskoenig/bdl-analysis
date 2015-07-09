@@ -71,9 +71,40 @@ head(data)
 # Correlation analysis
 #########################################################################
 # First Correlogram Example
-install.packages('corrgram')
-library(corrgram)
+# install.packages('corrgram')
 
-corrgram(data, order=FALSE, lower.panel=panel.shade,
-         upper.panel=NULL, text.panel=panel.txt,
-         main="BDL Correlation") 
+library(corrgram)
+library(lattice)
+library(ellipse)
+
+# Make the correlation table
+cor.pearson <- cor(data, method="pearson", use="pairwise.complete.obs")
+cor.spearman <- cor(data, method="spearman", use="pairwise.complete.obs")
+
+
+colorfun <- colorRamp(c("#CC0000","white","#3366CC"), space="Lab")
+colors <- colorfun(seq(from=-0.5, to=0.5, length.out=100))
+colors
+plotcorr(cor.pearson, col=rgb(colorfun((cor.pearson+1)/2), maxColorValue=255),
+         mar = c(0.1, 0.1, 0.1, 0.1))
+
+levelplot(cor.spearman, main="correlation matrix", xlab="", ylab="")
+
+rgb.palette <- colorRampPalette(c("red", "white", "green"), space = "rgb")
+levelplot(cor.pearson, xlab="", ylab="", col.regions=rgb.palette(120), cuts=100, at=seq(0,1,0.01))
+
+rgb.palette <- colorRampPalette(c("red", "white", "green"), space = "rgb")
+levelplot(cor.spearman, xlab="", ylab="", col.regions=rgb.palette(120), cuts=100, at=seq(0,1,0.01))
+
+
+# corrgram(data, order=FALSE, lower.panel=panel.shade,
+#          upper.panel=NULL, text.panel=panel.txt,
+#          main="BDL Correlation") 
+
+library(ggplot2)
+library(plyr)
+library(reshape)
+
+cor.pearson.m <- melt(cor.pearson)
+ggplot(z.m, aes(X1, X2, fill = value)) + geom_tile() + 
+  scale_fill_gradient2(low = "blue",  high = "yellow")

@@ -1,0 +1,143 @@
+Chip	Chip	Probe	Gene	Entry	Entry name	Protein names	Gene names	Organism	Length
+ADME	1	1	Ppara	P23204	PPARA_MOUSE	Peroxisome proliferator-activated r...	Ppara, Nr1c1, Ppar	Mus musculus (Mouse)	468
+ADME	1	2	Cyp3a11	Q64459	CP3AB_MOUSE	Cytochrome P450 3A11	Cyp3a11, Cyp3a-11	Mus musculus (Mouse)	504
+ADME	1	3	Cyp24a1	Q64441	CP24A_MOUSE	1,25-dihydroxyvitamin D(3) 24-hydro...	Cyp24a1, Cyp-24, Cyp24	Mus musculus (Mouse)	514
+ADME	1	4	Nos2	P29477	NOS2_MOUSE	Nitric oxide synthase, inducible	Nos2, Inosl	Mus musculus (Mouse)	1144
+ADME	1	5	Nfkbia	Q9Z1E3	IKBA_MOUSE	NF-kappa-B inhibitor alpha	Nfkbia, Ikba	Mus musculus (Mouse)	314
+ADME	1	6	Cyp2c39	P56656	CP239_MOUSE	Cytochrome P450 2C39	Cyp2c39	Mus musculus (Mouse)	490
+ADME	1	7	Nr3c1	P06537	GCR_MOUSE	Glucocorticoid receptor	Nr3c1, Grl, Grl1	Mus musculus (Mouse)	783
+ADME	1	8	Cyp1a2	P00186	CP1A2_MOUSE	Cytochrome P450 1A2	Cyp1a2, Cyp1a-2	Mus musculus (Mouse)	513
+ADME	1	9	Abcb1a	P21447	MDR1A_MOUSE	Multidrug resistance protein 1A	Abcb1a, Abcb4, Mdr1a, Mdr3, Pgy-3, Pgy3	Mus musculus (Mouse)	1276
+ADME	1	10	Sult1b1	Q9QWG7	ST1B1_MOUSE	Sulfotransferase family cytosolic 1...	Sult1b1	Mus musculus (Mouse)	299
+ADME	1	11	Gstp1	P19157	GSTP1_MOUSE	Glutathione S-transferase P 1	Gstp1, Gstpib	Mus musculus (Mouse)	210
+ADME	1	12	Cxcl15	Q9WVL7	CXL15_MOUSE	C-X-C motif chemokine 15	Cxcl15, Scyb15	Mus musculus (Mouse)	167
+ADME	1	13	Cebpa	P53566	CEBPA_MOUSE	CCAAT/enhancer-binding protein alph...	Cebpa, Cebp	Mus musculus (Mouse)	359
+ADME	1	14	Nr1h3	Q9Z0Y9	NR1H3_MOUSE	Oxysterols receptor LXR-alpha	Nr1h3, Lxra	Mus musculus (Mouse)	445
+ADME	1	15	Sod2	P09671	SODM_MOUSE	Superoxide dismutase [Mn], mitochon...	Sod2, Sod-2	Mus musculus (Mouse)	222
+ADME	1	16	Sult1a1	P52840	ST1A1_MOUSE	Sulfotransferase 1A1	Sult1a1, St1a1, Stp, Stp1	Mus musculus (Mouse)	291
+ADME	1	17	Gstm1	P10649	GSTM1_MOUSE	Glutathione S-transferase Mu 1	Gstm1	Mus musculus (Mouse)	218
+ADME	1	18	Cyp4a10	O88833	CP4AA_MOUSE	Cytochrome P450 4A10	Cyp4a10, Cyp4a-10	Mus musculus (Mouse)	509
+ADME	1	19	Hmox1	P14901	HMOX1_MOUSE	Heme oxygenase 1	Hmox1	Mus musculus (Mouse)	289
+ADME	1	20	Ahr	P30561	AHR_MOUSE	Aryl hydrocarbon receptor	Ahr	Mus musculus (Mouse)	848
+ADME	1	21	Cebpd	Q00322	CEBPD_MOUSE	CCAAT/enhancer-binding protein delt...	Cebpd, Crp3	Mus musculus (Mouse)	268
+ADME	1	22	Slc10a1	O08705	NTCP_MOUSE	Sodium/bile acid cotransporter	Slc10a1, Ntcp	Mus musculus (Mouse)	362
+ADME	1	23	Gsta2	P10648	GSTA2_MOUSE	Glutathione S-transferase A2	Gsta2	Mus musculus (Mouse)	222
+ADME	1	24	Dpyd	Q8CHR6	DPYD_MOUSE	Dihydropyrimidine dehydrogenase [NA...	Dpyd	Mus musculus (Mouse)	1025
+ADME	1	25	Socs3	O35718	SOCS3_MOUSE	Suppressor of cytokine signaling 3	Socs3, Cis3, Cish3	Mus musculus (Mouse)	225
+ADME	1	26	Vdr	P48281	VDR_MOUSE	Vitamin D3 receptor	Vdr, Nr1i1	Mus musculus (Mouse)	422
+ADME	1	27	Nr2f2	P43135	COT2_MOUSE	COUP transcription factor 2	Nr2f2, Aporp1, Arp-1, Arp1, Tfcoup2	Mus musculus (Mouse)	414
+ADME	1	28	Rxra	P28700	RXRA_MOUSE	Retinoic acid receptor RXR-alpha	Rxra, Nr2b1	Mus musculus (Mouse)	467
+ADME	1	29	Cyp7a1	Q64505	CP7A1_MOUSE	Cholesterol 7-alpha-monooxygenase	Cyp7a1, Cyp7	Mus musculus (Mouse)	503
+ADME	1	30	Ugt1a1	Q63886	UD11_MOUSE	UDP-glucuronosyltransferase 1-1	Ugt1a1, Ugt1	Mus musculus (Mouse)	535
+ADME	1	31	Socs1	O35716	SOCS1_MOUSE	Suppressor of cytokine signaling 1	Socs1, Cish1, Ssi1	Mus musculus (Mouse)	212
+ADME	1	32	Abcg2	Q7TMS5	ABCG2_MOUSE	ATP-binding cassette sub-family G m...	Abcg2, Abcp, Bcrp1	Mus musculus (Mouse)	657
+ADME	1	33	Abcc2	Q8VI47	MRP2_MOUSE	Canalicular multispecific organic a...	Abcc2	Mus musculus (Mouse)	1543
+ADME	1	34	Por	P37040	NCPR_MOUSE	NADPH--cytochrome P450 reductase	Por	Mus musculus (Mouse)	678
+ADME	1	35	Cyp2c37	P56654	CP237_MOUSE	Cytochrome P450 2C37	Cyp2c37	Mus musculus (Mouse)	490
+ADME	1	36	Nr1i2	O54915	NR1I2_MOUSE	Nuclear receptor subfamily 1 group ...	Nr1i2, Pxr	Mus musculus (Mouse)	431
+ADME	1	37	Cebpb	P28033	CEBPB_MOUSE	CCAAT/enhancer-binding protein beta	Cebpb	Mus musculus (Mouse)	296
+ADME	1	38	Nr0b2	Q62227	NR0B2_MOUSE	Nuclear receptor subfamily 0 group ...	Nr0b2, Shp	Mus musculus (Mouse)	260
+ADME	1	39	Cyp2b10	P12791	CP2BA_MOUSE	Cytochrome P450 2B10	Cyp2b10, Cyp2b-10, Cyp2b20	Mus musculus (Mouse)	500
+ADME	1	40	Nr2f1	Q60632	COT1_MOUSE	COUP transcription factor 1	Nr2f1, Erbal3, Tfcoup1	Mus musculus (Mouse)	422
+ADME	1	41	Cyp2d22						
+ADME	1	42	Actb	P60710	ACTB_MOUSE	Actin, cytoplasmic 1	Actb	Mus musculus (Mouse)	375
+ADME	1	43	Hnf4a	P49698	HNF4A_MOUSE	Hepatocyte nuclear factor 4-alpha	Hnf4a, Hnf-4, Hnf4, Nr2a1, Tcf14	Mus musculus (Mouse)	474
+ADME	1	44	Hk2	O08528	HXK2_MOUSE	Hexokinase-2	Hk2	Mus musculus (Mouse)	917
+ADME	1	45	Ptgs2	Q05769	PGH2_MOUSE	Prostaglandin G/H synthase 2	Ptgs2, Cox-2, Cox2, Pghs-b, Tis10	Mus musculus (Mouse)	604
+ADME	1	46	Nr1i3	O35627	NR1I3_MOUSE	Nuclear receptor subfamily 1 group ...	Nr1i3, Car	Mus musculus (Mouse)	358
+ADME	1	47	Cyp2c29	Q64458	CP2CT_MOUSE	Cytochrome P450 2C29	Cyp2c29	Mus musculus (Mouse)	490
+Cytokines	2	1	Ccl2	P10148	CCL2_MOUSE	C-C motif chemokine 2	Ccl2, Je, Mcp1, Scya2	Mus musculus (Mouse)	148
+Cytokines	2	2	Ifnb1	P01575	IFNB_MOUSE	Interferon beta	Ifnb1, Ifb, Ifnb	Mus musculus (Mouse)	182
+Cytokines	2	3	Cd86	P42082	CD86_MOUSE	T-lymphocyte activation antigen CD8...	Cd86	Mus musculus (Mouse)	309
+Cytokines	2	4	Met	P16056	MET_MOUSE	Hepatocyte growth factor receptor	Met	Mus musculus (Mouse)	1379
+Cytokines	2	5	Il28b	Q8CGK6	IFNL3_MOUSE	Interferon lambda-3	Ifnl3, Il28, Il28b	Mus musculus (Mouse)	193
+Cytokines	2	6	Tnfrsf1a	P25118	TNR1A_MOUSE	Tumor necrosis factor receptor supe...	Tnfrsf1a, Tnfr-1, Tnfr1	Mus musculus (Mouse)	454
+Cytokines	2	7	Il1b	P10749	IL1B_MOUSE	Interleukin-1 beta	Il1b	Mus musculus (Mouse)	269
+Cytokines	2	8	Il17a	Q62386	IL17_MOUSE	Interleukin-17A	Il17a, Ctla8, Il17	Mus musculus (Mouse)	158
+Cytokines	2	9	Cxcl5	P50228	CXCL5_MOUSE	C-X-C motif chemokine 5	Cxcl5, Scyb5	Mus musculus (Mouse)	132
+Cytokines	2	10	Cxcr1	Q810W6	CXCR1_MOUSE	C-X-C chemokine receptor type 1	Cxcr1, Il8ra	Mus musculus (Mouse)	351
+Cytokines	2	11	Ifnar1	P33896	INAR1_MOUSE	Interferon alpha/beta receptor 1	Ifnar1, Ifar, Ifnar	Mus musculus (Mouse)	590
+Cytokines	2	12	Osmr	O70458	OSMR_MOUSE	Oncostatin-M-specific receptor subu...	Osmr, Osmrb	Mus musculus (Mouse)	971
+Cytokines	2	13	Tgfb1	P04202	TGFB1_MOUSE	Transforming growth factor beta-1	Tgfb1	Mus musculus (Mouse)	390
+Cytokines	2	14	Ifng	P01580	IFNG_MOUSE	Interferon gamma	Ifng	Mus musculus (Mouse)	155
+Cytokines	2	15	Ccl4	P14097	CCL4_MOUSE	C-C motif chemokine 4	Ccl4, Mip1b, Scya4	Mus musculus (Mouse)	92
+Cytokines	2	16	Ccl5	P30882	CCL5_MOUSE	C-C motif chemokine 5	Ccl5, Scya5	Mus musculus (Mouse)	91
+Cytokines	2	17	Ccr3	P51678	CCR3_MOUSE	Probable C-C chemokine receptor typ...	Ccr3, Cmkbr1l2, Cmkbr3	Mus musculus (Mouse)	359
+Cytokines	2	18	Il1rn	P25085	IL1RA_MOUSE	Interleukin-1 receptor antagonist p...	Il1rn, Il-1ra	Mus musculus (Mouse)	178
+Cytokines	2	19	Il13	P20109	IL13_MOUSE	Interleukin-13	Il13, Il-13	Mus musculus (Mouse)	131
+Cytokines	2	20	Tnfrsf1b	P25119	TNR1B_MOUSE	Tumor necrosis factor receptor supe...	Tnfrsf1b, Tnfr-2, Tnfr2	Mus musculus (Mouse)	474
+Cytokines	2	21	Ccl7	Q03366	CCL7_MOUSE	C-C motif chemokine 7	Ccl7, Fic, Mcp3, Scya7	Mus musculus (Mouse)	97
+Cytokines	2	22	Osm	P53347	ONCM_MOUSE	Oncostatin-M	Osm	Mus musculus (Mouse)	263
+Cytokines	2	23	Cd69	P37217	CD69_MOUSE	Early activation antigen CD69	Cd69	Mus musculus (Mouse)	199
+Cytokines	2	24	Il10rb	Q61190	I10R2_MOUSE	Interleukin-10 receptor subunit bet...	Il10rb, Crfb4	Mus musculus (Mouse)	349
+Cytokines	2	25	Il2	P04351	IL2_MOUSE	Interleukin-2	Il2, Il-2	Mus musculus (Mouse)	169
+Cytokines	2	26	Cd14	P10810	CD14_MOUSE	Monocyte differentiation antigen CD...	Cd14	Mus musculus (Mouse)	366
+Cytokines	2	27	Cxcr2	P35343	CXCR2_MOUSE	C-X-C chemokine receptor type 2	Cxcr2, Cmkar2, Gpcr16, Il8rb	Mus musculus (Mouse)	359
+Cytokines	2	28	Cxcl1	P12850	GROA_MOUSE	Growth-regulated alpha protein	Cxcl1, Gro, Gro1, Mgsa, Scyb1	Mus musculus (Mouse)	96
+Cytokines	2	29	Tnf	P06804	TNFA_MOUSE	Tumor necrosis factor	Tnf, Tnfa, Tnfsf2	Mus musculus (Mouse)	235
+Cytokines	2	30	Il10ra	Q61727	I10R1_MOUSE	Interleukin-10 receptor subunit alp...	Il10ra, Il10r	Mus musculus (Mouse)	575
+Cytokines	2	31	Il10	P18893	IL10_MOUSE	Interleukin-10	Il10, Il-10	Mus musculus (Mouse)	178
+Cytokines	2	32	Ccr2	P51683	CCR2_MOUSE	C-C chemokine receptor type 2	Ccr2, Cmkbr2	Mus musculus (Mouse)	373
+Cytokines	2	33	Egf	P01132	EGF_MOUSE	Pro-epidermal growth factor	Egf	Mus musculus (Mouse)	1217
+Cytokines	2	34	Hgf	P16056	MET_MOUSE	Hepatocyte growth factor receptor	Met	Mus musculus (Mouse)	1379
+Cytokines	2	35	Ifna1	P01572	IFNA1_MOUSE	Interferon alpha-1	Ifna1	Mus musculus (Mouse)	189
+Cytokines	2	36	Ifnar2	O35664	INAR2_MOUSE	Interferon alpha/beta receptor 2	Ifnar2	Mus musculus (Mouse)	513
+Cytokines	2	37	Cxcl2	P10889	CXCL2_MOUSE	C-X-C motif chemokine 2	Cxcl2, Mip-2, Mip2, Scyb2	Mus musculus (Mouse)	100
+Cytokines	2	38	Mrc1	Q61830	MRC1_MOUSE	Macrophage mannose receptor 1	Mrc1	Mus musculus (Mouse)	1456
+Cytokines	2	39	Ccr5	P51682	CCR5_MOUSE	C-C chemokine receptor type 5	Ccr5, Cmkbr5	Mus musculus (Mouse)	354
+Cytokines	2	40	Ccl3	P10855	CCL3_MOUSE	C-C motif chemokine 3	Ccl3, Mip1a, Scya3	Mus musculus (Mouse)	92
+Cytokines	2	41	Il6	P08505	IL6_MOUSE	Interleukin-6	Il6, Il-6	Mus musculus (Mouse)	211
+Cytokines	2	42	Actb	P60710	ACTB_MOUSE	Actin, cytoplasmic 1	Actb	Mus musculus (Mouse)	375
+Cytokines	2	43	Il4	P07750	IL4_MOUSE	Interleukin-4	Il4, Il-4	Mus musculus (Mouse)	140
+Cytokines	2	44	Egfr	Q01279	EGFR_MOUSE	Epidermal growth factor receptor	Egfr	Mus musculus (Mouse)	1210
+Cytokines	2	45	Ccl8	Q9Z121	CCL8_MOUSE	C-C motif chemokine 8	Ccl8, Mcp2, Scya8	Mus musculus (Mouse)	97
+Cytokines	2	46	Cxcl3	Q6W5C0	CXCL3_MOUSE	C-X-C motif chemokine 3	Cxcl3, Dcip1, Gm1960	Mus musculus (Mouse)	100
+Cytokines	2	47	Il6st	Q00560	IL6RB_MOUSE	Interleukin-6 receptor subunit beta	Il6st	Mus musculus (Mouse)	917
+Fibrosis	3-4	1	Pparg	P37238	PPARG_MOUSE	Peroxisome proliferator-activated r...	Pparg, Nr1c3	Mus musculus (Mouse)	
+Fibrosis	3-4	2	Edn1	P22387	EDN1_MOUSE	Endothelin-1	Edn1	Mus musculus (Mouse)	202
+Fibrosis	3-4	3	Birc5	O70201	BIRC5_MOUSE	Baculoviral IAP repeat-containing p...	Birc5, Api4, Iap4	Mus musculus (Mouse)	140
+Fibrosis	3-4	4	Sparc	P07214	SPRC_MOUSE	SPARC	Sparc	Mus musculus (Mouse)	302
+Fibrosis	3-4	5	Col1a1	P11087	CO1A1_MOUSE	Collagen alpha-1(I) chain	Col1a1, Cola1	Mus musculus (Mouse)	1453
+Fibrosis	3-4	6	Col8a1	Q00780	CO8A1_MOUSE	Collagen alpha-1(VIII) chain	Col8a1	Mus musculus (Mouse)	744
+Fibrosis	3-4	7	Igf1	P05017	IGF1_MOUSE	Insulin-like growth factor I	Igf1, Igf-1	Mus musculus (Mouse)	153
+Fibrosis	3-4	8	Fasl	P41047	TNFL6_MOUSE	Tumor necrosis factor ligand superf...	Faslg, Apt1lg1, Cd95l, Fasl, gld, Tnfsf6	Mus musculus (Mouse)	279
+Fibrosis	3-4	9	Bad	Q61337	BAD_MOUSE	Bcl2-associated agonist of cell dea...	Bad, Bbc6	Mus musculus (Mouse)	204
+Fibrosis	3-4	10	Tgfbr2	Q62312	TGFR2_MOUSE	TGF-beta receptor type-2	Tgfbr2	Mus musculus (Mouse)	592
+Fibrosis	3-4	11	Rarres1	Q8CDK2	CBPC2_MOUSE	Cytosolic carboxypeptidase 2	Agbl2, Ccp2	Mus musculus (Mouse)	862
+Fibrosis	3-4	12	Lama1	P19137	LAMA1_MOUSE	Laminin subunit alpha-1	Lama1, Lama, Lama-1	Mus musculus (Mouse)	3084
+Fibrosis	3-4	13	Timp1	P12032	TIMP1_MOUSE	Metalloproteinase inhibitor 1	Timp1, Timp, Timp-1	Mus musculus (Mouse)	205
+Fibrosis	3-4	14	Nes	Q6P5H2	NEST_MOUSE	Nestin	Nes	Mus musculus (Mouse)	1864
+Fibrosis	3-4	15	Bcl2l11	O54918	B2L11_MOUSE	Bcl-2-like protein 11	Bcl2l11, Bim	Mus musculus (Mouse)	196
+Fibrosis	3-4	16	Pdgfb	P31240	PDGFB_MOUSE	Platelet-derived growth factor subu...	Pdgfb, Sis	Mus musculus (Mouse)	241
+Fibrosis	3-4	17	Xiap	Q60989	XIAP_MOUSE	E3 ubiquitin-protein ligase XIAP	Xiap, Aipa, Api3, Birc4, Miha	Mus musculus (Mouse)	496
+Fibrosis	3-4	18	Notch3	Q61982	NOTC3_MOUSE	Neurogenic locus notch homolog prot...	Notch3	Mus musculus (Mouse)	2318
+Fibrosis	3-4	19	Cdh1	P09803	CADH1_MOUSE	Cadherin-1	Cdh1	Mus musculus (Mouse)	884
+Fibrosis	3-4	20	Timp2	P25785	TIMP2_MOUSE	Metalloproteinase inhibitor 2	Timp2, Timp-2	Mus musculus (Mouse)	220
+Fibrosis	3-4	21	Wisp1	O54775	WISP1_MOUSE	WNT1-inducible-signaling pathway pr...	Wisp1, Ccn4, Elm1	Mus musculus (Mouse)	367
+Fibrosis	3-4	22	Bak1	O08734	BAK_MOUSE	Bcl-2 homologous antagonist/killer	Bak1, Bak	Mus musculus (Mouse)	209
+Fibrosis	3-4	23	Gdf2	Q9WV56	GDF2_MOUSE	Growth/differentiation factor 2	Gdf2, Bmp9	Mus musculus (Mouse)	428
+Fibrosis	3-4	24	Pde4a	O89084	PDE4A_MOUSE	cAMP-specific 3',5'-cyclic phosphod...	Pde4a	Mus musculus (Mouse)	844
+Fibrosis	3-4	25	Ctgf	P29268	CTGF_MOUSE	Connective tissue growth factor	Ctgf, Ccn2, Fisp-12, Fisp12, Hcs24	Mus musculus (Mouse)	348
+Fibrosis	3-4	26	Notch1	Q01705	NOTC1_MOUSE	Neurogenic locus notch homolog prot...	Notch1, Motch	Mus musculus (Mouse)	2531
+Fibrosis	3-4	27	Tnc	Q80YX1	TENA_MOUSE	Tenascin	Tnc, Hxb	Mus musculus (Mouse)	2110
+Fibrosis	3-4	28	Bax	Q07813	BAX_MOUSE	Apoptosis regulator BAX	Bax	Mus musculus (Mouse)	192
+Fibrosis	3-4	29	Cdh2	P15116	CADH2_MOUSE	Cadherin-2	Cdh2	Mus musculus (Mouse)	906
+Fibrosis	3-4	30	Pde4b	O89084	PDE4A_MOUSE	cAMP-specific 3',5'-cyclic phosphod...	Pde4a	Mus musculus (Mouse)	844
+Fibrosis	3-4	31	Fn1	P11276	FINC_MOUSE	Fibronectin	Fn1	Mus musculus (Mouse)	2477
+Fibrosis	3-4	32	Smad7	O35253	SMAD7_MOUSE	Mothers against decapentaplegic hom...	Smad7, Madh7, Madh8	Mus musculus (Mouse)	426
+Fibrosis	3-4	33	Mki67	Q91VE6	MK67I_MOUSE	MKI67 FHA domain-interacting nucleo...	Nifk, Mki67ip	Mus musculus (Mouse)	317
+Fibrosis	3-4	34	Prom1	O54990	PROM1_MOUSE	Prominin-1	Prom1, Prom, Proml1	Mus musculus (Mouse)	867
+Fibrosis	3-4	35	Ch25h	Q9Z0F5	CH25H_MOUSE	Cholesterol 25-hydroxylase	Ch25h	Mus musculus (Mouse)	298
+Fibrosis	3-4	36	Pde4d	Q01063	PDE4D_MOUSE	cAMP-specific 3',5'-cyclic phosphod...	Pde4d	Mus musculus (Mouse)	747
+Fibrosis	3-4	37	Acta2	P62737	ACTA_MOUSE	Actin, aortic smooth muscle	Acta2, Actsa, Actvs	Mus musculus (Mouse)	377
+Fibrosis	3-4	38	Pten	O08586	PTEN_MOUSE	Phosphatidylinositol 3,4,5-trisphos...	Pten, Mmac1	Mus musculus (Mouse)	403
+Fibrosis	3-4	39	Tgfb2	P27090	TGFB2_MOUSE	Transforming growth factor beta-2	Tgfb2	Mus musculus (Mouse)	414
+Fibrosis	3-4	40	Mmp10	O55123	MMP10_MOUSE	Stromelysin-2	Mmp10	Mus musculus (Mouse)	476
+Fibrosis	3-4	41	Col4a3	Q9QZS0	CO4A3_MOUSE	Collagen alpha-3(IV) chain	Col4a3	Mus musculus (Mouse)	1669
+Fibrosis	3-4	42	Actb	P60710	ACTB_MOUSE	Actin, cytoplasmic 1	Actb	Mus musculus (Mouse)	37
+Fibrosis	3-4	43	Col3a1	P08121	CO3A1_MOUSE	Collagen alpha-1(III) chain	Col3a1	Mus musculus (Mouse)	1464
+Fibrosis	3-4	44	Cyp2e1	Q05421	CP2E1_MOUSE	Cytochrome P450 2E1	Cyp2e1, Cyp2e, Cyp2e-1	Mus musculus (Mouse)	493
+Fibrosis	3-4	45	Rps18	P62270	RS18_MOUSE	40S ribosomal protein S18	Rps18	Mus musculus (Mouse)	152
+Fibrosis	3-4	46	Smad6	O35182	SMAD6_MOUSE	Mothers against decapentaplegic hom...	Smad6, Madh6, Madh7, Msmad6	Mus musculus (Mouse)	495
+Fibrosis	3-4	47	Col6a6	Q8C6K9	CO6A6_MOUSE	Collagen alpha-6(VI) chain	Col6a6	Mus musculus (Mouse)	2265
+

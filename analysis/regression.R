@@ -72,6 +72,8 @@ head(data)
 #########################################################################
 # First Correlogram Example
 # install.packages('corrgram')
+# install.packages('lattice')
+# install.packages('ellipse')
 
 library(corrgram)
 library(lattice)
@@ -84,22 +86,47 @@ cor.spearman <- cor(data, method="spearman", use="pairwise.complete.obs")
 
 colorfun <- colorRamp(c("#CC0000","white","#3366CC"), space="Lab")
 colors <- colorfun(seq(from=-0.5, to=0.5, length.out=100))
-colors
-plotcorr(cor.pearson, col=rgb(colorfun((cor.pearson+1)/2), maxColorValue=255),
-         mar = c(0.1, 0.1, 0.1, 0.1))
+
+# plotcorr(cor.pearson, col=rgb(colorfun((cor.pearson+1)/2), maxColorValue=255),
+#          mar = c(0.1, 0.1, 0.1, 0.1))
 
 levelplot(cor.spearman, main="correlation matrix", xlab="", ylab="")
 
 rgb.palette <- colorRampPalette(c("red", "white", "green"), space = "rgb")
 levelplot(cor.pearson, xlab="", ylab="", col.regions=rgb.palette(120), cuts=100, at=seq(0,1,0.01))
 
-rgb.palette <- colorRampPalette(c("red", "white", "green"), space = "rgb")
-levelplot(cor.spearman, xlab="", ylab="", col.regions=rgb.palette(120), cuts=100, at=seq(0,1,0.01))
+# TODO: [-1, 1] correlation, left upper corner starting
+rgb.palette <- colorRampPalette(c("green", "white", "red"), space = "rgb")
+levelplot(cor.spearman, xlab="", ylab="", scales=list(x=list(rot=90)), col.regions=rgb.palette(120), cuts=100, at=seq(0,1,0.01))
 
 
-# corrgram(data, order=FALSE, lower.panel=panel.shade,
-#          upper.panel=NULL, text.panel=panel.txt,
-#          main="BDL Correlation") 
+
+
+# Create the correlation plots
+install.packages("corrplot")
+library(corrplot)
+options = list()
+options$width=1600
+options$height=1600
+options$res=200
+
+png(filename="cor.spearman_original.png", width=options$width, height=options$height, 
+    res=options$res)
+corrplot(cor.spearman, order="original", method="square", type="full", 
+         tl.cex=0.4, tl.col="black", # label settings
+         )
+dev.off()
+
+png(filename="cor.spearman_hclust.png", width=options$width, height=options$height, 
+    res=options$res)
+corrplot(cor.spearman, order="hclust", method="square", type="full", 
+         tl.cex=0.4, tl.col="black", # label settings
+)
+dev.off
+
+# plot all single timecourses
+
+
 
 library(ggplot2)
 library(plyr)

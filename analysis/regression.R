@@ -208,7 +208,19 @@ ys1_fM = function(a,b){
   return(r)
 }
 
-ys1 = function(a,b,time_pts, w1=0.50, w2=0.25, w3=0.25){
+ys1 = function(a,b,time_pts, w1=0.50, w2=0.25, w3=0.25, use="pairwise.complete.obs"){
+  na.method <- pmatch(use, c("all.obs", "pairwise.complete.obs"))
+  if (is.na(na.method)){
+    stop("invalid 'use' argument")
+  }
+  # handle the NAs
+  if (identical(use, "pairwise.complete.obs")){
+    df <- data.frame(a, b, time_pts)
+    df <- df[complete.cases(df),]
+    a <- df$a
+    b <- df$b
+    time_pts <- df$time_pts
+  }  
   r = (w1 * ys1_fS_star(a,b)) + (w2 * ys1_fA(a,b,time_pts)) + (w3 * ys1_fM(a,b))
   return(r)
 }
@@ -233,37 +245,98 @@ par(mfrow=c(1,1))
 cor(x=x1,y=x2, method='spearman') # 0.667
 cor(x=x1,y=x2, method='pearson') # 0.439
 
-
+# YS1
 ys1(x1, x2, time_pts)
 ys1(x1, x2, time_pts) == 0.583
 ys1(y1, y2, time_pts)
 ys1(y1, y2, time_pts) == 0.833
 
-yr1(x1, x2, time_pts)
-yr1(x1, x2, time_pts) == 0.555
-yr1(y1, y2, time_pts)
-yr1(y1, y2, time_pts) == 0.805
+# TODO: YR1 values
+# yr1(x1, x2, time_pts)
+# yr1(x1, x2, time_pts) == 0.555
+# yr1(y1, y2, time_pts)
+# yr1(y1, y2, time_pts) == 0.805
 
+# Calculate ys1 for a given data frame
+ys1.df <- function(data, time_pts, use="pairwise.complete.obs"){
+  N <- ncol(data)
+  cor.mat <- matrix(NA, nrow=N, ncol=N)
+  colnames(cor.mat) <- names(data)
+  rownames(cor.mat) <- names(data)
+  for (k in 1:N){
+    for (i in 1:N){
+       cor.mat[k,i] = ys1(data[,k], data[,i], time_pts, use=use)
+    }
+  }
+  return(cor.mat)
+}
 
+# TODO: this is not possible on the complete data set, 
+# => calculation has to be performed on the mean dataset
+cor.ys1 <- ys1.df(data, time, use="pairwise.complete.obs")
 
+# mean based on times (aggregate)
+library(reshape)
+data2 <- data
+data2$time <- samples$time
 
-cor.spearman <- cor(data, method="spearman", use="pairwise.complete.obs")
-
-
+data2.melt <- aggregate(data2, list(data2$time), FUN=mean)
+data2.time <- data2.melt$time
+data2.melt <- subset(data2.melt, select = -c(time, Group.1) )
+cor.ys1 <- ys1.df(data2.melt, data2.time, use="pairwise.complete.obs")
 
 # install.packages("corrplot")
-library(corrplot)
-
 options$width=1600
 options$height=1600
 options$res=200
+library(corrplot)
+
+cor.ys1.scaled <- 2*(cor.ys1-0.5)
+
+# TODO: bug -> check the act results !!!! Either naming or calculation of the correlation
+print('----')
+ys1(data2.melt$Actb, data2.melt$Act.B.x, data2.time, use="pairwise.complete.obs")
+ys1(data2.melt$Actb, data2.melt$Act.B.y, data2.time, use="pairwise.complete.obs")
+ys1(data2.melt$Act.B.x, data2.melt$Act.B.y, data2.time, use="pairwise.complete.obs")
+# ??? does not depend at all on second argument ??? problem
+
+
+png(filename="../results/cor.ys1-scaled_original.png", width=options$width, height=options$height, 
+    res=options$res)
+corrplot(cor.ys1.scaled, order="original", method="square", type="full", 
+         tl.cex=0.3, tl.col="black", # label settings
+)
+dev.off()
+png(filename="../results/cor.ys1-scaled_hclust.png", width=options$width, height=options$height, 
+    res=options$res)
+corrplot(cor.ys1.scaled, order="hclust", method="square", type="full", 
+         tl.cex=0.3, tl.col="black", # label settings
+)
+dev.off()
+
+
+
+
+
+corrplot(cor.spearman, order="hclust", method="square", type="full", 
+         tl.cex=0.3, tl.col="black", # label settings
+)
+dev.off()
+
+
+
+
 
 # Calculation of correlation scores
 cor.pearson <- cor(data, method="pearson", use="pairwise.complete.obs")
 cor.spearman <- cor(data, method="spearman", use="pairwise.complete.obs")
 
+data[,143]
+names(data)[143]
+ys1(a=data[, 1], b=data[,143], time_pts=samples$time, use="pairwise.complete.obs")
 
-# Create the 
+# Create the
+
 
 
 

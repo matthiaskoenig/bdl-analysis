@@ -154,6 +154,103 @@ for (k in 1:length(factors)){
 #---------------------------------------------
 # Correlation analysis
 #---------------------------------------------
+
+# ys1 and yr1 definition [Son2007]
+# "A modfied correlation coefficient based similarity measure for clustering
+#   time-course gene expression data".
+
+# Slope between two adjacent measurments
+slope <- function(x1,x2,t1,t2){
+  s = ((x2 - x1) / (t2 - t1))  
+}
+
+# Sign of slope
+ys1_L <- function(x1,x2,t1,t2)
+  L = sign(slope(x1,x2,t1,t2));
+end
+
+
+# Relative count of the identical slopes.
+ys1_fA <- function(a,b,time_pts){
+  N = length(a)
+  count = 0
+  for (i in 1:(N-1)){
+    
+    if (ys1_L(a[i],a[i+1],time_pts[i],time_pts[i+1]) == ys1_L(b[i],b[i+1],time_pts[i],time_pts[i+1])){
+       count = count + 1
+    }
+  }
+  r = count / (N-1)
+}
+
+# Adapted Spearman correlation S*
+ys1_fS_star <- function(a,b){
+  r = (cor(x=x1,y=x2, method='spearman') + 1) / 2  
+}
+
+# Compare the timepoint of minimal and maximal value.
+# ? how to handle NA -> modify to use the pairwise complete observations
+ys1_fM = function(a,b){
+  # find index of max and min
+  idx_max_a = which.max(a)
+  idx_max_b = which.max(b)
+  idx_min_a = which.min(a)
+  idx_min_b = which.min(b)
+  
+  # compare max and min indices
+  if ( (idx_max_a == idx_max_b) && (idx_min_a == idx_min_b) ){
+     r = 1.0
+  } else if ( (idx_max_a == idx_max_b) || (idx_min_a == idx_min_b) ){
+     r = 0.5
+  } else if ( (idx_max_a != idx_max_b) && (idx_min_a != idx_min_b) ){
+     r = 0.0
+  }
+  return(r)
+}
+
+ys1 = function(a,b,time_pts, w1=0.50, w2=0.25, w3=0.25){
+  r = (w1 * ys1_fS_star(a,b)) + (w2 * ys1_fA(a,b,time_pts)) + (w3 * ys1_fM(a,b))
+  return(r)
+}
+
+# test data for implementation
+# yR1(x1, x2)
+time_pts <- seq(0,4)
+x1 <- c(2,3,6,4,7)
+x2 <- c(1,2,3,5,3)
+y1 <- c(4,3,6,2,7)
+y2 <- c(5,2,3,1,3)
+par(mfrow=c(1,2))
+plot(time_pts, x1, col="blue", pch=16, type="o", ylim=c(0, max(max(x1), max(x2))),
+     main = "x1, x2", xlab="values", ylab="time")
+points(time_pts, x2, col="red", pch=15, type="o")
+plot(time_pts, y1, col="blue", pch=16, type="o", ylim=c(0, max(max(y1), max(y2))),
+     main = "y1, y2", xlab="values", ylab="time")
+points(time_pts, y2, col="red", pch=15, type="o")
+par(mfrow=c(1,1))
+
+# simple correlation values
+cor(x=x1,y=x2, method='spearman') # 0.667
+cor(x=x1,y=x2, method='pearson') # 0.439
+
+
+ys1(x1, x2, time_pts)
+ys1(x1, x2, time_pts) == 0.583
+ys1(y1, y2, time_pts)
+ys1(y1, y2, time_pts) == 0.833
+
+yr1(x1, x2, time_pts)
+yr1(x1, x2, time_pts) == 0.555
+yr1(y1, y2, time_pts)
+yr1(y1, y2, time_pts) == 0.805
+
+
+
+
+cor.spearman <- cor(data, method="spearman", use="pairwise.complete.obs")
+
+
+
 # install.packages("corrplot")
 library(corrplot)
 
@@ -164,6 +261,7 @@ options$res=200
 # Calculation of correlation scores
 cor.pearson <- cor(data, method="pearson", use="pairwise.complete.obs")
 cor.spearman <- cor(data, method="spearman", use="pairwise.complete.obs")
+
 
 # Create the 
 

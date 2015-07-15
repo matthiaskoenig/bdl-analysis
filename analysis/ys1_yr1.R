@@ -75,6 +75,9 @@ ys1 = function(a,b,time_pts, w1=0.50, w2=0.25, w3=0.25, use="all.obs"){
   if (is.na(na.method)){
     stop("invalid 'use' argument")
   }
+  if (any(table(time_pts)>1)){
+    stop("time_pts not unique")
+  }
   df <- data.frame(a, b, time_pts)
   # handle NAs
   if (identical(use, "pairwise.complete.obs")){
@@ -90,16 +93,24 @@ ys1 = function(a,b,time_pts, w1=0.50, w2=0.25, w3=0.25, use="all.obs"){
 # Calculate ys1 matrix for a given data frame.
 ys1.df <- function(data, time_pts, w1=0.50, w2=0.25, w3=0.25, use="pairwise.complete.obs"){
   N <- ncol(data)
-  cor.mat <- matrix(NA, nrow=N, ncol=N)
-  colnames(cor.mat) <- names(data)
-  rownames(cor.mat) <- names(data)
+  value.mat <- matrix(NA, nrow=N, ncol=N)
+  colnames(value.mat) <- names(data)
+  rownames(value.mat) <- names(data)
+  S_star.mat <- value.mat
+  A.mat <- value.mat
+  M.mat <- value.mat
+  
   for (k in 1:N){
     for (i in 1:N){
       # cat(sprintf("[%s, %s]\n", k, i))
-      cor.mat[k,i] = ys1(data[,k], data[,i], time_pts, w1=w1, w2=w2, w3=w3, use=use)$value
+      res <- ys1(data[,k], data[,i], time_pts, w1=w1, w2=w2, w3=w3, use=use)
+      value.mat[k,i] = res$value
+      S_star.mat[k,i] = res$S_star
+      A.mat[k,i] = res$A
+      M.mat[k,i] = res$M
     }
   }
-  return(cor.mat)
+  return(list(value=value.mat, S_star=S_star.mat, A=A.mat, M=M.mat))
 }
 
 # yr1

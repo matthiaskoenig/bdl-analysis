@@ -1,7 +1,11 @@
 function c = ys1(a,b,time_pts)
 
-w1 = 0.50;
-w2 = 0.25;
+%w1 = 0.50;
+%w2 = 0.25;
+%w3 = 0.25;
+
+w1 = 0.25;
+w2 = 0.50;
 w3 = 0.25;
 
 c = (w1 * functionSEstrela(a,b)) + (w2 * functionA(a,b,time_pts)) + (w3 * functionM(a,b));

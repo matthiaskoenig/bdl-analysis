@@ -17,11 +17,11 @@
 #
 ##############################################################################################
 
+# TODO: better merge of data
+
 #---------------------------------------------
 # Read & preprocess data
 #---------------------------------------------
-# TODO: read all data in proper list
-# TODO: better merge of data
 rm(list=ls())
 setwd("/home/mkoenig/git/bdl-analysis/analysis")
 
@@ -40,9 +40,7 @@ antibodies <- read.csv(file.path("..", "data", "07_antibodies.csv"), sep="\t")
 # used for analysis.
 fibrosis <- (fibrosis1 + fibrosis2) / 2
 fibrosis$time <- fibrosis1$time
-head(fibrosis)
 rm(fibrosis1, fibrosis2)
-
 
 # prepare histology & antibody data
 d <- list()
@@ -187,6 +185,16 @@ for (k in 1:Nf){
 cor.pearson <- cor(data, method="pearson", use="pairwise.complete.obs")
 cor.spearman <- cor(data, method="spearman", use="pairwise.complete.obs")
 
+# plotting of simple correlation matrices (original order) & based on hierarchical clustering.
+# Using complete linkage method.
+
+# corrplot options for clustering
+# order = "hclust"
+# hclust.method = "complete"
+# corrplot(cor.spearman, method="square", type="full", 
+#         tl.cex=0.3, tl.col="black",
+#         order="hclust", hclust.method="complete", addrect=5)
+
 library(corrplot)
 options <- list(width=1600, height=1600, res=200)
 
@@ -194,7 +202,7 @@ options <- list(width=1600, height=1600, res=200)
 f_corrplot <- function(name, data, order){
   fname <- sprintf("%s_%s.png", name, order)
   png(filename=sprintf("../results/%s", fname), width=options$width, height=options$height, res=options$res)
-  corrplot(data, order=order, method="square", type="full", 
+  corrplot(data, order=order, hclust.method="complete", method="square", type="full", 
            tl.cex=0.3, tl.col="black")
   dev.off()
 }
@@ -206,48 +214,89 @@ f_corrplot("cor.pearson", data=cor.pearson, order="hclust")
 
 
 # --- YR1 and YS1 correlation ------------------------------------------------------------------------------------
-# definition of ys1 and yr1
-source("ys1_yr1.R")
 
-# Calculate ys1 for a given data frame
-ys1.df <- function(data, time_pts, use="pairwise.complete.obs"){
-  N <- ncol(data)
-  cor.mat <- matrix(NA, nrow=N, ncol=N)
-  colnames(cor.mat) <- names(data)
-  rownames(cor.mat) <- names(data)
-  for (k in 1:N){
-    for (i in 1:N){
-       cor.mat[k,i] = ys1(data[,k], data[,i], time_pts, use=use)
-    }
-  }
-  return(cor.mat)
-}
-
-# TODO: this is not possible on the complete data set, 
+# Calculation is only possible on the mean time data
 # => calculation has to be performed on the mean dataset
-cor.ys1 <- ys1.df(data, time, use="pairwise.complete.obs")
+# cor.ys1 <- ys1.df(data, time, use="pairwise.complete.obs")
 
 # mean based on times (aggregate)
 library(reshape)
 data2 <- data
 data2$time <- samples$time
-
-data2.melt <- aggregate(data2, list(data2$time), FUN=mean)
+# rm NA in mean calculation
+data2.melt <- aggregate(data2, list(data2$time), FUN=mean, na.rm=TRUE)
 data2.time <- data2.melt$time
 data2.melt <- subset(data2.melt, select = -c(time, Group.1) )
-cor.ys1 <- ys1.df(data2.melt, data2.time, use="pairwise.complete.obs")
 
-# install.packages("corrplot")
+source("ys1_yr1.R")  # definition of ys1 and yr1
+# calculation of ys1 and yr1 for mean data
+cor.ys1 <- ys1.df(data2.melt, data2.time, w1=0.25, w2=0.5, w3=0.25, use="pairwise.complete.obs")
+cor.yr1 <- yr1.df(data2.melt, data2.time, w1=0.25, w2=0.5, w3=0.25, use="pairwise.complete.obs")
 
+f_corrplot("cor.ys1", data=cor.ys1, order="original")
+f_corrplot("cor.ys1", data=cor.ys1, order="hclust")
+f_corrplot("cor.yr1", data=cor.yr1, order="original")
+f_corrplot("cor.yr1", data=cor.yr1, order="hclust")
 
 cor.ys1.scaled <- 2*(cor.ys1-0.5)
+cor.yr1.scaled <- 2*(cor.yr1-0.5)
+f_corrplot("cor.ys1.scaled", data=cor.ys1.scaled, order="original")
+f_corrplot("cor.ys1.scaled", data=cor.ys1.scaled, order="hclust")
+f_corrplot("cor.yr1.scaled", data=cor.yr1.scaled, order="original")
+f_corrplot("cor.yr1.scaled", data=cor.yr1.scaled, order="hclust")
 
-# TODO: bug -> check the act results !!!! Either naming or calculation of the correlation
-print('----')
-ys1(data2.melt$Actb, data2.melt$Act.B.x, data2.time, use="pairwise.complete.obs")
-ys1(data2.melt$Actb, data2.melt$Act.B.y, data2.time, use="pairwise.complete.obs")
-ys1(data2.melt$Act.B.x, data2.melt$Act.B.y, data2.time, use="pairwise.complete.obs")
-# ??? does not depend at all on second argument ??? problem
+
+#--------------------------
+# Actb controls
+#--------------------------
+
+install.packages("calibrate")
+library(calibrate)
+# use the textxy() function to add labels to the preexisting plot's points
+# add labels for the total enrollment
+  
+# Actb control plots via pairwise correlation plots.
+# Actb exists on all Fluidigm chips.
+f_cor_pair_plot <- function(name_A, name_B){
+  dA <- data[[name_A]]
+  dB <- data[[name_B]]
+  dA.melt <- data2.melt[[name_A]]
+  dB.melt <- data2.melt[[name_B]]
+  
+  value.max <- 1.05* max(max(dA), max(dB))
+  plot(dA, dB, xlim=c(0, value.max), ylim=c(0, value.max), 
+       main=sprintf("%s ~ %s", name_A, name_B),
+       xlab=name_A, ylab=name_B)
+  textxy(dA, dB, samples$time)
+  points(dA.melt, dB.melt, pch=16, col=rgb(0,0,1,0.8) )
+  textxy(dA.melt, dB.melt, data2.time, col="blue")
+  abline(a=0, b=1, col="darkgray")
+}
+
+options <- list(width=1600, height=600, res=200)
+png(filename="../results/Actb_control.png", width=options$width, height=options$height, res=options$res)
+par(mfrow=c(1,3))
+f_cor_pair_plot("Actb", "Actb.x")
+f_cor_pair_plot("Actb", "Actb.y")
+f_cor_pair_plot("Actb.x", "Actb.y")
+par(mfrow=c(1,1))
+dev.off()
+
+# calculate the correlations
+cor(data.frame(Actb=data$Actb, 
+               Actb.x=data$Actb.x, 
+               Actb.y=data$Actb.y), method="spearman")
+cor(data.frame(Actb=data2.melt$Actb, 
+               Actb.x=data2.melt$Actb.x, 
+               Actb.y=data2.melt$Actb.y), method="spearman")
+cor(data.frame(Actb=data$Actb, 
+               Actb.x=data$Actb.x, 
+               Actb.y=data$Actb.y), method="pearson")
+cor(data.frame(Actb=data2.melt$Actb, 
+               Actb.x=data2.melt$Actb.x, 
+               Actb.y=data2.melt$Actb.y), method="pearson")
+
+#---------------------------------------------------------------------------
 
 
 png(filename="../results/cor.ys1-scaled_original.png", width=options$width, height=options$height, 
@@ -265,8 +314,6 @@ dev.off()
 
 
 
-
-
 corrplot(cor.spearman, order="hclust", method="square", type="full", 
          tl.cex=0.3, tl.col="black", # label settings
 )
@@ -275,48 +322,3 @@ dev.off()
 
 
 #---------------------------------------------
-
-
-
-
-
-# First Correlogram Example
-# install.packages('corrgram')
-# install.packages('lattice')
-# install.packages('ellipse')
-
-library(corrgram)
-library(lattice)
-library(ellipse)
-
-colorfun <- colorRamp(c("#CC0000","white","#3366CC"), space="Lab")
-colors <- colorfun(seq(from=-0.5, to=0.5, length.out=100))
-
-# plotcorr(cor.pearson, col=rgb(colorfun((cor.pearson+1)/2), maxColorValue=255),
-#          mar = c(0.1, 0.1, 0.1, 0.1))
-
-levelplot(cor.spearman, main="correlation matrix", xlab="", ylab="")
-
-rgb.palette <- colorRampPalette(c("red", "white", "green"), space = "rgb")
-levelplot(cor.pearson, xlab="", ylab="", col.regions=rgb.palette(120), cuts=100, at=seq(0,1,0.01))
-
-# TODO: [-1, 1] correlation, left upper corner starting
-rgb.palette <- colorRampPalette(c("green", "white", "red"), space = "rgb")
-levelplot(cor.spearman, xlab="", ylab="", scales=list(x=list(rot=90)), col.regions=rgb.palette(120), cuts=100, at=seq(0,1,0.01))
-
-
-
-
-
-
-# plot all single timecourses
-
-
-
-library(ggplot2)
-library(plyr)
-library(reshape)
-
-cor.pearson.m <- melt(cor.pearson)
-ggplot(z.m, aes(X1, X2, fill = value)) + geom_tile() + 
-  scale_fill_gradient2(low = "blue",  high = "yellow")

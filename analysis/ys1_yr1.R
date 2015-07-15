@@ -1,9 +1,20 @@
-# ---- ys1 and yr1 definition -------------------------------------------------------------------
-# "A modfied correlation coefficient based similarity measure for clustering
-#  time-course gene expression data" {Son2007}
-# ys1 and yr1 are a weighted score including contributions of classical correlation score and
-# shape of the time course profile, namely the slope between measurements and the minimal
-# and maximal values.
+##############################################################################################
+#
+#    YS1 and YR1
+#
+#    Matthias Koenig
+#    2015-07-13
+#
+#    YS1 and YR1 implementation based on
+#   "A modfied correlation coefficient based similarity measure for clustering
+#     time-course gene expression data" [Son2007]
+#
+#     ys1 and yr1 are a weighted score including contributions of classical correlation score and
+#     shape of the time course profile, namely the slope between measurements and the minimal
+#     and maximal values."
+#
+##############################################################################################
+
 
 # Slope between two adjacent measurments
 son.slope <- function(x1,x2,t1,t2){
@@ -29,12 +40,12 @@ son.fA <- function(a,b,time_pts){
 
 # Adapted Spearman correlation S* (Shifted to the interval [0, 1])
 son.fS_star <- function(a,b){
-  r = (cor(x=x1,y=x2, method='spearman') + 1) / 2  
+  r = (cor(x=a,y=b, method='spearman') + 1) / 2  
 }
 
 # Adapted Pearson correlation R* (Shifted to the interval [0, 1])
 son.fR_star <- function(a,b){
-  r = (cor(x=x1, y=x2, method='pearson') + 1) / 2
+  r = (cor(x=a, y=b, method='pearson') + 1) / 2
 }
 
 # Compare timepoint of minimal and maximal value.
@@ -76,6 +87,21 @@ ys1 = function(a,b,time_pts, w1=0.50, w2=0.25, w3=0.25, use="all.obs"){
   return( list(value=value, S_star=S_star, A=A, M=M) )
 }
 
+# Calculate ys1 matrix for a given data frame.
+ys1.df <- function(data, time_pts, w1=0.50, w2=0.25, w3=0.25, use="pairwise.complete.obs"){
+  N <- ncol(data)
+  cor.mat <- matrix(NA, nrow=N, ncol=N)
+  colnames(cor.mat) <- names(data)
+  rownames(cor.mat) <- names(data)
+  for (k in 1:N){
+    for (i in 1:N){
+      # cat(sprintf("[%s, %s]\n", k, i))
+      cor.mat[k,i] = ys1(data[,k], data[,i], time_pts, w1=w1, w2=w2, w3=w3, use=use)$value
+    }
+  }
+  return(cor.mat)
+}
+
 # yr1
 yr1 = function(a,b,time_pts, w1=0.50, w2=0.25, w3=0.25, use="all.obs"){
   na.method <- pmatch(use, c("all.obs", "pairwise.complete.obs"))
@@ -94,8 +120,24 @@ yr1 = function(a,b,time_pts, w1=0.50, w2=0.25, w3=0.25, use="all.obs"){
   return( list(value=value, R_star=R_star, A=A, M=M) )
 }
 
+# Calculate yr1 matrix for given data frame.
+yr1.df <- function(data, time_pts, w1=0.50, w2=0.25, w3=0.25, use="pairwise.complete.obs"){
+  N <- ncol(data)
+  cor.mat <- matrix(NA, nrow=N, ncol=N)
+  colnames(cor.mat) <- names(data)
+  rownames(cor.mat) <- names(data)
+  for (k in 1:N){
+    for (i in 1:N){
+      # cat(sprintf("[%s, %s]\n", k, i))
+      cor.mat[k,i] = yr1(data[,k], data[,i], time_pts, w1=w1, w2=w2, w3=w3, use=use)$value
+    }
+  }
+  return(cor.mat)
+}
+
 # -----------------------------------------------------------------------
-# implementation tests from [Son2008]
+# Implementation Tests from [Son2008]
+# -----------------------------------------------------------------------
 time_pts <- seq(0,4)
 x1 <- c(2,3,6,4,7)
 x2 <- c(1,2,3,5,3)
@@ -128,4 +170,5 @@ test_res(ys1(y1, y2, time_pts, w1=0.25, w2=0.50, w3=0.25)$value, 0.833)
 test_res(yr1(x1, x2, time_pts, w1=0.25, w2=0.50, w3=0.25)$value, 0.555)
 test_res(yr1(y1, y2, time_pts, w1=0.25, w2=0.50, w3=0.25)$value, 0.805)
 
+rm(test_res, x1, x2, y1, y2, time_pts)
 # -----------------------------------------------------------------------

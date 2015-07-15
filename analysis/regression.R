@@ -5,14 +5,23 @@
 #    Matthias Koenig
 #    2015-07-13
 #
+#    This script contains the complete statistical analysis for the publication
+#    Pathobiochemical signatures of cholestatic liver disease in bile duct ligated
+#    mice (BMC Systems Biology).
+#
+#    The analysis consists of regression analysis of the various measured factors based
+#    on different measures.
+#    - Pearson Correlation 
+#    - Spearman Correlation
+#    - YS1 and YR1 (time course correlation)
+#
 ##############################################################################################
 
 #---------------------------------------------
 # Read & preprocess data
 #---------------------------------------------
-# There are two chips measured for the fibrosis score. 
-# In the first version of this analysis only the first panel is used.
-# TODO: necessary to include both panels for analysis
+# TODO: read all data in proper list
+# TODO: better merge of data
 rm(list=ls())
 setwd("/home/mkoenig/git/bdl-analysis/analysis")
 
@@ -25,56 +34,73 @@ cytokines <- read.csv(file.path("..", "data", "04_fluidigm_cytokines.csv"), sep=
 fibrosis1 <- read.csv(file.path("..", "data", "05_fluidigm_fibrosis_01.csv"), sep="\t")
 fibrosis2 <- read.csv(file.path("..", "data", "06_fluidigm_fibrosis_02.csv"), sep="\t")
 
-# prepare the histology data
-names(histology)
-gldh <- data.frame(histology[, c("sid_GLDH", "GLDH")])
-names(gldh) <- c("sid", "GLDH")
-alt <- data.frame(histology[, c("sid_ALT", "ALT")])
-names(alt) <- c("sid", "ALT")
-bilirubin <- data.frame(histology[, c("sid_Bilirubin", "Bilirubin")])
-names(bilirubin) <- c("sid", "bilirubin")
-albumin <- data.frame(histology[, c("sid_albumin", "albumin")])
-names(albumin) <- c("sid", "albumin")
-hc <- data.frame(histology[, c("sid_BrdU_HC", "BrdU_HC")])
-names(hc) <- c("sid", "BrdU_HC")
-nhc <- data.frame(histology[, c("sid_BrdU_NHC", "BrdU_NHC")])
-names(nhc) <- c("sid", "BrdU_NHC")
-kupffer <- data.frame(histology[, c("sid_BrdU_Kupffer", "BrdU_Kupffer")])
-names(kupffer) <- c("sid", "BrdU_Kupffer")
-hsc <- data.frame(histology[, c("sid_BrdU_HSC", "BrdU_HSC")])
-names(hsc) <- c("sid", "BrdU_HSC")
-siriusRed <- data.frame(histology[, c("sid_BrdU_SiriusRed", "BrdU_SiriusRed")])
-names(siriusRed) <- c("sid", "BrdU_SirirusRed")
+antibodies <- read.csv(file.path("..", "data", "07_antibodies.csv"), sep="\t")
 
-tmp <- merge(gldh, alt, by="sid")
-tmp <- merge(tmp, bilirubin, by="sid")
-tmp <- merge(tmp, albumin, by="sid")
-tmp <- merge(tmp, hc, by="sid")
-tmp <- merge(tmp, nhc, by="sid")
-tmp <- merge(tmp, kupffer, by="sid")
-tmp <- merge(tmp, hsc, by="sid")
-histology.processed <- merge(tmp, siriusRed, by="sid")
+# For the fibrosis panel two chips were measured. The mean value of the two chips is
+# used for analysis.
+fibrosis <- (fibrosis1 + fibrosis2) / 2
+fibrosis$time <- fibrosis1$time
+head(fibrosis)
+rm(fibrosis1, fibrosis2)
+
+
+# prepare histology & antibody data
+d <- list()
+d$gldh <- data.frame(histology[, c("sid_GLDH", "GLDH")])
+names(d$gldh) <- c("sid", "GLDH")
+d$alt <- data.frame(histology[, c("sid_ALT", "ALT")])
+names(d$alt) <- c("sid", "ALT")
+d$bilirubin <- data.frame(histology[, c("sid_Bilirubin", "Bilirubin")])
+names(d$bilirubin) <- c("sid", "bilirubin")
+d$albumin <- data.frame(histology[, c("sid_albumin", "albumin")])
+names(d$albumin) <- c("sid", "albumin")
+d$hc <- data.frame(histology[, c("sid_BrdU_HC", "BrdU_HC")])
+names(d$hc) <- c("sid", "BrdU_HC")
+d$nhc <- data.frame(histology[, c("sid_BrdU_NHC", "BrdU_NHC")])
+names(d$nhc) <- c("sid", "BrdU_NHC")
+d$kupffer <- data.frame(histology[, c("sid_BrdU_Kupffer", "BrdU_Kupffer")])
+names(d$kupffer) <- c("sid", "BrdU_Kupffer")
+d$hsc <- data.frame(histology[, c("sid_BrdU_HSC", "BrdU_HSC")])
+names(d$hsc) <- c("sid", "BrdU_HSC")
+d$siriusRed <- data.frame(histology[, c("sid_BrdU_SiriusRed", "BrdU_SiriusRed")])
+names(d$siriusRed) <- c("sid", "BrdU_SirirusRed")
+d$bileInfarcts <- data.frame(histology[, c("sid_bileInfarcts", "bileInfarcts")])
+names(d$bileInfarcts) <- c("sid", "bileInfarcts")
+summary(d)
+
+# Merge the histological & antibody datasets on sample ids
+tmp <- merge(d$gldh, d$alt, by="sid")
+tmp <- merge(tmp, d$bilirubin, by="sid")
+tmp <- merge(tmp, d$albumin, by="sid")
+tmp <- merge(tmp, d$hc, by="sid")
+tmp <- merge(tmp, d$nhc, by="sid")
+tmp <- merge(tmp, d$kupffer, by="sid")
+tmp <- merge(tmp, d$hsc, by="sid")
+tmp <- merge(tmp, d$siriusRed, by="sid")
+tmp <- merge(tmp, d$bileInfarcts, by="sid")
+histology.processed <- tmp
 head(histology.processed)
 
-# Merge datasets on sid, time
+# remove pid from antibodies
+antibodies <- subset(antibodies, select = -c(pid) )
+head(antibodies)
+
+# Merge histological & antibody data with the fluidigm data
 tmp <- merge(adme, cytokines, by = c('sid', 'time'))
-tmp <- merge(tmp, fibrosis1, by = c('sid', 'time'))
-# currently only the first data set used
-# TODO: method to handle both fibrosis data sets (mean?)
-# tmp <- merge(tmp, fibrosis2, by = c('sid', 'time'))
+tmp <- merge(tmp, fibrosis, by = c('sid', 'time'))
+tmp <- merge(tmp, histology.processed, by=c('sid'))
+tmp <- merge(tmp, antibodies, by=c('sid'))
+data <- tmp
 
-data <- merge(tmp, histology.processed, by=c('sid'))
-names(data)
-
-# remove columns not in the correlation analysis
+# Set sample ids as row numbers
 rownames(data) <- data$sid
-head(data)
 
-# the ordered time factors
+# create the ordered time factor
 time <- data$time
 time <- ordered(time, levels = c("0h", "6h", "12h", "18h", "30h", "2d", "5d", "14d"))
 time
 
+# remove non-factor columns which are not part of the correlation analysis
 data <- subset(data, select = -c(sid,time) )
 head(data)
 

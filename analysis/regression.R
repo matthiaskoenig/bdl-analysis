@@ -90,22 +90,27 @@ tmp <- merge(tmp, histology.processed, by=c('sid'))
 tmp <- merge(tmp, antibodies, by=c('sid'))
 data <- tmp
 
-# Set sample ids as row numbers
+# Set sample ids as row numbers for data and samples
 rownames(data) <- data$sid
+rownames(samples) <- samples$sid
 
-# create the ordered time factor
-time <- data$time
-time <- ordered(time, levels = c("0h", "6h", "12h", "18h", "30h", "2d", "5d", "14d"))
-time
+# create the ordered time factor in the samples
+samples$time_fac <- ordered(data$time, levels = c("0h", "6h", "12h", "18h", "30h", "2d", "5d", "14d"))
 
 # remove non-factor columns which are not part of the correlation analysis
 data <- subset(data, select = -c(sid,time) )
+rm(tmp)
+
+# factor names
+factors <- colnames(data)
+
 head(data)
+head(samples)
 
 #---------------------------------------------
 # Data reshaping
 #---------------------------------------------
-# data manipulation to bring in format for the correlation algorithms.
+# data reformating for correlation algorithms.
 
 # BDL mean data via aggregation on times
 bdl_mean_data <- function(data){  
@@ -125,6 +130,9 @@ dmean <- tmp$dmean
 dmean.time <- tmp$dmean.time
 rm(tmp)
 
+head(dmean)
+head(dmean.time)
+
 # List of data matrices
 bdl_data_matrices <- function(data, time_pts, Nrepeats=5){
   data_list <- list()
@@ -137,7 +145,6 @@ bdl_data_matrices <- function(data, time_pts, Nrepeats=5){
   names(data_list) <- names(data)
   return(data_list)
 }
-
 data_list <- bdl_data_matrices(data, time_pts=levels(time))
 summary(data_list)
 data_list[1]
@@ -146,6 +153,7 @@ data_list[1]
 #---------------------------------------------
 # Fluidigm annotation information
 #---------------------------------------------
+# helper function with information for fluidigm probes
 probes <- read.csv(file.path("..", "data", "probe_mapping.csv"), stringsAsFactors=FALSE, sep="\t")
 head(probes)
 
@@ -170,39 +178,36 @@ get_probe_info('Ppara')
 # plot options
 options = list(width=1600, height=800, res=150)
 
-# factor names
-factors <- colnames(data)
-
 # Create plot of a single factor
 # plot individual data points with number
 plot_single_factor <- function(k){
   name <- factors[k]
-  info <- get_probe_info(name)
-  # print(name)
+  dA <- data[,k]  # factor data
+  info <- get_probe_info(name)  # fluidigm probe annotation (if existing)
+  
   fname <- paste("../results/factors/", sprintf("%03d", k), "_", name, ".png", sep="")
   png(filename=fname, width=options$width, height=options$height, res=options$res)
-  
   par(mfrow=c(1,2))
   
   # [A] plot with time
-  plot(time, data[,k], at=sort(as.numeric(levels(as.factor(samples$time)))), col="blue",
+  plot(samples$time_fac, dA, at=sort(as.numeric(levels(as.factor(samples$time)))), col="blue",
        xlab="time [h]", ylab=name, main=name,
-       ylim=c(0, max(data[,k], na.rm=TRUE)*1.1 ))
+       ylim=c(0, max(dA, na.rm=TRUE)*1.1 ))
   
-  points(samples$time, data[,k], col="black")
-  points(samples$time, data[,k], col=rgb(0,0,1,0.6), pch=16)
+  points(samples$time, dA, col="black")
+  points(samples$time, dA, col=rgb(0,0,1,0.6), pch=16)
   if (!is.null(info$Protein.name)){
-    text(x=140, y=max(data[,k], na.rm=TRUE)*1.08, 
+    text(x=140, y=max(dA, na.rm=TRUE)*1.08, 
          labels=info$Protein.name, cex=0.8)
   }
   points(dmean.time, dmean[,k], col="red", pch=15)
   lines(dmean.time, dmean[,k], col="red")
   
   # [B] plot as factor
-  plot(time, data[,k], xlab="time", ylab=name, main=name, col=rgb(0.5,0.5,0.5, 0.4),
+  plot(samples$time_fac, dA, xlab="time", ylab=name, main=name, col=rgb(0.5,0.5,0.5, 0.4),
        ylim=c(0, max(data[,k], na.rm=TRUE)*1.1))
-  points(time, data[,k], col="black")
-  points(time, data[,k], col=rgb(0,0,1,0.6), pch=16)
+  points(samples$time_fac, data[,k], col="black")
+  points(samples$time_fac, data[,k], col=rgb(0,0,1,0.6), pch=16)
   
   points(1:nrow(dmean), dmean[,k], col="red", pch=15)
   lines(1:nrow(dmean), dmean[,k], col="red")
@@ -212,13 +217,16 @@ plot_single_factor <- function(k){
 }
 plot_single_factor(1)
 
-# Create all the plots
-k= 1
-Nf = length(factors)
-for (k in 1:Nf){
-  cat(sprintf("%s / %s\n", k, Nf))
-  plot_single_factor(k)
+# Create all single factor plots
+plot_all_factors <- function(){
+  Nf = length(factors)
+  for (k in 1:Nf){
+    cat(sprintf("%s / %s\n", k, Nf))
+    plot_single_factor(k)
+  }  
 }
+plot_all_factors()
+
 
 #---------------------------------------------
 # Correlation analysis
@@ -231,13 +239,6 @@ cor.spearman <- cor(data, method="spearman", use="pairwise.complete.obs")
 
 # plotting of simple correlation matrices (original order) & based on hierarchical clustering.
 # Using complete linkage method.
-
-# corrplot options for clustering
-# order = "hclust"
-# hclust.method = "complete"
-# corrplot(cor.spearman, method="square", type="full", 
-#         tl.cex=0.3, tl.col="black",
-#         order="hclust", hclust.method="complete", addrect=5)
 
 library(corrplot)
 options <- list(width=1600, height=1600, res=200)
@@ -257,22 +258,18 @@ f_corrplot("cor.pearson", data=cor.pearson, order="original")
 f_corrplot("cor.pearson", data=cor.pearson, order="hclust")
 
 
-# --- YR1 and YS1 correlation ------------------------------------------------------------------------------------
+# --- YR1, YS1, YR2, YS2 correlation ------------------------------------------------------------------------------------
 
-# Calculation is only possible on the mean time data
-# => calculation has to be performed on the mean dataset
-# cor.ys1 <- ys1.df(data, time, use="pairwise.complete.obs")
-
-
-
+# Calculation is performed on the mean timecourse dataset
 source("ys1_yr1.R")  # definition of ys1 and yr1
 source("ys1_yr1_tools.R")  # definition of ys1 and yr1
 
 # calculation of ys1 and yr1 for mean data
-res.ys1 <- ys1.df(data2.melt, data2.time, w1=0.25, w2=0.5, w3=0.25, use="pairwise.complete.obs")
+w <- list(w1=0.5, w2=0.25, w3=0.25)
+res.ys1 <- ys1.df(dmean, dmean.time, w1=w$w1, w2=w$w2, w3=w$w3, use="pairwise.complete.obs")
 cor.ys1 <- res.ys1$value
-
-cor.yr1 <- yr1.df(data2.melt, data2.time, w1=0.25, w2=0.5, w3=0.25, use="pairwise.complete.obs")
+res.ys2 <- ys2.df(dmean, dmean.time, w1=w$w1, w2=w$w2, w3=w$w3, use="pairwise.complete.obs")
+cor.ys2 <- res.ys2$value
 
 f_corrplot("cor.ys1", data=cor.ys1, order="original")
 f_corrplot("cor.ys1", data=cor.ys1, order="hclust")
@@ -281,31 +278,26 @@ f_corrplot("cor.ys1.A", data=res.ys1$A, order="hclust")
 f_corrplot("cor.ys1.M", data=res.ys1$M, order="original")
 f_corrplot("cor.ys1.M", data=res.ys1$M, order="hclust")
 
-which(res.ys1$A==1)
-test <-res.ys1$A
-levels(as.factor(test))
-test[test<=0.6] = 0
-corrplot(test, order="original", hclust.method="complete", method="square", type="full", 
-         tl.cex=0.3, tl.col="black")
-
-
-
-f_corrplot("cor.yr1", data=cor.yr1, order="original")
-f_corrplot("cor.yr1", data=cor.yr1, order="hclust")
+f_corrplot("cor.ys2", data=cor.ys2, order="original")
+f_corrplot("cor.ys2", data=cor.ys2, order="hclust")
+f_corrplot("cor.ys2.A_star", data=res.ys2$A_star, order="original")
+f_corrplot("cor.ys2.A_star", data=res.ys2$A_star, order="hclust")
+f_corrplot("cor.ys2.M_star", data=res.ys2$M_star, order="original")
+f_corrplot("cor.ys2.M_star", data=res.ys2$M_star, order="hclust")
 
 cor.ys1.scaled <- 2*(cor.ys1-0.5)
-cor.yr1.scaled <- 2*(cor.yr1-0.5)
+cor.ys2.scaled <- 2*(cor.ys2-0.5)
+
 f_corrplot("cor.ys1.scaled", data=cor.ys1.scaled, order="original")
 f_corrplot("cor.ys1.scaled", data=cor.ys1.scaled, order="hclust")
-f_corrplot("cor.yr1.scaled", data=cor.yr1.scaled, order="original")
-f_corrplot("cor.yr1.scaled", data=cor.yr1.scaled, order="hclust")
-
+f_corrplot("cor.ys2.scaled", data=cor.ys2.scaled, order="original")
+f_corrplot("cor.ys2.scaled", data=cor.ys2.scaled, order="hclust")
 
 #--------------------------
 # Actb controls
 #--------------------------
 
-install.packages("calibrate")
+# install.packages("calibrate")
 library(calibrate)
 # use the textxy() function to add labels to the preexisting plot's points
 # add labels for the total enrollment
@@ -313,14 +305,13 @@ library(calibrate)
 # Actb control plots via pairwise correlation plots.
 # Actb exists on all Fluidigm chips.
 
-
 f_single_plot <- function(name_A){
   dA <- data[[name_A]]
   dA.mean <- dmean[[name_A]]
-  plot(time, dA, xlab="time", ylab=name_A, main=name_A, col=rgb(0.5,0.5,0.5, 0.4),
+  plot(samples$time_fac, dA, xlab="time", ylab=name_A, main=name_A, col=rgb(0.5,0.5,0.5, 0.4),
        ylim=c(0, max(dA, na.rm=TRUE)*1.1))
-  points(time, dA, col="black")
-  points(time, dA, col=rgb(0,0,1,0.6), pch=16)
+  points(samples$time_fac, dA, col="black")
+  points(samples$time_fac, dA, col=rgb(0,0,1,0.6), pch=16)
   
   points(1:nrow(dmean), dA.mean, col="red", pch=15)
   lines(1:nrow(dmean), dA.mean, col="red")
@@ -333,17 +324,17 @@ f_cor_pair_plot <- function(name_A, name_B, single_plots=TRUE){
   # correlation plot
   dA <- data[[name_A]]
   dB <- data[[name_B]]
-  dA.melt <- data2.melt[[name_A]]
-  dB.melt <- data2.melt[[name_B]]
+  dA.mean <- dmean[[name_A]]
+  dB.mean <- dmean[[name_B]]
   
   value.max <- 1.05* max(max(dA), max(dB))
   plot(dA, dB, xlim=c(0, value.max), ylim=c(0, value.max), 
        main=sprintf("%s ~ %s", name_A, name_B),
        xlab=name_A, ylab=name_B)
   textxy(dA, dB, samples$time)
-  points(dA.melt, dB.melt, pch=16, col=rgb(0,0,1,0.8) )
-  lines(dA.melt, dB.melt, col=rgb(0,0,1,0.8) )
-  textxy(dA.melt, dB.melt, data2.time, col="blue")
+  points(dA.mean, dB.mean, pch=16, col=rgb(0,0,1,0.8) )
+  lines(dA.mean, dB.mean, col=rgb(0,0,1,0.8) )
+  textxy(dA.mean, dB.mean, dmean.time, col="blue")
   abline(a=0, b=1, col="darkgray")
   
   # single plots
@@ -366,36 +357,24 @@ dev.off()
 cor(data.frame(Actb=data$Actb, 
                Actb.x=data$Actb.x, 
                Actb.y=data$Actb.y), method="spearman")
-cor(data.frame(Actb=data2.melt$Actb, 
-               Actb.x=data2.melt$Actb.x, 
-               Actb.y=data2.melt$Actb.y), method="spearman")
+cor(data.frame(Actb=dmean$Actb, 
+               Actb.x=dmean$Actb.x, 
+               Actb.y=dmean$Actb.y), method="spearman")
 cor(data.frame(Actb=data$Actb, 
                Actb.x=data$Actb.x, 
                Actb.y=data$Actb.y), method="pearson")
-cor(data.frame(Actb=data2.melt$Actb, 
-               Actb.x=data2.melt$Actb.x, 
-               Actb.y=data2.melt$Actb.y), method="pearson")
+cor(data.frame(Actb=dmean$Actb, 
+               Actb.x=dmean$Actb.x, 
+               Actb.y=dmean$Actb.y), method="pearson")
 #---------------------------------------------------------------------------
 
-
-png(filename="../results/cor.ys1-scaled_original.png", width=options$width, height=options$height, 
-    res=options$res)
-corrplot(cor.ys1.scaled, order="original", method="square", type="full", 
-         tl.cex=0.3, tl.col="black", # label settings
-)
-dev.off()
-png(filename="../results/cor.ys1-scaled_hclust.png", width=options$width, height=options$height, 
-    res=options$res)
-corrplot(cor.ys1.scaled, order="hclust", method="square", type="full", 
-         tl.cex=0.3, tl.col="black", # label settings
-)
-dev.off()
+name_A <- "Actb"
+name_B <- "Actb.x"
+f_cor_pair_plot(name_A, name_B)
+ys1(a=dmean[[name_A]], b=dmean[[name_B]], time_pts=dmean.time, w1=w$w1, w2=w$w2, w3=w$w3)
+ys2(a=dmean[[name_A]], b=dmean[[name_B]], time_pts=dmean.time, w1=w$w1, w2=w$w2, w3=w$w3)
 
 
-corrplot(cor.spearman, order="hclust", method="square", type="full", 
-         tl.cex=0.3, tl.col="black", # label settings
-)
-dev.off()
 
 #---------------------------------------------
 # TODO: create the list of all pairwise correlations

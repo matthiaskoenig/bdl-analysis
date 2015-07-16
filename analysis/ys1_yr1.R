@@ -355,6 +355,8 @@ test_res(yr1(x1, x2, time_pts, w1=0.25, w2=0.50, w3=0.25)$value, 0.555)
 test_res(yr1(y1, y2, time_pts, w1=0.25, w2=0.50, w3=0.25)$value, 0.805)
 
 rm(test_res, x1, x2, y1, y2, time_pts)
+
+# TODO: implement the tests for ys2
 # -----------------------------------------------------------------------
 
 

@@ -103,17 +103,45 @@ data <- subset(data, select = -c(sid,time) )
 head(data)
 
 #---------------------------------------------
-# Mean factor timecourse
+# Data reshaping
 #---------------------------------------------
-# mean based on times (aggregate)
-library(reshape)
-data2 <- data
-data2$time <- samples$time
-# rm NA in mean calculation
-dmean <- aggregate(data2, list(data2$time), FUN=mean, na.rm=TRUE)
-dmean.time <- dmean$time
-dmean <- subset(dmean, select = -c(time, Group.1) )
-rm(data2)
+# data manipulation to bring in format for the correlation algorithms.
+
+# BDL mean data via aggregation on times
+bdl_mean_data <- function(data){  
+  library(reshape)
+  data2 <- data
+  data2$time <- samples$time
+  # rm NA in mean calculation
+  dmean <- aggregate(data2, list(data2$time), FUN=mean, na.rm=TRUE)
+  dmean.time <- dmean$time
+  dmean <- subset(dmean, select = -c(time, Group.1))
+  return( list(dmean=dmean, dmean.time=dmean.time) )
+}
+
+# Mean of factors for the individual time points
+tmp <- bdl_mean_data(data)
+dmean <- tmp$dmean
+dmean.time <- tmp$dmean.time
+rm(tmp)
+
+# List of data matrices
+bdl_data_matrices <- function(data, time_pts, Nrepeats=5){
+  data_list <- list()
+  for (name in names(data)){
+    # important to fill in the right order !
+    data_list[[name]] <- matrix(data[[name]], nrow=length(dmean.time), ncol=Nrepeats, byrow=TRUE)
+    colnames(data_list[[name]]) <- paste('R', 1:5, sep="")
+    rownames(data_list[[name]]) <- time_pts
+  }
+  names(data_list) <- names(data)
+  return(data_list)
+}
+
+data_list <- bdl_data_matrices(data, time_pts=levels(time))
+summary(data_list)
+data_list[1]
+
 
 #---------------------------------------------
 # Fluidigm annotation information
@@ -238,6 +266,8 @@ f_corrplot("cor.pearson", data=cor.pearson, order="hclust")
 
 
 source("ys1_yr1.R")  # definition of ys1 and yr1
+source("ys1_yr1_tools.R")  # definition of ys1 and yr1
+
 # calculation of ys1 and yr1 for mean data
 res.ys1 <- ys1.df(data2.melt, data2.time, w1=0.25, w2=0.5, w3=0.25, use="pairwise.complete.obs")
 cor.ys1 <- res.ys1$value
@@ -362,12 +392,14 @@ corrplot(cor.ys1.scaled, order="hclust", method="square", type="full",
 dev.off()
 
 
-
 corrplot(cor.spearman, order="hclust", method="square", type="full", 
          tl.cex=0.3, tl.col="black", # label settings
 )
 dev.off()
 
-
-
 #---------------------------------------------
+# TODO: create the list of all pairwise correlations
+# factor 1, factor 2, pearson, spearman, ys1_mean, ys1, ...
+# -> plot the clusters and cluster members
+
+

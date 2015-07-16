@@ -342,6 +342,7 @@ f_cor_pair_plot <- function(name_A, name_B, single_plots=TRUE){
     f_single_plot(name_A)
     f_single_plot(name_B)
   }
+  layout(matrix(c(1), 1, 1, byrow = TRUE)) 
 }
 
 options <- list(width=1600, height=600, res=200)
@@ -381,4 +382,50 @@ ys2(a=dmean[[name_A]], b=dmean[[name_B]], time_pts=dmean.time, w1=w$w1, w2=w$w2,
 # factor 1, factor 2, pearson, spearman, ys1_mean, ys1, ...
 # -> plot the clusters and cluster members
 
+# Perform hierarchical clustering on matrix
+# The hclust function in R uses the complete linkage method for hierarchical clustering by default.
+# This particular clustering method defines the cluster distance between two clusters to be the 
+# maximum distance between their individual components.
+hc <- hclust(dist(cor.ys2))  # apply hirarchical clustering 
+plot(hc)               # plot the dendrogram 
+plot(hc, hang=-1)               # plot the dendrogram 
 
+
+
+# cut tree into clusters
+Ngroups = 7
+rect.hclust(hc, k=Ngroups)
+# get cluster IDs for the groups
+groups <- cutree(hc, k=Ngroups)
+
+
+g1 <- groups[groups==1]
+g1
+f_cor_pair_plot("Ppara", "Cyp1a2")
+f_cor_pair_plot("Ppara", "Cyp2e1")
+
+# plot the groups
+options$height = 2000
+options$width = 2000
+
+for (k in 1:Ngroups){
+  fname <- sprintf("%s_cluster_%s.png", "ys2", k)
+  png(filename=sprintf("../results/cluster/%s", fname), width=options$width, height=options$height, res=options$res)
+  g <- groups[groups==k]
+  N <- ceiling(sqrt(length(g)))
+  print(N)
+  par(mfrow=c(N,N))
+  for (name in names(g)){
+    f_single_plot(name_A=name) 
+  }
+  par(mfrow=c(1,1))  
+  dev.off()
+}
+
+
+f_corrplot <- function(name, data, order){
+  fname <- sprintf("%s_%s.png", name, order)
+  png(filename=sprintf("../results/%s", fname), width=options$width, height=options$height, res=options$res)
+  corrplot(data, order=order, hclust.method="complete", method="square", type="full", 
+           tl.cex=0.3, tl.col="black")
+  dev.off()

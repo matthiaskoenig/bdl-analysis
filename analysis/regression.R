@@ -231,17 +231,124 @@ plot_all_factors <- function(){
 plot_all_factors()
 
 
+#--------------------------
+# Actb controls
+#--------------------------
+# Actb was measured on all Fluidigm chips and serves as quality control of the 
+# measurement/correlation analysis.
+# Use pairwise correlation plots for control.
+
+# install.packages("calibrate")
+library(calibrate)
+
+# Plot of a single factor.
+# Plots the mean time course and individual samples.
+f_single_plot <- function(name_A){
+  dA <- data[[name_A]]
+  dA.mean <- dmean[[name_A]]
+  plot(samples$time_fac, dA, xlab="time", ylab=name_A, main=name_A, col=rgb(0.5,0.5,0.5, 0.4),
+       ylim=c(0, max(dA, na.rm=TRUE)*1.1))
+  points(samples$time_fac, dA, col="black")
+  points(samples$time_fac, dA, col=rgb(0,0,1,0.6), pch=16)
+  # plot the repeat number
+  dA.text <- dA
+  dA[is.na(dA)] <- -1
+  textxy(samples$time_point, dA, samples$sid, col="black", cex=0.6)
+  
+  points(1:nrow(dmean), dA.mean, col="red", pch=15)
+  lines(1:nrow(dmean), dA.mean, col="red")
+}
+
+# Correlation plot between two factors
+f_cor_pair_plot <- function(name_A, name_B, single_plots=TRUE){
+  if (single_plots){
+    layout(matrix(c(1,1,2,3), 2, 2, byrow = TRUE))  
+  }
+  # correlation plot
+  dA <- data[[name_A]]
+  dB <- data[[name_B]]
+  # dA <- dA[!is.na(dA)]
+  # d <- dA[!is.na(dA)]
+  dA.mean <- dmean[[name_A]]
+  dB.mean <- dmean[[name_B]]
+  
+  value.max <- 1.1* c(max(dA), max(dB))
+  plot(dA, dB, xlim=c(0, value.max[1]), ylim=c(0, value.max[2]), 
+       main=sprintf("%s ~ %s", name_A, name_B),
+       xlab=name_A, ylab=name_B)
+  textxy(dA, dB, samples$time)
+  points(dA.mean, dB.mean, pch=16, col=rgb(0,0,1,0.8) )
+  lines(dA.mean, dB.mean, col=rgb(0,0,1,0.8) )
+  textxy(dA.mean, dB.mean, dmean.time, col="blue")
+  abline(a=0, b=mean(dB.mean)/mean(dA.mean), col="darkgray")
+  
+  text(x=0.05*value.max[1], y=0.9*value.max[2], 
+       labels=sprintf("S: %1.3f\nS mean: %1.3f\nP: %1.3f\nP mean: %1.3f", 
+                      cor(dA, dB, method="spearman", use="pairwise.complete.obs"),
+                      cor(dA.mean, dB.mean, method="spearman", use="pairwise.complete.obs"),
+                      cor(dA, dB, method="pearson", use="pairwise.complete.obs"),
+                      cor(dA.mean, dB.mean, method="pearson", use="pairwise.complete.obs")))
+  
+  # single plots
+  if (single_plots){
+    f_single_plot(name_A)
+    f_single_plot(name_B)
+    layout(matrix(c(1), 1, 1, byrow = TRUE))
+  }
+}
+
+f_cor_pair_plot("Actb", "Por")
+
+
+# Actb control figure
+options <- list(width=1600, height=600, res=200)
+png(filename="../results/Actb_control.png", width=options$width, height=options$height, res=options$res)
+par(mfrow=c(1,3))
+f_cor_pair_plot("Actb", "Actb.x", single_plots=FALSE)
+f_cor_pair_plot("Actb", "Actb.y", single_plots=FALSE)
+f_cor_pair_plot("Actb.x", "Actb.y", single_plots=FALSE)
+par(mfrow=c(1,1))
+dev.off()
+
+# calculate the correlations
+f_cor_pair_plot("Actb", "Actb.x")
+f_cor_pair_plot("Actb", "Actb.y")
+f_cor_pair_plot("Actb.x", "Actb.y")
+
+cat('Actb Spearman : individual points\n')
+act.spearman <- cor(data.frame(Actb=data$Actb, 
+               Actb.x=data$Actb.x, 
+               Actb.y=data$Actb.y), method="spearman")
+print(actb.spearman)
+cat('Actb Spearman : mean\n')
+actb.spearman.mean <- cor(data.frame(Actb=dmean$Actb, 
+               Actb.x=dmean$Actb.x, 
+               Actb.y=dmean$Actb.y), method="spearman")
+print(actb.spearman.mean))
+cat('Actb Pearson : individual points\n')
+actb.pearson <- cor(data.frame(Actb=data$Actb, 
+               Actb.x=data$Actb.x, 
+               Actb.y=data$Actb.y), method="pearson")
+print(actb.pearson)
+cat('Actb Pearson : mean\n')
+actb.pearson.mean <- cor(data.frame(Actb=dmean$Actb, 
+               Actb.x=dmean$Actb.x, 
+               Actb.y=dmean$Actb.y), method="pearson")
+print(actb.pearson.mean)
+
+f_cor_pair_plot("Actb", "Por")
+
 #---------------------------------------------
 # Correlation analysis
 #---------------------------------------------
+# Calculation of standard correlation matrices based on Spearman
+# and Pearson correlaton coefficients. 
+# Hierarchical clustering is performed using complete linkage.
+# The cor.pearson and cor.spearman are used as comparison models.
 
-# --- Pearson & Spearman correlation matrix -------------------------------------------------------------------
-# calculation of correlation matrix
+# correlation matrix
 cor.pearson <- cor(data, method="pearson", use="pairwise.complete.obs")
 cor.spearman <- cor(data, method="spearman", use="pairwise.complete.obs")
-
-# plotting of simple correlation matrices (original order) & based on hierarchical clustering.
-# Using complete linkage method.
 
 library(corrplot)
 options <- list(width=1600, height=1600, res=200)
@@ -254,27 +361,32 @@ f_corrplot <- function(name, data, order){
            tl.cex=0.3, tl.col="black")
   dev.off()
 }
-# Spearman & Pearson plots
+
+# Spearman & Pearson correlation matrices
 f_corrplot("cor.spearman", data=cor.spearman, order="original")
 f_corrplot("cor.spearman", data=cor.spearman, order="hclust")
 f_corrplot("cor.pearson", data=cor.pearson, order="original")
 f_corrplot("cor.pearson", data=cor.pearson, order="hclust")
 
 
-# --- YR1, YS1, YR2, YS2 correlation ------------------------------------------------------------------------------------
+# --- YR1, YS1, YR2, YS2 correlation ----------
+# Calculation of time-course based correlation measurements, namely ys1, ys2, yr1, yr2
+# and the respective adaptions to the underlying datasets, i.e. using multiple
+# repeat data with every time point measurment coming from an individual
+# sample.
 
-# Calculation is performed on the mean timecourse dataset
-source("ys1_yr1.R")  # definition of ys1 and yr1
+source("ys1_yr1.R")        # definition of ys1, ys2, yr1, yr2
 source("ys1_yr1_tools.R")  # definition of ys1 and yr1
 
 # calculation of ys1 and yr1 for mean data
 w <- list(w1=0.5, w2=0.25, w3=0.25)
 res.ys1 <- ys1.df(dmean, dmean.time, w1=w$w1, w2=w$w2, w3=w$w3, use="pairwise.complete.obs")
 cor.ys1 <- res.ys1$value
+cor.ys1.scaled <- 2*(cor.ys1-0.5)
+
 res.ys2 <- ys2.df(dmean, dmean.time, w1=w$w1, w2=w$w2, w3=w$w3, use="pairwise.complete.obs")
 cor.ys2 <- res.ys2$value
-
-res.ys2$A_star2
+cor.ys2.scaled <- 2*(cor.ys2-0.5)
 
 f_corrplot("cor.ys1", data=cor.ys1, order="original")
 f_corrplot("cor.ys1", data=cor.ys1, order="hclust")
@@ -290,95 +402,12 @@ f_corrplot("cor.ys2.A_star", data=res.ys2$A_star, order="hclust")
 f_corrplot("cor.ys2.M_star", data=res.ys2$M_star, order="original")
 f_corrplot("cor.ys2.M_star", data=res.ys2$M_star, order="hclust")
 
-cor.ys1.scaled <- 2*(cor.ys1-0.5)
-cor.ys2.scaled <- 2*(cor.ys2-0.5)
-
 f_corrplot("cor.ys1.scaled", data=cor.ys1.scaled, order="original")
 f_corrplot("cor.ys1.scaled", data=cor.ys1.scaled, order="hclust")
 f_corrplot("cor.ys2.scaled", data=cor.ys2.scaled, order="original")
 f_corrplot("cor.ys2.scaled", data=cor.ys2.scaled, order="hclust")
 
-#--------------------------
-# Actb controls
-#--------------------------
 
-# install.packages("calibrate")
-library(calibrate)
-# use the textxy() function to add labels to the preexisting plot's points
-# add labels for the total enrollment
-  
-# Actb control plots via pairwise correlation plots.
-# Actb exists on all Fluidigm chips.
-
-f_single_plot <- function(name_A){
-  dA <- data[[name_A]]
-  dA.mean <- dmean[[name_A]]
-  plot(samples$time_fac, dA, xlab="time", ylab=name_A, main=name_A, col=rgb(0.5,0.5,0.5, 0.4),
-       ylim=c(0, max(dA, na.rm=TRUE)*1.1))
-  points(samples$time_fac, dA, col="black")
-  points(samples$time_fac, dA, col=rgb(0,0,1,0.6), pch=16)
-  # plot the repeat number
-  dA.text <- dA
-  dA[is.na(dA)] <- -1
-  textxy(samples$time_point, dA, samples$repeats, col="black", cex=1.1)
-  
-  points(1:nrow(dmean), dA.mean, col="red", pch=15)
-  lines(1:nrow(dmean), dA.mean, col="red")
-}
-
-f_cor_pair_plot <- function(name_A, name_B, single_plots=TRUE){
-  if (single_plots){
-    layout(matrix(c(1,1,2,3), 2, 2, byrow = TRUE))  
-  }
-  # correlation plot
-  dA <- data[[name_A]]
-  dB <- data[[name_B]]
-  # dA <- dA[!is.na(dA)]
-  # d <- dA[!is.na(dA)]
-  dA.mean <- dmean[[name_A]]
-  dB.mean <- dmean[[name_B]]
-  
-  value.max <- 1.05* max(max(dA), max(dB))
-  plot(dA, dB, xlim=c(0, value.max), ylim=c(0, value.max), 
-       main=sprintf("%s ~ %s", name_A, name_B),
-       xlab=name_A, ylab=name_B)
-  textxy(dA, dB, samples$time)
-  points(dA.mean, dB.mean, pch=16, col=rgb(0,0,1,0.8) )
-  lines(dA.mean, dB.mean, col=rgb(0,0,1,0.8) )
-  textxy(dA.mean, dB.mean, dmean.time, col="blue")
-  abline(a=0, b=1, col="darkgray")
-  
-  # single plots
-  if (single_plots){
-    f_single_plot(name_A)
-    f_single_plot(name_B)
-  }
-  layout(matrix(c(1), 1, 1, byrow = TRUE)) 
-}
-
-options <- list(width=1600, height=600, res=200)
-png(filename="../results/Actb_control.png", width=options$width, height=options$height, res=options$res)
-par(mfrow=c(1,3))
-f_cor_pair_plot("Actb", "Actb.x", single_plots=FALSE)
-f_cor_pair_plot("Actb", "Actb.y", single_plots=FALSE)
-f_cor_pair_plot("Actb.x", "Actb.y", single_plots=FALSE)
-par(mfrow=c(1,1))
-dev.off()
-
-# calculate the correlations
-cor(data.frame(Actb=data$Actb, 
-               Actb.x=data$Actb.x, 
-               Actb.y=data$Actb.y), method="spearman")
-cor(data.frame(Actb=dmean$Actb, 
-               Actb.x=dmean$Actb.x, 
-               Actb.y=dmean$Actb.y), method="spearman")
-cor(data.frame(Actb=data$Actb, 
-               Actb.x=data$Actb.x, 
-               Actb.y=data$Actb.y), method="pearson")
-cor(data.frame(Actb=dmean$Actb, 
-               Actb.x=dmean$Actb.x, 
-               Actb.y=dmean$Actb.y), method="pearson")
-#---------------------------------------------------------------------------
 
 source("ys1_yr1.R")  # definition of ys1 and yr1
 source("ys1_yr1_tools.R")  # definition of ys1 and yr1
@@ -392,7 +421,7 @@ cor.test.scaled <- 2*(cor.test-0.5)
 cor.test.r <- 0.4*cor.r + 0.4*res.ys2$A_star + 0.2*res.ys2$M_star
 cor.test.r.scaled <- 2*(cor.test.r-0.5)
 
-cor.test.r2 <- 0.4*cor.r + 0.4*res.ys2$A_star2 + 0.2*res.ys2$M_star
+cor.test.r2 <- 0.5*cor.r + 0.25*res.ys2$A_star2 + 0.25*res.ys2$M_star2
 cor.test.r2.scaled <- 2*(cor.test.r2-0.5)
 
 summary(cor.test.r2.scaled <- 2*(cor.test.r2-0.5))
@@ -400,6 +429,18 @@ res.ys2$M_star2
 
 son.fM_star(dmean[["Actb"]], dmean[["Actb.x"]], dmean.time)
 son.fM_star2(dmean[["Actb"]], dmean[["Actb.x"]], dmean.time)
+son.fA_star(dmean[["Actb"]], dmean[["Actb.x"]], dmean.time)
+son.fA_star2(dmean[["Actb"]], dmean[["Actb.x"]], dmean.time)
+
+son.fM_star(dmean[["Actb"]], dmean[["Actb.y"]], dmean.time)
+son.fM_star2(dmean[["Actb"]], dmean[["Actb.y"]], dmean.time)
+son.fA_star(dmean[["Actb"]], dmean[["Actb.y"]], dmean.time)
+son.fA_star2(dmean[["Actb"]], dmean[["Actb.y"]], dmean.time)
+
+son.fM_star(dmean[["Actb"]], dmean[["Actb.y"]], dmean.time)
+son.fM_star2(dmean[["Actb"]], dmean[["Actb.y"]], dmean.time)
+
+
 f_cor_pair_plot("Actb", "Actb.x")
 
 summary(dmean["Actb.x"])
@@ -460,9 +501,23 @@ Ngroups = 8
 rect.hclust(hc, k=Ngroups)
 # get cluster IDs for the groups
 groups <- cutree(hc, k=Ngroups)
-
 groups.hc.order <- groups[hc$order]
-groups.hc.order
+
+
+
+dend1 <- as.dendrogram(hc)
+# Get the package:
+# install.packages("dendextend")
+library(dendextend)
+
+# Get the package:
+cutree(dend1,h=70) # it now works on a dendrogram
+# It is like using:
+dendextend:::cutree.dendrogram(dend1,h=70)
+# dend1 <- color_branches(dend1, k = 7)
+dend1 <- color_labels(dend1, k = 8)
+plot(dend1)
+
 
 # plot the groups
 options$height = 3000
@@ -482,26 +537,48 @@ for (k in 1:Ngroups){
   dev.off()
 }
 
-f_cor_pair_plot("Nos2", "Hk2")
+f_cor_pair_plot("Actb.y", "Actb.x")
+
 
 # make the mean plots (TODO: add the mean and variance of the cluster)
+
+f_normalize_centering <- function(a){
+  a.norm <- (a - mean(a))/(max(a, na.rm=TRUE) - min(a, na.rm=TRUE))
+  return(a.norm)
+}
 
 par(mfrow=c(2,4))
 for (k in 1:Ngroups){
   g <- groups.hc.order[groups.hc.order==k]
   N <- ceiling(sqrt(length(g)))
-
+  dgroup <- dmean[names(g)]
+  # centralize and normalize columns, i.e. the individual factors for comparison
+  dgroup.norm <- apply(dgroup, 2, f_normalize_centering)
   plot(1, type="n", xlab="", ylab="", xlim=c(1, 8), ylim=c(-1, 1), main=sprintf("Cluster %s", k))
   for (name in names(g)){
-    dA = dmean[[name]]
-    points(1:8, (dA - mean(dA))/(max(dA)-min(dA)), pch=16, col="black")
-    lines(1:8, (dA - mean(dA))/(max(dA)-min(dA)), col="blue")
+    print(name)
+    points(1:8, dgroup.norm[, name], pch=16, col="black")
+    lines(1:8, dgroup.norm[, name], col=rgb(0.5,0.5,0.5, 0.8), lwd=1)
   }
+  # mean over factors in cluster
+  lines(1:8, rowMeans(dgroup.norm), col="blue", lwd=2)
+  
 }
 par(mfrow=c(1,1))
 
 
 
+g <- groups.hc.order[groups.hc.order==1]
+dgroup <- dmean[names(g)]
+mean(dgroup)
+dgroup
+dgroup.norm <- apply(dgroup, 2, f_normalize_centering)
+dgroup.norm[, "Nr2f2"]
+
+
 # TODO: create the list of all pairwise correlations
+
+# TODO: GO annotations of clusters
+
 
   

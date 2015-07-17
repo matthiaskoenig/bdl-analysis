@@ -187,9 +187,23 @@ son.fM_star = function(a,b,time_pts){
   return(r)
 }
 
+# Alternative index to M which utilizes the distances between two profiles time 
+# points where the max/min is attained.
+# Uses the difference in times
+son.fM_star2 = function(a,b,time_pts){
+  Nt = length(time_pts)
+  idx_max_a = which.max(a)[1]
+  idx_max_b = which.max(b)[1]
+  idx_min_a = which.min(a)[1]
+  idx_min_b = which.min(b)[1]
+  r = 1 - ( (abs(time_pts[idx_min_a]-time_pts[idx_min_b]) + abs(time_pts[idx_max_a]-time_pts[idx_max_b]))/(2*time_pts[Nt]))
+  return(r)
+}
+
+
 # Using the curvature which contains the information about min/max but is more
 # robust 
-son.fM_star2 = function(a,b,time_pts){
+son.fM_star3 = function(a,b,time_pts){
   Nt = length(time_pts)
   # first derivative (slope)
   dA = a[2:Nt]-a[1:(Nt-1)] 

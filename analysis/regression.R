@@ -96,6 +96,9 @@ rownames(samples) <- samples$sid
 
 # create the ordered time factor in the samples
 samples$time_fac <- ordered(data$time, levels = c("0h", "6h", "12h", "18h", "30h", "2d", "5d", "14d"))
+samples$time_point <- as.vector(t(matrix(rep(seq(1,8), 5), nrow=8, ncol=5)))
+# create the repeat info
+samples$repeats <- (seq(from=0, to=(nrow(samples)-1))%%5) +1
 
 # remove non-factor columns which are not part of the correlation analysis
 data <- subset(data, select = -c(sid,time) )
@@ -271,6 +274,8 @@ cor.ys1 <- res.ys1$value
 res.ys2 <- ys2.df(dmean, dmean.time, w1=w$w1, w2=w$w2, w3=w$w3, use="pairwise.complete.obs")
 cor.ys2 <- res.ys2$value
 
+res.ys2$A_star2
+
 f_corrplot("cor.ys1", data=cor.ys1, order="original")
 f_corrplot("cor.ys1", data=cor.ys1, order="hclust")
 f_corrplot("cor.ys1.A", data=res.ys1$A, order="original")
@@ -312,6 +317,10 @@ f_single_plot <- function(name_A){
        ylim=c(0, max(dA, na.rm=TRUE)*1.1))
   points(samples$time_fac, dA, col="black")
   points(samples$time_fac, dA, col=rgb(0,0,1,0.6), pch=16)
+  # plot the repeat number
+  dA.text <- dA
+  dA[is.na(dA)] <- -1
+  textxy(samples$time_point, dA, samples$repeats, col="black", cex=1.1)
   
   points(1:nrow(dmean), dA.mean, col="red", pch=15)
   lines(1:nrow(dmean), dA.mean, col="red")
@@ -324,6 +333,8 @@ f_cor_pair_plot <- function(name_A, name_B, single_plots=TRUE){
   # correlation plot
   dA <- data[[name_A]]
   dB <- data[[name_B]]
+  # dA <- dA[!is.na(dA)]
+  # d <- dA[!is.na(dA)]
   dA.mean <- dmean[[name_A]]
   dB.mean <- dmean[[name_B]]
   
@@ -369,16 +380,64 @@ cor(data.frame(Actb=dmean$Actb,
                Actb.y=dmean$Actb.y), method="pearson")
 #---------------------------------------------------------------------------
 
-name_A <- "Actb"
-name_B <- "Actb.x"
-f_cor_pair_plot(name_A, name_B)
-ys1(a=dmean[[name_A]], b=dmean[[name_B]], time_pts=dmean.time, w1=w$w1, w2=w$w2, w3=w$w3)
-ys2(a=dmean[[name_A]], b=dmean[[name_B]], time_pts=dmean.time, w1=w$w1, w2=w$w2, w3=w$w3)
+source("ys1_yr1.R")  # definition of ys1 and yr1
+source("ys1_yr1_tools.R")  # definition of ys1 and yr1
+# Full pearson correlation with mean slope & min/max component
+cor.s <- ( cor(data, method="spearman", use="pairwise.complete.obs") + 1 )/2
+cor.r <- ( cor(data, method="pearson", use="pairwise.complete.obs") + 1 )/2
 
+cor.test <- 0.5*cor.s + 0.25*res.ys2$A_star + 0.25*res.ys2$M_star
+cor.test.scaled <- 2*(cor.test-0.5)
+
+cor.test.r <- 0.4*cor.r + 0.4*res.ys2$A_star + 0.2*res.ys2$M_star
+cor.test.r.scaled <- 2*(cor.test.r-0.5)
+
+cor.test.r2 <- 0.4*cor.r + 0.4*res.ys2$A_star2 + 0.2*res.ys2$M_star
+cor.test.r2.scaled <- 2*(cor.test.r2-0.5)
+
+summary(cor.test.r2.scaled <- 2*(cor.test.r2-0.5))
+res.ys2$M_star2
+
+son.fM_star(dmean[["Actb"]], dmean[["Actb.x"]], dmean.time)
+son.fM_star2(dmean[["Actb"]], dmean[["Actb.x"]], dmean.time)
+f_cor_pair_plot("Actb", "Actb.x")
+
+summary(dmean["Actb.x"])
+
+
+# cor.test.r <- 0.5*r.test + 0.25*res.ys2$A_star + 0.25*res.ys2$M_star
+# cor.test.r.scaled <- 2*(cor.test.r-0.5)
+
+
+
+f_corrplot("cor.test.scaled", data=cor.test.scaled, order="original")
+f_corrplot("cor.test.scaled", data=cor.test.scaled, order="hclust")
+
+f_corrplot("cor.test.r.scaled", data=cor.test.r.scaled, order="original")
+f_corrplot("cor.test.r.scaled", data=cor.test.r.scaled, order="hclust")
+
+
+
+# name_A <- "Actb"
+# name_B <- "Actb.x"
+# extreme example where 
+name_A <- "Nos2"
+name_B <- "Cxcl15"
+
+f_cor_pair_plot(name_A, name_B)
+# ys1(a=dmean[[name_A]], b=dmean[[name_B]], time_pts=dmean.time, w1=w$w1, w2=w$w2, w3=w$w3)
+ys2(a=dmean[[name_A]], b=dmean[[name_B]], time_pts=dmean.time, w1=w$w1, w2=w$w2, w3=w$w3)
+cor(x=data[[name_A]], data[[name_B]], method="spearman")
+cor(x=dmean[[name_A]], dmean[[name_B]], method="spearman")
+
+
+
+son.fS_star(a=data[[name_A]], b=data[[name_B]])
 
 
 #---------------------------------------------
-# TODO: create the list of all pairwise correlations
+# Hierarchical clustering
+#---------------------------------------------
 # factor 1, factor 2, pearson, spearman, ys1_mean, ys1, ...
 # -> plot the clusters and cluster members
 
@@ -386,32 +445,33 @@ ys2(a=dmean[[name_A]], b=dmean[[name_B]], time_pts=dmean.time, w1=w$w1, w2=w$w2,
 # The hclust function in R uses the complete linkage method for hierarchical clustering by default.
 # This particular clustering method defines the cluster distance between two clusters to be the 
 # maximum distance between their individual components.
-hc <- hclust(dist(cor.ys2))  # apply hirarchical clustering 
-plot(hc)               # plot the dendrogram 
+
+# hc <- hclust(dist(cor.ys2))  # apply hirarchical clustering 
+# hc <- hclust(dist(cor.test.scaled))  # apply hirarchical clustering 
+hc <- hclust(dist(cor.test.r2.scaled))  # apply hirarchical clustering 
+
+corrplot(cor.test.r2.scaled[hc$order, hc$order], order="original", method="square", type="full",tl.cex=0.3, tl.col="black")
+
+# plot(hc)               # plot the dendrogram 
 plot(hc, hang=-1)               # plot the dendrogram 
 
-
-
 # cut tree into clusters
-Ngroups = 7
+Ngroups = 8
 rect.hclust(hc, k=Ngroups)
 # get cluster IDs for the groups
 groups <- cutree(hc, k=Ngroups)
 
-
-g1 <- groups[groups==1]
-g1
-f_cor_pair_plot("Ppara", "Cyp1a2")
-f_cor_pair_plot("Ppara", "Cyp2e1")
+groups.hc.order <- groups[hc$order]
+groups.hc.order
 
 # plot the groups
-options$height = 2000
-options$width = 2000
+options$height = 3000
+options$width = 3000
 
 for (k in 1:Ngroups){
   fname <- sprintf("%s_cluster_%s.png", "ys2", k)
   png(filename=sprintf("../results/cluster/%s", fname), width=options$width, height=options$height, res=options$res)
-  g <- groups[groups==k]
+  g <- groups.hc.order[groups.hc.order==k]
   N <- ceiling(sqrt(length(g)))
   print(N)
   par(mfrow=c(N,N))
@@ -422,10 +482,26 @@ for (k in 1:Ngroups){
   dev.off()
 }
 
+f_cor_pair_plot("Nos2", "Hk2")
 
-f_corrplot <- function(name, data, order){
-  fname <- sprintf("%s_%s.png", name, order)
-  png(filename=sprintf("../results/%s", fname), width=options$width, height=options$height, res=options$res)
-  corrplot(data, order=order, hclust.method="complete", method="square", type="full", 
-           tl.cex=0.3, tl.col="black")
-  dev.off()
+# make the mean plots (TODO: add the mean and variance of the cluster)
+
+par(mfrow=c(2,4))
+for (k in 1:Ngroups){
+  g <- groups.hc.order[groups.hc.order==k]
+  N <- ceiling(sqrt(length(g)))
+
+  plot(1, type="n", xlab="", ylab="", xlim=c(1, 8), ylim=c(-1, 1), main=sprintf("Cluster %s", k))
+  for (name in names(g)){
+    dA = dmean[[name]]
+    points(1:8, (dA - mean(dA))/(max(dA)-min(dA)), pch=16, col="black")
+    lines(1:8, (dA - mean(dA))/(max(dA)-min(dA)), col="blue")
+  }
+}
+par(mfrow=c(1,1))
+
+
+
+# TODO: create the list of all pairwise correlations
+
+  

@@ -43,8 +43,9 @@ ys2.df <- function(data, time_pts, w1=0.50, w2=0.25, w3=0.25, use="pairwise.comp
   rownames(value.mat) <- names(data)
   S_star.mat <- value.mat
   A_star.mat <- value.mat
+  A_star2.mat <- value.mat
   M_star.mat <- value.mat
-  
+  M_star2.mat <- value.mat
   for (k in 1:N){
     for (i in 1:N){
       # calculate the simple score pairwise between all factors
@@ -52,12 +53,15 @@ ys2.df <- function(data, time_pts, w1=0.50, w2=0.25, w3=0.25, use="pairwise.comp
       value.mat[k,i] = res$value
       S_star.mat[k,i] = res$S_star
       A_star.mat[k,i] = res$A_star
+      A_star2.mat[k,i] = res$A_star2
       M_star.mat[k,i] = res$M_star
+      M_star2.mat[k,i] = res$M_star2
     }
   }
-  return(list(value=value.mat, S_star=S_star.mat, A_star=A_star.mat, M_star=M_star.mat))
+  return(list(value=value.mat, S_star=S_star.mat, 
+              A_star=A_star.mat, A_star2=A_star2.mat, 
+              M_star=M_star.mat, M_star2=M_star2.mat))
 }
-
 
 
 # Calculate ys1 for factors provided as list of matrices with size [Nt, Nr].

@@ -30,7 +30,8 @@
 
 # Adapted Spearman correlation S* (Shifted to the interval [0, 1])
 son.fS_star <- function(a,b){
-  r = (cor(x=a,y=b, method='spearman') + 1) / 2  
+  r = (cor(x=a,y=b, method='spearman') + 1) / 2 
+  return(r)
 }
 
 # Calculate the correlation of the matrix with multiple repeats.
@@ -40,15 +41,18 @@ son.fS_star.matrix <- function(a,b){
   a_vec <- as.vector(a)
   b_vec <- as.vector(b)
   r = son.fS_star(a_vec, b_vec)
+  return(r)
 }
 
 # Adapted Pearson correlation R* (Shifted to the interval [0, 1])
 son.fR_star <- function(a,b){
   r = (cor(x=a, y=b, method='pearson') + 1) / 2
+  return(r)
 }
 # fR_star for matrix data (timecourse and time point repeats)
 son.fR_star_matrix <- function(a,b){
   r = (cor(x=as.vector(a), y=as.vector(b), method='pearson') + 1) / 2
+  return(r)
 }
 
 # --------------------------------------------------------------------------------------------
@@ -57,12 +61,14 @@ son.fR_star_matrix <- function(a,b){
 
 # Slope between two adjacent measurments
 son.slope <- function(x1,x2,t1,t2){
-  s = ((x2 - x1) / (t2 - t1))  
+  s = ((x2 - x1) / (t2 - t1))
+  return(s)
 }
 
 # Sign of slope
 son.L <- function(x1,x2,t1,t2){
   L = sign(son.slope(x1,x2,t1,t2))
+  return(L)
 }
 
 # Relative count of number of identical slopes between two time courses.
@@ -93,6 +99,18 @@ son.fA_star <- function(a,b,time_pts){
   return(r)
 }
 
+# Calculating the distance on the slopes, which should be 
+# preferred in case of unequal time points
+son.fA_star2 <- function(a,b,time_pts){
+  Nt = length(time_pts)
+  dA = a[2:Nt]-a[1:(Nt-1)] 
+  dB = b[2:Nt]-b[1:(Nt-1)]
+  dt = time_pts[2:Nt]-time_pts[1:(Nt-1)]
+  r = (cor(x=dA/dt, y=dB/dt, method='pearson') + 1) / 2
+  return(r)
+}
+
+
 # fA calculation for time courses with muliple repeats,
 # i.e. multiple samples measured for the same time course.
 # a and b are matrices of the form [Nt, Nr], with
@@ -111,6 +129,7 @@ son.fA.timecourse <- function(a,b,time_pts){
     }
   }
   r = Aab/Nr/Nr
+  return(r)
 }
 
 # Calculate all the permutations of the datapoint slopes,
@@ -129,6 +148,7 @@ son.fA.timepoints <- function(a,b,time_pts){
     }
   }
   r = count/(Nt-1)/Nr/Nr
+  return(r)
 }
 
 # --------------------------------------------------------------------------------------------
@@ -167,6 +187,28 @@ son.fM_star = function(a,b,time_pts){
   return(r)
 }
 
+# Using the curvature which contains the information about min/max but is more
+# robust 
+son.fM_star2 = function(a,b,time_pts){
+  Nt = length(time_pts)
+  # first derivative (slope)
+  dA = a[2:Nt]-a[1:(Nt-1)] 
+  dB = b[2:Nt]-b[1:(Nt-1)]
+  dt = time_pts[2:Nt]-time_pts[1:(Nt-1)]
+  # second derivative (curvature)
+  d2A = dA[2:(Nt-1)]-dA[1:(Nt-2)] 
+  d2B = dB[2:(Nt-1)]-dB[1:(Nt-2)]
+  # mid values
+  dtm = (time_pts[2:Nt]+time_pts[1:(Nt-1)])/2
+  d2t = dtm[2:(Nt-1)]-dt[1:(Nt-2)]
+  # print(d2A/d2t)
+  # print("")
+  # print(d2B/d2t)
+  r = (cor(x=d2A/d2t, y=d2B/d2t, method='pearson') + 1) / 2
+  return(r)
+}
+
+
 # fM calculation for 
 son.fM.timecourse <- function(a,b){
   Nr = ncol(a)
@@ -175,9 +217,10 @@ son.fM.timecourse <- function(a,b){
   for (p in 1:Nr){
     for (q in 1:Nr){
       Mab = Mab + son.fM(a[,p], b[,q]) 
+    }
   }
-}
-r = Mab/Nr/Nr
+  r = Mab/Nr/Nr
+  return(r)
 }
 
 # --------------------------------------------------------------------------------------------
@@ -277,9 +320,13 @@ ys2 <- function(a,b,time_pts, w1=0.50, w2=0.25, w3=0.25, use="all.obs"){
   }  
   S_star <- son.fS_star(df$a, df$b)
   A_star <- son.fA_star(df$a, df$b, df$time_pts)
+  A_star2 <- son.fA_star2(df$a, df$b, df$time_pts)
   M_star <- son.fM_star(df$a, df$b, df$time_pts)
+  M_star2 <- son.fM_star2(df$a, df$b, df$time_pts)
   value = w1*S_star + w2*A_star + w3*M_star
-  return( list(value=value, S_star=S_star, A_star=A_star, M_star=M_star) )
+  return( list(value=value, S_star=S_star, 
+               A_star=A_star, A_star2=A_star2, 
+               M_star=M_star, M_star2=M_star2) )
 }
 
 # --------------------------------------------------------------------------------------------

@@ -196,7 +196,7 @@ son.fM_star2 = function(a,b,time_pts){
   idx_max_b = which.max(b)[1]
   idx_min_a = which.min(a)[1]
   idx_min_b = which.min(b)[1]
-  r = 1 - ( (abs(time_pts[idx_min_a]-time_pts[idx_min_b]) + abs(time_pts[idx_max_a]-time_pts[idx_max_b]))/(2*time_pts[Nt]))
+  r = 1 - ( (abs(time_pts[idx_min_a]-time_pts[idx_min_b]) + abs(time_pts[idx_max_a]-time_pts[idx_max_b]))/(2*(time_pts[Nt]-time_pts[1]))
   return(r)
 }
 

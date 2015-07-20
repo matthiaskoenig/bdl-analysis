@@ -351,14 +351,16 @@ cor.pearson <- cor(data, method="pearson", use="pairwise.complete.obs")
 cor.spearman <- cor(data, method="spearman", use="pairwise.complete.obs")
 
 library(corrplot)
-options <- list(width=1600, height=1600, res=200)
+options <- list(width=2000, height=2000, res=200)
 
 # helper function for correlation plot
 f_corrplot <- function(name, data, order){
   fname <- sprintf("%s_%s.png", name, order)
+  col2 <- colorRampPalette(c("#67001F", "#B2182B", "#D6604D", "#F4A582", "#FDDBC7",
+                             "#FFFFFF", "#D1E5F0", "#92C5DE", "#4393C3", "#2166AC", "#053061"))
   png(filename=sprintf("../results/%s", fname), width=options$width, height=options$height, res=options$res)
-  corrplot(data, order=order, hclust.method="complete", method="square", type="full", 
-           tl.cex=0.3, tl.col="black")
+  corrplot(data, order=order, hclust.method="complete", method="color", type="full", 
+           tl.cex=0.3, tl.col="black", col=col2(10))
   dev.off()
 }
 
@@ -483,6 +485,8 @@ if (identical(method, "ys1")){
 }else if (identical(method, "yr3")){
   cor.cluster <- cor.yr3_full.scaled  
 }
+
+test <- dist(cor.cluster)
 
 hc <- hclust(dist(cor.cluster)) 
 corrplot(cor.cluster[hc$order, hc$order], order="original", method="square", type="full",tl.cex=0.3, tl.col="black")

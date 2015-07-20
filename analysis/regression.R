@@ -455,6 +455,7 @@ name_A <- "Nos2"
 name_B <- "Cxcl15"
 f_cor_pair_plot("Nos2", "Cxcl15")
 
+f_cor_pair_plot("albumin", "Cyp2b10")
 
 #---------------------------------------------
 # Hierarchical clustering
@@ -577,8 +578,9 @@ plot(dend1)
 
 
 # TODO: create the list of all pairwise correlations
-
 # TODO: GO annotations of clusters
+
+
 
 
   

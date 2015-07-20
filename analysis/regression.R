@@ -150,8 +150,11 @@ bdl_data_matrices <- function(data, time_pts, Nrepeats=5){
 }
 data_list <- bdl_data_matrices(data, time_pts=levels(time))
 summary(data_list)
-data_list[1]
 
+# save processed data
+file.data <- file.path("..", "data", "bdl-data.Rdata")
+save(data, samples, dmean, dmean.time, file=file.data)
+load(file=file.data)
 
 #---------------------------------------------
 # Fluidigm annotation information

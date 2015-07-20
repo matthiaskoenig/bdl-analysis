@@ -26,23 +26,38 @@ heatmap.2(cor.cluster, col=col2(40), scale="none",
           key=TRUE, symkey=FALSE, trace="none", cexRow=0.5, cexCol=0.5,
           density.info="none", dendrogram="column", keysize=0.8)
 
+# Perform the clustering
+Ngroups = 6
+hc <- hclust(dist(cor.cluster)) 
+# get cluster IDs for the groups
+groups <- cutree(hc, k=Ngroups)
+
+groups
+
 
 # define colors for 6 cluster (colorbrewer)
-c(rgb(141,211,199),'rgb(255,255,179)','rgb(190,186,218)','rgb(251,128,114)','rgb(128,177,211)','rgb(253,180,98)']
+library("RColorBrewer")
+# display.brewer.all()
+colorset <- brewer.pal(Ngroups, "Set1")
 
+color.map <- function(cluster_id) {return(colorset[cluster_id])}
+clusterColors <- unlist(lapply(groups, color.map))
 
-
-color.map <- function(mol.biol) { if (mol.biol=="ALL1/AF4") "#FF0000" else "#0000FF" }
-patientcolors <- unlist(lapply(esetSel$mol.bio, color.map))
-
-
-hc <- hclust(dist(cor.cluster)) 
 png(filename=sprintf("../results/%s", "test.png"), width=options$width, height=options$height, res=options$res)
-heatmap.2(cor.cluster, col=col2(20), scale="none",
+heatmap.2(cor.cluster, col=col2(100), scale="none",
           key=TRUE, symkey=FALSE, trace="none", cexRow=0.5, cexCol=0.5,
           density.info="none", dendrogram="column", Rowv=as.dendrogram(hc), Colv=as.dendrogram(hc), keysize=0.8,
-          ColSideColors=clusterColors)
+          ColSideColors=clusterColors, revC=TRUE)
 dev.off()
+
+png(filename=sprintf("../results/%s", "test.png"), width=options$width, height=options$height, res=options$res)
+heatmap.2(cor.cluster, col=col2(100), scale="none",
+          key=TRUE, symkey=FALSE, trace="none", cexRow=0.5, cexCol=0.5,
+          density.info="none", dendrogram="column", Rowv=as.dendrogram(hc), Colv=as.dendrogram(hc), keysize=0.8,
+          ColSideColors=clusterColors, revC=TRUE, colsep=[])
+dev.off()
+levels(as.factor(groups))
+
 
 # TODO: add the cluster colors
 

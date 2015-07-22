@@ -28,23 +28,133 @@
 #
 #
 ##############################################################################################
+# -- Prepare data --
 
 rm(list=ls())
 setwd("/home/mkoenig/git/bdl-analysis/analysis")
 
 # Load data for prediction
-file.data <- file.path("..", "data", "bdl-data.Rdata")
-load(file=file.data)
+load(file=file.path("..", "data", "bdl-data.Rdata"))
+
+# Load anova results
+load(file=file.path("..", "data", "bdl-anova.Rdata"))
 
 # The class to predict is the actual time point
 rownames(data) <- paste(samples$time_fac, rownames(data), sep=" ")
 
+p.accepted <- df.anova$p.holm<0.05
+p.accepted
 
+data.fil <- data[, p.accepted]
+
+# -- Overview predictors --
+# Overview of predictors in the original analysis. They were all good separators for certain
+# time points.
+fac.tree <- c("CTGF", "alpha.SMA", "Tnfrsf1a", "Gstm1", "Il28b", "Fn1", "Il2")
+
+options <- list(width=1600, height=1600, res=200)
+png(filename="../results/tree_factors.png", width=options$width, height=options$height, res=options$res)
+n.panel = ceiling(sqrt(length(fac.tree)))
+par(mfrow=c(n.panel, n.panel))
+for (name in fac.tree){
+  f_single_plot(name)  
+}
+par(mfrow=c(1,1))
+dev.off()
+
+# --- simple tree analysis
+
+library(rpart)
+treedata <- data.fil
+treedata$class <- samples$time_fac
+head(treedata)
+
+# full formula
+f = paste("class ~ ", paste(colnames(data.fil), sep="", collapse=" + "), sep="")
+
+# tree.fit <- rpart(formula=f, data=treedata, method="class", control=rpart.control(minsplit=1)) 
+tree.fit <- rpart(formula=f, data=treedata, method="class", control=rpart.control(minsplit=5)) 
+printcp(tree.fit)
+print(tree.fit)
+plot(tree.fit)
+text(tree.fit)
+prp(tree.fit)
+
+# reudced formula to the factors in the decision tree so far
+f = paste("class ~ ", paste(fac.tree, sep="", collapse=" + "), sep="")
+
+
+# rPartOrdinal -  An R package for deriving a classification tree for predicting an ordinal response
+# Archer2010
+# rpartOrdinal R package, which implements ordered twoing, the generalized Gini, and the ordinal impurity splitting
+# methods. These splitting methods should be considered for use when deriving an ordinal
+# response classification tree.
+
+# install.packages("rpartOrdinal")
+library(rpartOrdinal)
+# 3.1. ordered twoing
+otwoing.rpart <- rpart(f, data=treedata, method = twoing, control=rpart.control(minsplit=2, cp=0.001))
+plot(otwoing.rpart)
+text(otwoing.rpart, pretty = TRUE)
+post(otwoing.rpart, filename = "../results/decision_tree/Twoing_test.ps", use.n = FALSE, title = "", horizontal = FALSE)
+
+f_single_plot("Gstm1")
+f_single_plot("Mki67")
+f_single_plot("Cyp1a2")
+
+# 3.2 ordinal impurity function
+ordinal.rpart <- rpart(f, data = treedata, method = ordinal, control=rpart.control(minsplit=2, cp=0.001))
+plot(ordinal.rpart)
+text(ordinal.rpart, pretty = TRUE)
+
+# 3.3 Generalized Giny impurity
+linear.loss.rpart <- rpart(f, method = "class", data=treedata, parms = list(loss=loss.matrix(method = "linear", treedata$class)),
+                           control=rpart.control(minsplit=5, xval=40))
+plot(linear.loss.rpart)
+text(linear.loss.rpart, pretty = TRUE)
+
+quad.loss.rpart <- rpart(f, method = "class", data=treedata, parms = list(loss=loss.matrix(method = "quad", treedata$class)),
+                           control=rpart.control(minsplit=5, xval=40))
+plot(quad.loss.rpart)
+text(quad.loss.rpart, pretty = TRUE)
+
+# 
+# We note that another R package, party (Hothorn et al.
+# 2009), can also be used to derive an ordinal conditional inference tree, where the variable
+# selected for splitting a given node is determined using an inferential test (Hothorn et al. 2006). 
+# These methods may prove useful when the dataset to be analyzed includes an ordinal
+# response and the number of covariates exceeds the sample size.
+
+
+# Better plots of the classification trees
+# Plotting Classification Trees with the plot.rpart and rattle pckages
+# install.packages("partykit")
+# install.packages("party")
+# install.packages("rpart.plot")
+# sudo apt-get install r-cran-rgtk2
+# install.packages("rattle")
+install.packages("RColorBrewer")
+library(rpart)				        # Popular decision tree algorithm
+library(rattle)					# Fancy tree plot
+library(rpart.plot)				# Enhanced tree plots
+library(RColorBrewer)				# Color selection for fancy tree plot
+library(party)					# Alternative decision tree algorithm
+library(partykit)				# Convert rpart object to BinaryTree
+library(rpart.plot)
+
+tree.1 <- ordinal.rpart
+# additional node labeling
+#node.fun1 <- function(x, labs, digits, varlen)
+#{
+#  paste("t", x$frame$class)
+#}
+# prp(tree.1, type=0, extra=101, yesno=TRUE, node.fun=node.fun1)
+prp(tree.1, type=0, extra=101, yesno=TRUE)
+fancyRpartPlot(tree.1)
+tree.1$frame
 
 
 ##########################
-
-
 
 # The possible predictors are all factors in the data set
 # biocLite("ALL")
@@ -57,7 +167,7 @@ library("RColorBrewer")
 # display.brewer.all()
 
 # use the clustering information from the correlation analysis
-hc <- hclust(dist(cor.cluster)) 
+hc <- hclust(dist(cor.cluster))
 
 # time colors
 colorset <- brewer.pal(length(levels(samples$time_fac)), "Set2")
@@ -84,22 +194,6 @@ heatmap.2(t(as.matrix(data)), col=col2(100), scale="row", Rowv=as.dendrogram(hc)
           key=TRUE, trace="none", cexRow=0.5, keysize=0.8, ColSideColors=timeColors, RowSideColors=clusterColors)
 dev.off()
 
-
-
-
-# The used predictors in the phase trees
-# What was done in the original analysis
-fac.tree <- c("CTGF", "alpha.SMA", "Tnfrsf1a", "Gstm1", "Il28b", "Fn1", "Il2")
-
-options <- list(width=1600, height=1600, res=200)
-png(filename="../results/tree_factors.png", width=options$width, height=options$height, res=options$res)
-n.panel = ceiling(sqrt(length(fac.tree)))
-par(mfrow=c(n.panel, n.panel))
-for (name in fac.tree){
-  f_single_plot(name)  
-}
-par(mfrow=c(1,1))
-dev.off()
 
 f_single_plot("Nr0b2")
 sort(names(data))

@@ -17,11 +17,15 @@
 #
 ##############################################################################################
 
-# TODO: better merge of data
+
+install.packages("calibrate")
+require("calibrate")
+
 
 #---------------------------------------------
 # Read & preprocess data
 #---------------------------------------------
+# TODO: better merge of data
 rm(list=ls())
 setwd("/home/mkoenig/git/bdl-analysis/analysis")
 
@@ -240,8 +244,7 @@ plot_all_factors()
 # measurement/correlation analysis.
 # Use pairwise correlation plots for control.
 
-# install.packages("calibrate")
-library(calibrate)
+
 
 # Plot of a single factor.
 # Plots the mean time course and individual samples.
@@ -255,6 +258,7 @@ f_single_plot <- function(name_A){
   # plot the repeat number
   dA.text <- dA
   dA[is.na(dA)] <- -1
+  # library(calibrate)
   textxy(samples$time_point, dA, samples$sid, col="black", cex=0.6)
   
   points(1:nrow(dmean), dA.mean, col="red", pch=15)
@@ -298,7 +302,6 @@ f_cor_pair_plot <- function(name_A, name_B, single_plots=TRUE){
     layout(matrix(c(1), 1, 1, byrow = TRUE))
   }
 }
-
 f_cor_pair_plot("Actb", "Por")
 
 
@@ -425,6 +428,9 @@ df.anova
 df.anova.ordered <- df.anova[with(df.anova, order(p.holm)), ]
 summary(df.anova.ordered)
 write.table(df.anova.ordered, file="../results/factor_anova.csv", sep="\t", quote=FALSE)
+
+file.anova <- file.path("..", "data", "bdl-anova.Rdata")
+save(df.anova, file=file.anova)
 
 # if filtering is selected the subset of factors being different 
 # within the timecourse are selected

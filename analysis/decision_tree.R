@@ -40,6 +40,12 @@ load(file=file.data)
 rownames(data) <- paste(samples$time_fac, rownames(data), sep=" ")
 
 
+
+
+##########################
+
+
+
 # The possible predictors are all factors in the data set
 # biocLite("ALL")
 head(data)
@@ -50,7 +56,7 @@ col2 <- colorRampPalette(c("#67001F", "#B2182B", "#D6604D", "#F4A582", "#FDDBC7"
 library("RColorBrewer")
 # display.brewer.all()
 
-
+# use the clustering information from the correlation analysis
 hc <- hclust(dist(cor.cluster)) 
 
 # time colors
@@ -58,7 +64,7 @@ colorset <- brewer.pal(length(levels(samples$time_fac)), "Set2")
 color.map <- function(time_f) {return(colorset[time_f])}
 timeColors <- unlist(lapply(samples$time_fac, color.map))
 # cluster colors
-Ngroups = 8
+Ngroups = 6
 # rect.hclust(hc, k=Ngroups)
 groups <- cutree(hc, k=Ngroups)
 colorset <- brewer.pal(Ngroups, "Set1")
@@ -79,16 +85,6 @@ heatmap.2(t(as.matrix(data)), col=col2(100), scale="row", Rowv=as.dendrogram(hc)
 dev.off()
 
 
-
-
-
-
-
-
-
-
-heatmap.2(cor.cluster, col=col2(10), scale="none",
-          key=TRUE, symkey=FALSE, trace="none", cexRow=0.5)
 
 
 # The used predictors in the phase trees
@@ -127,5 +123,7 @@ text(tree.fit)
 
 #################################################
 
-
+# rPartOrdinal -  An R package for deriving a classification tree for predicting an ordinal response
+# Archer2010
+install.packages("rpartOrdinal")
 

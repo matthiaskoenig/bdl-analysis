@@ -319,7 +319,7 @@ f_cor_pair_plot("Actb", "Actb.y")
 f_cor_pair_plot("Actb.x", "Actb.y")
 
 cat('Actb Spearman : individual points\n')
-act.spearman <- cor(data.frame(Actb=data$Actb, 
+actb.spearman <- cor(data.frame(Actb=data$Actb, 
                Actb.x=data$Actb.x, 
                Actb.y=data$Actb.y), method="spearman")
 print(actb.spearman)
@@ -342,6 +342,111 @@ print(actb.pearson.mean)
 f_cor_pair_plot("Actb", "Por")
 
 #---------------------------------------------
+# Dimension reduction via ANOVA
+#---------------------------------------------
+# A one-way analyis of variance (ANOVA) was applied to filter genes showing
+# significant (padj<0.05) up- or down-regulation during the time course, using the Bonferonni
+# step-down procedure to correct for any artificial p-value inflation.
+
+# http://www.r-tutor.com/elementary-statistics/analysis-variance/completely-randomized-design
+
+# perform anova for the factor
+single_factor_anova <- function(name){
+  # data matrix
+  mat1 <- t(data_list[[name]])
+  colnames(mat1) <- levels(samples$time_fac)
+  
+  # Concatenate the data rows of df1 into a single vector r .
+  r = c(t(as.matrix(mat1))) # response data 
+  
+  # Assign new variables for the treatment levels and number of observations.
+  f = levels(samples$time_fac)   # treatment levels 
+  k = 8                          # number of treatment levels 
+  n = 5                          # observations per treatment 
+  
+  # Create a vector of treatment factors that corresponds to each element of r in step 3 with the gl function.
+  tm = gl(k, 1, n*k, factor(f))   # matching treatments 
+  
+  # Apply the function aov to a formula that describes the response r by the treatment factor tm.
+  # Fit an analysis of variance model
+  av = aov(r ~ tm) 
+  
+  # Print out the ANOVA table with the summary function. 
+  # summary(av)
+  return(av)
+}
+
+# Perform sanova for all factors.
+# The unadjusted p-values are returned.
+all_factor_anova <- function(){
+  df.anova <- data.frame(factors)
+  df.anova$p.value <- NA
+  
+  for (k in 1:nrow(df.anova)){
+    name <- factors[[k]]
+    av <- factor_anova(name)
+    p.value <- summary(av)[[1]][["Pr(>F)"]][[1]]
+    df.anova[k, "p.value"] <- p.value
+  }
+  return(df.anova)
+}
+
+# creates significant codes for given p.value.
+significant_code <- function(p.value){
+  # Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+  sig = " "
+  if (p.value <= 0.001){
+    sig = "***"
+  } else if (p.value <= 0.01){
+    sig = "**"
+  } else if (p.value <=0.05){
+    sig = "*"
+  } else if (p.value <=0.1){
+    sig = "."
+  } else if (p.value <=1){
+      sig = " "
+  }
+  return (sig)
+}
+# calculate anova
+df.anova <- all_factor_anova()
+df.anova$sig <- sapply(df.anova$p.value, significant_code)
+
+# Adjust the p-values for multiple testing
+# Given a set of p-values, returns p-values adjusted using one of several methods.
+# The Bonferroni, Holm, Hochberg, Hommel are designed to give strong control of the family-wise error rate. There seems no reason to use the unmodified Bonferroni correction because it is dominated by Holm's method, which is also valid under arbitrary assumptions. 
+# Using Holm correction with number of tests.
+# Holm, S. (1979). A simple sequentially rejective multiple test procedure. Scandinavian Journal of Statistics 6, 65–70.
+df.anova$p.holm <- p.adjust(df.anova$p.value, method ="holm" , n = length(df.anova$p.value))
+df.anova$sig.holm <- sapply(df.anova$p.holm, significant_code)
+
+df.anova
+
+# acceptance level
+p.accept = 0.05
+
+# how many rejected by adjusted p-value
+table(df.anova$p.holm>=p.accept) # 64 rejected / 90 accepted
+table(df.anova$p.value>=p.accept) # 19 rejected / 135 accepted
+
+# save the ordered results of the ANOVA test
+df.anova.ordered <- df.anova[with(df.anova, order(p.holm)), ]
+summary(df.anova.ordered)
+write.table(df.anova.ordered, file="../results/factor_anova.csv", sep="\t", quote=FALSE)
+
+f.accept = df.anova$p.holm<p.accept
+data.fil <- data[, f.accept]
+dmean.fil <- dmean[, f.accept]
+
+col2 <- colorRampPalette(c("#67001F", "#B2182B", "#D6604D", "#F4A582", "#FDDBC7",
+                           "#FFFFFF", "#D1E5F0", "#92C5DE", "#4393C3", "#2166AC", "#053061")) 
+heatmap.2(t(as.matrix(data.fil)), col=col2(100), scale="row", Rowv=NULL, Colv=NULL,
+          key=TRUE, trace="none", cexRow=0.5, keysize=0.8)
+heatmap.2(t(as.matrix(data)), col=col2(100), scale="row", Rowv=NULL, Colv=NULL,
+          key=TRUE, trace="none", cexRow=0.5, keysize=0.8)
+
+
+#---------------------------------------------
 # Correlation analysis
 #---------------------------------------------
 # Calculation of standard correlation matrices based on Spearman
@@ -352,6 +457,9 @@ f_cor_pair_plot("Actb", "Por")
 # correlation matrix
 cor.pearson <- cor(data, method="pearson", use="pairwise.complete.obs")
 cor.spearman <- cor(data, method="spearman", use="pairwise.complete.obs")
+cor.pearson.fil <- cor(data.fil, method="pearson", use="pairwise.complete.obs")
+cor.spearman.fil <- cor(data.fil, method="spearman", use="pairwise.complete.obs")
+
 
 library(corrplot)
 options <- list(width=2000, height=2000, res=200)
@@ -372,6 +480,11 @@ f_corrplot("cor.spearman", data=cor.spearman, order="original")
 f_corrplot("cor.spearman", data=cor.spearman, order="hclust")
 f_corrplot("cor.pearson", data=cor.pearson, order="original")
 f_corrplot("cor.pearson", data=cor.pearson, order="hclust")
+f_corrplot("cor.spearman.fil", data=cor.spearman.fil, order="original")
+f_corrplot("cor.spearman.fil", data=cor.spearman.fil, order="hclust")
+f_corrplot("cor.pearson.fil", data=cor.pearson.fil, order="original")
+f_corrplot("cor.pearson.fil", data=cor.pearson.fil, order="hclust")
+
 
 
 # --- YR1, YS1, YR2, YS2 correlation ----------
@@ -391,13 +504,22 @@ w <- list(w1=0.5, w2=0.25, w3=0.25)
 res.ys1 <- ys1.df(dmean, dmean.time, w1=w$w1, w2=w$w2, w3=w$w3, use="pairwise.complete.obs")
 cor.ys1 <- res.ys1$value
 cor.ys1.scaled <- 2*(cor.ys1-0.5)
+res.ys1.fil <- ys1.df(dmean.fil, dmean.time, w1=w$w1, w2=w$w2, w3=w$w3, use="pairwise.complete.obs")
+cor.ys1.fil <- res.ys1.fil$value
+cor.ys1.fil.scaled <- 2*(cor.ys1.fil-0.5)
 
 res.ys2 <- ys2.df(dmean, dmean.time, w1=w$w1, w2=w$w2, w3=w$w3, use="pairwise.complete.obs")
 cor.ys2 <- res.ys2$value
 cor.ys2.scaled <- 2*(cor.ys2-0.5)
+res.ys2.fil <- ys2.df(dmean.fil, dmean.time, w1=w$w1, w2=w$w2, w3=w$w3, use="pairwise.complete.obs")
+cor.ys2.fil <- res.ys2.fil$value
+cor.ys2.fil.scaled <- 2*(cor.ys2.fil-0.5)
+
 
 f_corrplot("cor.ys1", data=cor.ys1, order="original")
 f_corrplot("cor.ys1", data=cor.ys1, order="hclust")
+f_corrplot("cor.ys1.fil", data=cor.ys1.fil, order="original")
+f_corrplot("cor.ys1.fil", data=cor.ys1.fil, order="hclust")
 f_corrplot("cor.ys1.A", data=res.ys1$A, order="original")
 f_corrplot("cor.ys1.A", data=res.ys1$A, order="hclust")
 f_corrplot("cor.ys1.M", data=res.ys1$M, order="original")
@@ -405,6 +527,9 @@ f_corrplot("cor.ys1.M", data=res.ys1$M, order="hclust")
 
 f_corrplot("cor.ys2", data=cor.ys2, order="original")
 f_corrplot("cor.ys2", data=cor.ys2, order="hclust")
+f_corrplot("cor.ys2.fil", data=cor.ys1.fil, order="original")
+f_corrplot("cor.ys2.fil", data=cor.ys1.fil, order="hclust")
+
 f_corrplot("cor.ys2.A_star", data=res.ys2$A_star, order="original")
 f_corrplot("cor.ys2.A_star", data=res.ys2$A_star, order="hclust")
 f_corrplot("cor.ys2.M_star", data=res.ys2$M_star, order="original")
@@ -414,12 +539,19 @@ f_corrplot("cor.ys1.scaled", data=cor.ys1.scaled, order="original")
 f_corrplot("cor.ys1.scaled", data=cor.ys1.scaled, order="hclust")
 f_corrplot("cor.ys2.scaled", data=cor.ys2.scaled, order="original")
 f_corrplot("cor.ys2.scaled", data=cor.ys2.scaled, order="hclust")
+f_corrplot("cor.ys1.fil.scaled", data=cor.ys1.fil.scaled, order="original")
+f_corrplot("cor.ys1.fil.scaled", data=cor.ys1.fil.scaled, order="hclust")
+f_corrplot("cor.ys2.fil.scaled", data=cor.ys2.fil.scaled, order="original")
+f_corrplot("cor.ys2.fil.scaled", data=cor.ys2.fil.scaled, order="hclust")
 
 # Pearson & spearman correlation on full dataset as replacement for the 
 # mean Pearson/Spearman in ys1, ys2, yr1, yr2
 # Now calculate the scores with full correlation
 cor.S_star <- ( cor(data, method="spearman", use="pairwise.complete.obs") + 1 )/2
 cor.R_star <- ( cor(data, method="pearson", use="pairwise.complete.obs") + 1 )/2
+cor.S_star.fil <- ( cor(data.fil, method="spearman", use="pairwise.complete.obs") + 1 )/2
+cor.R_star.fil <- ( cor(data.fil, method="pearson", use="pairwise.complete.obs") + 1 )/2
+
 
 w <- list(w1=0.5, w2=0.25, w3=0.25)
 cor.ys1_full <- w$w1*cor.S_star + w$w2*res.ys1$A + w$w3*res.ys1$M
@@ -442,8 +574,8 @@ f_corrplot("cor.ys1_full.scaled", data=cor.ys1_full.scaled, order="original")
 f_corrplot("cor.ys1_full.scaled", data=cor.ys1_full.scaled, order="hclust")
 f_corrplot("cor.ys2_full.scaled", data=cor.ys2_full.scaled, order="original")
 f_corrplot("cor.ys2_full.scaled", data=cor.ys2_full.scaled, order="hclust")
-f_corrplot("cor.ys2_full.scaled", data=cor.ys3_full.scaled, order="original")
-f_corrplot("cor.ys2_full.scaled", data=cor.ys3_full.scaled, order="hclust")
+f_corrplot("cor.ys3_full.scaled", data=cor.ys3_full.scaled, order="original")
+f_corrplot("cor.ys3_full.scaled", data=cor.ys3_full.scaled, order="hclust")
 
 f_corrplot("cor.yr1_full.scaled", data=cor.yr1_full.scaled, order="original")
 f_corrplot("cor.yr1_full.scaled", data=cor.yr1_full.scaled, order="hclust")
@@ -451,6 +583,34 @@ f_corrplot("cor.yr2_full.scaled", data=cor.yr2_full.scaled, order="original")
 f_corrplot("cor.yr2_full.scaled", data=cor.yr2_full.scaled, order="hclust")
 f_corrplot("cor.yr3_full.scaled", data=cor.yr3_full.scaled, order="original")
 f_corrplot("cor.yr3_full.scaled", data=cor.yr3_full.scaled, order="hclust")
+
+# on filtered data
+cor.ys1_full.fil <- w$w1*cor.S_star.fil + w$w2*res.ys1.fil$A + w$w3*res.ys1.fil$M
+cor.ys1_full.fil.scaled <- 2*(cor.ys1_full.fil-0.5)
+cor.ys2_full.fil <- w$w1*cor.S_star.fil + w$w2*res.ys2.fil$A_star + w$w3*res.ys2.fil$M_star
+cor.ys2_full.fil.scaled <- 2*(cor.ys2_full.fil-0.5)
+# considering slope and time difference
+cor.ys3.fil <- w$w1*res.ys2.fil$S_star + w$w2*res.ys2.fil$A_star2 + w$w3*res.ys2.fil$M_star2
+cor.ys3.fil.scaled <- 2*(cor.ys3.fil-0.5)
+cor.ys3_full.fil <- w$w1*cor.S_star.fil + w$w2*res.ys2.fil$A_star2 + w$w3*res.ys2.fil$M_star2
+cor.ys3_full.fil.scaled <- 2*(cor.ys3_full.fil-0.5)
+
+cor.yr1_full.fil <- w$w1*cor.R_star.fil + w$w2*res.ys1.fil$A + w$w3*res.ys1.fil$M
+cor.yr1_full.fil.scaled <- 2*(cor.yr1_full.fil-0.5)
+
+cor.yr2_full.fil <- w$w1*cor.R_star.fil + w$w2*res.ys2.fil$A_star + w$w3*res.ys2.fil$M_star
+cor.yr2_full.fil.scaled <- 2*(cor.yr2_full.fil-0.5)
+# considering slope and time difference
+cor.yr3_full.fil <- w$w1*cor.R_star.fil + w$w2*res.ys2.fil$A_star2 + w$w3*res.ys2.fil$M_star2
+cor.yr3_full.fil.scaled <- 2*(cor.yr3_full.fil-0.5)
+
+f_corrplot("cor.ys1_full.fil.scaled", data=cor.ys1_full.fil.scaled, order="hclust")
+f_corrplot("cor.ys2_full.fil.scaled", data=cor.ys2_full.fil.scaled, order="hclust")
+f_corrplot("cor.ys3_full.fil.scaled", data=cor.ys3_full.fil.scaled, order="hclust")
+
+f_corrplot("cor.yr1_full.fil.scaled", data=cor.yr1_full.fil.scaled, order="hclust")
+f_corrplot("cor.yr2_full.fil.scaled", data=cor.yr2_full.fil.scaled, order="hclust")
+f_corrplot("cor.yr3_full.fil.scaled", data=cor.yr3_full.fil.scaled, order="hclust")
 
 
 # name_A <- "Actb"
@@ -489,6 +649,22 @@ if (identical(method, "ys1")){
   cor.cluster <- cor.yr3_full.scaled  
 }
 
+method = "yr1"
+if (identical(method, "ys1")){
+  cor.cluster <- cor.ys1_full.fil.scaled  
+}else if (identical(method, "ys2")){
+  cor.cluster <- cor.ys2_full.fil.scaled  
+}else if (identical(method, "ys3")){
+  cor.cluster <- cor.ys3_full.fil.scaled  
+}else if (identical(method, "yr1")){
+  cor.cluster <- cor.yr1_full.fil.scaled  
+}else if (identical(method, "yr2")){
+  cor.cluster <- cor.yr2_full.fil.scaled  
+}else if (identical(method, "yr3")){
+  cor.cluster <- cor.yr3_full.fil.scaled  
+}
+
+
 test <- dist(cor.cluster)
 
 hc <- hclust(dist(cor.cluster)) 
@@ -498,7 +674,7 @@ corrplot(cor.cluster[hc$order, hc$order], order="original", method="square", typ
 plot(hc, hang=-1)               # plot the dendrogram 
 
 # cut tree into clusters
-Ngroups = 6
+Ngroups = 8
 rect.hclust(hc, k=Ngroups)
 # get cluster IDs for the groups
 groups <- cutree(hc, k=Ngroups)
@@ -524,7 +700,7 @@ for (k in 1:Ngroups){
   dev.off()
 }
 
-install.packages('matrixStats')
+#install.packages('matrixStats')
 library('matrixStats')
 
 # mean plots for clusters 
@@ -533,11 +709,11 @@ f_normalize_centering <- function(a){
   a.norm <- (a - mean(a))/(max(a, na.rm=TRUE) - min(a, na.rm=TRUE))
   return(a.norm)
 }
-options$height = 1400
-options$width = 2000
+options$height = 1600
+options$width = 1600
 fname <- sprintf("%s_cluster_overview.png", method)
 png(filename=sprintf("../results/cluster/%s", fname), width=options$width, height=options$height, res=options$res)
-par(mfrow=c(2,3))
+par(mfrow=c(ceiling(sqrt(Ngroups)),ceiling(sqrt(Ngroups))))
 steps = 1:8
 for (k in 1:Ngroups){
   g <- groups.hc.order[groups.hc.order==k]
@@ -588,6 +764,5 @@ plot(dend1)
 # TODO: GO annotations of clusters
 
 
-
-
+f_cor_pair_plot("Cebpa", "Cyp24a1")
   

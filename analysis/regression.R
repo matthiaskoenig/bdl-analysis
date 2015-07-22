@@ -3,7 +3,7 @@
 #    BDL - Regression Analysis
 #
 #    Matthias Koenig
-#    2015-07-13
+#    2015-07-21
 #
 #    This script contains the complete statistical analysis for the publication
 #    Pathobiochemical signatures of cholestatic liver disease in bile duct ligated
@@ -102,7 +102,7 @@ samples$repeats <- (seq(from=0, to=(nrow(samples)-1))%%5) +1
 
 # remove non-factor columns which are not part of the correlation analysis
 data <- subset(data, select = -c(sid,time) )
-rm(tmp)
+rm(tmp, d, adme, antibodies, cytokines, fibrosis, histology, histology.processed)
 
 # factor names
 factors <- colnames(data)
@@ -149,7 +149,6 @@ bdl_data_matrices <- function(data, time_pts, Nrepeats=5){
   return(data_list)
 }
 data_list <- bdl_data_matrices(data, time_pts=levels(time))
-summary(data_list)
 
 # save processed data
 file.data <- file.path("..", "data", "bdl-data.Rdata")
@@ -327,7 +326,7 @@ cat('Actb Spearman : mean\n')
 actb.spearman.mean <- cor(data.frame(Actb=dmean$Actb, 
                Actb.x=dmean$Actb.x, 
                Actb.y=dmean$Actb.y), method="spearman")
-print(actb.spearman.mean))
+print(actb.spearman.mean)
 cat('Actb Pearson : individual points\n')
 actb.pearson <- cor(data.frame(Actb=data$Actb, 
                Actb.x=data$Actb.x, 
@@ -384,7 +383,7 @@ all_factor_anova <- function(){
   
   for (k in 1:nrow(df.anova)){
     name <- factors[[k]]
-    av <- factor_anova(name)
+    av <- single_factor_anova(name)
     p.value <- summary(av)[[1]][["Pr(>F)"]][[1]]
     df.anova[k, "p.value"] <- p.value
   }
@@ -422,29 +421,39 @@ df.anova$sig.holm <- sapply(df.anova$p.holm, significant_code)
 
 df.anova
 
-# acceptance level
-p.accept = 0.05
-
-# how many rejected by adjusted p-value
-table(df.anova$p.holm>=p.accept) # 64 rejected / 90 accepted
-table(df.anova$p.value>=p.accept) # 19 rejected / 135 accepted
-
 # save the ordered results of the ANOVA test
 df.anova.ordered <- df.anova[with(df.anova, order(p.holm)), ]
 summary(df.anova.ordered)
 write.table(df.anova.ordered, file="../results/factor_anova.csv", sep="\t", quote=FALSE)
 
-f.accept = df.anova$p.holm<p.accept
-data.fil <- data[, f.accept]
-dmean.fil <- dmean[, f.accept]
+# if filtering is selected the subset of factors being different 
+# within the timecourse are selected
+filter_by_anova = TRUE
+if (filter_by_anova){
+  # acceptance level
+  p.accept = 0.05
+  
+  # how many rejected by adjusted p-value
+  table(df.anova$p.holm>=p.accept) # 64 rejected / 90 accepted
+  table(df.anova$p.value>=p.accept) # 19 rejected / 135 accepted
+  
+  # the accepted subset
+  f.accept = df.anova$p.holm<p.accept
+  
+  # overwrite the full data set
+  data.full <- data
+  data <- data[, f.accept]
+  factors.full <- factors
+  factors <- factors[f.accept]
+  dmean.full <- dmean
+  dmean <- dmean[, f.accept]  
+}
 
+# plot of the data subset which is used for the correlation analysis
 col2 <- colorRampPalette(c("#67001F", "#B2182B", "#D6604D", "#F4A582", "#FDDBC7",
                            "#FFFFFF", "#D1E5F0", "#92C5DE", "#4393C3", "#2166AC", "#053061")) 
-heatmap.2(t(as.matrix(data.fil)), col=col2(100), scale="row", Rowv=NULL, Colv=NULL,
-          key=TRUE, trace="none", cexRow=0.5, keysize=0.8)
 heatmap.2(t(as.matrix(data)), col=col2(100), scale="row", Rowv=NULL, Colv=NULL,
           key=TRUE, trace="none", cexRow=0.5, keysize=0.8)
-
 
 #---------------------------------------------
 # Correlation analysis
@@ -453,6 +462,11 @@ heatmap.2(t(as.matrix(data)), col=col2(100), scale="row", Rowv=NULL, Colv=NULL,
 # and Pearson correlaton coefficients. 
 # Hierarchical clustering is performed using complete linkage.
 # The cor.pearson and cor.spearman are used as comparison models.
+
+# Do the analysis either on the full dataset or the filtered subset
+
+
+
 
 # correlation matrix
 cor.pearson <- cor(data, method="pearson", use="pairwise.complete.obs")

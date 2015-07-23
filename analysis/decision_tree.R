@@ -28,28 +28,33 @@
 #
 #
 ##############################################################################################
-# -- Prepare data --
+# sudo apt-get install r-cran-rgtk2
+# install.packages("rpart.plot")
+# install.packages("rattle")
+# install.packages("party")
+
+# require(party)
+# require(rattle)
 
 rm(list=ls())
 setwd("/home/mkoenig/git/bdl-analysis/analysis")
+source("plots.R")  # Load plot helpers
 
-# Load data for prediction
-load(file=file.path("..", "data", "bdl-data.Rdata"))
-
-# Load anova results
-load(file=file.path("..", "data", "bdl-anova.Rdata"))
+load(file=file.path("..", "data", "bdl-data.Rdata"))   # Load BDL data
+load(file=file.path("..", "data", "bdl-anova.Rdata"))  # Load ANOVA results for filtering 
 
 # The class to predict is the actual time point
 rownames(data) <- paste(samples$time_fac, rownames(data), sep=" ")
 
+# data subset with factors filtered via ANOVA
 p.accepted <- df.anova$p.holm<0.05
-p.accepted
-
 data.fil <- data[, p.accepted]
 
-# -- Overview predictors --
-# Overview of predictors in the original analysis. They were all good separators for certain
-# time points.
+#--------------------------------------------------------------------------------------------
+
+# Overview of predictors in the original analysis. 
+# They were all good separators for certain time points and were selected by their
+# maximal GAP.
 fac.tree <- c("CTGF", "alpha.SMA", "Tnfrsf1a", "Gstm1", "Il28b", "Fn1", "Il2")
 
 options <- list(width=1600, height=1600, res=200)
@@ -62,27 +67,57 @@ for (name in fac.tree){
 par(mfrow=c(1,1))
 dev.off()
 
-# --- simple tree analysis
+#--------------------------------------------------------------------------------------------
+# Standard decision trees 
+require(rpart)
+require(rpart.plot)
 
-library(rpart)
+# add the class label to the predictors (time points/period are used as classes)
 treedata <- data.fil
 treedata$class <- samples$time_fac
 head(treedata)
 
-# full formula
-f = paste("class ~ ", paste(colnames(data.fil), sep="", collapse=" + "), sep="")
+# create formula for tree classification
+# full formula using all predictors of filtered data
+formula.fil = paste("class ~ ", paste(colnames(data.fil), sep="", collapse=" + "), sep="")
 
+# fit the tree with classification
 # tree.fit <- rpart(formula=f, data=treedata, method="class", control=rpart.control(minsplit=1)) 
-tree.fit <- rpart(formula=f, data=treedata, method="class", control=rpart.control(minsplit=5)) 
+tree.fit <- rpart(formula=formula.fil, data=treedata, method="class", control=rpart.control(minsplit=5)) 
+# print information of the tree fit
 printcp(tree.fit)
 print(tree.fit)
 plot(tree.fit)
 text(tree.fit)
-prp(tree.fit)
+prp(tree.fit, type=0, extra=101, yesno=TRUE)
+# Problems with the divide and conquer algorithms. It maximizes the information gain on every split.
+
+
+# try a regression on the times
+treedata.reg <- data.fil
+treedata.reg$regvalue <- log(samples$time+1)
+head(treedata.reg)
+formula.fil.reg = paste("regvalue ~ ", paste(colnames(data.fil), sep="", collapse=" + "), sep="")
+
+
+sample(1:40, size=5)
+tree.reg <- rpart(formula=formula.fil.reg, data=treedata.reg[sample(1:40, size=35), ], method="anova", control=rpart.control(minsplit=6, minbucket=2, cp=-1))
+printcp(tree.reg)
+print(tree.reg)
+plot(tree.reg)
+text(tree.reg)
+prp(tree.reg, type=0, extra=101, yesno=TRUE)
+
+
 
 # reudced formula to the factors in the decision tree so far
-f = paste("class ~ ", paste(fac.tree, sep="", collapse=" + "), sep="")
-
+formula.old = paste("class ~ ", paste(fac.tree, sep="", collapse=" + "), sep="")
+tree.old <- rpart(formula=formula.old, data=treedata, method="class", control=rpart.control(minsplit=3)) 
+printcp(tree.old)
+print(tree.old)
+plot(tree.old)
+text(tree.old)
+prp(tree.old)
 
 # rPartOrdinal -  An R package for deriving a classification tree for predicting an ordinal response
 # Archer2010
@@ -92,18 +127,23 @@ f = paste("class ~ ", paste(fac.tree, sep="", collapse=" + "), sep="")
 
 # install.packages("rpartOrdinal")
 library(rpartOrdinal)
+f = formula.fil
+f
 # 3.1. ordered twoing
-otwoing.rpart <- rpart(f, data=treedata, method = twoing, control=rpart.control(minsplit=2, cp=0.001))
+otwoing.rpart <- rpart(f, data=treedata, method = twoing)
+# otwoing.rpart <- rpart(f, data=treedata, method = twoing, control=rpart.control(minsplit=2))
+printcp(otwoing.rpart)
 plot(otwoing.rpart)
 text(otwoing.rpart, pretty = TRUE)
-post(otwoing.rpart, filename = "../results/decision_tree/Twoing_test.ps", use.n = FALSE, title = "", horizontal = FALSE)
+prp(otwoing.rpart, type=0, extra=101, yesno=TRUE)
+prp(tree.fit, type=0, extra=101, yesno=TRUE)
 
 f_single_plot("Gstm1")
 f_single_plot("Mki67")
 f_single_plot("Cyp1a2")
 
 # 3.2 ordinal impurity function
-ordinal.rpart <- rpart(f, data = treedata, method = ordinal, control=rpart.control(minsplit=2, cp=0.001))
+ordinal.rpart <- rpart(f, data = treedata, method = ordinal, control=rpart.control(minsplit=2))
 plot(ordinal.rpart)
 text(ordinal.rpart, pretty = TRUE)
 
@@ -113,7 +153,7 @@ linear.loss.rpart <- rpart(f, method = "class", data=treedata, parms = list(loss
 plot(linear.loss.rpart)
 text(linear.loss.rpart, pretty = TRUE)
 
-quad.loss.rpart <- rpart(f, method = "class", data=treedata, parms = list(loss=loss.matrix(method = "quad", treedata$class)),
+quad.loss.rpart <- rpart(f, method = "class", data=treedata[sample(1:40, size=35),], parms = list(loss=loss.matrix(method = "quad", treedata$class)),
                            control=rpart.control(minsplit=5, xval=40))
 plot(quad.loss.rpart)
 text(quad.loss.rpart, pretty = TRUE)

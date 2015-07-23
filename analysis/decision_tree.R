@@ -50,6 +50,9 @@ rownames(data) <- paste(samples$time_fac, rownames(data), sep=" ")
 p.accepted <- df.anova$p.holm<0.05
 data.fil <- data[, p.accepted]
 
+# TODO: perform additional feature selection -> use clusters as features for the prediction
+
+
 #--------------------------------------------------------------------------------------------
 
 # Overview of predictors in the original analysis. 

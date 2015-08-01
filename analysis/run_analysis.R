@@ -14,6 +14,7 @@
 ##############################################################################################
 
 rm(list=ls())
-setwd("/home/mkoenig/git/bdl-analysis/analysis")
+setwd("/home/mkoenig/git/bdl-analysis/analysis") # set this to your analysis folder
 
 # data preprocessing
+source('data_processing.R')

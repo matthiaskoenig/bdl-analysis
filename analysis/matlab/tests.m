@@ -1,4 +1,5 @@
-%% Testing the score with example from Son et al.
+% Testing the score with example from Son et al.
+% Matlab implementation for control of results and scores.
 format compact
 
 time_pts = [1,2,3,4,5]'

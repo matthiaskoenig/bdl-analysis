@@ -34,7 +34,7 @@
 #' to the interval [0, 1].
 #' @export
 son.fS_star <- function(a,b){
-  r = (cor(x=a,y=b, method='spearman') + 1) / 2 
+  r <- (cor(x=a,y=b, method='spearman') + 1) / 2 
   return(r)
 }
 

@@ -4,7 +4,7 @@
 \alias{plot_all_factors}
 \title{Creates single factor plots of all factors.}
 \usage{
-plot_all_factors()
+plot_all_factors(path)
 }
 \description{
 Iterates over all factor variables in the BDLdata frame and creates

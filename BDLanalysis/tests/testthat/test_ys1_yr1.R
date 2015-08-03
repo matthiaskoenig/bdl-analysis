@@ -1,12 +1,12 @@
-# # -----------------------------------------------------------------------
-# # Implementation Tests from [Son2008]
-# # -----------------------------------------------------------------------
-# time_pts <- seq(0,4)
-# x1 <- c(2,3,6,4,7)
-# x2 <- c(1,2,3,5,3)
-# y1 <- c(4,3,6,2,7)
-# y2 <- c(5,2,3,1,3)
-# 
+# -----------------------------------------------------------------------
+# Implementation Tests from [Son2008]
+# -----------------------------------------------------------------------
+time_pts <- seq(0,4)
+x1 <- c(2,3,6,4,7)
+x2 <- c(1,2,3,5,3)
+y1 <- c(4,3,6,2,7)
+y2 <- c(5,2,3,1,3)
+
 # # plot data
 # par(mfrow=c(1,2))
 # plot(time_pts, x1, col="blue", pch=16, type="o", ylim=c(0, max(max(x1), max(x2))),
@@ -17,25 +17,22 @@
 #      main = "y1, y2", xlab="values", ylab="time")
 # points(time_pts, y2, col="red", pch=15, type="o")
 # par(mfrow=c(1,1))
-# 
-# # ys1
-# test_res <- function(y, y_expected, digits=3){
-#   stopifnot(round(y, digits=digits) == y_expected)
-# }
-# 
-# # correlation values
-# test_res(cor(x=x1,y=x2, method='spearman'), 0.667)
-# test_res(cor(x=x1,y=x2, method='pearson'),  0.439)
-# # ys1
-# test_res(ys1(x1, x2, time_pts, w1=0.25, w2=0.50, w3=0.25)$value, 0.583)
-# test_res(ys1(y1, y2, time_pts, w1=0.25, w2=0.50, w3=0.25)$value, 0.833)
-# # yr1
-# test_res(yr1(x1, x2, time_pts, w1=0.25, w2=0.50, w3=0.25)$value, 0.555)
-# test_res(yr1(y1, y2, time_pts, w1=0.25, w2=0.50, w3=0.25)$value, 0.805)
-# 
-# rm(test_res, x1, x2, y1, y2, time_pts)
 
+# correlation values
+test_that("Correlation between x1 and x2", {
+  expect_equal(cor(x=x1,y=x2, method='spearman'), 0.667, tolerance = .001)
+  expect_equal(cor(x=x1,y=x2, method='pearson'), 0.439, tolerance = .001)
+})
 
+test_that("ys1 with test data", {
+  expect_equal(ys1(x1, x2, time_pts, w1=0.25, w2=0.50, w3=0.25)$value, 0.583, tolerance =0.001)
+  expect_equal(ys1(y1, y2, time_pts, w1=0.25, w2=0.50, w3=0.25)$value, 0.833, tolerance =0.001)
+})
+
+test_that("yr1 with test data", {
+  expect_equal(yr1(x1, x2, time_pts, w1=0.25, w2=0.50, w3=0.25)$value, 0.555, tolerance=0.001)
+  expect_equal(yr1(y1, y2, time_pts, w1=0.25, w2=0.50, w3=0.25)$value, 0.805, tolerance =0.001)
+})
 
 
 # TODO: implement the tests for ys2

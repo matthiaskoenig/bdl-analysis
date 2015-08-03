@@ -1,0 +1,9 @@
+Package: BDLanalysis
+Type: Package
+Title: Statistical analysis for data sets of bile duct ligated (BDL) mice.
+Version: 0.1
+Date: 2015-08-03
+Author: Matthias Koenig
+Maintainer: Matthias Koenig <konigmatt@googlemail.com>
+Description: Full statistical analysis and data sets accompanying the publication Pathobiochemical signatures of cholestatic liver disease in bile duct ligated mice.
+License: GPLv3

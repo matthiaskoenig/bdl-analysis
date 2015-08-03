@@ -19,94 +19,8 @@
 
 
 
-#---------------------------------------------
-# Dimension reduction via ANOVA
-#---------------------------------------------
-# A one-way analyis of variance (ANOVA) was applied to filter genes showing
-# significant (padj<0.05) up- or down-regulation during the time course, using the Bonferonni
-# step-down procedure to correct for any artificial p-value inflation.
 
-# http://www.r-tutor.com/elementary-statistics/analysis-variance/completely-randomized-design
 
-# perform anova for the factor
-single_factor_anova <- function(name){
-  # data matrix
-  mat1 <- t(data_list[[name]])
-  colnames(mat1) <- levels(samples$time_fac)
-  
-  # Concatenate the data rows of df1 into a single vector r .
-  r = c(t(as.matrix(mat1))) # response data 
-  
-  # Assign new variables for the treatment levels and number of observations.
-  f = levels(samples$time_fac)   # treatment levels 
-  k = 8                          # number of treatment levels 
-  n = 5                          # observations per treatment 
-  
-  # Create a vector of treatment factors that corresponds to each element of r in step 3 with the gl function.
-  tm = gl(k, 1, n*k, factor(f))   # matching treatments 
-  
-  # Apply the function aov to a formula that describes the response r by the treatment factor tm.
-  # Fit an analysis of variance model
-  av = aov(r ~ tm) 
-  
-  # Print out the ANOVA table with the summary function. 
-  # summary(av)
-  return(av)
-}
-
-# Perform sanova for all factors.
-# The unadjusted p-values are returned.
-all_factor_anova <- function(){
-  df.anova <- data.frame(factors)
-  df.anova$p.value <- NA
-  
-  for (k in 1:nrow(df.anova)){
-    name <- factors[[k]]
-    av <- single_factor_anova(name)
-    p.value <- summary(av)[[1]][["Pr(>F)"]][[1]]
-    df.anova[k, "p.value"] <- p.value
-  }
-  return(df.anova)
-}
-
-# creates significant codes for given p.value.
-significant_code <- function(p.value){
-  # Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
-  sig = " "
-  if (p.value <= 0.001){
-    sig = "***"
-  } else if (p.value <= 0.01){
-    sig = "**"
-  } else if (p.value <=0.05){
-    sig = "*"
-  } else if (p.value <=0.1){
-    sig = "."
-  } else if (p.value <=1){
-      sig = " "
-  }
-  return (sig)
-}
-# calculate anova
-df.anova <- all_factor_anova()
-df.anova$sig <- sapply(df.anova$p.value, significant_code)
-
-# Adjust the p-values for multiple testing
-# Given a set of p-values, returns p-values adjusted using one of several methods.
-# The Bonferroni, Holm, Hochberg, Hommel are designed to give strong control of the family-wise error rate. There seems no reason to use the unmodified Bonferroni correction because it is dominated by Holm's method, which is also valid under arbitrary assumptions. 
-# Using Holm correction with number of tests.
-# Holm, S. (1979). A simple sequentially rejective multiple test procedure. Scandinavian Journal of Statistics 6, 65–70.
-df.anova$p.holm <- p.adjust(df.anova$p.value, method ="holm" , n = length(df.anova$p.value))
-df.anova$sig.holm <- sapply(df.anova$p.holm, significant_code)
-
-df.anova
-
-# save the ordered results of the ANOVA test
-df.anova.ordered <- df.anova[with(df.anova, order(p.holm)), ]
-summary(df.anova.ordered)
-write.table(df.anova.ordered, file="../results/factor_anova.csv", sep="\t", quote=FALSE)
-
-file.anova <- file.path("..", "data", "bdl-anova.Rdata")
-save(df.anova, file=file.anova)
 
 # if filtering is selected the subset of factors being different 
 # within the timecourse are selected
@@ -130,6 +44,8 @@ if (filter_by_anova){
   dmean.full <- dmean
   dmean <- dmean[, f.accept]  
 }
+
+
 
 # plot of the data subset which is used for the correlation analysis
 col2 <- colorRampPalette(c("#67001F", "#B2182B", "#D6604D", "#F4A582", "#FDDBC7",

@@ -100,5 +100,6 @@ rm(data, samples, BDLdata, BDLsamples)
 
 
 # information for probe mapping ------------------------------------------------
-BDLprobes <- read.csv('inst/extdata/probe_mapping.csv', sep="\t")
+BDLprobes <- read.csv('inst/extdata/probe_mapping.csv', stringsAsFactors=FALSE, 
+                      sep="\t")
 save(BDLprobes, file="data/BDLprobes.RData")

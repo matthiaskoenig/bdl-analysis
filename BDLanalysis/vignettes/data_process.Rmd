@@ -36,14 +36,6 @@ BDLmean <- bdl_mean_data(BDLdata, BDLsamples)
 BDLmean.time <- as.numeric(levels(as.factor(BDLsamples$time)))
 ```
 
-
-Convert the individual factors into matrices. Simple calculation of the
-subsequent ANOVA
-```{r BDLmatrix}
-BDLmatrices <- bdl_matrix_data(BDLdata, BDLsamples)
-print(BDLmatrices[[1]])
-```
-
 Create overview plots for all individual factors. These are stored in the
 resultsPath folder.
 ```{r factorPlots, eval=FALSE}
@@ -69,38 +61,45 @@ par(mfrow=c(1,1))
 dev.off()
 
 # calculate the correlations
-plot_cor_pair("Actb", "Actb.x")
-plot_cor_pair("Actb", "Actb.y")
-plot_cor_pair("Actb.x", "Actb.y")
+plot_single("Actb")
+plot_single("Actb.x")
+plot_single("Actb.y")
+plot_cor_pair("Actb", "Actb.x", single_plots=FALSE)
+plot_cor_pair("Actb", "Actb.y", single_plots=FALSE)
+plot_cor_pair("Actb.x", "Actb.y", single_plots=FALSE)
 
-cat('Actb Spearman : individual points\n')
+# calculate Spearman and Pearson correlation coefficients on mean and individual
+# data
 actb.spearman <- cor(data.frame(Actb=BDLdata$Actb, 
                                 Actb.x=BDLdata$Actb.x, 
                                 Actb.y=BDLdata$Actb.y), method="spearman")
-print(actb.spearman)
-cat('Actb Spearman : mean\n')
+
 actb.spearman.mean <- cor(data.frame(Actb=BDLmean$Actb, 
                                      Actb.x=BDLmean$Actb.x, 
                                      Actb.y=BDLmean$Actb.y), method="spearman")
-print(actb.spearman.mean)
-cat('Actb Pearson : individual points\n')
+
 actb.pearson <- cor(data.frame(Actb=BDLdata$Actb, 
                                Actb.x=BDLdata$Actb.x, 
                                Actb.y=BDLdata$Actb.y), method="pearson")
-print(actb.pearson)
-cat('Actb Pearson : mean\n')
+
 actb.pearson.mean <- cor(data.frame(Actb=BDLmean$Actb, 
                                     Actb.x=BDLmean$Actb.x, 
                                     Actb.y=BDLmean$Actb.y), method="pearson")
+print(actb.spearman)
+print(actb.spearman.mean)
+print(actb.pearson)
 print(actb.pearson.mean)
 ```
 
 For a given set of factors the data heatmap provides an overview over the
 existing dataset.
 
+```{r dataHeatmap}
 #---------------------------------------------
 # All data heatmap
 #---------------------------------------------
+# TODO
+```
 
 
 

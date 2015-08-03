@@ -4,10 +4,10 @@
 \docType{package}
 \title{
 Statistical analysis for data sets of bile duct ligated (BDL) mice.
-~~ package title ~~
 }
 \description{
-Complete statistical analysis and data sets accompanying the publication Pathobiochemical signatures of cholestatic liver disease in bile duct ligated mice.
+Complete statistical analysis and data sets accompanying the publication Pathobiochemical signatures of cholestatic liver disease in bile duct ligated mice. Pathobiochemical signatures of cholestatic liver disease in bile duct ligated (BDL) mice were analysed 
+in a comprehensive data set of serum markers, histological parameters and transcript profiles at 8 time points after bile duct ligation in mice, comprising different stages of the disease (> 6000 data points).
 }
 \details{
 \tabular{ll}{
@@ -25,12 +25,9 @@ Matthias Koenig
 Maintainer: Matthias Koenig <konigmatt@googlemail.com>
 }
 \references{
-~~ Literature or other references for background information ~~
 }
 \keyword{ package }
 \seealso{
-~~ Optional links to other man pages, e.g. ~~
-~~ \code{\link[<pkg>:<pkg>-package]{<pkg>}} ~~
 }
 \examples{
 }

@@ -75,7 +75,9 @@ f_single_plot <- function(name_A){
   lines(1:nrow(dmean), dA.mean, col="red")
 }
 
-# Correlation plot between two factors
+#' Correlation plot between two factors
+#' 
+#' @export
 f_cor_pair_plot <- function(name_A, name_B, single_plots=TRUE){
   if (single_plots){
     layout(matrix(c(1,1,2,3), 2, 2, byrow = TRUE))  
@@ -113,12 +115,11 @@ f_cor_pair_plot <- function(name_A, name_B, single_plots=TRUE){
   }
 }
 
-#---------------------------------------------
-# Fluidigm annotation information
-#---------------------------------------------
-# helper function with information for fluidigm probes
-probes <- read.csv(file.path("..", "data", "probe_mapping.csv"), stringsAsFactors=FALSE, sep="\t")
 
+#' Fluidigm annotation information.
+#'
+#' Helper function with information for fluidigm probes.
+#' @export
 get_probe_info <- function(gene_id){
   info <- list()
   idx <- which(probes$Gene==gene_id)

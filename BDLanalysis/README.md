@@ -20,4 +20,8 @@ Analysis consists among others of
 ## Run analysis
 For running the analysis the `BDLanalysis` package has to be installed.
 
+Install it from github with:
+```
+devtools::install_github("matthiaskoenig/BDLanalysis")
+```
 

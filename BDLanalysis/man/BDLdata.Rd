@@ -4,14 +4,14 @@
 \name{BDLdata}
 \alias{BDLdata}
 \title{Time course factor data for BDL mice.}
-\format{A data frame with factor variables: \code{test}, \code{sex},
-  \code{name}, \code{n} and \code{prop} (\code{n} divided by total number
-  of applicants in that year).}
+\format{A data frame with factor variables: \code{Ppara}, \code{Cyp3a11},
+  \code{Cyp24a1}, ...).}
 \usage{
 BDLdata
 }
 \description{
-Full data of all factors.
+Complete data set of all time course data for all factors. The sample
+description is available in BDLsamples.
 }
 \keyword{datasets}
 

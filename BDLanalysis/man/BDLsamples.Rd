@@ -3,15 +3,14 @@
 \docType{data}
 \name{BDLsamples}
 \alias{BDLsamples}
-\title{Sample description for BDL mice corresponding to BDLdata.}
-\format{A data frame with factor variables: \code{test}, \code{sex},
-  \code{name}, \code{n} and \code{prop} (\code{n} divided by total number
-  of applicants in that year).}
+\title{Sample description corresponding to BDLdata.}
+\format{A data frame with additional information for the samples: \code{time}, \code{time_fac}, \code{time_point}, \code{repeats} ...).}
 \usage{
 BDLsamples
 }
 \description{
-Full data of all factors.
+Sample description for the BDLdata factor data set. Here the time point and
+repeat information is defined.
 }
 \keyword{datasets}
 

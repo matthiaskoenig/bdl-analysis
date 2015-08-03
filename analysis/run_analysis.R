@@ -46,8 +46,6 @@ factors <- colnames(BDLdata)
 #---------------------------------------------
 # Single factor visualization
 #---------------------------------------------
-source("plots.R")
-
 # Create plot of the first factor
 plot_single_factor(1)
 

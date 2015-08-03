@@ -1,23 +1,26 @@
-#---------------------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------
 # Read & preprocess data
 #
 # The individual raw data files are loaded and combined in a single data frame.
 # Factor and timecourse information is added.
-# All processed datasets are stored as Rdata files in combination with the packages.
+# All processed datasets are stored as Rdata files in combination with the 
+# packages.
 #
-# This should only be run to recreate the processed data files after the raw data
-# files changed.
-# 
-# TODO: preprocess all the data into Rdata files which can be loaded in the analysis scripts.
-#---------------------------------------------------------------------------------------------
+# Processed data is made available in the package via
+#     library(BDLanalysis)
+#     data(BDLdata)
+#     data(BDLsamples)
+#-------------------------------------------------------------------------------
+rm(list=ls())
+setwd("/home/mkoenig/git/bdl-analysis/BDLanalysis")
 
-samples <- read.csv('data-raw/samples.csv', sep="\t")
-histology <- read.csv('data-raw/histology.csv', sep="\t")
-adme <- read.csv('data-raw/fluidigm_ADME.csv', sep="\t")
-cytokines <- read.csv('data-raw/fluidigm_cytokines.csv', sep="\t")
-fibrosis1 <- read.csv('data-raw/fluidigm_fibrosis_01.csv', sep="\t")
-fibrosis2 <- read.csv('data-raw/fluidigm_fibrosis_02.csv', sep="\t")
-antibodies <- read.csv('data-raw/antibodies.csv', sep="\t")
+samples <- read.csv('inst/extdata/samples.csv', sep="\t")
+histology <- read.csv('inst/extdata/histology.csv', sep="\t")
+adme <- read.csv('inst/extdata/fluidigm_ADME.csv', sep="\t")
+cytokines <- read.csv('inst/extdata/fluidigm_cytokines.csv', sep="\t")
+fibrosis1 <- read.csv('inst/extdata/fluidigm_fibrosis_01.csv', sep="\t")
+fibrosis2 <- read.csv('inst/extdata/fluidigm_fibrosis_02.csv', sep="\t")
+antibodies <- read.csv('inst/extdata/antibodies.csv', sep="\t")
 
 # Two repeats of the fibrosis fluidigm chip were measured. 
 # The mean value of the two chips is used for analysis.
@@ -91,6 +94,6 @@ rm(tmp, d, adme, antibodies, cytokines, fibrosis, histology, histology.processed
 BDLdata <- data
 BDLsamples <- samples
 # save processed data
-save(BDLdata, file = "data/BDLdata.rdata")
-save(BDLsamples, file = "data/BDLsamples.rdata")
+save(BDLdata, file = "data/BDLdata.RData")
+save(BDLsamples, file = "data/BDLsamples.RData")
 rm(data, samples, BDLdata, BDLsamples)

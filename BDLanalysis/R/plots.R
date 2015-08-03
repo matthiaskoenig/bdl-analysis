@@ -7,13 +7,13 @@
 #'
 #' Plot the time course of a single factor, i.e. all individual data points.
 #' @export
-plot_single_factor <- function(k){
-  name <- factors[k]
-  dA <- data[,k]  # factor data
-  info <- get_probe_info(name)  # fluidigm probe annotation (if existing)
+plot_single_factor <- function(name){
+  dA <- BDLdata[, name]
+  # search if probe info is available
+  info <- get_probe_info(name)  
   
-  fname <- paste("../results/factors/", sprintf("%03d", k), "_", name, ".png", sep="")
-  png(filename=fname, width=options$width, height=options$height, res=options$res)
+  # fname <- paste("../results/factors/", sprintf("%03d", k), "_", name, ".png", sep="")
+  # png(filename=fname, width=options$width, height=options$height, res=options$res)
   par(mfrow=c(1,2))
   
   # [A] plot with time
@@ -40,17 +40,18 @@ plot_single_factor <- function(k){
   lines(1:nrow(dmean), dmean[,k], col="red")
   
   par(mfrow=c(1,1))
-  dev.off()
+  # dev.off()
 }
 
 #' Create the single factor plots of all factos.
 #' 
 #' @export 
 plot_all_factors <- function(){
+  factors <- colnames(BDLdata)
   Nf = length(factors)
   for (k in 1:Nf){
     cat(sprintf("%s / %s\n", k, Nf))
-    plot_single_factor(k)
+    plot_single_factor(factors[k])
   }  
 }
 
@@ -119,6 +120,7 @@ f_cor_pair_plot <- function(name_A, name_B, single_plots=TRUE){
 #' Fluidigm annotation information.
 #'
 #' Helper function with information for fluidigm probes.
+#' TODO: load the probe information
 #' @export
 get_probe_info <- function(gene_id){
   info <- list()

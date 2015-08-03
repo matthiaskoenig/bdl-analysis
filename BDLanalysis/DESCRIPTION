@@ -11,5 +11,5 @@ Depends:
 License: GPLv3
 LazyData: true
 URL: http://github.com/matthiaskoenig/bdl-analysis
-Suggests: testthat
+Suggests: testthat, knitr
 VignetteBuilder: knitr

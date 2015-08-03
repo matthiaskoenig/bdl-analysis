@@ -9,49 +9,57 @@
 #' @export
 plot_single_factor <- function(name){
   dA <- BDLdata[, name]
-  # search if probe info is available
-  info <- get_probe_info(name)  
   
-  # fname <- paste("../results/factors/", sprintf("%03d", k), "_", name, ".png", sep="")
-  # png(filename=fname, width=options$width, height=options$height, res=options$res)
+  # search if probe info is available
+  info <- ProbeInformation(geneId=name)  
+  
   par(mfrow=c(1,2))
   
-  # [A] plot with time
-  plot(samples$time_fac, dA, at=sort(as.numeric(levels(as.factor(samples$time)))), col="blue",
+  # [A] plot against time
+  plot(BDLsamples$time_fac, dA, at=sort(as.numeric(levels(as.factor(BDLsamples$time)))), col="blue",
        xlab="time [h]", ylab=name, main=name,
        ylim=c(0, max(dA, na.rm=TRUE)*1.1 ))
   
-  points(samples$time, dA, col="black")
-  points(samples$time, dA, col=rgb(0,0,1,0.6), pch=16)
+  points(BDLsamples$time, dA, col="black")
+  points(BDLsamples$time, dA, col=rgb(0,0,1,0.6), pch=16)
   if (!is.null(info$Protein.name)){
     text(x=140, y=max(dA, na.rm=TRUE)*1.08, 
          labels=info$Protein.name, cex=0.8)
   }
-  points(dmean.time, dmean[,k], col="red", pch=15)
-  lines(dmean.time, dmean[,k], col="red")
+  # add mean
+  mean.time <- as.numeric(levels(as.factor(BDLsamples$time)))
+  Nt <- length(mean.time)
+  points(mean.time, BDLmean[, name], col="red", pch=15)
+  lines(mean.time, BDLmean[, name], col="red")
   
-  # [B] plot as factor
-  plot(samples$time_fac, dA, xlab="time", ylab=name, main=name, col=rgb(0.5,0.5,0.5, 0.4),
-       ylim=c(0, max(data[,k], na.rm=TRUE)*1.1))
-  points(samples$time_fac, data[,k], col="black")
-  points(samples$time_fac, data[,k], col=rgb(0,0,1,0.6), pch=16)
-  
-  points(1:nrow(dmean), dmean[,k], col="red", pch=15)
-  lines(1:nrow(dmean), dmean[,k], col="red")
+  # [B] plot as factor (non-equidistant time points)
+  plot(BDLsamples$time_fac, dA, xlab="time", ylab=name, main=name, col=rgb(0.5,0.5,0.5, 0.4),
+       ylim=c(0, max(dA, na.rm=TRUE)*1.1))
+  points(BDLsamples$time_fac, dA, col="black")
+  points(BDLsamples$time_fac, dA, col=rgb(0,0,1,0.6), pch=16)
+  # add mean
+  points(1:Nt, BDLmean[, name], col="red", pch=15)
+  lines(1:Nt, BDLmean[, name], col="red")
   
   par(mfrow=c(1,1))
-  # dev.off()
 }
 
-#' Create the single factor plots of all factos.
+#' Creates single factor plots of all factors.
 #' 
+#' Iterates over all factor variables in the BDLdata frame and creates
+#' the individual factor plots.
 #' @export 
 plot_all_factors <- function(){
+  
   factors <- colnames(BDLdata)
   Nf = length(factors)
   for (k in 1:Nf){
     cat(sprintf("%s / %s\n", k, Nf))
-    plot_single_factor(factors[k])
+    name <- factors[k]
+    # fname <- paste("../results/factors/", sprintf("%03d", k), "_", name, ".png", sep="")
+    # png(filename=fname, width=options$width, height=options$height, res=options$res)
+    plot_single_factor(name)
+    # dev.off()
   }  
 }
 
@@ -117,19 +125,18 @@ f_cor_pair_plot <- function(name_A, name_B, single_plots=TRUE){
 }
 
 
-#' Fluidigm annotation information.
+#' Fluidigm probe annotation
 #'
 #' Helper function with information for fluidigm probes.
-#' TODO: load the probe information
 #' @export
-get_probe_info <- function(gene_id){
+ProbeInformation <- function(geneId){
   info <- list()
-  idx <- which(probes$Gene==gene_id)
+  idx <- which(BDLprobes$Gene==geneId)
   if (!is.null(idx) & length(idx)>0){
-    info$Protein.name <- probes$Protein.names[idx[1]]
-    info$Chip <- probes$Chip[idx[1]]
-    info$Entry <- probes$Entry[idx[1]]
-    info$Gene.name <- probes$Gene.names[idx[1]]
+    info$Protein.name <- BDLprobes$Protein.names[idx[1]]
+    info$Chip <- BDLprobes$Chip[idx[1]]
+    info$Entry <- BDLprobes$Entry[idx[1]]
+    info$Gene.name <- BDLprobes$Gene.names[idx[1]]
   } else {
     info$Protein.name <- NULL
   }

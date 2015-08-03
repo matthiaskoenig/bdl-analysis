@@ -15,21 +15,36 @@ extPath <- file.path(baseLoc, "extdata")
 ```
 
 ## Read BDL data
-The bdl data set and sample definition are loaded via
-
+The BDL data, BDL sample definition and the Fluidigm probe definitions are loaded via
 ```{r BDLdata, eval=TRUE}
 library('BDLanalysis')
 data(BDLdata)
 data(BDLsamples)
-factors <- colnames(BDLdata)
+data(BDLprobes)
 ```
 
+Calculation of mean timecourse for factors averaged over the 5 repeats.
+```{r BDLmean}
+BDLmean <- bdl_mean_data(BDLdata, BDLsamples)
+print(BDLmean[,1])
+```
+
+
+Convert the individual factors into matrices. Simple calculation of the
+subsequent ANOVA
+```{r BDLmatrix}
+BDLmatrices <- bdl_matrix_data(BDLdata, BDLsamples)
+print(BDLmatrices[[1]])
+```
+
+TODO: write some tests for the mean and matrices
 
 ```{r factorPlots}
 #---------------------------------------------
 # Single factor visualization
 #---------------------------------------------
 # Create plot of the first factor
+factors <- colnames(BDLdata)
 plot_single_factor(factors[1])
 
 # Creates plots of all factors in data

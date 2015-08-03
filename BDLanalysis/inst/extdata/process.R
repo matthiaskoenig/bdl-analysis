@@ -94,6 +94,11 @@ rm(tmp, d, adme, antibodies, cytokines, fibrosis, histology, histology.processed
 BDLdata <- data
 BDLsamples <- samples
 # save processed data
-save(BDLdata, file = "data/BDLdata.RData")
-save(BDLsamples, file = "data/BDLsamples.RData")
+save(BDLdata, file="data/BDLdata.RData")
+save(BDLsamples, file="data/BDLsamples.RData")
 rm(data, samples, BDLdata, BDLsamples)
+
+
+# information for probe mapping ------------------------------------------------
+BDLprobes <- read.csv('inst/extdata/probe_mapping.csv', sep="\t")
+save(BDLprobes, file="data/BDLprobes.RData")

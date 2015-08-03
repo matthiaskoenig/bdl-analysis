@@ -26,3 +26,13 @@ NULL
 #' @name BDLsamples
 #' @docType data
 NULL
+
+#' Fluidigm probe mapping to UniProt.
+#'
+#' Maps the gene identifier to UniProt identifiers for additional information
+#' retrieval. This information is used for customizing the plots.
+#'
+#' @format A data frame with with 40 rows and 9 variable providing additional information for the samples: \code{time}, \code{time_fac}, \code{time_point}, \code{repeats} ...).
+#' @name BDLprobes
+#' @docType data
+NULL

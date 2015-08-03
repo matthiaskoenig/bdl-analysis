@@ -24,20 +24,8 @@ require("calibrate")
 help(BDLanalysis)
 
 # Preprocess dataset
-setwd("/home/mkoenig/git/bdl-analysis/BDLanalysis") 
-source('data-raw/process.R')
-
-# overview datasets
-data()
-# load the data sets 
-data(BDLdata)
-data(BDLsamples)
-factors <- colnames(BDLdata)
 
 
-#---------------------------------------------
-# All data heatmap
-#---------------------------------------------
 
 
 
@@ -52,6 +40,10 @@ plot_single_factor(1)
 # Creates plots of all factors in data
 plot_all_factors()
 
+
+#---------------------------------------------
+# All data heatmap
+#---------------------------------------------
 
 #--------------------------
 # Actb controls
@@ -100,17 +92,7 @@ print(actb.pearson.mean)
 f_cor_pair_plot("Actb", "Por")
 
 
-# Mean of factors for the individual time points
-tmp <- bdl_mean_data(data)
-dmean <- tmp$dmean
-dmean.time <- tmp$dmean.time
-rm(tmp)
 
-head(dmean)
-head(dmean.time)
-
-# Data list
-data_list <- bdl_data_matrices(data, time_pts=levels(time))
 
 
 

@@ -4,7 +4,7 @@
 \alias{plot_single_factor}
 \title{Create a single factor plot.}
 \usage{
-plot_single_factor(k)
+plot_single_factor(name)
 }
 \description{
 Plot the time course of a single factor, i.e. all individual data points.

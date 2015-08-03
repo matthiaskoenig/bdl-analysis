@@ -2,11 +2,12 @@
 % Please edit documentation in R/data_reshape.R
 \name{bdl_mean_data}
 \alias{bdl_mean_data}
-\title{Calculation of mean data based on provided time factor.}
+\title{Calculate mean data average over time points.}
 \usage{
-bdl_mean_data(data)
+bdl_mean_data(data, samples)
 }
 \description{
-Calculation of mean data based on provided time factor.
+Use the time point repeats for averaging. The time points are defined
+in the sample definitions
 }
 

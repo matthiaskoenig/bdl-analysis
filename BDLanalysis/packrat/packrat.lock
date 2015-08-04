@@ -82,6 +82,7 @@ Hash: cce53206179a99ae5a8bcf154ab5abde
 Package: git2r
 Source: CRAN
 Version: 0.10.1
+Hash: f0d21be15e38774dd93472fc83547068
 
 Package: highr
 Source: CRAN
@@ -151,14 +152,10 @@ Hash: 08a3fc774cceaaec54edea9e9687a6c5
 Requires: plyr
 
 Package: rmarkdown
-Source: github
-Version: 0.3.10
-Hash: b7b19bc273ccefe9fb0db2af60d836f3
+Source: CRAN
+Version: 0.7
+Hash: bf9c8cfc700d2417a309dd7a5ebd41d3
 Requires: caTools, htmltools, knitr, yaml
-GithubRepo: rmarkdown
-GithubUsername: rstudio
-GithubRef: v0.98.1000
-GithubSha1: b96214b9ac86b437067a0aa21442203f52face83
 
 Package: roxygen2
 Source: CRAN

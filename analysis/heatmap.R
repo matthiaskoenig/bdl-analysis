@@ -3,10 +3,6 @@
 source("http://www.bioconductor.org/biocLite.R")
 biocLite("ALL")
 
-color.map <- function(mol.biol) { if (mol.biol=="ALL1/AF4") "#FF0000" else "#0000FF" }
-patientcolors <- unlist(lapply(esetSel$mol.bio, color.map))
-heatmap(exprs(esetSel), col=topo.colors(100), ColSideColors=patientcolors)
-
 
 col2 <- colorRampPalette(c("#67001F", "#B2182B", "#D6604D", "#F4A582", "#FDDBC7",
                            "#FFFFFF", "#D1E5F0", "#92C5DE", "#4393C3", "#2166AC", "#053061"))  
@@ -60,8 +56,6 @@ levels(as.factor(groups))
 
 
 # TODO: add the cluster colors
-
-
 
 hc <- hclust(dist(cor.cluster)) 
 # corrplot(cor.cluster[hc$order, hc$order], order="original", method="square", type="full",tl.cex=0.3, tl.col="black")

@@ -38,9 +38,9 @@ df.anova$sig.holm <- sapply(df.anova$p.holm, significant_code)
 
 # save the ordered results of the ANOVA test
 df.anova.ordered <- df.anova[with(df.anova, order(p.holm)), ]
-summary(df.anova.ordered)
-write.table(df.anova.ordered, file="../results/factor_anova.csv", sep="\t", quote=FALSE)
+df.anova.ordered
 
+# write.table(df.anova.ordered, file="../results/factor_anova.csv", sep="\t", quote=FALSE)
 # file.anova <- file.path("..", "data", "bdl-anova.Rdata")
 # save(df.anova, file=file.anova)
 ```

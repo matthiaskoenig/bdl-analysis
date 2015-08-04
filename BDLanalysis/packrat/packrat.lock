@@ -82,7 +82,6 @@ Hash: cce53206179a99ae5a8bcf154ab5abde
 Package: git2r
 Source: CRAN
 Version: 0.10.1
-Hash: f0d21be15e38774dd93472fc83547068
 
 Package: highr
 Source: CRAN

@@ -18,10 +18,6 @@
 ##############################################################################################
 
 
-
-
-
-
 # if filtering is selected the subset of factors being different 
 # within the timecourse are selected
 filter_by_anova = TRUE
@@ -72,7 +68,7 @@ cor.spearman <- cor(data, method="spearman", use="pairwise.complete.obs")
 cor.pearson.fil <- cor(data.fil, method="pearson", use="pairwise.complete.obs")
 cor.spearman.fil <- cor(data.fil, method="spearman", use="pairwise.complete.obs")
 
-
+install.packages("corrplot")
 library(corrplot)
 options <- list(width=2000, height=2000, res=200)
 
@@ -312,7 +308,7 @@ for (k in 1:Ngroups){
   dev.off()
 }
 
-#install.packages('matrixStats')
+install.packages('matrixStats')
 library('matrixStats')
 
 # mean plots for clusters 
@@ -359,7 +355,7 @@ dev.off()
 # better dendrogram
 dend1 <- as.dendrogram(hc)
 # Get the package:
-# install.packages("dendextend")
+install.packages("dendextend")
 library(dendextend)
 
 # Get the package:

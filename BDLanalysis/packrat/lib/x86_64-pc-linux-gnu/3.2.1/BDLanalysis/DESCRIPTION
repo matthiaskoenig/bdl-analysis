@@ -1,0 +1,18 @@
+Package: BDLanalysis
+Type: Package
+Title: Statistical analysis for timecourse data in bile duct ligated
+        (BDL) mice.
+Version: 0.1
+Date: 2015-08-03
+Authors@R: "Matthias Koenig <konigmatt@googlemail.com> [aut, cre]"
+Description: Full statistical analysis and data sets accompanying the publication 
+    Pathobiochemical signatures of cholestatic liver disease in bile duct ligated mice.
+Depends: R (>= 3.1.0)
+License: GPLv3
+LazyData: true
+URL: http://github.com/matthiaskoenig/bdl-analysis
+Suggests: testthat, knitr, reshape, calibrate
+VignetteBuilder: knitr
+Author: "Matthias Koenig" [aut, cre]
+Maintainer: "Matthias Koenig" <konigmatt@googlemail.com>
+Built: R 3.2.1; ; 2015-08-04 21:23:48 UTC; unix

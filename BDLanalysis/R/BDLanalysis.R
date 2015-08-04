@@ -27,6 +27,7 @@ NULL
 #' @docType data
 NULL
 
+
 #' Fluidigm probe mapping to UniProt.
 #'
 #' Maps the gene identifier to UniProt identifiers for additional information
@@ -34,5 +35,15 @@ NULL
 #'
 #' @format A data frame with with 40 rows and 9 variable providing additional information for the samples: \code{time}, \code{time_fac}, \code{time_point}, \code{repeats} ...).
 #' @name BDLprobes
+#' @docType data
+NULL
+
+
+#' ANOVA results.
+#'
+#' Table of ANOVA results for filtering.
+#'
+#' @format A data frame with with 154 rows and 5 variable providing p-values of ANOVA
+#' @name BDLanova
 #' @docType data
 NULL

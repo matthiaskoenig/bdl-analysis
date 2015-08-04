@@ -2,9 +2,18 @@
 %\VignetteEngine{knitr}
 %\VignetteIndexEntry{BDL ANOVA}
 -->
+# Dimension reduction via ANOVA
+Dimension reduction of the BDL data set is performed by filtering out all factors not changing significantly during the time course. For every single factor an ANOVA is calculated with subsequent filtering based on adjusted p-value (multiple testing correction by testing on all factors). The ANOVA tests if any of the time points has a significantly different mean.
+
+Definition of paths
+```{r path}
+baseLoc <- system.file(package="BDLanalysis")
+extPath <- file.path(baseLoc, "extdata")
+resultsPath <- "/home/mkoenig/git/bdl-analysis/results"
+```
 
 ## Read BDL data
-The BDL data, BDL sample definition and the Fluidigm probe definitions are loaded via
+First the BDL data, BDL sample definition and the fluidigm probe definitions are loaded
 ```{r BDLdata, eval=TRUE}
 library('reshape')
 library("calibrate")
@@ -14,33 +23,36 @@ data(BDLsamples)
 data(BDLprobes)
 ```
 
-Additional reshaping of the individual factors for ANOVA
+The BDLdata set of all timecourses for the factors is reshaped into matrix form for the ANOVA calculation
 ```{r BDLmatrix}
 BDLmatrices <- bdl_matrix_data(BDLdata, BDLsamples)
 print(BDLmatrices[[1]])
 ```
 
-## Dimension reduction via ANOVA
-Dimension reduction of the factors is performed by ANOVA testing for significant
-difference in the time course. 
+## Perform ANOVA
+Now the ANOVA is calculated for all factors and data.frame of p.values returned
 ```{r ANOVA}
-# calculate anova
-df.anova <- all_factor_anova()
-df.anova$sig <- sapply(df.anova$p.value, significant_code)
+df.anova <- all_factor_anova()  # calculate ANOVA
+df.anova$sig <- sapply(df.anova$p.value, significant_code)  # add significant codes
+```
 
-# Adjust the p-values for multiple testing
-# Given a set of p-values, returns p-values adjusted using one of several methods.
-# The Bonferroni, Holm, Hochberg, Hommel are designed to give strong control of the family-wise error rate. There seems no reason to use the unmodified Bonferroni correction because it is dominated by Holm's method, which is also valid under arbitrary assumptions. 
-# Using Holm correction with number of tests.
-# Holm, S. (1979). A simple sequentially rejective multiple test procedure. Scandinavian Journal of Statistics 6, 65–70.
+
+## Adjust p-values for multiple testing
+Using the p.adjust function which given a set of p-values, returns p-values adjusted using one of several methods. The Bonferroni, Holm, Hochberg, Hommel are designed to give strong control of the family-wise error rate. There seems no reason to use the unmodified Bonferroni correction because it is dominated by Holm's method, which is also valid under arbitrary assumptions.
+
+The correction is performed using Holm  
+(Holm, S. (1979). A simple sequentially rejective multiple test procedure. Scandinavian Journal of Statistics 6, 65-70.)
+```{r}
 df.anova$p.holm <- p.adjust(df.anova$p.value, method ="holm" , n = length(df.anova$p.value))
-df.anova$sig.holm <- sapply(df.anova$p.holm, significant_code)
+df.anova$sig.holm <- sapply(df.anova$p.holm, significant_code) 
 
-# save the ordered results of the ANOVA test
+# order the results py the adjusted p-values
 df.anova.ordered <- df.anova[with(df.anova, order(p.holm)), ]
 df.anova.ordered
-
-# write.table(df.anova.ordered, file="../results/factor_anova.csv", sep="\t", quote=FALSE)
-# file.anova <- file.path("..", "data", "bdl-anova.Rdata")
-# save(df.anova, file=file.anova)
+```
+Save the results
+``` {r}
+write.table(df.anova.ordered, file=file.path(resultsPath, 'BDLanova.csv'), sep="\t", quote=FALSE)
+BDLanova <- df.anova
+save(df.anova, file=file.path(resultsPath, "BDLanova.Rdata"))
 ```

@@ -1,0 +1,48 @@
+BDLanalysis             BDLanalysis
+BDLanalysis-package     Statistical analysis for data sets of bile duct
+                        ligated (BDL) mice.
+BDLanova                ANOVA results.
+BDLdata                 Time course data from BDL mice.
+BDLprobes               Fluidigm probe mapping to UniProt.
+BDLsamples              Sample description corresponding to BDLdata.
+ProbeInformation        Fluidigm probe annotation
+all_factor_anova        Performs ANOVA for all factors.
+bdl_matrix_data         Transform BDL data frame into list of matrices.
+bdl_mean_data           Calculate mean data average over time points.
+plot_all_factors        Creates single factor plots of all factors.
+plot_cor_pair           Correlation plot between two factors.
+plot_single             Plot of a single factor.
+plot_single_factor      Create a single factor plot.
+significant_code        Create significant code for given p.value.
+single_factor_anova     Perform anova for given factor.
+son.L                   Sign of slope.
+son.fA                  Relative count of number of identical slopes
+                        between two time courses.
+son.fA.timecourse       fA calculation for time courses with multiple
+                        repeats.
+son.fA.timepoints       fA caluclation for time points with multiple
+                        repeats.
+son.fA_star             Adapted slope measurement.
+son.fA_star2            Calculating the distance on the slopes.
+son.fM                  Compare timepoint of minimal and maximal value.
+son.fM.timecourse       fM calculation for timecourse.
+son.fM_star             Alternative index to M.
+son.fM_star2            Alternative index to M.
+son.fM_star3            Curvature based M measure.
+son.fR_star             Adapted Pearson correlation R*.
+son.fR_star.matrix      fR_star calculation for matrix with multiple
+                        repeats.
+son.fS_star             Adapted Spearman correlation S*.
+son.fS_star.matrix      fS_star calculation for matrix with multiple
+                        repeats.
+son.slope               Slope between two adjacent measurments.
+yr1                     yr1 calculation.
+yr1.df                  yr1 correlation matrix for given data frame.
+ys1                     ys1 correlation measure.
+ys1.df                  Calculate ys1 matrix for a given data frame.
+ys1.timecourse          ys1 for time course data.
+ys1.timepoints          ys1 calculation for timepoint data.
+ys1.timepoints.df       Calculate ys1 for factors provided as list of
+                        matrices with size [Nt, Nr].
+ys2                     ys2 calculation.
+ys2.df                  ys2 correlation matrix.

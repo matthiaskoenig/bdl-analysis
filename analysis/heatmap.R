@@ -7,10 +7,16 @@ biocLite("ALL")
 col2 <- colorRampPalette(c("#67001F", "#B2182B", "#D6604D", "#F4A582", "#FDDBC7",
                            "#FFFFFF", "#D1E5F0", "#92C5DE", "#4393C3", "#2166AC", "#053061"))  
 
+test <- matrix(rnorm(100), nrow=10, ncol=10)
+cor.cluster <- cor(test, method="pearson")
+
+
 heatmap(cor.cluster, col=topo.colors(100))
 # already scaled, change colors and size
 heatmap(cor.cluster, col=col2(10), scale="none", cexRow=0.5, cexCol=0.5, symm=TRUE)
 
+# install.packages("gplots")
+# install.packages("RColorBrewer")
 library("gplots")
 heatmap.2(cor.cluster, col=col2(10), scale="none",
           key=TRUE, symkey=FALSE, trace="none", cexRow=0.5)

@@ -22,7 +22,6 @@ resultsPath <- "/home/mkoenig/git/bdl-analysis/results"
 ## Read BDL data
 The BDL data, BDL sample definition and the Fluidigm probe definitions are loaded via
 ```{r BDLdata, eval=TRUE}
-library('reshape')
 library("calibrate")
 library('BDLanalysis')
 data(BDLdata)

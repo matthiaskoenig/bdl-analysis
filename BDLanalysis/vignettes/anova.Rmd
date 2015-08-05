@@ -1,3 +1,6 @@
+---
+output: html_document
+---
 <!--
 %\VignetteEngine{knitr}
 %\VignetteIndexEntry{BDL ANOVA}
@@ -41,7 +44,8 @@ df.anova$sig <- sapply(df.anova$p.value, significant_code)  # add significant co
 Using the p.adjust function which given a set of p-values, returns p-values adjusted using one of several methods. The Bonferroni, Holm, Hochberg, Hommel are designed to give strong control of the family-wise error rate. There seems no reason to use the unmodified Bonferroni correction because it is dominated by Holm's method, which is also valid under arbitrary assumptions.
 
 The correction is performed using Holm  
-(Holm, S. (1979). A simple sequentially rejective multiple test procedure. Scandinavian Journal of Statistics 6, 65-70.)
+> Holm, S. (1979). A simple sequentially rejective multiple test procedure. Scandinavian Journal of Statistics 6, 65-70.
+
 ```{r}
 df.anova$p.holm <- p.adjust(df.anova$p.value, method ="holm" , n = length(df.anova$p.value))
 df.anova$sig.holm <- sapply(df.anova$p.holm, significant_code) 
@@ -57,24 +61,19 @@ BDLanova <- df.anova
 save(df.anova, file=file.path(resultsPath, "BDLanova.Rdata"))
 ```
 
-
-Filter the results based on acceptance level. The cutoff for 
+The factors are filtered based on acceptance level, with the cutoff for the adjusted p-value being $p_{accept}$. I.e. all factors with a ANOVA with $p_{factor} \ge p_{accept}$ are filtered out. The filtered data sets are generated.
 ``` {r filtering}
-p.accept = 0.05  # acceptance level, i.e if p.adjusted < p.accept
+p.accept = 0.05  # acceptance level
+idx.accept = (df.anova$p.holm < p.accept)  # accepted subset
   
-# how many rejected by adjusted p-value
-table(df.anova$p.holm>=p.accept) # 64 rejected / 90 accepted (adjusted)
+# accepted (TRUE/FALSE)
+table(df.anova$p.holm<p.accept)  # 64 rejected / 90 accepted (adjusted)
 table(df.anova$p.value>=p.accept) # 19 rejected / 135 accepted (unadjusted)
   
-# the accepted subset
-idx.accept = df.anova$p.holm<p.accept
-  
-# Create the subset of filtered data
+# subset of filtered data
 BDLdata.fil <- BDLdata[, idx.accept]
 BDLmean.fil <- BDLdata[, idx.accept]
-}
 ```
-
 
 Heatmap of the filtered BDL data.  
 TODO: add the view of the Chips and histopathology
@@ -110,15 +109,30 @@ f_corrplot <- function(name, data, order, folder="../results",
                        width=1600, height=1600, res=200){
   fname <- sprintf("%s_%s.png", name, order)
   col2 <- HeatmapColors()
-  png(filename=file.path(folder, "correlation", fname), width=width, height=height, res=res)
+  if (!is.null(folder)){
+    png(filename=file.path(folder, "correlation", fname), width=width, height=height, res=res)  
+  }
   corrplot(data, order=order, hclust.method="complete", method="color", type="full", 
            tl.cex=0.3, tl.col="black", col=col2(10))
-  invisible(dev.off())
+  if (!is.null(folder)){
+    invisible(dev.off())  
+  }
 }
+
 # Spearman
 f_corrplot("cor.spearman", data=cor.spearman, order="original", folder=resultsPath)
 f_corrplot("cor.spearman", data=cor.spearman, order="hclust", folder=resultsPath)
 # Pearson
 f_corrplot("cor.pearson", data=cor.pearson, order="original", folder=resultsPath)
 f_corrplot("cor.pearson", data=cor.pearson, order="hclust", folder=resultsPath)
+```
+
+```{r, out.width = '1600px', out.height = '1600px'}
+# Spearman correlation with hierarchical clustering
+f_corrplot("cor.spearman", data=cor.spearman, order="hclust", folder=NULL)
+```
+
+```{r, out.width = '1600px', out.height = '1600px'}
+# Pearson correlation with hierarchical clustering
+f_corrplot("cor.pearson", data=cor.pearson, order="hclust", folder=NULL)
 ```

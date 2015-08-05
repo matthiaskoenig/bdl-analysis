@@ -2,11 +2,12 @@
 % Please edit documentation in R/plots.R
 \name{HeatmapColors}
 \alias{HeatmapColors}
-\title{Heatmap colors}
+\title{Heatmap color ramp function.}
 \usage{
 HeatmapColors()
 }
 \description{
-Definition of heatmap colors.
+Definition of heatmap colors via a colorRampPalette.
+The returned function can be called with the numbers of colors in the heatmap.
 }
 

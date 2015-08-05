@@ -6,18 +6,16 @@ output: html_document
 %\VignetteIndexEntry{BDL ANOVA}
 -->
 # Dimension reduction via ANOVA
-Dimension reduction of the BDL data set is performed by filtering out all factors not changing significantly during the time course. For every single factor an ANOVA is calculated with subsequent filtering based on adjusted p-value (multiple testing correction by testing on all factors). The ANOVA tests if any of the time points has a significantly different mean.
-
-Definition of paths
-```{r path}
-baseLoc <- system.file(package="BDLanalysis")
-extPath <- file.path(baseLoc, "extdata")
-resultsPath <- "/home/mkoenig/git/bdl-analysis/results"
-```
+Dimension reduction of the BDL data set was performed by filtering out factors which are not significantly changing over time. To analyse if a factor is changing in time an analysis of variance (ANOVA), a collection of statistical models used to analyze the differences among group means, was performed. In its simplest form, ANOVA provides a statistical test of whether or not the means of several groups are equal, and therefore generalizes the t-test to more than two groups, with the groups being the sampled time points. For every of the individual factors in the BDL data set an ANOVA was calculated. Subsequently factors were filtered based on the adjusted p-value of the ANOVA, adjusted via multiple testing corrections.
 
 ## Read BDL data
 First the BDL data, BDL sample definition and the fluidigm probe definitions are loaded
 ```{r BDLdata, eval=TRUE}
+# Definition of file paths for results
+baseLoc <- system.file(package="BDLanalysis")
+extPath <- file.path(baseLoc, "extdata")
+resultsPath <- "/home/mkoenig/git/bdl-analysis/results"
+
 library('reshape')
 library("calibrate")
 library('BDLanalysis')
@@ -33,7 +31,7 @@ print(BDLmatrices[[1]])
 ```
 
 ## Perform ANOVA
-Now the ANOVA is calculated for all factors and data.frame of p.values returned
+An ANOVA is calculated for all factors (N=`r nrow(BDLdata)`). A data.frame with the p-values of the ANOVA is returned which is used for filtering the BDL data set. Significance codes are added for visual inspection.
 ```{r ANOVA}
 df.anova <- all_factor_anova()  # calculate ANOVA
 df.anova$sig <- sapply(df.anova$p.value, significant_code)  # add significant codes
@@ -41,6 +39,7 @@ df.anova$sig <- sapply(df.anova$p.value, significant_code)  # add significant co
 
 
 ## Adjust p-values for multiple testing
+A multitude of tests were performed, namely an ANOVA for every single factor. Consequently, the reported p-values of the ANOVA have to be adjusted via multiple testing procedures.
 Using the p.adjust function which given a set of p-values, returns p-values adjusted using one of several methods. The Bonferroni, Holm, Hochberg, Hommel are designed to give strong control of the family-wise error rate. There seems no reason to use the unmodified Bonferroni correction because it is dominated by Holm's method, which is also valid under arbitrary assumptions.
 
 The correction is performed using Holm  

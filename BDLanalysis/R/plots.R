@@ -94,6 +94,7 @@ plot_single <- function(name_A){
 #' for the data.
 #' @export
 plot_cor_pair <- function(name_A, name_B, single_plots=TRUE){
+  require(calibrate)
   if (single_plots){
     layout(matrix(c(1,1,2,3), 2, 2, byrow = TRUE))  
   }

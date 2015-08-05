@@ -26,50 +26,16 @@
 # The classical correlation components are replaced with the correlations calculated
 # on the individual data points.
 
-# calculation of ys1 and yr1 for mean data
+# calculate ys1, yr1 on mean data, i.e. correlation part (S*), slope part (A) and min/max part (M) are
+# all calculated on the mean data of all repeats.
 w <- list(w1=0.5, w2=0.25, w3=0.25)
-res.ys1 <- ys1.df(dmean, dmean.time, w1=w$w1, w2=w$w2, w3=w$w3, use="pairwise.complete.obs")
-cor.ys1 <- res.ys1$value
-cor.ys1.scaled <- 2*(cor.ys1-0.5)
-res.ys1.fil <- ys1.df(dmean.fil, dmean.time, w1=w$w1, w2=w$w2, w3=w$w3, use="pairwise.complete.obs")
-cor.ys1.fil <- res.ys1.fil$value
-cor.ys1.fil.scaled <- 2*(cor.ys1.fil-0.5)
+ys1.mean <- ys1.df(BDLmean.fil, BDLmean.time, w1=w$w1, w2=w$w2, w3=w$w3, use="pairwise.complete.obs")
+cor.ys1.mean <- 2*(ys1.mean$value - 0.5)  # scaling to interval [-1, 1]
 
-res.ys2 <- ys2.df(dmean, dmean.time, w1=w$w1, w2=w$w2, w3=w$w3, use="pairwise.complete.obs")
-cor.ys2 <- res.ys2$value
-cor.ys2.scaled <- 2*(cor.ys2-0.5)
-res.ys2.fil <- ys2.df(dmean.fil, dmean.time, w1=w$w1, w2=w$w2, w3=w$w3, use="pairwise.complete.obs")
-cor.ys2.fil <- res.ys2.fil$value
-cor.ys2.fil.scaled <- 2*(cor.ys2.fil-0.5)
+ys2.mean <- ys2.df(BDLmean, BDLmean.time, w1=w$w1, w2=w$w2, w3=w$w3, use="pairwise.complete.obs")
+cor.ys2.mean <- 2*(ys2.mean$value - 0.5)  # scaling to interval [-1, 1]  
 
 
-f_corrplot("cor.ys1", data=cor.ys1, order="original")
-f_corrplot("cor.ys1", data=cor.ys1, order="hclust")
-f_corrplot("cor.ys1.fil", data=cor.ys1.fil, order="original")
-f_corrplot("cor.ys1.fil", data=cor.ys1.fil, order="hclust")
-f_corrplot("cor.ys1.A", data=res.ys1$A, order="original")
-f_corrplot("cor.ys1.A", data=res.ys1$A, order="hclust")
-f_corrplot("cor.ys1.M", data=res.ys1$M, order="original")
-f_corrplot("cor.ys1.M", data=res.ys1$M, order="hclust")
-
-f_corrplot("cor.ys2", data=cor.ys2, order="original")
-f_corrplot("cor.ys2", data=cor.ys2, order="hclust")
-f_corrplot("cor.ys2.fil", data=cor.ys1.fil, order="original")
-f_corrplot("cor.ys2.fil", data=cor.ys1.fil, order="hclust")
-
-f_corrplot("cor.ys2.A_star", data=res.ys2$A_star, order="original")
-f_corrplot("cor.ys2.A_star", data=res.ys2$A_star, order="hclust")
-f_corrplot("cor.ys2.M_star", data=res.ys2$M_star, order="original")
-f_corrplot("cor.ys2.M_star", data=res.ys2$M_star, order="hclust")
-
-f_corrplot("cor.ys1.scaled", data=cor.ys1.scaled, order="original")
-f_corrplot("cor.ys1.scaled", data=cor.ys1.scaled, order="hclust")
-f_corrplot("cor.ys2.scaled", data=cor.ys2.scaled, order="original")
-f_corrplot("cor.ys2.scaled", data=cor.ys2.scaled, order="hclust")
-f_corrplot("cor.ys1.fil.scaled", data=cor.ys1.fil.scaled, order="original")
-f_corrplot("cor.ys1.fil.scaled", data=cor.ys1.fil.scaled, order="hclust")
-f_corrplot("cor.ys2.fil.scaled", data=cor.ys2.fil.scaled, order="original")
-f_corrplot("cor.ys2.fil.scaled", data=cor.ys2.fil.scaled, order="hclust")
 
 # Pearson & spearman correlation on full dataset as replacement for the 
 # mean Pearson/Spearman in ys1, ys2, yr1, yr2
@@ -97,6 +63,31 @@ cor.yr2_full.scaled <- 2*(cor.yr2_full-0.5)
 cor.yr3_full <- w$w1*cor.R_star + w$w2*res.ys2$A_star2 + w$w3*res.ys2$M_star2
 cor.yr3_full.scaled <- 2*(cor.yr3_full-0.5)
 
+
+# plot the important results
+
+f_corrplot("cor.ys1", data=cor.ys1, order="original")
+f_corrplot("cor.ys1", data=cor.ys1, order="hclust")
+f_corrplot("cor.ys1.A", data=res.ys1$A, order="original")
+f_corrplot("cor.ys1.A", data=res.ys1$A, order="hclust")
+f_corrplot("cor.ys1.M", data=res.ys1$M, order="original")
+f_corrplot("cor.ys1.M", data=res.ys1$M, order="hclust")
+
+f_corrplot("cor.ys2", data=cor.ys2, order="original")
+f_corrplot("cor.ys2", data=cor.ys2, order="hclust")
+
+f_corrplot("cor.ys2.A_star", data=res.ys2$A_star, order="original")
+f_corrplot("cor.ys2.A_star", data=res.ys2$A_star, order="hclust")
+f_corrplot("cor.ys2.M_star", data=res.ys2$M_star, order="original")
+f_corrplot("cor.ys2.M_star", data=res.ys2$M_star, order="hclust")
+
+
+# scaling of the calculated correlation score
+f_corrplot("cor.ys1.scaled", data=cor.ys1.scaled, order="original")
+f_corrplot("cor.ys1.scaled", data=cor.ys1.scaled, order="hclust")
+f_corrplot("cor.ys2.scaled", data=cor.ys2.scaled, order="original")
+f_corrplot("cor.ys2.scaled", data=cor.ys2.scaled, order="hclust")
+
 f_corrplot("cor.ys1_full.scaled", data=cor.ys1_full.scaled, order="original")
 f_corrplot("cor.ys1_full.scaled", data=cor.ys1_full.scaled, order="hclust")
 f_corrplot("cor.ys2_full.scaled", data=cor.ys2_full.scaled, order="original")
@@ -113,8 +104,8 @@ f_corrplot("cor.yr3_full.scaled", data=cor.yr3_full.scaled, order="hclust")
 
 
 # extreme example where the difference between pearson and spearman matters
-f_cor_pair_plot("Nos2", "Cxcl15")
-f_cor_pair_plot("albumin", "Cyp2b10")
+plot_cor_pair("Nos2", "Cxcl15")
+plot_cor_pair("albumin", "Cyp2b10")
 
 #---------------------------------------------
 # Hierarchical clustering

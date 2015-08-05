@@ -6,8 +6,8 @@ Author: Taiyun Wei
 Suggests: seriation, knitr
 Maintainer: Taiyun Wei <weitaiyun@gmail.com>
 Description: The corrplot package is a graphical display of a
-        correlation matrix, confidence interval. It also contains some
-        algorithms to do matrix reordering.
+    correlation matrix, confidence interval. It also contains some
+    algorithms to do matrix reordering.
 License: GPL
 URL: https://github.com/taiyun/corrplot
 BugReports: https://github.com/taiyun/corrplot/issues
@@ -17,3 +17,6 @@ NeedsCompilation: no
 Repository: CRAN
 Date/Publication: 2013-10-15 10:04:07
 Built: R 3.2.1; ; 2015-08-04 14:53:31 UTC; unix
+InstallAgent: packrat 0.4.4
+InstallSource: CRAN
+Hash: d437b5a9a0d7ee3d172c45276b9580bb

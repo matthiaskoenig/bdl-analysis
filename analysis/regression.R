@@ -18,37 +18,6 @@
 ##############################################################################################
 
 
-# if filtering is selected the subset of factors being different 
-# within the timecourse are selected
-filter_by_anova = TRUE
-if (filter_by_anova){
-  # acceptance level
-  p.accept = 0.05
-  
-  # how many rejected by adjusted p-value
-  table(df.anova$p.holm>=p.accept) # 64 rejected / 90 accepted
-  table(df.anova$p.value>=p.accept) # 19 rejected / 135 accepted
-  
-  # the accepted subset
-  f.accept = df.anova$p.holm<p.accept
-  
-  # overwrite the full data set
-  data.full <- data
-  data <- data[, f.accept]
-  factors.full <- factors
-  factors <- factors[f.accept]
-  dmean.full <- dmean
-  dmean <- dmean[, f.accept]  
-}
-
-
-
-# plot of the data subset which is used for the correlation analysis
-col2 <- colorRampPalette(c("#67001F", "#B2182B", "#D6604D", "#F4A582", "#FDDBC7",
-                           "#FFFFFF", "#D1E5F0", "#92C5DE", "#4393C3", "#2166AC", "#053061")) 
-heatmap.2(t(as.matrix(data)), col=col2(100), scale="row", Rowv=NULL, Colv=NULL,
-          key=TRUE, trace="none", cexRow=0.5, keysize=0.8)
-
 #---------------------------------------------
 # Correlation analysis
 #---------------------------------------------

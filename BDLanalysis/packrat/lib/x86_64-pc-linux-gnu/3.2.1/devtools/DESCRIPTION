@@ -24,7 +24,7 @@ Author: Hadley Wickham [aut, cre], Winston Chang [aut], RStudio [cph],
 Maintainer: Hadley Wickham <hadley@rstudio.com>
 Repository: CRAN
 Date/Publication: 2015-05-09 06:20:37
-Built: R 3.2.1; x86_64-pc-linux-gnu; 2015-08-04 11:33:10 UTC; unix
+Built: R 3.2.1; x86_64-pc-linux-gnu; 2015-08-05 08:07:00 UTC; unix
 InstallAgent: packrat 0.4.4
 InstallSource: CRAN
 Hash: 908d926757f793f385049f4f140e7313

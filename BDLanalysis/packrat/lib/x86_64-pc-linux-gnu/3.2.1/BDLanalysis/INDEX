@@ -5,6 +5,7 @@ BDLanova                ANOVA results.
 BDLdata                 Time course data from BDL mice.
 BDLprobes               Fluidigm probe mapping to UniProt.
 BDLsamples              Sample description corresponding to BDLdata.
+HeatmapColors           Heatmap colors
 ProbeInformation        Fluidigm probe annotation
 all_factor_anova        Performs ANOVA for all factors.
 bdl_matrix_data         Transform BDL data frame into list of matrices.

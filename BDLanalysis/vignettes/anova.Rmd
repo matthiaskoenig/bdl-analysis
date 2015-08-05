@@ -56,3 +56,33 @@ write.table(df.anova.ordered, file=file.path(resultsPath, 'BDLanova.csv'), sep="
 BDLanova <- df.anova
 save(df.anova, file=file.path(resultsPath, "BDLanova.Rdata"))
 ```
+
+
+Filter the results based on acceptance level
+``` {r filtering}
+filter_by_anova = TRUE
+if (filter_by_anova){
+  # acceptance level
+  p.accept = 0.05
+  
+  # how many rejected by adjusted p-value
+  table(df.anova$p.holm>=p.accept) # 64 rejected / 90 accepted
+  table(df.anova$p.value>=p.accept) # 19 rejected / 135 accepted
+  
+  # the accepted subset
+  idx.accept = df.anova$p.holm<p.accept
+  
+  # overwrite the full data set
+  
+  BDLdata.fil <- BDLdata[, idx.accept]
+  BDLmean.fil <- BDLdata[, idx.accept]
+}
+```
+
+``` {r}
+# plot of the data subset which is used for the correlation analysis
+col2 <- colorRampPalette(c("#67001F", "#B2182B", "#D6604D", "#F4A582", "#FDDBC7",
+                           "#FFFFFF", "#D1E5F0", "#92C5DE", "#4393C3", "#2166AC", "#053061")) 
+heatmap.2(t(as.matrix(BDLdata.fil)), col=col2(100), scale="row", Rowv=NULL, Colv=NULL,
+          key=TRUE, trace="none", cexRow=0.5, keysize=0.8)
+```

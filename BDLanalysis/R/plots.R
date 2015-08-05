@@ -150,9 +150,10 @@ ProbeInformation <- function(geneId){
   return(info)
 }
 
-#' Heatmap colors
+#' Heatmap color ramp function.
 #' 
-#' Definition of heatmap colors.
+#' Definition of heatmap colors via a colorRampPalette.
+#' The returned function can be called with the numbers of colors in the heatmap.
 #' @export
 HeatmapColors <- function(){
   cols <- colorRampPalette(c("#67001F", "#B2182B", "#D6604D", "#F4A582", "#FDDBC7",

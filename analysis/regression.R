@@ -17,53 +17,6 @@
 #
 ##############################################################################################
 
-
-#---------------------------------------------
-# Correlation analysis
-#---------------------------------------------
-# Calculation of standard correlation matrices based on Spearman
-# and Pearson correlaton coefficients. 
-# Hierarchical clustering is performed using complete linkage.
-# The cor.pearson and cor.spearman are used as comparison models.
-
-# Do the analysis either on the full dataset or the filtered subset
-
-
-
-
-# correlation matrix
-cor.pearson <- cor(data, method="pearson", use="pairwise.complete.obs")
-cor.spearman <- cor(data, method="spearman", use="pairwise.complete.obs")
-cor.pearson.fil <- cor(data.fil, method="pearson", use="pairwise.complete.obs")
-cor.spearman.fil <- cor(data.fil, method="spearman", use="pairwise.complete.obs")
-
-install.packages("corrplot")
-library(corrplot)
-options <- list(width=2000, height=2000, res=200)
-
-# helper function for correlation plot
-f_corrplot <- function(name, data, order){
-  fname <- sprintf("%s_%s.png", name, order)
-  col2 <- colorRampPalette(c("#67001F", "#B2182B", "#D6604D", "#F4A582", "#FDDBC7",
-                             "#FFFFFF", "#D1E5F0", "#92C5DE", "#4393C3", "#2166AC", "#053061"))
-  png(filename=sprintf("../results/%s", fname), width=options$width, height=options$height, res=options$res)
-  corrplot(data, order=order, hclust.method="complete", method="color", type="full", 
-           tl.cex=0.3, tl.col="black", col=col2(10))
-  dev.off()
-}
-
-# Spearman & Pearson correlation matrices
-f_corrplot("cor.spearman", data=cor.spearman, order="original")
-f_corrplot("cor.spearman", data=cor.spearman, order="hclust")
-f_corrplot("cor.pearson", data=cor.pearson, order="original")
-f_corrplot("cor.pearson", data=cor.pearson, order="hclust")
-f_corrplot("cor.spearman.fil", data=cor.spearman.fil, order="original")
-f_corrplot("cor.spearman.fil", data=cor.spearman.fil, order="hclust")
-f_corrplot("cor.pearson.fil", data=cor.pearson.fil, order="original")
-f_corrplot("cor.pearson.fil", data=cor.pearson.fil, order="hclust")
-
-
-
 # --- YR1, YS1, YR2, YS2 correlation ----------
 # Calculation of time-course based correlation measurements, namely ys1, ys2, yr1, yr2
 # and the respective adaptions to the underlying datasets, i.e. using multiple
@@ -72,9 +25,6 @@ f_corrplot("cor.pearson.fil", data=cor.pearson.fil, order="hclust")
 # In ys1, ys2, yr1, yr2 all calculations are performed on the mean time course data.
 # The classical correlation components are replaced with the correlations calculated
 # on the individual data points.
-
-source("ys1_yr1.R")        # definition of ys1, ys2, yr1, yr2
-source("ys1_yr1_tools.R")  # definition of ys1 and yr1
 
 # calculation of ys1 and yr1 for mean data
 w <- list(w1=0.5, w2=0.25, w3=0.25)
@@ -161,42 +111,9 @@ f_corrplot("cor.yr2_full.scaled", data=cor.yr2_full.scaled, order="hclust")
 f_corrplot("cor.yr3_full.scaled", data=cor.yr3_full.scaled, order="original")
 f_corrplot("cor.yr3_full.scaled", data=cor.yr3_full.scaled, order="hclust")
 
-# on filtered data
-cor.ys1_full.fil <- w$w1*cor.S_star.fil + w$w2*res.ys1.fil$A + w$w3*res.ys1.fil$M
-cor.ys1_full.fil.scaled <- 2*(cor.ys1_full.fil-0.5)
-cor.ys2_full.fil <- w$w1*cor.S_star.fil + w$w2*res.ys2.fil$A_star + w$w3*res.ys2.fil$M_star
-cor.ys2_full.fil.scaled <- 2*(cor.ys2_full.fil-0.5)
-# considering slope and time difference
-cor.ys3.fil <- w$w1*res.ys2.fil$S_star + w$w2*res.ys2.fil$A_star2 + w$w3*res.ys2.fil$M_star2
-cor.ys3.fil.scaled <- 2*(cor.ys3.fil-0.5)
-cor.ys3_full.fil <- w$w1*cor.S_star.fil + w$w2*res.ys2.fil$A_star2 + w$w3*res.ys2.fil$M_star2
-cor.ys3_full.fil.scaled <- 2*(cor.ys3_full.fil-0.5)
 
-cor.yr1_full.fil <- w$w1*cor.R_star.fil + w$w2*res.ys1.fil$A + w$w3*res.ys1.fil$M
-cor.yr1_full.fil.scaled <- 2*(cor.yr1_full.fil-0.5)
-
-cor.yr2_full.fil <- w$w1*cor.R_star.fil + w$w2*res.ys2.fil$A_star + w$w3*res.ys2.fil$M_star
-cor.yr2_full.fil.scaled <- 2*(cor.yr2_full.fil-0.5)
-# considering slope and time difference
-cor.yr3_full.fil <- w$w1*cor.R_star.fil + w$w2*res.ys2.fil$A_star2 + w$w3*res.ys2.fil$M_star2
-cor.yr3_full.fil.scaled <- 2*(cor.yr3_full.fil-0.5)
-
-f_corrplot("cor.ys1_full.fil.scaled", data=cor.ys1_full.fil.scaled, order="hclust")
-f_corrplot("cor.ys2_full.fil.scaled", data=cor.ys2_full.fil.scaled, order="hclust")
-f_corrplot("cor.ys3_full.fil.scaled", data=cor.ys3_full.fil.scaled, order="hclust")
-
-f_corrplot("cor.yr1_full.fil.scaled", data=cor.yr1_full.fil.scaled, order="hclust")
-f_corrplot("cor.yr2_full.fil.scaled", data=cor.yr2_full.fil.scaled, order="hclust")
-f_corrplot("cor.yr3_full.fil.scaled", data=cor.yr3_full.fil.scaled, order="hclust")
-
-
-# name_A <- "Actb"
-# name_B <- "Actb.x"
 # extreme example where the difference between pearson and spearman matters
-name_A <- "Nos2"
-name_B <- "Cxcl15"
 f_cor_pair_plot("Nos2", "Cxcl15")
-
 f_cor_pair_plot("albumin", "Cyp2b10")
 
 #---------------------------------------------

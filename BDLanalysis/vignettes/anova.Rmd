@@ -58,31 +58,67 @@ save(df.anova, file=file.path(resultsPath, "BDLanova.Rdata"))
 ```
 
 
-Filter the results based on acceptance level
+Filter the results based on acceptance level. The cutoff for 
 ``` {r filtering}
-filter_by_anova = TRUE
-if (filter_by_anova){
-  # acceptance level
-  p.accept = 0.05
+p.accept = 0.05  # acceptance level, i.e if p.adjusted < p.accept
   
-  # how many rejected by adjusted p-value
-  table(df.anova$p.holm>=p.accept) # 64 rejected / 90 accepted
-  table(df.anova$p.value>=p.accept) # 19 rejected / 135 accepted
+# how many rejected by adjusted p-value
+table(df.anova$p.holm>=p.accept) # 64 rejected / 90 accepted (adjusted)
+table(df.anova$p.value>=p.accept) # 19 rejected / 135 accepted (unadjusted)
   
-  # the accepted subset
-  idx.accept = df.anova$p.holm<p.accept
+# the accepted subset
+idx.accept = df.anova$p.holm<p.accept
   
-  # overwrite the full data set
-  
-  BDLdata.fil <- BDLdata[, idx.accept]
-  BDLmean.fil <- BDLdata[, idx.accept]
+# Create the subset of filtered data
+BDLdata.fil <- BDLdata[, idx.accept]
+BDLmean.fil <- BDLdata[, idx.accept]
 }
 ```
 
-``` {r}
+
+Heatmap of the filtered BDL data.  
+TODO: add the view of the Chips and histopathology
+``` {r heatmapBDL, eval=FALSE}
+library('ALL')
 # plot of the data subset which is used for the correlation analysis
 col2 <- colorRampPalette(c("#67001F", "#B2182B", "#D6604D", "#F4A582", "#FDDBC7",
-                           "#FFFFFF", "#D1E5F0", "#92C5DE", "#4393C3", "#2166AC", "#053061")) 
+                           "#FFFFFF", "#D1E5F0", "#92C5DE", "#4393C3", "#2166AC", "#053061"))
+heatmap.2(t(as.matrix(BDLdata.fil)), col=col2(100), scale="row", Rowv=FALSE, Colv=FALSE,
+          key=TRUE, trace="none", cexRow=0.5, keysize=0.8)
+
+png(filename=file.path(resultsPath, "BDLdata.fil.png"), width=1600, height=1600, res=200)
 heatmap.2(t(as.matrix(BDLdata.fil)), col=col2(100), scale="row", Rowv=NULL, Colv=NULL,
           key=TRUE, trace="none", cexRow=0.5, keysize=0.8)
+dev.off()
+```
+
+
+# Correlation analysis
+Correlation matrices are calculated using a modified correlation score for the analysis of time course data. Standard Pearson and Spearman scores are calculated as reference values and for comparison.  
+Based on the correlation scores hierarchical clustering is performed using complete linkage (hclust).
+
+Spearman & Pearson correlation matrices are plotted either in normal order or based on the reordering via hierarchical clustering
+
+``` {r correlation}
+# correlation matrix
+require(corrplot)
+cor.pearson <- cor(BDLdata.fil, method="pearson", use="pairwise.complete.obs")
+cor.spearman <- cor(BDLdata.fil, method="spearman", use="pairwise.complete.obs")
+
+# Helper function for creating correlation plot and saving to results folder.
+f_corrplot <- function(name, data, order, folder="../results",
+                       width=1600, height=1600, res=200){
+  fname <- sprintf("%s_%s.png", name, order)
+  col2 <- HeatmapColors()
+  png(filename=file.path(folder, "correlation", fname), width=width, height=height, res=res)
+  corrplot(data, order=order, hclust.method="complete", method="color", type="full", 
+           tl.cex=0.3, tl.col="black", col=col2(10))
+  invisible(dev.off())
+}
+# Spearman
+f_corrplot("cor.spearman", data=cor.spearman, order="original", folder=resultsPath)
+f_corrplot("cor.spearman", data=cor.spearman, order="hclust", folder=resultsPath)
+# Pearson
+f_corrplot("cor.pearson", data=cor.pearson, order="original", folder=resultsPath)
+f_corrplot("cor.pearson", data=cor.pearson, order="hclust", folder=resultsPath)
 ```

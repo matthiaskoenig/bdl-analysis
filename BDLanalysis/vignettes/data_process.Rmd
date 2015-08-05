@@ -47,7 +47,6 @@ plot_all_factors(path=resultsPath)
 Actb was measured on all Fluidigm chips and serves as quality control of the measurement/correlation analysis. The pairwise correlation between all Actb measurements should result in high correlation values
 ```{r CheckActB}
 # Actb control figure
-options <- list(width=1600, height=600, res=200)
 png(filename=file.path(resultsPath, "Actb_control.png"), width=1600, height=600, res=200)
 par(mfrow=c(1,3))
 plot_cor_pair("Actb", "Actb.x", single_plots=FALSE)

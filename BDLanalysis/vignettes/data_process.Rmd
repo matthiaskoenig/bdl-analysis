@@ -1,9 +1,10 @@
 ---
-title: "Statistical analysis for BDL mice"
+title: Statistical Analysis of Pathobiochemical Signatures in Bile Duct Ligated (BDL)
+  Mice
 output:
-  html_document: default
   pdf_document:
     keep_tex: yes
+  html_document: default
 header-includes: \usepackage{graphicx}
 ---
 <!--
@@ -11,26 +12,32 @@ header-includes: \usepackage{graphicx}
 %\VignetteIndexEntry{BDL raw data processing}
 -->
 
-# BDL Analysis
+# Introduction
 
-This script contains the complete statistical analysis for the publication Pathobiochemical signatures of cholestatic liver disease in bile duct ligated mice (BMC Systems Biology).
-Main steps in the analysis are
-#    The analysis consists of regression analysis of the various measured factors based
-#    on different measures.
-#    - Pearson Correlation 
-#    - Spearman Correlation
-#    - YS1 and YR1 (time course correlation)
+This document contains the statistical analysis for the publication Pathobiochemical signatures of cholestatic liver disease in bile duct ligated mice (BMC Systems Biology).
 
+To better understand the cascade of histological and biochemical alterations after bile duct ligation (BDL), a comprehensive data set of serum markers, histological parameters and transcript profiles was compiled at 8 time points after bile duct ligation in mice, comprising different stages of the disease. 
+The anlysed data set consists of $N=5$ repeats ($N=3$ for the measured antibodies) for the $n=8$ time points denoted by $t_1,..., t_n$ consisting of a total $p=154$ measured factors (Fluidigm gene expression, antibodies, serum markers, histological measurements).
 
-```{r path}
+The main steps of the analysis comprise
+
+* explorative data anaysis and quality checks via ActB
+* dimension reduction of data set via ANOVA
+* correlation analysis based on time course correlation measure
+* hierarchical clustering based on correlation measure
+* decision trees based on factors
+
+The complete data set, source code and documentation is available from 
+https://github.com/matthiaskoenig/bdl-analysis .
+
+## Read BDL data
+In a first step the processed data set is loaded from the `data` folder. The data consists of the time course data for all factors (`BDLdata`), the sample definition, i.e. which sample belongs to which time point and repeat (`BDLsamples`), and a mapping of the Fluidigm (gene) probe ids to UniProt identifiers (`BDLprobes`). 
+```{r BDLdata, eval=TRUE}
+# definition of paths
 baseLoc <- system.file(package="BDLanalysis")
 extPath <- file.path(baseLoc, "extdata")
 resultsPath <- "/home/mkoenig/git/bdl-analysis/results"
-```
 
-## Read BDL data
-The BDL data, BDL sample definition and the Fluidigm probe definitions are loaded via
-```{r BDLdata, eval=TRUE}
 library("calibrate")
 library('BDLanalysis')
 data(BDLdata)
@@ -38,24 +45,28 @@ data(BDLsamples)
 data(BDLprobes)
 ```
 
-Calculation of mean timecourse for factors averaged over the 5 repeats.
+In addition to the single measurement data for the factors, the mean data averaged over the $N=5$ repeats is used in the correlation analysis.
 ```{r BDLmean}
 BDLmean <- bdl_mean_data(BDLdata, BDLsamples)
 BDLmean.time <- as.numeric(levels(as.factor(BDLsamples$time)))
 ```
 
-Create overview plots for all individual factors. These are stored in the
-resultsPath folder.
+## Explorative data analysis
+In a first step overview plots of the raw and mean data for all factors are generated. These are available in the `resultsPath/factors` folder
+resultsPath folder. The example plot for `bilirubin` is shown below. 
 ```{r factorPlots, eval=FALSE}
 # Single factor visualization
 plot_single_factor(name=colnames(BDLdata)[2])
 
 # Creates plots of all factors in BDLdata
 plot_all_factors(path=resultsPath)
+
+# bilirubin
+plot_single_factor('bilirubin', path =NULL)
 ```
+The data points are not equidistant: `r levels(BDLsamples$time_fac)`.
 
-
-## Actb controls
+### Actb controls
 Actb was measured on all Fluidigm chips and serves as quality control of the measurement/correlation analysis. The pairwise correlation between all Actb measurements should result in high correlation values
 ```{r CheckActB}
 # Actb control figure

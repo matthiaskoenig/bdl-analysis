@@ -5,15 +5,8 @@
 #    Matthias Koenig
 #    2015-07-21
 #
-#    This script contains the complete statistical analysis for the publication
-#    Pathobiochemical signatures of cholestatic liver disease in bile duct ligated
-#    mice (BMC Systems Biology).
 #
-#    The analysis consists of regression analysis of the various measured factors based
-#    on different measures.
-#    - Pearson Correlation 
-#    - Spearman Correlation
-#    - YS1 and YR1 (time course correlation)
+
 #
 ##############################################################################################
 

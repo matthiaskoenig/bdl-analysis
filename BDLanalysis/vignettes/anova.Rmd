@@ -1,14 +1,16 @@
 ---
-output: html_document
+title: "Untitled"
+header-includes: \usepackage{graphicx}
+output: 
+    pdf_document:
+        keep_tex: true
 ---
 <!--
 %\VignetteEngine{knitr}
 %\VignetteIndexEntry{BDL ANOVA}
 -->
-# Dimension reduction via ANOVA
-Dimension reduction of the BDL data set was performed by filtering out factors which are not significantly changing over time. To analyse if a factor is changing in time an analysis of variance (ANOVA), a collection of statistical models used to analyze the differences among group means, was performed. In its simplest form, ANOVA provides a statistical test of whether or not the means of several groups are equal, and therefore generalizes the t-test to more than two groups, with the groups being the sampled time points. For every of the individual factors in the BDL data set an ANOVA was calculated. Subsequently factors were filtered based on the adjusted p-value of the ANOVA, adjusted via multiple testing corrections.
 
-## Read BDL data
+# Read BDL data
 First the BDL data, BDL sample definition and the fluidigm probe definitions are loaded
 ```{r BDLdata, eval=TRUE}
 # Definition of file paths for results
@@ -30,19 +32,20 @@ BDLmatrices <- bdl_matrix_data(BDLdata, BDLsamples)
 print(BDLmatrices[[1]])
 ```
 
-## Perform ANOVA
+# Dimension reduction via ANOVA
+A one-way analysis of variance (ANOVA) was applied to isolate factors showing significant ($p_{adjusted}< 0.05$) up- or down-regulation during the time course, using the Holm's procedure to correct for any artificial p-value inflation. In its simplest form, ANOVA provides a statistical test of whether or not the means of several groups are equal, and therefore generalizes the t-test to more than two groups, with the groups being the sampled time points. For every of the individual factors in the BDL data set an ANOVA was calculated.Dimension reduction of the BDL data set was than performed by filtering out factors which did not significantly changing over time.
+
 An ANOVA is calculated for all factors (N=`r nrow(BDLdata)`). A data.frame with the p-values of the ANOVA is returned which is used for filtering the BDL data set. Significance codes are added for visual inspection.
 ```{r ANOVA}
 df.anova <- all_factor_anova()  # calculate ANOVA
 df.anova$sig <- sapply(df.anova$p.value, significant_code)  # add significant codes
 ```
 
-
 ## Adjust p-values for multiple testing
-A multitude of tests were performed, namely an ANOVA for every single factor. Consequently, the reported p-values of the ANOVA have to be adjusted via multiple testing procedures.
-Using the p.adjust function which given a set of p-values, returns p-values adjusted using one of several methods. The Bonferroni, Holm, Hochberg, Hommel are designed to give strong control of the family-wise error rate. There seems no reason to use the unmodified Bonferroni correction because it is dominated by Holm's method, which is also valid under arbitrary assumptions.
+A multitude of tests were performed, namely an ANOVA for every single factor. Consequently, the reported p-values of the ANOVA have to be adjusted via multiple testing procedures. Using the p.adjust function which given a set of p-values, returns p-values adjusted using one of several methods. The Bonferroni, Holm, Hochberg, Hommel are designed to give strong control of the family-wise error rate. There seems no reason to use the unmodified Bonferroni correction because it is dominated by Holm's method, which is also valid under arbitrary assumptions.
 
 The correction is performed using Holm  
+
 > Holm, S. (1979). A simple sequentially rejective multiple test procedure. Scandinavian Journal of Statistics 6, 65-70.
 
 ```{r}
@@ -60,14 +63,15 @@ BDLanova <- df.anova
 save(df.anova, file=file.path(resultsPath, "BDLanova.Rdata"))
 ```
 
-The factors are filtered based on acceptance level, with the cutoff for the adjusted p-value being $p_{accept}$. I.e. all factors with a ANOVA with $p_{factor} \ge p_{accept}$ are filtered out. The filtered data sets are generated.
+## Filter factors
+The factors are filtered based on acceptance level, with the cutoff for the adjusted p-value being $p_{accept}$. I.e. all factors with a ANOVA with $p_{adjusted} \ge p_{accept}$ are filtered out. The filtered data sets are generated.
 ``` {r filtering}
 p.accept = 0.05  # acceptance level
 idx.accept = (df.anova$p.holm < p.accept)  # accepted subset
   
-# accepted (TRUE/FALSE)
+# accepted
 table(df.anova$p.holm<p.accept)  # 64 rejected / 90 accepted (adjusted)
-table(df.anova$p.value>=p.accept) # 19 rejected / 135 accepted (unadjusted)
+table(df.anova$p.value<p.accept) # 19 rejected / 135 accepted (unadjusted)
   
 # subset of filtered data
 BDLdata.fil <- BDLdata[, idx.accept]
@@ -90,8 +94,26 @@ heatmap.2(t(as.matrix(BDLdata.fil)), col=col2(100), scale="row", Rowv=NULL, Colv
 dev.off()
 ```
 
-
 # Correlation analysis
+The correlation and cluster analysis uses a correlation measure for time series data in combination with Complete-Linkage hierarchical clustering, which provided the best enrichments on gene-expression time-series in a recent comparisons of methods {Jaskowiak2014, Jaskowiak2013}. The time-course experiment includes $n=8$ time points denoted by $t_1,..., t_n$ consisting of a total $p=154$ factors, with $N=5$ repeats per time point. Correlation analysis between factors i and j (i,j=1, …,p) was performed using a modified correlation coefficient based similarity measure developed for clustering of time-course data ($Y_{i,j}^{S2}$ and $Y_{i,j}^{R2}$) {Son2008}. Yi,jS2and Yi,jR2 are linear combinations of a classical correlation part Ri,j*(Pearson) or Si,j*(Spearman), a component Ai,j*accounting for the similarity in changes between the time courses and a component Mi,j* comparing the location of minimum and maximum
+Yi,jS2=1Si,j*+1A<i>,<j>*+2M<i>,<j>*
+Yi,jR2=1Ri,j*+1A<i>,<j>*+2M<i>,<j>*
+with Ri,j*and Si,j*being calculated on the individual data for factor i and j, A<i>,<j>*and M<i>,<j>*on the mean time courses <i>, <j> averaged over the N replicates.Yi,jS2and Yi,jR2were extended in a simple manner to account for the non-equidistant time points t1,..., tn=0h, 6h, 12h, 18h, 30h, 2d, 5d, 14d in the study design
+Yi,jS3=1Si,j*+1A<i>,<j>**+2M<i>,<j>**
+Yi,jR3=1Ri,j*+1A<i>,<j>**+2M<i>,<j>**
+Herein, Ai,j**calculates the correlation of slopes analogue to the correlation in distances in Ai,j* between factors i and j 
+Ai,j**=(Pearson correlation(si,sj)+1)/2
+with si=(si1,si2,...,si(n-1)) being the vector of slopes sik=s(i,tk,tk+1) = xi,tk+1- xi,tktk+1-tk
+Mi,j**calculates the absolute distance in maximum and minimum times instead of the distance of indices in Mi,j*
+Mi,j**=1-|timin-tjmin|+|timax-tjmax|2(tn-t0)
+Throughout the analysis the weights were 
+For comparison Pearson, Spearman and YS2 and YR2 correlation coefficients were calculated.
+See Supporting Information for details.
+All computations were performed in R with all source code and data provided in the supplement.
+
+
+
+
 Correlation matrices are calculated using a modified correlation score for the analysis of time course data. Standard Pearson and Spearman scores are calculated as reference values and for comparison.  
 Based on the correlation scores hierarchical clustering is performed using complete linkage (hclust).
 

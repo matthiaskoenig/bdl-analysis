@@ -5,11 +5,15 @@
 
 # BDL Analysis
 
-This script contains the complete statistical analysis for the publication
-Pathobiochemical signatures of cholestatic liver disease in bile duct ligated
-mice (BMC Systems Biology).
+This script contains the complete statistical analysis for the publication Pathobiochemical signatures of cholestatic liver disease in bile duct ligated mice (BMC Systems Biology).
+Main steps in the analysis are
+#    The analysis consists of regression analysis of the various measured factors based
+#    on different measures.
+#    - Pearson Correlation 
+#    - Spearman Correlation
+#    - YS1 and YR1 (time course correlation)
 
-The goal of this work is to analyze two different collections of archived tweets from the ISMB conferences from 2012 and 2014, and compare and contrast them. The 
+
 ```{r path}
 baseLoc <- system.file(package="BDLanalysis")
 extPath <- file.path(baseLoc, "extdata")

@@ -148,12 +148,12 @@ f_corrplot("cor.pearson", data=cor.pearson, order="original", folder=resultsPath
 f_corrplot("cor.pearson", data=cor.pearson, order="hclust", folder=resultsPath)
 ```
 
-```{r, out.width = '1600px', out.height = '1600px'}
+```{r, out.width = '1200px', out.height = '1200px'}
 # Spearman correlation with hierarchical clustering
 f_corrplot("cor.spearman", data=cor.spearman, order="hclust", folder=NULL)
 ```
 
-```{r, out.width = '1600px', out.height = '1600px'}
+```{r, out.width = '1200px', out.height = '1200px'}
 # Pearson correlation with hierarchical clustering
 f_corrplot("cor.pearson", data=cor.pearson, order="hclust", folder=NULL)
 ```

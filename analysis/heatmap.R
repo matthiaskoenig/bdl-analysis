@@ -1,18 +1,14 @@
 # Example heatmaps with clustering
 # http://www2.warwick.ac.uk/fac/sci/moac/people/students/peter_cock/r/heatmap
-source("http://www.bioconductor.org/biocLite.R")
-biocLite("ALL")
+# source("http://www.bioconductor.org/biocLite.R")
+# biocLite("ALL")
+library('ALL')
 
 
-col2 <- colorRampPalette(c("#67001F", "#B2182B", "#D6604D", "#F4A582", "#FDDBC7",
-                           "#FFFFFF", "#D1E5F0", "#92C5DE", "#4393C3", "#2166AC", "#053061"))  
 
-test <- matrix(rnorm(100), nrow=10, ncol=10)
-cor.cluster <- cor(test, method="pearson")
-
-
-heatmap(cor.cluster, col=topo.colors(100))
 # already scaled, change colors and size
+dev.off()
+col2 <- HeatmapColors()
 heatmap(cor.cluster, col=col2(10), scale="none", cexRow=0.5, cexCol=0.5, symm=TRUE)
 
 # install.packages("gplots")
@@ -28,37 +24,30 @@ heatmap.2(cor.cluster, col=col2(40), scale="none",
           key=TRUE, symkey=FALSE, trace="none", cexRow=0.5, cexCol=0.5,
           density.info="none", dendrogram="column", keysize=0.8)
 
+# ------------------------------------------------------------------------------------
 # Perform the clustering
-Ngroups = 6
+Ngroups = 5
 hc <- hclust(dist(cor.cluster)) 
 # get cluster IDs for the groups
 groups <- cutree(hc, k=Ngroups)
 
-groups
-
-
-# define colors for 6 cluster (colorbrewer)
+# define colors for the Ngroups clusters
 library("RColorBrewer")
 # display.brewer.all()
 colorset <- brewer.pal(Ngroups, "Set1")
-
 color.map <- function(cluster_id) {return(colorset[cluster_id])}
 clusterColors <- unlist(lapply(groups, color.map))
 
-png(filename=sprintf("../results/%s", "test.png"), width=options$width, height=options$height, res=options$res)
+png(filename=sprintf("../results/%s", "test.png"), width=1600, height=1600, res=200)
 heatmap.2(cor.cluster, col=col2(100), scale="none",
           key=TRUE, symkey=FALSE, trace="none", cexRow=0.5, cexCol=0.5,
           density.info="none", dendrogram="column", Rowv=as.dendrogram(hc), Colv=as.dendrogram(hc), keysize=0.8,
           ColSideColors=clusterColors, revC=TRUE)
 dev.off()
 
-png(filename=sprintf("../results/%s", "test.png"), width=options$width, height=options$height, res=options$res)
-heatmap.2(cor.cluster, col=col2(100), scale="none",
-          key=TRUE, symkey=FALSE, trace="none", cexRow=0.5, cexCol=0.5,
-          density.info="none", dendrogram="column", Rowv=as.dendrogram(hc), Colv=as.dendrogram(hc), keysize=0.8,
-          ColSideColors=clusterColors, revC=TRUE, colsep=[])
-dev.off()
-levels(as.factor(groups))
+
+
+
 
 
 # TODO: add the cluster colors

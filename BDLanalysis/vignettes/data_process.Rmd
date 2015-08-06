@@ -1,6 +1,5 @@
 ---
-title: Statistical Analysis of Pathobiochemical Signatures in Bile Duct Ligated (BDL)
-  Mice
+title: Statistical Analysis of Pathobiochemical Signatures in Bile Duct Ligated Mice
 output:
   pdf_document:
     keep_tex: yes
@@ -14,32 +13,35 @@ header-includes: \usepackage{graphicx}
 
 # Introduction
 
-This document contains the statistical analysis for the publication Pathobiochemical signatures of cholestatic liver disease in bile duct ligated mice (BMC Systems Biology).
+This document contains the statistical analysis for the publication *Pathobiochemical signatures of cholestatic liver disease in bile duct ligated mice*.
 
-To better understand the cascade of histological and biochemical alterations after bile duct ligation (BDL), a comprehensive data set of serum markers, histological parameters and transcript profiles was compiled at 8 time points after bile duct ligation in mice, comprising different stages of the disease. 
-The anlysed data set consists of $N=5$ repeats ($N=3$ for the measured antibodies) for the $n=8$ time points denoted by $t_1,..., t_n$ consisting of a total $p=154$ measured factors (Fluidigm gene expression, antibodies, serum markers, histological measurements).
+To better understand the cascade of histological and biochemical alterations after bile duct ligation (BDL), a comprehensive data set of serum markers, histological parameters and transcript profiles was compiled in mice at 8 time points after BDL, comprising different stages of the disease. 
+The analysed data set consists of $N=5$ repeats ($N=3$ for the measured antibodies) for $n=8$ time points denoted by $t_1,..., t_n$ consisting of a total $p=154$ measured factors (Fluidigm gene expression, antibodies, serum markers, histological measurements).
 
 The main steps of the analysis comprise
 
-* explorative data anaysis and quality checks via ActB
-* dimension reduction of data set via ANOVA
-* correlation analysis based on time course correlation measure
-* hierarchical clustering based on correlation measure
-* decision trees based on factors
+* **Explorative data anaysis** and quality controls (using ActB)
+* **Dimension reduction via ANOVA**
+* **correlation analysis** based on time course correlation measure
+* **hierarchical clustering** 
+* **decision trees** for prediction of stage
 
-The complete data set, source code and documentation is available from 
+The complete data set, source code and documentation are available from  
 https://github.com/matthiaskoenig/bdl-analysis .
 
+# Explorative data analysis
 ## Read BDL data
 In a first step the processed data set is loaded from the `data` folder. The data consists of the time course data for all factors (`BDLdata`), the sample definition, i.e. which sample belongs to which time point and repeat (`BDLsamples`), and a mapping of the Fluidigm (gene) probe ids to UniProt identifiers (`BDLprobes`). 
 ```{r BDLdata, eval=TRUE}
+library("calibrate")
+library('BDLanalysis')
+
 # definition of paths
 baseLoc <- system.file(package="BDLanalysis")
 extPath <- file.path(baseLoc, "extdata")
 resultsPath <- "/home/mkoenig/git/bdl-analysis/results"
 
-library("calibrate")
-library('BDLanalysis')
+# load data
 data(BDLdata)
 data(BDLsamples)
 data(BDLprobes)
@@ -51,7 +53,11 @@ BDLmean <- bdl_mean_data(BDLdata, BDLsamples)
 BDLmean.time <- as.numeric(levels(as.factor(BDLsamples$time)))
 ```
 
-## Explorative data analysis
+In total 154 factors were measured falling in the following categories:
+TODO: BDLfactors
+
+
+
 In a first step overview plots of the raw and mean data for all factors are generated. These are available in the `resultsPath/factors` folder
 resultsPath folder. The example plot for `bilirubin` is shown below. 
 ```{r factorPlots, eval=FALSE}
@@ -60,14 +66,16 @@ plot_single_factor(name=colnames(BDLdata)[2])
 
 # Creates plots of all factors in BDLdata
 plot_all_factors(path=resultsPath)
+```
 
+``` {r bilirubin}
 # bilirubin
 plot_single_factor('bilirubin', path =NULL)
 ```
 The data points are not equidistant: `r levels(BDLsamples$time_fac)`.
 
-### Actb controls
-Actb was measured on all Fluidigm chips and serves as quality control of the measurement/correlation analysis. The pairwise correlation between all Actb measurements should result in high correlation values
+### Actb quality control
+Actb (Actin, cytoplasmic 1) was included on all Fluidigm chips and not used for the normalization of the gene expression data. Consequently it can be used as quality control for the technical reproducibility of the Fluidigm chips. The pairwise correlation between all the individual Actb measurements should have a correlation coefficient close to 1. The actin factors are `Actb` on chip ADME, `Actb.x` 
 ```{r CheckActB}
 # Actb control figure
 png(filename=file.path(resultsPath, "Actb_control.png"), width=1600, height=600, res=200)
@@ -118,14 +126,15 @@ heatmap.2(t(as.matrix(BDLdata)), col=colors(100), scale="row", Rowv=NULL, Colv=N
           key=TRUE, trace="none", cexRow=0.5, keysize=0.8)
 ```
 
-# Read BDL data
-The BDLdata set of all timecourses for the factors is reshaped into matrix form for the ANOVA calculation
+# Dimension reduction via ANOVA
+
+The `BDLdata` data set of timecourses for the factors is reshaped into matrix format for the ANOVA calculation, with time points in rows and repeats as columns
 ```{r BDLmatrix}
 BDLmatrices <- bdl_matrix_data(BDLdata, BDLsamples)
 print(BDLmatrices[[1]])
 ```
 
-# Dimension reduction via ANOVA
+
 A one-way analysis of variance (ANOVA) was applied to isolate factors showing significant ($p_{adjusted}< 0.05$) up- or down-regulation during the time course, using the Holm's procedure to correct for any artificial p-value inflation. In its simplest form, ANOVA provides a statistical test of whether or not the means of several groups are equal, and therefore generalizes the t-test to more than two groups, with the groups being the sampled time points. For every of the individual factors in the BDL data set an ANOVA was calculated.Dimension reduction of the BDL data set was than performed by filtering out factors which did not significantly changing over time.
 
 An ANOVA is calculated for all factors (N=`r nrow(BDLdata)`). A data.frame with the p-values of the ANOVA is returned which is used for filtering the BDL data set. Significance codes are added for visual inspection.

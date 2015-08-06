@@ -3,6 +3,7 @@ title: Statistical Analysis of Pathobiochemical Signatures in Bile Duct Ligated 
 output:
   pdf_document:
     keep_tex: yes
+    toc: true
   html_document: default
 header-includes: \usepackage{graphicx}
 ---
@@ -17,6 +18,7 @@ This document contains the statistical analysis for the publication *Pathobioche
 
 To better understand the cascade of histological and biochemical alterations after bile duct ligation (BDL), a comprehensive data set of serum markers, histological parameters and transcript profiles was compiled in mice at 8 time points after BDL, comprising different stages of the disease. 
 The analysed data set consists of $N=5$ repeats ($N=3$ for the measured antibodies) for $n=8$ time points denoted by $t_1,..., t_n$ consisting of a total $p=154$ measured factors (Fluidigm gene expression, antibodies, serum markers, histological measurements).
+
 
 The main steps of the analysis comprise
 
@@ -36,7 +38,7 @@ In a first step the processed data set is loaded from the `data` folder. The dat
 library("calibrate")
 library('BDLanalysis')
 
-# definition of paths
+# path definition
 baseLoc <- system.file(package="BDLanalysis")
 extPath <- file.path(baseLoc, "extdata")
 resultsPath <- "/home/mkoenig/git/bdl-analysis/results"
@@ -74,48 +76,44 @@ plot_single_factor('bilirubin', path =NULL)
 ```
 The data points are not equidistant: `r levels(BDLsamples$time_fac)`.
 
-### Actb quality control
+## Actb quality control
 Actb (Actin, cytoplasmic 1) was included on all Fluidigm chips and not used for the normalization of the gene expression data. Consequently it can be used as quality control for the technical reproducibility of the Fluidigm chips. The pairwise correlation between all the individual Actb measurements should have a correlation coefficient close to 1. The actin factors are `Actb` on chip ADME, `Actb.x` 
 ```{r CheckActB}
 # Actb control figure
-png(filename=file.path(resultsPath, "Actb_control.png"), width=1600, height=600, res=200)
-par(mfrow=c(1,3))
-plot_cor_pair("Actb", "Actb.x", single_plots=FALSE)
-plot_cor_pair("Actb", "Actb.y", single_plots=FALSE)
-plot_cor_pair("Actb.x", "Actb.y", single_plots=FALSE)
-par(mfrow=c(1,1))
-dev.off()
+plot_actb_control <- function(path=NULL){
+  if (!is.null(path)){
+    png(filename=file.path(path, "Actb_control.png"), width=1600, height=400, res=200)  
+  }
+  par(mfrow=c(1,3))
+  plot_cor_pair("Actb", "Actb.x", single_plots=FALSE)
+  plot_cor_pair("Actb", "Actb.y", single_plots=FALSE)
+  plot_cor_pair("Actb.x", "Actb.y", single_plots=FALSE)
+  par(mfrow=c(1,1))
+  if (!is.null(path)){
+    invisible(dev.off())
+  }
+}
+
+plot_actb_control(path=NULL)
+plot_actb_control(path=resultsPath)
 
 # calculate the correlations
-plot_single("Actb")
+# TODO: add text info about the sample
 plot_single_factor("Actb", path=NULL)
-plot_single("Actb.x")
-plot_single("Actb.y")
-plot_cor_pair("Actb", "Actb.x", single_plots=FALSE)
-plot_cor_pair("Actb", "Actb.y", single_plots=FALSE)
-plot_cor_pair("Actb.x", "Actb.y", single_plots=FALSE)
+plot_single_factor("Actb.x", path=NULL)
+plot_single_factor("Actb.y", path=NULL)
 
 # calculate Spearman and Pearson correlation coefficients on mean and individual
 # data
 actb.spearman <- cor(data.frame(Actb=BDLdata$Actb, 
                                 Actb.x=BDLdata$Actb.x, 
                                 Actb.y=BDLdata$Actb.y), method="spearman")
-
-actb.spearman.mean <- cor(data.frame(Actb=BDLmean$Actb, 
-                                     Actb.x=BDLmean$Actb.x, 
-                                     Actb.y=BDLmean$Actb.y), method="spearman")
-
 actb.pearson <- cor(data.frame(Actb=BDLdata$Actb, 
                                Actb.x=BDLdata$Actb.x, 
                                Actb.y=BDLdata$Actb.y), method="pearson")
 
-actb.pearson.mean <- cor(data.frame(Actb=BDLmean$Actb, 
-                                    Actb.x=BDLmean$Actb.x, 
-                                    Actb.y=BDLmean$Actb.y), method="pearson")
-print(actb.spearman)
-print(actb.spearman.mean)
-print(actb.pearson)
-print(actb.pearson.mean)
+knitr::kable(actb.spearman, digits=3)
+knitr::kable(actb.pearson, digits=3)
 ```
 
 Heatmap of the full data set provides an overview over the data quality
@@ -127,6 +125,10 @@ heatmap.2(t(as.matrix(BDLdata)), col=colors(100), scale="row", Rowv=NULL, Colv=N
 ```
 
 # Dimension reduction via ANOVA
+## ANOVA for single factor
+A one-way analysis of variance (ANOVA) was applied to isolate factors showing significant ($p_{adjusted}< 0.05$) up- or down-regulation during the time course, using the Holm's procedure to correct for any artificial p-value inflation. In its simplest form, ANOVA provides a statistical test of whether or not the means of several groups are equal, and therefore generalizes the t-test to more than two groups, with the groups being the sampled time points. For every of the individual factors in the BDL data set an ANOVA was calculated.Dimension reduction of the BDL data set was than performed by filtering out factors which did not significantly changing over time.
+
+An ANOVA is calculated for all factors (N=`r nrow(BDLdata)`). A data.frame with the p-values of the ANOVA is returned which is used for filtering the BDL data set. Significance codes are added for visual inspection.
 
 The `BDLdata` data set of timecourses for the factors is reshaped into matrix format for the ANOVA calculation, with time points in rows and repeats as columns
 ```{r BDLmatrix}
@@ -134,21 +136,40 @@ BDLmatrices <- bdl_matrix_data(BDLdata, BDLsamples)
 print(BDLmatrices[[1]])
 ```
 
-
-A one-way analysis of variance (ANOVA) was applied to isolate factors showing significant ($p_{adjusted}< 0.05$) up- or down-regulation during the time course, using the Holm's procedure to correct for any artificial p-value inflation. In its simplest form, ANOVA provides a statistical test of whether or not the means of several groups are equal, and therefore generalizes the t-test to more than two groups, with the groups being the sampled time points. For every of the individual factors in the BDL data set an ANOVA was calculated.Dimension reduction of the BDL data set was than performed by filtering out factors which did not significantly changing over time.
-
-An ANOVA is calculated for all factors (N=`r nrow(BDLdata)`). A data.frame with the p-values of the ANOVA is returned which is used for filtering the BDL data set. Significance codes are added for visual inspection.
-
+The following shows the ANOVA calculation for a single factor, here for `bilirubin`. In the same manner the ANOVA is calculated for all factors.
+``` {r singleanova}
+  # example ANOVA for one factor
+  mat.anova <- t(BDLmatrices[['bilirubin']])
+  colnames(mat.anova) <- levels(BDLsamples$time_fac)
+  
+  # concatenate the data rows of df1 into a single vector r .
+  r = c(t(as.matrix(mat.anova)))  # response data 
+  
+  # assign new variables for the treatment levels and number of observations.
+  f = levels(BDLsamples$time_fac)   # treatment levels 
+  k = 8                          # number of treatment levels 
+  n = 5                          # observations per treatment 
+  
+  # create a vector of treatment factors that corresponds to each element of r in step 3 with the gl function.
+  tm <- gl(k, 1, n*k, factor(f))   # matching treatments 
+  
+  # apply the function aov to a formula that describes the response r by the treatment factor tm.
+  # fit an analysis of variance model
+  av <- aov(r ~ tm) 
+  
+  # print out the ANOVA table with the summary function. 
+  summary(av)
+  # print the corresponding p-value
+  p.value <- summary(av)[[1]][["Pr(>F)"]][[1]]
+```
 
 ## Adjust p-values for multiple testing
 A multitude of tests were performed, namely an ANOVA for every single factor. Consequently, the reported p-values of the ANOVA have to be adjusted via multiple testing procedures. Using the p.adjust function which given a set of p-values, returns p-values adjusted using one of several methods. The Bonferroni, Holm, Hochberg, Hommel are designed to give strong control of the family-wise error rate. There seems no reason to use the unmodified Bonferroni correction because it is dominated by Holm's method, which is also valid under arbitrary assumptions.
 
-The correction is performed using Holm  
+The correction is performed using Holm []
 
-> Holm, S. (1979). A simple sequentially rejective multiple test procedure. Scandinavian Journal of Statistics 6, 65-70.
-
-# TODO: Add the code for single factor ANOVA
-
+Holm, S. (1979). A simple sequentially rejective multiple test procedure. Scandinavian Journal of Statistics 6, 65-70.
+TODO: add proper reference
 
 The ANOVA is now calculated for every single factor
 ```{r ANOVA}
@@ -185,7 +206,7 @@ BDLmean.fil <- BDLdata[, idx.accept]
 
 Heatmap of the filtered BDL data.  
 TODO: add the view of the Chips and histopathology
-``` {r heatmapBDL, error=TRUE}
+``` {r heatmapBDL, error=TRUE, width=6, height=6}
 library('ALL')
 # plot of the data subset which is used for the correlation analysis
 col2 <- colorRampPalette(c("#67001F", "#B2182B", "#D6604D", "#F4A582", "#FDDBC7",
@@ -217,12 +238,11 @@ See Supporting Information for details.
 All computations were performed in R with all source code and data provided in the supplement.
 
 
-
-
 Correlation matrices are calculated using a modified correlation score for the analysis of time course data. Standard Pearson and Spearman scores are calculated as reference values and for comparison.  
 Based on the correlation scores hierarchical clustering is performed using complete linkage (hclust).
 
-Spearman & Pearson correlation matrices are plotted either in normal order or based on the reordering via hierarchical clustering
+## Pearson & Spearman
+Heatmaps of the Spearman & Pearson correlation matrices are plotted reordered via hierarchical clustering
 
 ``` {r correlation}
 # correlation matrix
@@ -233,6 +253,7 @@ cor.spearman <- cor(BDLdata.fil, method="spearman", use="pairwise.complete.obs")
 # Helper function for creating correlation plot and saving to results folder.
 f_corrplot <- function(name, data, order, folder="../results",
                        width=1600, height=1600, res=200){
+  # TODO: create the plot using the heatmap.2 with color based on histopathology
   fname <- sprintf("%s_%s.png", name, order)
   col2 <- HeatmapColors()
   if (!is.null(folder)){
@@ -263,7 +284,7 @@ f_corrplot("cor.spearman", data=cor.spearman, order="hclust", folder=NULL)
 f_corrplot("cor.pearson", data=cor.pearson, order="hclust", folder=NULL)
 ```
 
-# YS and YR correlation
+## YS and YR correlation
 Calculation of time-course based correlation measurements, namely ys1, ys2, ys3, yr1, yr2, yr3
 In ys1, ys2, yr1, yr2 all calculations are performed on the mean time course data. The classical correlation components are replaced with the correlations calculated on the individual data points.
 

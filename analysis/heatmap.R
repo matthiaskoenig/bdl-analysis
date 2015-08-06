@@ -26,13 +26,17 @@ heatmap.2(cor.cluster, col=col2(40), scale="none",
 
 # ------------------------------------------------------------------------------------
 # Perform the clustering
+library("gplots")
+library("RColorBrewer")
+
+col2 <- HeatmapColors()
 Ngroups = 5
 hc <- hclust(dist(cor.cluster)) 
 # get cluster IDs for the groups
 groups <- cutree(hc, k=Ngroups)
 
 # define colors for the Ngroups clusters
-library("RColorBrewer")
+
 # display.brewer.all()
 colorset <- brewer.pal(Ngroups, "Set1")
 color.map <- function(cluster_id) {return(colorset[cluster_id])}

@@ -233,12 +233,12 @@ f_corrplot("cor.pearson", data=cor.pearson, order="original", folder=resultsPath
 f_corrplot("cor.pearson", data=cor.pearson, order="hclust", folder=resultsPath)
 ```
 
-```{r, out.width = '1200px', out.height = '1200px'}
+```{r}
 # Spearman correlation with hierarchical clustering
 f_corrplot("cor.spearman", data=cor.spearman, order="hclust", folder=NULL)
 ```
 
-```{r, out.width = '1200px', out.height = '1200px'}
+```{r}
 # Pearson correlation with hierarchical clustering
 f_corrplot("cor.pearson", data=cor.pearson, order="hclust", folder=NULL)
 ```
@@ -287,14 +287,10 @@ cor.yr1 <- 2*(cor.yr1.raw-0.5)
 cor.yr2 <- 2*(cor.yr2.raw-0.5)
 cor.yr3 <- 2*(cor.yr3.raw-0.5)
 
-# plot clustered results in report
-f_corrplot("cor.ys1", data=cor.ys1, order="hclust", folder=NULL)
+# plot subset for further analysis
 f_corrplot("cor.ys2", data=cor.ys2, order="hclust", folder=NULL)
-f_corrplot("cor.ys3", data=cor.ys3, order="hclust", folder=NULL)
-f_corrplot("cor.yr1", data=cor.yr1, order="hclust", folder=NULL)
-f_corrplot("cor.yr2", data=cor.yr2, order="hclust", folder=NULL)
-f_corrplot("cor.yr3", data=cor.yr3, order="hclust", folder=NULL)
-# and on disk
+
+# and create all files on disk
 f_corrplot("cor.ys1", data=cor.ys1, order="hclust", folder=resultsPath)
 f_corrplot("cor.ys2", data=cor.ys2, order="hclust", folder=resultsPath)
 f_corrplot("cor.ys3", data=cor.ys3, order="hclust", folder=resultsPath)
@@ -304,8 +300,146 @@ f_corrplot("cor.yr3", data=cor.yr3, order="hclust", folder=resultsPath)
 
 
 # extreme example where the difference between pearson and spearman matters
-plot_cor_pair("Nos2", "Cxcl15")
-plot_cor_pair("albumin", "Cyp2b10")
+# plot_cor_pair("Nos2", "Cxcl15")
+# plot_cor_pair("albumin", "Cyp2b10")
 ```
 
+# Hierarchical clustering
+The next step of dimension reduction is clustering of the correlation matrix. This groups the factors into sets with the correlation within sets being larger than between sets. This effectivly finds groups of factors which have similar time courses.
+
+The hclust function in R was used for clustering with complete linkage method for hierarchical clustering. This particular clustering method defines the cluster distance between two clusters to be the maximum distance between their individual components.
+
+An overview of the clusters is given in the `results/cluster` folder.
+
+``` {r}
+# apply hirarchical clustering based on selected correlation measure
+method = "ys2"
+if (identical(method, "ys1")){
+  cor.cluster <- cor.ys1  
+}else if (identical(method, "ys2")){
+  cor.cluster <- cor.ys2
+}else if (identical(method, "ys3")){
+  cor.cluster <- cor.ys3
+}else if (identical(method, "yr1")){
+  cor.cluster <- cor.yr1
+}else if (identical(method, "yr2")){
+  cor.cluster <- cor.yr2
+}else if (identical(method, "yr3")){
+  cor.cluster <- cor.yr3
+}
+
+# perform hierarchical clustering and cut into Ngroups clusters.
+hc <- hclust(dist(cor.cluster)) 
+Ngroups <-  5
+groups <- cutree(hc, k=Ngroups)
+groups.hc.order <- groups[hc$order]
+
+# Plot the clusters
+require('matrixStats')
+
+# mean plots for clusters 
+f_normalize_centering <- function(a){
+  a.norm <- (a - mean(a))/(max(a, na.rm=TRUE) - min(a, na.rm=TRUE))
+  return(a.norm)
+}
+
+# plot of mean clusters
+plot_clusters <- function(folder=NULL){
+  if (!is.null(folder)){
+    fname <- sprintf("%s_cluster_overview.png", method)
+    png(filename=sprintf("../results/cluster/%s", fname), width=1600, height=1600, res=200)
+  }
+  # par(mfrow=c(ceiling(sqrt(Ngroups)),ceiling(sqrt(Ngroups))))
+  par(mfrow=c(2,3))
+  
+  steps <- 1:8
+    for (k in 1:Ngroups){
+      g <- groups.hc.order[groups.hc.order==k]
+      N <- ceiling(sqrt(length(g)))
+      dgroup <- BDLmean[names(g)]
+    
+      # centralize and normalize columns, i.e. the individual factors for comparison
+      dgroup.norm <- apply(dgroup, 2, f_normalize_centering)
+      
+      # mean and sd for timepoints 
+      g.mean <- rowMeans(dgroup.norm)
+      g.sd <- rowSds(dgroup.norm)   # apply(dgroup.norm, 2, sd)
+      
+      # plot sd range
+      plot(1, type="n", xlab="", ylab="", xlim=c(1, 8), ylim=c(-1, 1), main=sprintf("%s : Cluster %s", method, k))
+      polygon(c(steps, rev(steps)), c(g.mean+g.sd, rev(g.mean-g.sd)),
+              col = rgb(0.5,0.5,0.5,0.5), border = NA)
+      
+      # individual data
+      for (name in names(g)){
+        points(steps, dgroup.norm[, name], pch=16, col="black")
+        lines(steps, dgroup.norm[, name], col=rgb(0.5,0.5,0.5, 0.8), lwd=1)
+      }
+      # mean over factors in cluster
+      lines(steps, g.mean, col="blue", lwd=2)
+    }
+    par(mfrow=c(1,1))
+  if (!is.null(folder)){
+    invisible(dev.off())
+  }
+}
+
+plot_clusters(folder=NULL)
+```
+
+TODO: overview over the cluster size and content
+
+Display the clusters with the heatmap
+``` {r, error=TRUE}
+library("gplots")
+library("RColorBrewer")
+col2 <- HeatmapColors()
+Ngroups = 5
+hc <- hclust(dist(cor.cluster)) 
+# get cluster IDs for the groups
+groups <- cutree(hc, k=Ngroups)
+
+# define colors for the Ngroups clusters
+
+# display.brewer.all()
+colorset <- brewer.pal(Ngroups, "Set1")
+color.map <- function(cluster_id) {return(colorset[cluster_id])}
+clusterColors <- unlist(lapply(groups, color.map))
+
+heatmap.2(cor.cluster, col=col2(100), scale="none",
+          key=TRUE, symkey=FALSE, trace="none", cexRow=0.5, cexCol=0.5,
+          density.info="none", dendrogram="column", Rowv=as.dendrogram(hc), Colv=as.dendrogram(hc), keysize=0.8,
+          ColSideColors=clusterColors, revC=TRUE)
+```
+
+
+Overview of the individual time courses in the clusters
+```{r, eval=FALSE}
+# Plot individual time courses in cluster
+plot_clusters_items <- function(folder=NULL){
+  for (k in 1:Ngroups){
+    if (!is.null(folder)){
+      fname <- sprintf("%s_cluster_%s.png", method, k)
+      png(filename=sprintf("../results/cluster/%s", fname), width=3000, height=3000, res=200)  
+    }
+    g <- groups.hc.order[groups.hc.order==k]
+    N <- ceiling(sqrt(length(g)))
+    par(mfrow=c(N,N))
+    for (name in names(g)){
+      plot_single(name_A=name) 
+    }
+    par(mfrow=c(1,1))  
+    if (!is.null(folder)){
+      invisible(dev.off())
+    }
+  }  
+}
+
+plot_clusters_items(folder=NULL)
+```
+
+# Decision Trees
+The decision trees are based on the clusters. This has the large advantage to be not dependent on a single factor, but it uses the combined information available by multiple factors. Consequently, the decision tree is applicable to any subset of factors measured. 
+
+**TODO**
 

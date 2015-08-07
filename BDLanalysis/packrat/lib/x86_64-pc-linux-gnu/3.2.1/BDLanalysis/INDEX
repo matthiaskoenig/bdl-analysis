@@ -3,8 +3,9 @@ BDLanalysis-package     Statistical analysis for data sets of bile duct
                         ligated (BDL) mice.
 BDLanova                ANOVA results.
 BDLdata                 Time course data from BDL mice.
+BDLfactors              Factor description for BDLdata.
 BDLprobes               Fluidigm probe mapping to UniProt.
-BDLsamples              Sample description corresponding to BDLdata.
+BDLsamples              Sample description for BDLdata.
 HeatmapColors           Heatmap color ramp function.
 ProbeInformation        Fluidigm probe annotation
 all_factor_anova        Performs ANOVA for all factors.

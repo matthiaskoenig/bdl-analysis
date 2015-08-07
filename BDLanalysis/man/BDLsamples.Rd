@@ -3,8 +3,8 @@
 \docType{data}
 \name{BDLsamples}
 \alias{BDLsamples}
-\title{Sample description corresponding to BDLdata.}
-\format{A data frame with with 40 rows and 9 variable providing additional information for the samples: \code{time}, \code{time_fac}, \code{time_point}, \code{repeats} ...).}
+\title{Sample description for BDLdata.}
+\format{A data frame with 40 rows and 9 variable providing additional information for the samples: \code{time}, \code{time_fac}, \code{time_point}, \code{repeats} ...).}
 \description{
 Sample description for the BDLdata factor data set. Here the time point and
 repeat information is defined.

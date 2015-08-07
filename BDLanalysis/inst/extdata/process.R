@@ -56,25 +56,39 @@ summary(d)
 tmp <- merge(d$gldh, d$alt, by="sid")
 tmp <- merge(tmp, d$bilirubin, by="sid")
 tmp <- merge(tmp, d$albumin, by="sid")
-tmp <- merge(tmp, d$hc, by="sid")
-tmp <- merge(tmp, d$nhc, by="sid")
+biochemistry <- tmp
+
+tmp <- merge(d$hc, d$nhc, by="sid")
 tmp <- merge(tmp, d$kupffer, by="sid")
 tmp <- merge(tmp, d$hsc, by="sid")
 tmp <- merge(tmp, d$siriusRed, by="sid")
 tmp <- merge(tmp, d$bileInfarcts, by="sid")
 histology.processed <- tmp
-head(histology.processed)
 
 # remove pid from antibodies
 antibodies <- subset(antibodies, select = -c(pid) )
-head(antibodies)
 
-# Merge histological & antibody data with the fluidigm data
+# Merge all data and create an overview of the factors
 tmp <- merge(adme, cytokines, by = c('sid', 'time'))
 tmp <- merge(tmp, fibrosis, by = c('sid', 'time'))
+tmp <- merge(tmp, biochemistry, by=c('sid'))
 tmp <- merge(tmp, histology.processed, by=c('sid'))
 tmp <- merge(tmp, antibodies, by=c('sid'))
 data <- tmp
+
+# Type of factor
+ftype <- c(rep("GE ADME", ncol(adme)-2),
+           rep("GE Cytokines", ncol(cytokines)-2),
+           rep("GE Fibrosis", ncol(fibrosis)-2),
+           rep("Biochemistry", ncol(biochemistry)-1),
+           rep("Histology", ncol(histology.processed)-1),
+           rep("Antibodies", ncol(antibodies)-1))
+
+# Create the factor information
+BDLfactors <- data.frame(id=colnames(data)[3:ncol(data)], ftype=ftype)
+           
+
+
 
 # Set sample ids as row numbers for data and samples
 rownames(data) <- data$sid
@@ -88,7 +102,7 @@ samples$repeats <- (seq(from=0, to=(nrow(samples)-1))%%5) +1
 
 # remove non-factor columns which are not part of the correlation analysis
 data <- subset(data, select = -c(sid,time) )
-rm(tmp, d, adme, antibodies, cytokines, fibrosis, histology, histology.processed)
+rm(tmp, d, adme, antibodies, cytokines, fibrosis, histology, histology.processed, biochemistry)
 
 
 BDLdata <- data
@@ -96,6 +110,7 @@ BDLsamples <- samples
 # save processed data
 save(BDLdata, file="data/BDLdata.RData")
 save(BDLsamples, file="data/BDLsamples.RData")
+save(BDLfactors, file="data/BDLfactors.RData")
 rm(data, samples, BDLdata, BDLsamples)
 
 

@@ -5,6 +5,7 @@ BDLanalysis	BDLanalysis-package
 BDLanalysis	BDLanalysis
 BDLanova	BDLanova
 BDLdata	BDLdata
+BDLfactors	BDLfactors
 BDLprobes	BDLprobes
 BDLsamples	BDLsamples
 bdl_matrix_data	bdl_matrix_data

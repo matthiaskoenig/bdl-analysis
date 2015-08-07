@@ -17,13 +17,22 @@ NULL
 NULL
 
 
-#' Sample description corresponding to BDLdata.
+#' Sample description for BDLdata.
 #'
 #' Sample description for the BDLdata factor data set. Here the time point and
 #' repeat information is defined.
 #'
-#' @format A data frame with with 40 rows and 9 variable providing additional information for the samples: \code{time}, \code{time_fac}, \code{time_point}, \code{repeats} ...).
+#' @format A data frame with 40 rows and 9 variable providing additional information for the samples: \code{time}, \code{time_fac}, \code{time_point}, \code{repeats} ...).
 #' @name BDLsamples
+#' @docType data
+NULL
+
+#' Factor description for BDLdata.
+#'
+#' Factor description for the BDLdata factor data set. Here the factor ids, description and type are defined.
+#'
+#' @format A data frame with 154 rows providing additional information for the samples.
+#' @name BDLfactors
 #' @docType data
 NULL
 

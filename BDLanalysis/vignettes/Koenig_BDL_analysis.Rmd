@@ -288,7 +288,7 @@ f_corrplot("cor.spearman", data=cor.spearman, order="hclust", folder=NULL)
 f_corrplot("cor.pearson", data=cor.pearson, order="hclust", folder=NULL)
 ```
 
-## YS and YR correlation
+## YS & YR correlation
 Calculation of time-course based correlation measurements, namely ys1, ys2, ys3, yr1, yr2, yr3
 In ys1, ys2, yr1, yr2 all calculations are performed on the mean time course data. The classical correlation components are replaced with the correlations calculated on the individual data points.
 

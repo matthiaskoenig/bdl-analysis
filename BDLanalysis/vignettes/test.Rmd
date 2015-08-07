@@ -1,27 +1,13 @@
 ---
 title: "Statistical Analysis of Pathobiochemical Signatures in Bile Duct Ligated Mice"
-author:
-- affiliation: 1
-  name: Peter Humburg
-date: "Wed 15 Oct 2014"
+author: "[Matthias Koenig](http://www.charite.de/sysbio/people/koenig) (`r Sys.Date()`)"
 output:
   pdf_document:
     keep_tex: yes
     toc: yes
+    fig_caption: yes
   html_document: default
 header-includes: \usepackage{graphicx}
-address:
-- address: Wellcome Trust Centre for Human Genetics, University of Oxford, Roosevelt
-    Dr., Oxford, OX3 7BN, UK
-  code: 1
-abstract: "When carrying out data analyses it is desirable to do so in a reproducible
-  way.\nThis aim is easier to achieve if a close link between the code, its documentation\nand
-  the results is maintained. If done consistently this leads to reports that\nare
-  relatively easy to maintain and can be updated automatically if either the data
-  \nor details of the analysis change.\n\nHere we are exploring the use of R package
-  `knitr` and the document conversion tool\n`pandoc` to generate reproducible reports
-  in R. After a general introduction to these\ntwo tools aspects relevant to the writing
-  of scientific reports are discussed in\nsome detail.\n"
 ---
 <!--
 %\VignetteEngine{knitr}
@@ -30,6 +16,14 @@ abstract: "When carrying out data analyses it is desirable to do so in a reprodu
 ```{r, options, echo=FALSE}
 # set knitr option
 knitr::opts_chunk$set(fig.height=6, fig.width=6)
+# figure counter
+fn = local({
+  i = 0
+  function(x) {
+    i <<- i + 1
+    paste('Figure ', i, ': ', x, sep = '')
+  }
+})
 ```
 
 
@@ -45,20 +39,20 @@ The main steps of the analysis comprise
 
 * **Explorative data anaysis** and quality controls (using ActB)
 * **Dimension reduction via ANOVA**
-* **correlation analysis** based on time course correlation measure
-* **hierarchical clustering** 
-* **decision trees** for prediction of stage
+* **Correlation analysis** based on time course correlation measure
+* **Hierarchical clustering** 
+* **Decision trees** for prediction
 
 The complete data set, source code and documentation are available from  
 https://github.com/matthiaskoenig/bdl-analysis .
 
 # Explorative data analysis
-## Read BDL data
+## Data import
 In a first step the processed data set is loaded from the `data` folder. The data consists of the time course data for all factors (`BDLdata`), the sample definition, i.e. which sample belongs to which time point and repeat (`BDLsamples`), and a mapping of the Fluidigm (gene) probe ids to UniProt identifiers (`BDLprobes`). 
 
 ```{r BDLdata, eval=TRUE, strip.white=TRUE}
-library("calibrate")
-library('BDLanalysis')
+suppressPackageStartupMessages(library("calibrate"))
+suppressPackageStartupMessages(library('BDLanalysis'))
 # path definition
 baseLoc <- system.file(package="BDLanalysis")
 extPath <- file.path(baseLoc, "extdata")
@@ -75,26 +69,32 @@ BDLmean <- bdl_mean_data(BDLdata, BDLsamples)
 BDLmean.time <- as.numeric(levels(as.factor(BDLsamples$time)))
 ```
 
-In total 154 factors were measured falling in the following categories:
+In total `r ncol(BDLdata)` factors were measured falling in the following categories:
 TODO: BDLfactors
 
-
-
-In a first step overview plots of the raw and mean data for all factors are generated. These are available in the `resultsPath/factors` folder
-resultsPath folder. The example plot for `bilirubin` is shown below. 
+## Data visualization
+In a first step overview plots of the raw and mean data for all factors were generated. These are available in the `resultsPath/factors` folder
 ```{r factorPlots, eval=FALSE}
-# Single factor visualization
+# Visualize single factor
 plot_single_factor(name=colnames(BDLdata)[2])
-
-# Creates plots of all factors in BDLdata
+# Visualize all factors
 plot_all_factors(path=resultsPath)
 ```
 
-``` {r bilirubin}
+The example plot for `bilirubin` is shown below. 
+``` {r bilirubin, fig.cap="Example plot of raw time course data for factor bilirubin. The measured time points are not equidistant: `r levels(BDLsamples$time_fac)`."}
 # bilirubin
 plot_single_factor('bilirubin', path =NULL)
 ```
-The data points are not equidistant: `r levels(BDLsamples$time_fac)`.
+
+The Heatmap of the full data set provides an overview over the data quality
+```{r heatmap, fig.width=10, fig.height=10, error=TRUE}
+library("gplots")
+colors <- HeatmapColors() 
+heatmap.2(t(as.matrix(BDLdata)), col=colors(100), scale="row", Rowv=NULL, Colv=NULL,
+          key=TRUE, trace="none", cexRow=0.5, keysize=0.8)
+```
+
 
 ## Actb quality control
 Actb (Actin, cytoplasmic 1) was included on all Fluidigm chips and not used for the normalization of the gene expression data. Consequently it can be used as quality control for the technical reproducibility of the Fluidigm chips. The pairwise correlation between all the individual Actb measurements should have a correlation coefficient close to 1. The actin factors are `Actb` on chip ADME, `Actb.x` 
@@ -140,10 +140,4 @@ set.caption(sub(".", " ", "Spearman correlation of Actb controls", fixed = TRUE)
 pander(actb.spearman)
 ```
 
-Heatmap of the full data set provides an overview over the data quality
-```{r heatmap, fig.width=10, fig.height=10, error=TRUE}
-library("gplots")
-colors <- HeatmapColors() 
-heatmap.2(t(as.matrix(BDLdata)), col=colors(100), scale="row", Rowv=NULL, Colv=NULL,
-          key=TRUE, trace="none", cexRow=0.5, keysize=0.8)
-```
+

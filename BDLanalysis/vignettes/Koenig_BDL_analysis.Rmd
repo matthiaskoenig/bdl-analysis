@@ -11,6 +11,11 @@ header-includes: \usepackage{graphicx}
 %\VignetteEngine{knitr}
 %\VignetteIndexEntry{BDL raw data processing}
 -->
+```{r}
+# set knitr option
+knit::op
+```
+
 
 # Introduction
 
@@ -34,15 +39,14 @@ https://github.com/matthiaskoenig/bdl-analysis .
 # Explorative data analysis
 ## Read BDL data
 In a first step the processed data set is loaded from the `data` folder. The data consists of the time course data for all factors (`BDLdata`), the sample definition, i.e. which sample belongs to which time point and repeat (`BDLsamples`), and a mapping of the Fluidigm (gene) probe ids to UniProt identifiers (`BDLprobes`). 
+
 ```{r BDLdata, eval=TRUE}
 library("calibrate")
 library('BDLanalysis')
-
 # path definition
 baseLoc <- system.file(package="BDLanalysis")
 extPath <- file.path(baseLoc, "extdata")
 resultsPath <- "/home/mkoenig/git/bdl-analysis/results"
-
 # load data
 data(BDLdata)
 data(BDLsamples)

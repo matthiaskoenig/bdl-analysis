@@ -1,0 +1,149 @@
+---
+title: "Statistical Analysis of Pathobiochemical Signatures in Bile Duct Ligated Mice"
+author:
+- affiliation: 1
+  name: Peter Humburg
+date: "Wed 15 Oct 2014"
+output:
+  pdf_document:
+    keep_tex: yes
+    toc: yes
+  html_document: default
+header-includes: \usepackage{graphicx}
+address:
+- address: Wellcome Trust Centre for Human Genetics, University of Oxford, Roosevelt
+    Dr., Oxford, OX3 7BN, UK
+  code: 1
+abstract: "When carrying out data analyses it is desirable to do so in a reproducible
+  way.\nThis aim is easier to achieve if a close link between the code, its documentation\nand
+  the results is maintained. If done consistently this leads to reports that\nare
+  relatively easy to maintain and can be updated automatically if either the data
+  \nor details of the analysis change.\n\nHere we are exploring the use of R package
+  `knitr` and the document conversion tool\n`pandoc` to generate reproducible reports
+  in R. After a general introduction to these\ntwo tools aspects relevant to the writing
+  of scientific reports are discussed in\nsome detail.\n"
+---
+<!--
+%\VignetteEngine{knitr}
+%\VignetteIndexEntry{BDL raw data processing}
+-->
+```{r, options, echo=FALSE}
+# set knitr option
+knitr::opts_chunk$set(fig.height=6, fig.width=6)
+```
+
+
+# Introduction
+
+This document contains the statistical analysis for the publication *Pathobiochemical signatures of cholestatic liver disease in bile duct ligated mice*.
+
+To better understand the cascade of histological and biochemical alterations after bile duct ligation (BDL), a comprehensive data set of serum markers, histological parameters and transcript profiles was compiled in mice at 8 time points after BDL, comprising different stages of the disease. 
+The analysed data set consists of $N=5$ repeats ($N=3$ for the measured antibodies) for $n=8$ time points denoted by $t_1,..., t_n$ consisting of a total $p=154$ measured factors (Fluidigm gene expression, antibodies, serum markers, histological measurements).
+
+
+The main steps of the analysis comprise
+
+* **Explorative data anaysis** and quality controls (using ActB)
+* **Dimension reduction via ANOVA**
+* **correlation analysis** based on time course correlation measure
+* **hierarchical clustering** 
+* **decision trees** for prediction of stage
+
+The complete data set, source code and documentation are available from  
+https://github.com/matthiaskoenig/bdl-analysis .
+
+# Explorative data analysis
+## Read BDL data
+In a first step the processed data set is loaded from the `data` folder. The data consists of the time course data for all factors (`BDLdata`), the sample definition, i.e. which sample belongs to which time point and repeat (`BDLsamples`), and a mapping of the Fluidigm (gene) probe ids to UniProt identifiers (`BDLprobes`). 
+
+```{r BDLdata, eval=TRUE, strip.white=TRUE}
+library("calibrate")
+library('BDLanalysis')
+# path definition
+baseLoc <- system.file(package="BDLanalysis")
+extPath <- file.path(baseLoc, "extdata")
+resultsPath <- "/home/mkoenig/git/bdl-analysis/results"
+# load data
+data(BDLdata)
+data(BDLsamples)
+data(BDLprobes)
+```
+
+In addition to the single measurement data for the factors, the mean data averaged over the $N=5$ repeats is used in the correlation analysis.
+```{r BDLmean}
+BDLmean <- bdl_mean_data(BDLdata, BDLsamples)
+BDLmean.time <- as.numeric(levels(as.factor(BDLsamples$time)))
+```
+
+In total 154 factors were measured falling in the following categories:
+TODO: BDLfactors
+
+
+
+In a first step overview plots of the raw and mean data for all factors are generated. These are available in the `resultsPath/factors` folder
+resultsPath folder. The example plot for `bilirubin` is shown below. 
+```{r factorPlots, eval=FALSE}
+# Single factor visualization
+plot_single_factor(name=colnames(BDLdata)[2])
+
+# Creates plots of all factors in BDLdata
+plot_all_factors(path=resultsPath)
+```
+
+``` {r bilirubin}
+# bilirubin
+plot_single_factor('bilirubin', path =NULL)
+```
+The data points are not equidistant: `r levels(BDLsamples$time_fac)`.
+
+## Actb quality control
+Actb (Actin, cytoplasmic 1) was included on all Fluidigm chips and not used for the normalization of the gene expression data. Consequently it can be used as quality control for the technical reproducibility of the Fluidigm chips. The pairwise correlation between all the individual Actb measurements should have a correlation coefficient close to 1. The actin factors are `Actb` on chip ADME, `Actb.x` 
+```{r CheckActB}
+# Actb control figure
+plot_actb_control <- function(path=NULL){
+  if (!is.null(path)){
+    png(filename=file.path(path, "Actb_control.png"), width=1600, height=400, res=200)  
+  }
+  par(mfrow=c(1,3))
+  plot_cor_pair("Actb", "Actb.x", single_plots=FALSE)
+  plot_cor_pair("Actb", "Actb.y", single_plots=FALSE)
+  plot_cor_pair("Actb.x", "Actb.y", single_plots=FALSE)
+  par(mfrow=c(1,1))
+  if (!is.null(path)){
+    invisible(dev.off())
+  }
+}
+
+plot_actb_control(path=NULL)
+plot_actb_control(path=resultsPath)
+
+# calculate the correlations
+# TODO: add text info about the sample
+plot_single_factor("Actb", path=NULL)
+plot_single_factor("Actb.x", path=NULL)
+plot_single_factor("Actb.y", path=NULL)
+
+# calculate Spearman and Pearson correlation coefficients on mean and individual
+# data
+actb.spearman <- cor(data.frame(Actb=BDLdata$Actb, 
+                                Actb.x=BDLdata$Actb.x, 
+                                Actb.y=BDLdata$Actb.y), method="spearman")
+actb.pearson <- cor(data.frame(Actb=BDLdata$Actb, 
+                               Actb.x=BDLdata$Actb.x, 
+                               Actb.y=BDLdata$Actb.y), method="pearson")
+# knitr table
+knitr::kable(actb.spearman, digits=3)
+knitr::kable(actb.pearson, digits=3)
+# pander table
+suppressPackageStartupMessages(library(pander))
+set.caption(sub(".", " ", "Spearman correlation of Actb controls", fixed = TRUE))
+pander(actb.spearman)
+```
+
+Heatmap of the full data set provides an overview over the data quality
+```{r heatmap, fig.width=10, fig.height=10, error=TRUE}
+library("gplots")
+colors <- HeatmapColors() 
+heatmap.2(t(as.matrix(BDLdata)), col=colors(100), scale="row", Rowv=NULL, Colv=NULL,
+          key=TRUE, trace="none", cexRow=0.5, keysize=0.8)
+```

@@ -19,9 +19,11 @@ plot_single_factor <- function(name, path=NULL, k=NULL){
   }
   par(mfrow=c(1,2))
   
+  title <- sprintf("%s (%s)", name, BDLfactors$ftype[BDLfactors$id==name])
+  
   # [A] plot against time
   plot(BDLsamples$time_fac, dA, at=sort(as.numeric(levels(as.factor(BDLsamples$time)))), col="blue",
-       xlab="time [h]", ylab=name, main=name,
+       xlab="time [h]", ylab=name, main=title,
        ylim=c(0, max(dA, na.rm=TRUE)*1.1 ))
   
   points(BDLsamples$time, dA, col="black")
@@ -36,7 +38,7 @@ plot_single_factor <- function(name, path=NULL, k=NULL){
   lines(BDLmean.time, BDLmean[, name], col="red")
   
   # [B] plot as factor (non-equidistant time points)
-  plot(BDLsamples$time_fac, dA, xlab="time", ylab=name, main=name, col=rgb(0.5,0.5,0.5, 0.4),
+  plot(BDLsamples$time_fac, dA, xlab="time", ylab=name, main=title, col=rgb(0.5,0.5,0.5, 0.4),
        ylim=c(0, max(dA, na.rm=TRUE)*1.1))
   points(BDLsamples$time_fac, dA, col="black")
   points(BDLsamples$time_fac, dA, col=rgb(0,0,1,0.6), pch=16)

@@ -1,12 +1,12 @@
 ---
 title: "Statistical Analysis of Pathobiochemical Signatures in Bile Duct Ligated Mice"
-author: "[Matthias Koenig](http://www.charite.de/sysbio/people/koenig) (`r Sys.Date()`)"
+author: '[Matthias Koenig](http://www.charite.de/sysbio/people/koenig) (`r Sys.Date()`)'
 output:
+  html_document: default
   pdf_document:
+    fig_caption: yes
     keep_tex: yes
     toc: yes
-    fig_caption: yes
-  html_document: default
 header-includes: \usepackage{graphicx}
 ---
 <!--
@@ -15,15 +15,7 @@ header-includes: \usepackage{graphicx}
 -->
 ```{r, options, echo=FALSE}
 # set knitr option
-knitr::opts_chunk$set(fig.height=6, fig.width=6)
-# figure counter
-fn = local({
-  i = 0
-  function(x) {
-    i <<- i + 1
-    paste('Figure ', i, ': ', x, sep = '')
-  }
-})
+# knitr::opts_chunk$set()
 ```
 
 
@@ -60,6 +52,7 @@ resultsPath <- "/home/mkoenig/git/bdl-analysis/results"
 # load data
 data(BDLdata)
 data(BDLsamples)
+data(BDLfactors)
 data(BDLprobes)
 ```
 
@@ -70,7 +63,9 @@ BDLmean.time <- as.numeric(levels(as.factor(BDLsamples$time)))
 ```
 
 In total `r ncol(BDLdata)` factors were measured falling in the following categories:
-TODO: BDLfactors
+```{r factors}
+table(BDLfactors$ftype)
+```
 
 ## Data visualization
 In a first step overview plots of the raw and mean data for all factors were generated. These are available in the `resultsPath/factors` folder
@@ -83,7 +78,6 @@ plot_all_factors(path=resultsPath)
 
 The example plot for `bilirubin` is shown below. 
 ``` {r bilirubin, fig.cap="Example plot of raw time course data for factor bilirubin. The measured time points are not equidistant: `r levels(BDLsamples$time_fac)`."}
-# bilirubin
 plot_single_factor('bilirubin', path =NULL)
 ```
 

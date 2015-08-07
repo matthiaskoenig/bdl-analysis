@@ -77,9 +77,9 @@ tmp <- merge(tmp, antibodies, by=c('sid'))
 data <- tmp
 
 # Type of factor
-ftype <- c(rep("GE ADME", ncol(adme)-2),
-           rep("GE Cytokines", ncol(cytokines)-2),
-           rep("GE Fibrosis", ncol(fibrosis)-2),
+ftype <- c(rep("GE_ADME", ncol(adme)-2),
+           rep("GE_Cytokines", ncol(cytokines)-2),
+           rep("GE_Fibrosis", ncol(fibrosis)-2),
            rep("Biochemistry", ncol(biochemistry)-1),
            rep("Histology", ncol(histology.processed)-1),
            rep("Antibodies", ncol(antibodies)-1))

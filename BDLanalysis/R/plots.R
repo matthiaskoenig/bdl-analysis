@@ -23,25 +23,33 @@ plot_single_factor <- function(name, path=NULL, k=NULL){
   
   # [A] plot against time
   plot(BDLsamples$time_fac, dA, at=sort(as.numeric(levels(as.factor(BDLsamples$time)))), col="blue",
-       xlab="time [h]", ylab=name, main=title,
+       xlab="time [h]", ylab=name, main=title, font.lab=2,
        ylim=c(0, max(dA, na.rm=TRUE)*1.1 ))
   
   points(BDLsamples$time, dA, col="black")
   points(BDLsamples$time, dA, col=rgb(0,0,1,0.6), pch=16)
+  # labels
+  require(calibrate)
+  dA[is.na(dA)] <- -1  # handle NAs
+  textxy(BDLsamples$time, dA, BDLsamples$sid, col="black", cex=0.5)
+  # protein name
   if (!is.null(info$Protein.name)){
     text(x=140, y=max(dA, na.rm=TRUE)*1.08, 
          labels=info$Protein.name, cex=0.8)
   }
-  # add mean
+  # mean
   Nt <- length(BDLmean.time)
   points(BDLmean.time, BDLmean[, name], col="red", pch=15)
   lines(BDLmean.time, BDLmean[, name], col="red")
   
   # [B] plot as factor (non-equidistant time points)
   plot(BDLsamples$time_fac, dA, xlab="time", ylab=name, main=title, col=rgb(0.5,0.5,0.5, 0.4),
+       font.lab=2,
        ylim=c(0, max(dA, na.rm=TRUE)*1.1))
   points(BDLsamples$time_fac, dA, col="black")
   points(BDLsamples$time_fac, dA, col=rgb(0,0,1,0.6), pch=16)
+  # labels
+  textxy(as.numeric(BDLsamples$time_fac), dA, BDLsamples$sid, col="black", cex=0.5)
   # add mean
   points(1:Nt, BDLmean[, name], col="red", pch=15)
   lines(1:Nt, BDLmean[, name], col="red")
@@ -73,16 +81,19 @@ plot_all_factors <- function(path){
 #' Plots the mean time course and individual samples.
 #' @export
 plot_single <- function(name_A){
+  # data and mean data
   dA <- BDLdata[[name_A]]
   dA.mean <- BDLmean[[name_A]]
-  plot(BDLsamples$time_fac, dA, xlab="time", ylab=name_A, main=name_A, col=rgb(0.5,0.5,0.5, 0.4),
+  # title
+  title <- sprintf("%s (%s)", name_A, BDLfactors$ftype[BDLfactors$id==name_A])
+  # basic plot
+  plot(BDLsamples$time_fac, dA, xlab="time", ylab=name_A, main=title, col=rgb(0.5,0.5,0.5, 0.4),
        ylim=c(0, max(dA, na.rm=TRUE)*1.1))
   points(BDLsamples$time_fac, dA, col="black")
   points(BDLsamples$time_fac, dA, col=rgb(0,0,1,0.6), pch=16)
   # plot the repeat number
-  dA.text <- dA
   dA[is.na(dA)] <- -1
-  # library(calibrate)
+  require(calibrate)
   textxy(BDLsamples$time_point, dA, BDLsamples$sid, col="black", cex=0.6)
   
   points(1:nrow(BDLmean), dA.mean, col="red", pch=15)

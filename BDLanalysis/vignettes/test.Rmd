@@ -2,11 +2,11 @@
 title: "Statistical Analysis of Pathobiochemical Signatures in Bile Duct Ligated Mice"
 author: '[Matthias Koenig](http://www.charite.de/sysbio/people/koenig) (`r Sys.Date()`)'
 output:
-  html_document: default
   pdf_document:
     fig_caption: yes
     keep_tex: yes
     toc: yes
+  html_document: default
 header-includes: \usepackage{graphicx}
 ---
 <!--
@@ -89,16 +89,39 @@ heatmap.2(t(as.matrix(BDLdata)), col=colors(100), scale="row", Rowv=NULL, Colv=N
           key=TRUE, trace="none", cexRow=0.5, keysize=0.8)
 ```
 
+``` {r, eval=FALSE}
+# TODO: generate proper heatmap of the raw data+-
+library("RColorBrewer")
+col2 <- HeatmapColors()
+# define colors for the time point groups
+Ngroups <- 8 
+colorset <- brewer.pal(Ngroups, "Set1")
+color.map <- function(cluster_id) {return(colorset[cluster_id])}
+clusterColors <- unlist(lapply(groups, color.map))
+
+heatmap.2(cor.cluster, col=col2(100), scale="none",
+          key=TRUE, symkey=FALSE, trace="none", cexRow=0.5, cexCol=0.5,
+          density.info="none", dendrogram="column", Rowv=as.dendrogram(hc), Colv=as.dendrogram(hc), keysize=0.8,
+          ColSideColors=clusterColors, revC=TRUE)
+
+```
+
+
+**Results**: Various time course patterns can be observed in the raw data. With an early increased in many of the ADME genes around 6h and a decrease afterwards. The Cytokines and Fibrosis genes as well as most of the biochemical, histological and antibody markers are increse in the later stage after 2-5 days.
+
 
 ## Actb quality control
-Actb (Actin, cytoplasmic 1) was included on all Fluidigm chips and not used for the normalization of the gene expression data. Consequently it can be used as quality control for the technical reproducibility of the Fluidigm chips. The pairwise correlation between all the individual Actb measurements should have a correlation coefficient close to 1. The actin factors are `Actb` on chip ADME, `Actb.x` 
+The Actb (Actin, cytoplasmic 1) probes were included on all Fluidigm chips (`GE_ADME`, `GE_Cytokines`, `GE_Fibrosis`) and not used for the normalization of the gene expression data. Hence, ActB can be used as quality control for the technical reproducibility of the Fluidigm chips. If the data is reproducible between chips the pairwise correlation between all the individual Actb measurements should have high correlation coefficients close to 1.
 ```{r CheckActB}
 # Actb control figure
 plot_actb_control <- function(path=NULL){
   if (!is.null(path)){
-    png(filename=file.path(path, "Actb_control.png"), width=1600, height=400, res=200)  
+    png(filename=file.path(path, "Actb_control.png"), width=1600, height=800, res=200)  
   }
-  par(mfrow=c(1,3))
+  par(mfrow=c(2,3))
+  plot_single("Actb")
+  plot_single("Actb.x")
+  plot_single("Actb.y")
   plot_cor_pair("Actb", "Actb.x", single_plots=FALSE)
   plot_cor_pair("Actb", "Actb.y", single_plots=FALSE)
   plot_cor_pair("Actb.x", "Actb.y", single_plots=FALSE)
@@ -107,18 +130,9 @@ plot_actb_control <- function(path=NULL){
     invisible(dev.off())
   }
 }
-
-plot_actb_control(path=NULL)
 plot_actb_control(path=resultsPath)
 
-# calculate the correlations
-# TODO: add text info about the sample
-plot_single_factor("Actb", path=NULL)
-plot_single_factor("Actb.x", path=NULL)
-plot_single_factor("Actb.y", path=NULL)
-
-# calculate Spearman and Pearson correlation coefficients on mean and individual
-# data
+# calculate Spearman and Pearson correlation coefficients on N=8*5=40 data points 
 actb.spearman <- cor(data.frame(Actb=BDLdata$Actb, 
                                 Actb.x=BDLdata$Actb.x, 
                                 Actb.y=BDLdata$Actb.y), method="spearman")
@@ -126,12 +140,17 @@ actb.pearson <- cor(data.frame(Actb=BDLdata$Actb,
                                Actb.x=BDLdata$Actb.x, 
                                Actb.y=BDLdata$Actb.y), method="pearson")
 # knitr table
-knitr::kable(actb.spearman, digits=3)
-knitr::kable(actb.pearson, digits=3)
+# knitr::kable(actb.spearman, digits=3)
+# knitr::kable(actb.pearson, digits=3)
 # pander table
 suppressPackageStartupMessages(library(pander))
 set.caption(sub(".", " ", "Spearman correlation of Actb controls", fixed = TRUE))
-pander(actb.spearman)
+pander(round(actb.spearman, digits=3))
+set.caption(sub(".", " ", "Pearson correlation of Actb controls", fixed = TRUE))
+pander(round(actb.pearson, digits=3))
 ```
 
-
+``` {r fig.width=10, fig.height=7}
+plot_actb_control(path=NULL)
+```
+**Results**: The Actb Fluidigm gene expression measurements are highly reproducible for the measured chips,  with Spearman as well as Pearson correlation coefficients all > 0.9 for pairwise Actb comparison.

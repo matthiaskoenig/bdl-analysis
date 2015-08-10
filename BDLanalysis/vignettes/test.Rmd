@@ -94,14 +94,37 @@ dtmp <- BDLdata
 rownames(dtmp) <- paste(rownames(BDLsamples), BDLsamples$time_fac, sep=" ")
 # create vectors for the horizontal and vertical lines
 v_lines <- ((1:8)*5+0.5)
+f_types <- c("Antibodies", "Histology", "Biochemistry", "GE_Fibrosis", "GE_Cytokines", "GE_ADME")
 f_table <- table(BDLfactors$ftype)
-h_lines <- 0.5 + cumsum(f_table[c("Antibodies", "Histology", "Biochemistry", "GE_Fibrosis", "GE_Cytokines", "GE_ADME")])
+h_lines <- 0.5 + cumsum(f_table[f_types])
+# colors for the different data types
+library("RColorBrewer")
+col2 <- HeatmapColors()
+# define colors for type of experimentell data, i.e. factor groups
+colorset <- brewer.pal(length(f_types), "Set2")
+color.map <- function(factor_id) {return(colorset[ which(f_types==BDLfactors$ftype[which(BDLfactors$id==factor_id)]) ])}
+factorColors <- unlist(lapply(BDLfactors$id, color.map))
 
-heatmap.2(t(as.matrix(dtmp)), col=colors(100), scale="row", Rowv=NULL, Colv=NULL,
-          key=TRUE, trace="none", cexRow=0.5, keysize=0.8,
-          add.expr=abline(v=v_lines, h=h_lines, col="black", lwd=0.5 ))
+heatmap.2(t(as.matrix(dtmp)), col=colors(100), scale="row", dendrogram="none", Rowv=NULL, Colv=NULL,
+          key=TRUE, trace="none", cexRow=0.5, keysize=0.8, density.info="none",
+          RowSideColors=factorColors,
+          add.expr=abline(v=v_lines, h=h_lines, col="black", lwd=0.5),
+          main="Heatmap of BDL time course data")
+          # xlab="sample", ylab="factor")
+
+legend("left",      # location of the legend on the heatmap plot
+    inset=c(-0.03,0),
+    legend = rev(f_types), # category labels
+    col = rev(colorset),  # color key
+    lty= 1,             # line style
+    lwd = 10,            # line width
+    cex = 0.7,
+    bty="n"
+)
+
 ```
 TODO: figure legend
+Every the matrix is normalized within rows, i.e. every single factor is normalized for single factors to be comparable.
 
 
 

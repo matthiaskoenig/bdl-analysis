@@ -94,12 +94,12 @@ dtmp <- BDLdata
 rownames(dtmp) <- paste(rownames(BDLsamples), BDLsamples$time_fac, sep=" ")
 # create vectors for the horizontal and vertical lines
 v_lines <- ((1:8)*5+0.5)
-f_table[["Antibodies"]]
-
+f_table <- table(BDLfactors$ftype)
+h_lines <- 0.5 + cumsum(f_table[c("Antibodies", "Histology", "Biochemistry", "GE_Fibrosis", "GE_Cytokines", "GE_ADME")])
 
 heatmap.2(t(as.matrix(dtmp)), col=colors(100), scale="row", Rowv=NULL, Colv=NULL,
           key=TRUE, trace="none", cexRow=0.5, keysize=0.8,
-          add.expr=abline(v=v_lines, col="black", lwd=0.5 ))
+          add.expr=abline(v=v_lines, h=h_lines, col="black", lwd=0.5 ))
 ```
 TODO: figure legend
 

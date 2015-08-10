@@ -2,11 +2,12 @@
 title: "Statistical Analysis of Pathobiochemical Signatures in Bile Duct Ligated Mice"
 author: '[Matthias Koenig](http://www.charite.de/sysbio/people/koenig) (`r Sys.Date()`)'
 output:
+  html_document: default
   pdf_document:
     fig_caption: yes
     keep_tex: yes
     toc: yes
-  html_document: default
+  word_document: default
 header-includes: \usepackage{graphicx}
 ---
 <!--
@@ -81,13 +82,29 @@ The example plot for `bilirubin` is shown below.
 plot_single_factor('bilirubin', path =NULL)
 ```
 
-The Heatmap of the full data set provides an overview over the data quality
+
+### Time course heatmap of factors
+A heatmap of the full data set, i.e. all time points and repeats, is generated. Rows correspond to the individual factors, with factor order corresponding to the original data set (`GE_ADME`, `GE_Cytokines`, `GE_Fibrosis`, `Biochemistry`, `Histology`, `Antibodies`). Columns correspond to the 40 samples with 5 subsequent samples belonging to one of the 8 time points (with from left to right: `r levels(BDLsamples$time_fac)`).
 ```{r heatmap, fig.width=10, fig.height=10, error=TRUE}
-library("gplots")
+suppressPackageStartupMessages(library("gplots"))
 colors <- HeatmapColors() 
-heatmap.2(t(as.matrix(BDLdata)), col=colors(100), scale="row", Rowv=NULL, Colv=NULL,
-          key=TRUE, trace="none", cexRow=0.5, keysize=0.8)
+dtmp <- BDLdata
+
+# create better row names
+rownames(dtmp) <- paste(rownames(BDLsamples), BDLsamples$time_fac, sep=" ")
+# create vectors for the horizontal and vertical lines
+v_lines <- ((1:8)*5+0.5)
+f_table[["Antibodies"]]
+
+
+heatmap.2(t(as.matrix(dtmp)), col=colors(100), scale="row", Rowv=NULL, Colv=NULL,
+          key=TRUE, trace="none", cexRow=0.5, keysize=0.8,
+          add.expr=abline(v=v_lines, col="black", lwd=0.5 ))
 ```
+TODO: figure legend
+
+
+
 
 ``` {r, eval=FALSE}
 # TODO: generate proper heatmap of the raw data+-
@@ -103,7 +120,8 @@ heatmap.2(cor.cluster, col=col2(100), scale="none",
           key=TRUE, symkey=FALSE, trace="none", cexRow=0.5, cexCol=0.5,
           density.info="none", dendrogram="column", Rowv=as.dendrogram(hc), Colv=as.dendrogram(hc), keysize=0.8,
           ColSideColors=clusterColors, revC=TRUE)
-
+heatmap
+abline
 ```
 
 

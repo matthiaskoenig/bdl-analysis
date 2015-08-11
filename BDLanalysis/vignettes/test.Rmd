@@ -2,11 +2,11 @@
 title: "Statistical Analysis of Pathobiochemical Signatures in Bile Duct Ligated Mice"
 author: '[Matthias Koenig](http://www.charite.de/sysbio/people/koenig) (`r Sys.Date()`)'
 output:
+  html_document: default
   pdf_document:
     fig_caption: yes
     keep_tex: yes
     toc: yes
-  html_document: default
   word_document: default
 header-includes: \usepackage{graphicx}
 ---

@@ -7,6 +7,6 @@
 son.fA_star2(a, b, time_pts)
 }
 \description{
-Analog to fA_star but uses spearman for slope correlation calculation.
+Similar to fA_star but uses spearman for slope correlation calculation.
 }
 

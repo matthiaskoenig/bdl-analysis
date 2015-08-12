@@ -365,7 +365,7 @@ In ys1, ys2, yr1, yr2 all calculations are performed on the mean time course dat
 ``` {r ys1_yr1}
 # calculate ys1, yr1 on mean data, i.e. correlation part (S*), slope part (A) and min/max part (M) are all calculated on the mean data of all repeats.
 # w <- list(w1=0.5, w2=0.25, w3=0.25)
-w <- list(w1=0.34, w2=0.33, w3=0.33)
+w <- list(w1=0.5, w2=0.3, w3=0.2)
 
 # calculate all the matrices on the filtered data set (all ys, yr correlation components are calculated on the mean data)
 ysr.res <- ysr.matrices(BDLmean.fil, BDLmean.time, use="pairwise.complete.obs")
@@ -420,7 +420,6 @@ The hclust function in R was used for clustering with complete linkage method fo
 An overview of the clusters is given in the `results/cluster` folder.
 
 ``` {r}
-
 # Plot the clusters
 require('matrixStats')
 
@@ -495,11 +494,8 @@ plot_clusters_items <- function(folder=NULL){
   }  
 }
 
-# apply hirarchical clustering based on selected correlation measure
-cluster_methods <- c("pearson", "spearman", "ys1", "ys2", "ys3", "yr1", "yr2", "yr3")
-
-for (method in cluster_methods){
-  if (identical(method, "ys1")){
+correlation_matrix_for_method <- function(method){
+   if (identical(method, "ys1")){
     cor.cluster <- cor.ys1  
   }else if (identical(method, "ys2")){
     cor.cluster <- cor.ys2
@@ -516,20 +512,30 @@ for (method in cluster_methods){
   }else if (identical(method, "spearman")){
     cor.cluster <- cor.spearman
   }  
+  return(cor.cluster)
+}
+```
+
+```{r}
+# apply hirarchical clustering based on selected correlation measure
+cluster_methods <- c("pearson", "spearman", "ys1", "ys2", "ys3", "yr1", "yr2", "yr3")
+Ngroups <-  6
+
+for (method in cluster_methods){
+  print(method)
+  cor.cluster <- correlation_matrix_for_method(method)
   
   # perform hierarchical clustering and cut into Ngroups clusters.
   hc <- hclust(dist(cor.cluster)) 
-  Ngroups <-  7
   groups <- cutree(hc, k=Ngroups)
   groups.hc.order <- groups[hc$order]
-  
+  
   # plot cluster overview
   plot_clusters(method=method, folder=NULL)
-  plot_clusters(method=method, folder=resultsPath)
-  
+  plot_clusters(method=method, folder=resultsPath) 
+
   # plot individual clusters
   plot_clusters_items(folder=resultsPath)
-
 }
 ```
 
@@ -539,8 +545,11 @@ Display the clusters with the heatmap
 ``` {r, error=TRUE}
 library("gplots")
 library("RColorBrewer")
+
+method <- 'ys3'
+cor.cluster <- correlation_matrix_for_method(method)
+
 col2 <- HeatmapColors()
-Ngroups = 5
 hc <- hclust(dist(cor.cluster)) 
 # get cluster IDs for the groups
 groups <- cutree(hc, k=Ngroups)
@@ -554,6 +563,7 @@ clusterColors <- unlist(lapply(groups, color.map))
 
 heatmap.2(cor.cluster, col=col2(100), scale="none",
           key=TRUE, symkey=FALSE, trace="none", cexRow=0.5, cexCol=0.5,
+          main=method,
           density.info="none", dendrogram="column", Rowv=as.dendrogram(hc), Colv=as.dendrogram(hc), keysize=0.8,
           ColSideColors=clusterColors, revC=TRUE)
 ```
@@ -561,7 +571,7 @@ heatmap.2(cor.cluster, col=col2(100), scale="none",
 
 Overview of the individual time courses in the clusters
 ```{r, eval=FALSE}
-
+# test
 ```
 
 # Decision Trees

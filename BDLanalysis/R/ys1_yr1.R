@@ -105,7 +105,7 @@ son.fA_star <- function(a,b,time_pts){
 
 #' Adapted slope measurement (spearman)
 #' 
-#' Analog to fA_star but uses spearman for slope correlation calculation.
+#' Similar to fA_star but uses spearman for slope correlation calculation.
 #' @export
 son.fA_star2 <- function(a,b,time_pts){
   Nt = length(time_pts)

@@ -514,24 +514,24 @@ correlation_matrix_for_method <- function(method){
   }  
   return(cor.cluster)
 }
-```
 
-```{r}
 # apply hirarchical clustering based on selected correlation measure
 cluster_methods <- c("pearson", "spearman", "ys1", "ys2", "ys3", "yr1", "yr2", "yr3")
 Ngroups <-  6
 
 for (method in cluster_methods){
   print(method)
+
   cor.cluster <- correlation_matrix_for_method(method)
   
   # perform hierarchical clustering and cut into Ngroups clusters.
   hc <- hclust(dist(cor.cluster)) 
   groups <- cutree(hc, k=Ngroups)
   groups.hc.order <- groups[hc$order]
-  
+  
   # plot cluster overview
   plot_clusters(method=method, folder=NULL)
+
   plot_clusters(method=method, folder=resultsPath) 
 
   # plot individual clusters

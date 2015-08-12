@@ -9,8 +9,10 @@ BDLsamples              Sample description for BDLdata.
 HeatmapColors           Heatmap color ramp function.
 ProbeInformation        Fluidigm probe annotation
 all_factor_anova        Performs ANOVA for all factors.
+bdl_fun_data            Calculate function fun over time points.
 bdl_matrix_data         Transform BDL data frame into list of matrices.
 bdl_mean_data           Calculate mean data average over time points.
+bdl_sd_data             Calculate sd data over time points.
 plot_all_factors        Creates single factor plots of all factors.
 plot_cor_pair           Correlation plot between two factors.
 plot_single             Plot of a single factor.

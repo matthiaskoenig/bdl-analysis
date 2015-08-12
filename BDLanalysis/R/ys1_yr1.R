@@ -132,12 +132,23 @@ son.fA_star <- function(a,b,time_pts){
   return(r)
 }
 
+#' Adapted slope measurement (spearman)
+#' 
+#' Analog to fA_star but uses spearman for slope correlation calculation.
+#' @export
+son.fA_star2 <- function(a,b,time_pts){
+  Nt = length(time_pts)
+  dA = a[2:Nt]-a[1:(Nt-1)] 
+  dB = b[2:Nt]-b[1:(Nt-1)]
+  r = (cor(x=dA, y=dB, method='spearman') + 1) / 2
+  return(r)
+}
 
 #' Calculating the distance on the slopes.
 #' 
 #' The distance based measurement should be preferred in case of unequal time points.
 #' @export
-son.fA_star2 <- function(a,b,time_pts){
+son.fA_star3 <- function(a,b,time_pts){
   Nt = length(time_pts)
   dA = a[2:Nt]-a[1:(Nt-1)] 
   dB = b[2:Nt]-b[1:(Nt-1)]
@@ -356,7 +367,7 @@ ys1.timecourse = function(a,b, time_pts, w1=0.50, w2=0.25, w3=0.25, use="all.obs
 #' 
 #' Every measurement belongs to one sample. The columns are the number of repeats.
 #' @export
-ys1.timepoints = function(a,b,time_pts, w1=0.50, w2=0.5, use="all.obs"){
+ys1.timepoints = function(a,b,time_pts, w1, w2, use="all.obs"){
   na.method <- pmatch(use, c("all.obs", "pairwise.complete.obs"))
   if (is.na(na.method)){
     stop("invalid 'use' argument")
@@ -379,34 +390,56 @@ ys1.timepoints = function(a,b,time_pts, w1=0.50, w2=0.5, use="all.obs"){
 }
 
 
-#' Calculate ys1 matrix for a given data frame.
+#' Calculate ys and yr component matrices given data frame.
 #' 
 #' Every column of the data.frame is a single measurement (or mean) of a single factor for
 #' the provided time points. 
 #' Use this function to calculate the correlation matrix on the mean data.
-#' TODO: refactor so that only one function for the calculation of correlation matrix exists.
 #' @export
-ys1.df <- function(data, time_pts, w1=0.50, w2=0.25, w3=0.25, use="pairwise.complete.obs"){
+ysr.df <- function(data, time_pts, use="pairwise.complete.obs"){
   N <- ncol(data)
   value.mat <- matrix(NA, nrow=N, ncol=N)
   colnames(value.mat) <- names(data)
   rownames(value.mat) <- names(data)
-  S_star.mat <- value.mat
-  A.mat <- value.mat
-  M.mat <- value.mat
+  
+  # all components used for the various scors
+  S_star <- value.mat
+  A <- value.mat
+  A_star <- value.mat
+  A_star2 <- value.mat
+  M <- value.mat
+  M_star <- value.mat
+  M_star2 <- value.mat
   
   for (k in 1:N){
     for (i in 1:N){
       # calculate the simple score pairwise between all factors
-      res <- ys1(data[,k], data[,i], time_pts, w1=w1, w2=w2, w3=w3, use=use)
-      value.mat[k,i] = res$value
-      S_star.mat[k,i] = res$S_star
-      A.mat[k,i] = res$A
-      M.mat[k,i] = res$M
+      res <- ys1(data[,k], data[,i], time_pts, use=use)
+      
+      # correlation
+      R_star[k,i] = res$R_star
+      S_star[k,i] = res$S_star
+      # slope
+      A[k,i] = res$A
+      A_star[k,i] = res$A_star
+      A_star2[k,i] = res$A_star2
+      # min/max
+      M[k,i] = res$M
+      M_star[k,i] = res$M_star
+      M_star2.mat[k,i] = res$M_star2
     }
   }
-  return(list(value=value.mat, S_star=S_star.mat, A=A.mat, M=M.mat))
+  return(list(R_star=R_star,
+              S_star=S_star, 
+              A=A,
+              A_star=A_star,
+              A_star2=A_star2,
+              M=M,
+              M_star=M_star,
+              M_star2=M_star2))
 }
+
+
 
 #' Calculate ys1 for factors provided as list of matrices with size [Nt, Nr].
 #' 
@@ -466,37 +499,6 @@ ys2 <- function(a,b,time_pts, w1=0.50, w2=0.25, w3=0.25, use="all.obs"){
 }
 
 
-#' ys2 correlation matrix.
-#' 
-#' TODO: refactor in one function
-#' 
-#' @export
-ys2.df <- function(data, time_pts, w1=0.50, w2=0.25, w3=0.25, use="pairwise.complete.obs"){
-  N <- ncol(data)
-  value.mat <- matrix(NA, nrow=N, ncol=N)
-  colnames(value.mat) <- names(data)
-  rownames(value.mat) <- names(data)
-  S_star.mat <- value.mat
-  A_star.mat <- value.mat
-  A_star2.mat <- value.mat
-  M_star.mat <- value.mat
-  M_star2.mat <- value.mat
-  for (k in 1:N){
-    for (i in 1:N){
-      # calculate the simple score pairwise between all factors
-      res <- ys2(data[,k], data[,i], time_pts, w1=w1, w2=w2, w3=w3, use=use)
-      value.mat[k,i] = res$value
-      S_star.mat[k,i] = res$S_star
-      A_star.mat[k,i] = res$A_star
-      A_star2.mat[k,i] = res$A_star2
-      M_star.mat[k,i] = res$M_star
-      M_star2.mat[k,i] = res$M_star2
-    }
-  }
-  return(list(value=value.mat, S_star=S_star.mat, 
-              A_star=A_star.mat, A_star2=A_star2.mat, 
-              M_star=M_star.mat, M_star2=M_star2.mat))
-}
 
 
 # --------------------------------------------------------------------------------------------

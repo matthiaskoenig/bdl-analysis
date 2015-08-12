@@ -8,8 +8,10 @@ BDLdata	BDLdata
 BDLfactors	BDLfactors
 BDLprobes	BDLprobes
 BDLsamples	BDLsamples
+bdl_fun_data	bdl_fun_data
 bdl_matrix_data	bdl_matrix_data
 bdl_mean_data	bdl_mean_data
+bdl_sd_data	bdl_sd_data
 HeatmapColors	HeatmapColors
 plot_all_factors	plot_all_factors
 plot_cor_pair	plot_cor_pair

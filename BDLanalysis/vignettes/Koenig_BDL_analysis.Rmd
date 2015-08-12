@@ -1,19 +1,27 @@
 ---
-title: Statistical Analysis of Pathobiochemical Signatures in Bile Duct Ligated Mice
+title: "Statistical Analysis of Pathobiochemical Signatures in Bile Duct Ligated Mice"
+author: '[Matthias Koenig](http://www.charite.de/sysbio/people/koenig) (`r Sys.Date()`)'
 output:
-  pdf_document:
-    keep_tex: yes
-    toc: true
   html_document: default
+  pdf_document:
+    fig_caption: yes
+    keep_tex: yes
+    toc: yes
+  word_document: default
 header-includes: \usepackage{graphicx}
 ---
 <!--
 %\VignetteEngine{knitr}
 %\VignetteIndexEntry{BDL raw data processing}
 -->
-```{r}
+```{r, options, echo=FALSE}
 # set knitr option
-knit::op
+# knitr::opts_chunk$set()
+knitr::knit_hooks$set(htmlcap = function(before, options, envir) {
+  if(!before) {
+    paste('<p class="caption">',options$htmlcap,"</p>",sep="")
+    }
+})
 ```
 
 
@@ -29,20 +37,20 @@ The main steps of the analysis comprise
 
 * **Explorative data anaysis** and quality controls (using ActB)
 * **Dimension reduction via ANOVA**
-* **correlation analysis** based on time course correlation measure
-* **hierarchical clustering** 
-* **decision trees** for prediction of stage
+* **Correlation analysis** based on time course correlation measure
+* **Hierarchical clustering** 
+* **Decision trees** for prediction
 
 The complete data set, source code and documentation are available from  
 https://github.com/matthiaskoenig/bdl-analysis .
 
 # Explorative data analysis
-## Read BDL data
+## Data import
 In a first step the processed data set is loaded from the `data` folder. The data consists of the time course data for all factors (`BDLdata`), the sample definition, i.e. which sample belongs to which time point and repeat (`BDLsamples`), and a mapping of the Fluidigm (gene) probe ids to UniProt identifiers (`BDLprobes`). 
 
-```{r BDLdata, eval=TRUE}
-library("calibrate")
-library('BDLanalysis')
+```{r BDLdata, eval=TRUE, strip.white=TRUE}
+suppressPackageStartupMessages(library("calibrate"))
+suppressPackageStartupMessages(library('BDLanalysis'))
 # path definition
 baseLoc <- system.file(package="BDLanalysis")
 extPath <- file.path(baseLoc, "extdata")
@@ -50,45 +58,114 @@ resultsPath <- "/home/mkoenig/git/bdl-analysis/results"
 # load data
 data(BDLdata)
 data(BDLsamples)
+data(BDLfactors)
 data(BDLprobes)
 ```
 
 In addition to the single measurement data for the factors, the mean data averaged over the $N=5$ repeats is used in the correlation analysis.
 ```{r BDLmean}
 BDLmean <- bdl_mean_data(BDLdata, BDLsamples)
+BDLsd <- bdl_sd_data(BDLdata, BDLsamples)
 BDLmean.time <- as.numeric(levels(as.factor(BDLsamples$time)))
 ```
 
-In total 154 factors were measured falling in the following categories:
-TODO: BDLfactors
+In total `r ncol(BDLdata)` factors were measured falling in the following categories:
+```{r factors}
+table(BDLfactors$ftype)
+```
 
-
-
-In a first step overview plots of the raw and mean data for all factors are generated. These are available in the `resultsPath/factors` folder
-resultsPath folder. The example plot for `bilirubin` is shown below. 
+## Data visualization
+In a first step overview plots of the raw and mean data for all factors were generated. These are available in the `resultsPath/factors` folder
 ```{r factorPlots, eval=FALSE}
-# Single factor visualization
+# Visualize single factor
 plot_single_factor(name=colnames(BDLdata)[2])
-
-# Creates plots of all factors in BDLdata
+# Visualize all factors
 plot_all_factors(path=resultsPath)
 ```
 
-``` {r bilirubin}
-# bilirubin
+The example plot for `bilirubin` is shown below. 
+``` {r bilirubin, htmlcap='<b>Figure:</b> Example plot of raw time course data for factor bilirubin. The measured time points are not equidistant.'}
 plot_single_factor('bilirubin', path =NULL)
 ```
-The data points are not equidistant: `r levels(BDLsamples$time_fac)`.
+
+
+### Time course heatmap of factors
+A heatmap of the full data set, i.e. all time points and repeats, is generated. Rows correspond to the individual factors, with factor order corresponding to the original data set (`GE_ADME`, `GE_Cytokines`, `GE_Fibrosis`, `Biochemistry`, `Histology`, `Antibodies`). Columns correspond to the 40 samples with 5 subsequent samples belonging to one of the 8 time points (with from left to right: `r levels(BDLsamples$time_fac)`).
+```{r heatmap}
+suppressPackageStartupMessages(library("gplots"))
+colors <- HeatmapColors() 
+dtmp <- BDLdata
+
+# create better row names
+rownames(dtmp) <- paste(rownames(BDLsamples), BDLsamples$time_fac, sep=" ")
+# create vectors for the horizontal and vertical lines
+v_lines <- ((1:8)*5+0.5)
+f_types <- c("Antibodies", "Histology", "Biochemistry", "GE_Fibrosis", "GE_Cytokines", "GE_ADME")
+f_table <- table(BDLfactors$ftype)
+h_lines <- 0.5 + cumsum(f_table[f_types])
+# colors for the different data types
+library("RColorBrewer")
+col2 <- HeatmapColors()
+# define colors for type of experimentell data, i.e. factor groups
+colorset <- brewer.pal(length(f_types), "Set2")
+color.map <- function(factor_id) {return(colorset[ which(f_types==BDLfactors$ftype[which(BDLfactors$id==factor_id)]) ])}
+factorColors <- unlist(lapply(BDLfactors$id, color.map))
+```
+
+``` {r heatmap2, fig.width=10, fig.height=10, error=TRUE, fig.cap='Every the matrix is normalized within rows, i.e. every single factor is normalized for single factors to be comparable.'}
+heatmap.2(t(as.matrix(dtmp)), col=colors(100), scale="row", dendrogram="none", Rowv=NULL, Colv=NULL,
+          key=TRUE, trace="none", cexRow=0.5, keysize=0.8, density.info="none",
+          RowSideColors=factorColors,
+          add.expr=abline(v=v_lines, h=h_lines, col="black", lwd=0.5),
+          main="Heatmap of BDL time course data")
+          # xlab="sample", ylab="factor")
+legend("left",      # location of the legend on the heatmap plot
+    inset=c(-0.03,0),
+    legend = rev(f_types), # category labels
+    col = rev(colorset),  # color key
+    lty= 1,             # line style
+    lwd = 10,            # line width
+    cex = 0.7,
+    bty="n"
+)
+```
+
+
+
+``` {r, eval=FALSE}
+# TODO: generate proper heatmap of the raw data+-
+library("RColorBrewer")
+col2 <- HeatmapColors()
+# define colors for the time point groups
+Ngroups <- 8 
+colorset <- brewer.pal(Ngroups, "Set1")
+color.map <- function(cluster_id) {return(colorset[cluster_id])}
+clusterColors <- unlist(lapply(groups, color.map))
+
+heatmap.2(cor.cluster, col=col2(100), scale="none",
+          key=TRUE, symkey=FALSE, trace="none", cexRow=0.5, cexCol=0.5,
+          density.info="none", dendrogram="column", Rowv=as.dendrogram(hc), Colv=as.dendrogram(hc), keysize=0.8,
+          ColSideColors=clusterColors, revC=TRUE)
+heatmap
+abline
+```
+
+
+**Results**: Various time course patterns can be observed in the raw data. With an early increased in many of the ADME genes around 6h and a decrease afterwards. The Cytokines and Fibrosis genes as well as most of the biochemical, histological and antibody markers are increse in the later stage after 2-5 days.
+
 
 ## Actb quality control
-Actb (Actin, cytoplasmic 1) was included on all Fluidigm chips and not used for the normalization of the gene expression data. Consequently it can be used as quality control for the technical reproducibility of the Fluidigm chips. The pairwise correlation between all the individual Actb measurements should have a correlation coefficient close to 1. The actin factors are `Actb` on chip ADME, `Actb.x` 
+The Actb (Actin, cytoplasmic 1) probes were included on all Fluidigm chips (`GE_ADME`, `GE_Cytokines`, `GE_Fibrosis`) and not used for the normalization of the gene expression data. Hence, ActB can be used as quality control for the technical reproducibility of the Fluidigm chips. If the data is reproducible between chips the pairwise correlation between all the individual Actb measurements should have high correlation coefficients close to 1.
 ```{r CheckActB}
 # Actb control figure
 plot_actb_control <- function(path=NULL){
   if (!is.null(path)){
-    png(filename=file.path(path, "Actb_control.png"), width=1600, height=400, res=200)  
+    png(filename=file.path(path, "Actb_control.png"), width=1600, height=800, res=200)  
   }
-  par(mfrow=c(1,3))
+  par(mfrow=c(2,3))
+  plot_single("Actb")
+  plot_single("Actb.x")
+  plot_single("Actb.y")
   plot_cor_pair("Actb", "Actb.x", single_plots=FALSE)
   plot_cor_pair("Actb", "Actb.y", single_plots=FALSE)
   plot_cor_pair("Actb.x", "Actb.y", single_plots=FALSE)
@@ -97,37 +174,30 @@ plot_actb_control <- function(path=NULL){
     invisible(dev.off())
   }
 }
-
-plot_actb_control(path=NULL)
 plot_actb_control(path=resultsPath)
 
-# calculate the correlations
-# TODO: add text info about the sample
-plot_single_factor("Actb", path=NULL)
-plot_single_factor("Actb.x", path=NULL)
-plot_single_factor("Actb.y", path=NULL)
-
-# calculate Spearman and Pearson correlation coefficients on mean and individual
-# data
+# calculate Spearman and Pearson correlation coefficients on N=8*5=40 data points 
 actb.spearman <- cor(data.frame(Actb=BDLdata$Actb, 
                                 Actb.x=BDLdata$Actb.x, 
                                 Actb.y=BDLdata$Actb.y), method="spearman")
 actb.pearson <- cor(data.frame(Actb=BDLdata$Actb, 
                                Actb.x=BDLdata$Actb.x, 
                                Actb.y=BDLdata$Actb.y), method="pearson")
-
-knitr::kable(actb.spearman, digits=3)
-knitr::kable(actb.pearson, digits=3)
+# knitr table
+# knitr::kable(actb.spearman, digits=3)
+# knitr::kable(actb.pearson, digits=3)
+# pander table
+suppressPackageStartupMessages(library(pander))
+set.caption(sub(".", " ", "Spearman correlation of Actb controls", fixed = TRUE))
+pander(round(actb.spearman, digits=3))
+set.caption(sub(".", " ", "Pearson correlation of Actb controls", fixed = TRUE))
+pander(round(actb.pearson, digits=3))
 ```
 
-Heatmap of the full data set provides an overview over the data quality
-```{r heatmap, fig.width=10, fig.height=10, error=TRUE}
-library("gplots")
-colors <- HeatmapColors() 
-heatmap.2(t(as.matrix(BDLdata)), col=colors(100), scale="row", Rowv=NULL, Colv=NULL,
-          key=TRUE, trace="none", cexRow=0.5, keysize=0.8)
+``` {r fig.width=10, fig.height=7}
+plot_actb_control(path=NULL)
 ```
-
+**Results**: The Actb Fluidigm gene expression measurements are highly reproducible for the measured chips,  with Spearman as well as Pearson correlation coefficients all > 0.9 for pairwise Actb comparison.
 # Dimension reduction via ANOVA
 ## ANOVA for single factor
 A one-way analysis of variance (ANOVA) was applied to isolate factors showing significant ($p_{adjusted}< 0.05$) up- or down-regulation during the time course, using the Holm's procedure to correct for any artificial p-value inflation. In its simplest form, ANOVA provides a statistical test of whether or not the means of several groups are equal, and therefore generalizes the t-test to more than two groups, with the groups being the sampled time points. For every of the individual factors in the BDL data set an ANOVA was calculated.Dimension reduction of the BDL data set was than performed by filtering out factors which did not significantly changing over time.
@@ -225,7 +295,7 @@ dev.off()
 ```
 
 # Correlation analysis
-The correlation and cluster analysis uses a correlation measure for time series data in combination with Complete-Linkage hierarchical clustering, which provided the best enrichments on gene-expression time-series in a recent comparisons of methods {Jaskowiak2014, Jaskowiak2013}. The time-course experiment includes $n=8$ time points denoted by $t_1,..., t_n$ consisting of a total $p=154$ factors, with $N=5$ repeats per time point. Correlation analysis between factors i and j (i,j=1, …,p) was performed using a modified correlation coefficient based similarity measure developed for clustering of time-course data ($Y_{i,j}^{S2}$ and $Y_{i,j}^{R2}$) {Son2008}. Yi,jS2and Yi,jR2 are linear combinations of a classical correlation part Ri,j*(Pearson) or Si,j*(Spearman), a component Ai,j*accounting for the similarity in changes between the time courses and a component Mi,j* comparing the location of minimum and maximum
+The correlation and cluster analysis uses a correlation measure for time series data in combination with Complete-Linkage hierarchical clustering, which provided the best enrichments on gene-expression time-series in a recent comparisons of methods {Jaskowiak2014, Jaskowiak2013}. The time-course experiment includes $n=8$ time points denoted by $t_1,..., t_n$ consisting of a total $p=154$ factors, with $N=5$ repeats per time point. Correlation analysis between factors i and j (i,j=1, ...,p) was performed using a modified correlation coefficient based similarity measure developed for clustering of time-course data ($Y_{i,j}^{S2}$ and $Y_{i,j}^{R2}$) {Son2008}. Yi,jS2and Yi,jR2 are linear combinations of a classical correlation part Ri,j*(Pearson) or Si,j*(Spearman), a component Ai,j*accounting for the similarity in changes between the time courses and a component Mi,j* comparing the location of minimum and maximum
 Yi,jS2=1Si,j*+1A<i>,<j>*+2M<i>,<j>*
 Yi,jR2=1Ri,j*+1A<i>,<j>*+2M<i>,<j>*
 with Ri,j*and Si,j*being calculated on the individual data for factor i and j, A<i>,<j>*and M<i>,<j>*on the mean time courses <i>, <j> averaged over the N replicates.Yi,jS2and Yi,jR2were extended in a simple manner to account for the non-equidistant time points t1,..., tn=0h, 6h, 12h, 18h, 30h, 2d, 5d, 14d in the study design
@@ -294,14 +364,12 @@ In ys1, ys2, yr1, yr2 all calculations are performed on the mean time course dat
 
 ``` {r ys1_yr1}
 # calculate ys1, yr1 on mean data, i.e. correlation part (S*), slope part (A) and min/max part (M) are all calculated on the mean data of all repeats.
-w <- list(w1=0.5, w2=0.25, w3=0.25)
+# w <- list(w1=0.5, w2=0.25, w3=0.25)
+w <- list(w1=0.34, w2=0.33, w3=0.33)
+
 ys1.mean <- ys1.df(BDLmean.fil, BDLmean.time, w1=w$w1, w2=w$w2, w3=w$w3, use="pairwise.complete.obs")
 ys2.mean <- ys2.df(BDLmean.fil, BDLmean.time, w1=w$w1, w2=w$w2, w3=w$w3, use="pairwise.complete.obs")
 
-# scaling to interval [-1, 1]
-# The dimensions correspond to the filtered dataset
-cor.ys1.mean <- 2*(ys1.mean$value - 0.5)  
-cor.ys2.mean <- 2*(ys2.mean$value - 0.5)
 
 # Pearson & spearman correlation on full dataset as replacement for the 
 # mean Pearson/Spearman in ys1, ys2, yr1, yr2
@@ -316,13 +384,11 @@ cor.R_star <- ( cor(BDLmean.fil, method="pearson", use="pairwise.complete.obs") 
 cor.ys1.raw <- w$w1*cor.S_star + w$w2*ys1.mean$A + w$w3*ys1.mean$M
 cor.ys2.raw <- w$w1*cor.S_star + w$w2*ys2.mean$A_star + w$w3*ys2.mean$M_star
 
-# considering slope and time difference
-cor.ys3.raw <- w$w1*cor.S_star + w$w2*ys2.mean$A_star2 + w$w3*ys2.mean$M_star2
+cor.ys3.raw <- w$w1*cor.S_star + w$w2*ys2.mean$A_star2 + w$w3*ys2.mean$M_star
 
 cor.yr1.raw <- w$w1*cor.R_star + w$w2*ys1.mean$A + w$w3*ys1.mean$M
 cor.yr2.raw <- w$w1*cor.R_star + w$w2*ys2.mean$A_star + w$w3*ys2.mean$M_star
-# considering slope and time difference
-cor.yr3.raw <- w$w1*cor.R_star + w$w2*ys2.mean$A_star2 + w$w3*ys2.mean$M_star2
+cor.yr3.raw <- w$w1*cor.R_star + w$w2*ys2.mean$A_star2 + w$w3*ys2.mean$M_star 
 
 # scaling of correlation coefficient in interval [-1,1]
 cor.ys1 <- 2*(cor.ys1.raw-0.5)
@@ -357,27 +423,6 @@ The hclust function in R was used for clustering with complete linkage method fo
 An overview of the clusters is given in the `results/cluster` folder.
 
 ``` {r}
-# apply hirarchical clustering based on selected correlation measure
-method = "ys2"
-if (identical(method, "ys1")){
-  cor.cluster <- cor.ys1  
-}else if (identical(method, "ys2")){
-  cor.cluster <- cor.ys2
-}else if (identical(method, "ys3")){
-  cor.cluster <- cor.ys3
-}else if (identical(method, "yr1")){
-  cor.cluster <- cor.yr1
-}else if (identical(method, "yr2")){
-  cor.cluster <- cor.yr2
-}else if (identical(method, "yr3")){
-  cor.cluster <- cor.yr3
-}
-
-# perform hierarchical clustering and cut into Ngroups clusters.
-hc <- hclust(dist(cor.cluster)) 
-Ngroups <-  5
-groups <- cutree(hc, k=Ngroups)
-groups.hc.order <- groups[hc$order]
 
 # Plot the clusters
 require('matrixStats')
@@ -389,15 +434,18 @@ f_normalize_centering <- function(a){
 }
 
 # plot of mean clusters
-plot_clusters <- function(folder=NULL){
+plot_clusters <- function(method, folder=NULL){  
+  # create the figure
   if (!is.null(folder)){
     fname <- sprintf("%s_cluster_overview.png", method)
-    png(filename=sprintf("../results/cluster/%s", fname), width=1600, height=1600, res=200)
+    path <- file.path(folder, 'cluster', fname)
+    print(path)
+    png(filename=path, width=1600, height=1600, res=200)
   }
-  # par(mfrow=c(ceiling(sqrt(Ngroups)),ceiling(sqrt(Ngroups))))
-  par(mfrow=c(2,3))
+  par(mfrow=c(ceiling(sqrt(Ngroups)),ceiling(sqrt(Ngroups))))
+  # par(mfrow=c(2,3))
   
-  steps <- 1:8
+  steps <- 1:8 # time points
     for (k in 1:Ngroups){
       g <- groups.hc.order[groups.hc.order==k]
       N <- ceiling(sqrt(length(g)))
@@ -429,7 +477,63 @@ plot_clusters <- function(folder=NULL){
   }
 }
 
-plot_clusters(folder=NULL)
+# Plot individual time courses in cluster
+plot_clusters_items <- function(folder=NULL){
+  for (k in 1:Ngroups){
+    if (!is.null(folder)){
+      fname <- sprintf("%s_cluster_%s.png", method, k)
+      path <- file.path(folder, 'cluster', fname)
+      png(filename=path, width=3000, height=3000, res=200)  
+    }
+    g <- groups.hc.order[groups.hc.order==k]
+    N <- ceiling(sqrt(length(g)))
+    par(mfrow=c(N,N))
+    for (name in names(g)){
+      plot_single(name_A=name) 
+    }
+    par(mfrow=c(1,1))  
+    if (!is.null(folder)){
+      invisible(dev.off())
+    }
+  }  
+}
+
+# apply hirarchical clustering based on selected correlation measure
+cluster_methods <- c("pearson", "spearman", "ys1", "ys2", "ys3", "yr1", "yr2", "yr3")
+
+for (method in cluster_methods){
+  if (identical(method, "ys1")){
+    cor.cluster <- cor.ys1  
+  }else if (identical(method, "ys2")){
+    cor.cluster <- cor.ys2
+  }else if (identical(method, "ys3")){
+    cor.cluster <- cor.ys3
+  }else if (identical(method, "yr1")){
+    cor.cluster <- cor.yr1
+  }else if (identical(method, "yr2")){
+    cor.cluster <- cor.yr2
+  }else if (identical(method, "yr3")){
+    cor.cluster <- cor.yr3
+  }else if (identical(method, "pearson")){
+    cor.cluster <- cor.pearson
+  }else if (identical(method, "spearman")){
+    cor.cluster <- cor.spearman
+  }  
+  
+  # perform hierarchical clustering and cut into Ngroups clusters.
+  hc <- hclust(dist(cor.cluster)) 
+  Ngroups <-  7
+  groups <- cutree(hc, k=Ngroups)
+  groups.hc.order <- groups[hc$order]
+  
+  # plot cluster overview
+  plot_clusters(method=method, folder=NULL)
+  plot_clusters(method=method, folder=resultsPath)
+  
+  # plot individual clusters
+  plot_clusters_items(folder=resultsPath)
+
+}
 ```
 
 TODO: overview over the cluster size and content
@@ -460,27 +564,7 @@ heatmap.2(cor.cluster, col=col2(100), scale="none",
 
 Overview of the individual time courses in the clusters
 ```{r, eval=FALSE}
-# Plot individual time courses in cluster
-plot_clusters_items <- function(folder=NULL){
-  for (k in 1:Ngroups){
-    if (!is.null(folder)){
-      fname <- sprintf("%s_cluster_%s.png", method, k)
-      png(filename=sprintf("../results/cluster/%s", fname), width=3000, height=3000, res=200)  
-    }
-    g <- groups.hc.order[groups.hc.order==k]
-    N <- ceiling(sqrt(length(g)))
-    par(mfrow=c(N,N))
-    for (name in names(g)){
-      plot_single(name_A=name) 
-    }
-    par(mfrow=c(1,1))  
-    if (!is.null(folder)){
-      invisible(dev.off())
-    }
-  }  
-}
 
-plot_clusters_items(folder=NULL)
 ```
 
 # Decision Trees

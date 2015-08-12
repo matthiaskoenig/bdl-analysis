@@ -29,24 +29,23 @@ knitr::knit_hooks$set(htmlcap = function(before, options, envir) {
 
 This document contains the statistical analysis for the publication *Pathobiochemical signatures of cholestatic liver disease in bile duct ligated mice*.
 
-To better understand the cascade of histological and biochemical alterations after bile duct ligation (BDL), a comprehensive data set of serum markers, histological parameters and transcript profiles was compiled in mice at 8 time points after BDL, comprising different stages of the disease. 
-The analysed data set consists of $N=5$ repeats ($N=3$ for the measured antibodies) for $n=8$ time points denoted by $t_1,..., t_n$ consisting of a total $p=154$ measured factors (Fluidigm gene expression, antibodies, serum markers, histological measurements).
-
+To better understand the cascade of histological and biochemical alterations after bile duct ligation (BDL), a comprehensive data set of serum markers, histological parameters and transcript profiles was compiled at 8 time points after BDL in mice, comprising different stages of the disease. The analysed data set consists of $N_{r}=5$ repeats ($N_{r}=3$ for the measured antibodies) for $N_{t}=8$ time points denoted by $t_1,..., t_n$ consisting of a total $N_{f}=154$ measured factors (Fluidigm gene expression, antibodies, serum markers, histological measurements).
 
 The main steps of the analysis comprise
 
-* **Explorative data anaysis** and quality controls (using ActB)
+* **Explorative data anaysis** and data quality control
 * **Dimension reduction via ANOVA**
 * **Correlation analysis** based on time course correlation measure
 * **Hierarchical clustering** 
 * **Decision trees** for prediction
 
-The complete data set, source code and documentation are available from  
+The complete data set, source code and documentation for reproducing this analysis is available from  
 https://github.com/matthiaskoenig/bdl-analysis .
 
 # Explorative data analysis
 ## Data import
-In a first step the processed data set is loaded from the `data` folder. The data consists of the time course data for all factors (`BDLdata`), the sample definition, i.e. which sample belongs to which time point and repeat (`BDLsamples`), and a mapping of the Fluidigm (gene) probe ids to UniProt identifiers (`BDLprobes`). 
+In a first step the processed data set is loaded from the `data` folder. The data consists of the time course data for all factors (`BDLdata`), additional information for the factors (`BDLfactors`), the sample definition, i.e. the assignment of sample ids to respective time point and repeat (`BDLsamples`), and a mapping of the Fluidigm (gene) probe ids to UniProt identifiers (`BDLprobes`).  
+No other data sets are used in this analysis.
 
 ```{r BDLdata, eval=TRUE, strip.white=TRUE}
 suppressPackageStartupMessages(library("calibrate"))
@@ -62,14 +61,13 @@ data(BDLfactors)
 data(BDLprobes)
 ```
 
-In addition to the single measurement data for the factors, the mean data averaged over the $N=5$ repeats is used in the correlation analysis.
+In addition to the single measurement data for the factors, the mean data averaged over the $N_{r}$ repeats is used in parts of the correlation analysis. The mean factor data is calculated once at the beginning via
 ```{r BDLmean}
 BDLmean <- bdl_mean_data(BDLdata, BDLsamples)
-BDLsd <- bdl_sd_data(BDLdata, BDLsamples)
 BDLmean.time <- as.numeric(levels(as.factor(BDLsamples$time)))
 ```
 
-In total `r ncol(BDLdata)` factors were measured falling in the following categories:
+In total `r ncol(BDLdata)` factors were measured in the BDL study falling in the categories: `r levels(BDLfactors$ftype)`, with the majority of the factors being from the 3 fluidigm chips with respectively 47 probes for ADME, Cytokines and Fibrosis
 ```{r factors}
 table(BDLfactors$ftype)
 ```
@@ -83,14 +81,13 @@ plot_single_factor(name=colnames(BDLdata)[2])
 plot_all_factors(path=resultsPath)
 ```
 
-The example plot for `bilirubin` is shown below. 
-``` {r bilirubin, htmlcap='<b>Figure:</b> Example plot of raw time course data for factor bilirubin. The measured time points are not equidistant.'}
+The example plot for `bilirubin` is depicted below
+``` {r bilirubin, htmlcap='<b>Figure bilirubin:</b> Example plot of raw time course data for factor bilirubin. On the left the data is plotted against the time [h], on the right against the different time classes.'}
 plot_single_factor('bilirubin', path =NULL)
 ```
 
-
 ### Time course heatmap of factors
-A heatmap of the full data set, i.e. all time points and repeats, is generated. Rows correspond to the individual factors, with factor order corresponding to the original data set (`GE_ADME`, `GE_Cytokines`, `GE_Fibrosis`, `Biochemistry`, `Histology`, `Antibodies`). Columns correspond to the 40 samples with 5 subsequent samples belonging to one of the 8 time points (with from left to right: `r levels(BDLsamples$time_fac)`).
+In a next step the heatmap of the full data set was generated, i.e. of all time points and repeats. This provides a first overview over the complete data set. Rows correspond to the individual factors (factor order corresponding to the original data set: `GE_ADME`, `GE_Cytokines`, `GE_Fibrosis`, `Biochemistry`, `Histology`, `Antibodies`). Columns correspond to the 40 samples with 5 subsequent samples belonging to one of the 8 time points (with from left to right: `r levels(BDLsamples$time_fac)`). The data is row scaled, i.e. every individual factor is scaled to have mean zero and standard deviation one.
 ```{r heatmap}
 suppressPackageStartupMessages(library("gplots"))
 colors <- HeatmapColors() 
@@ -112,7 +109,7 @@ color.map <- function(factor_id) {return(colorset[ which(f_types==BDLfactors$fty
 factorColors <- unlist(lapply(BDLfactors$id, color.map))
 ```
 
-``` {r heatmap2, fig.width=10, fig.height=10, error=TRUE, fig.cap='Every the matrix is normalized within rows, i.e. every single factor is normalized for single factors to be comparable.'}
+``` {r heatmap2, fig.width=10, fig.height=10, error=TRUE, htmlcap='<b>Figure Heatmap 1:</b> Plot of the complete data set, i.e. all factors and repeats.'}
 heatmap.2(t(as.matrix(dtmp)), col=colors(100), scale="row", dendrogram="none", Rowv=NULL, Colv=NULL,
           key=TRUE, trace="none", cexRow=0.5, keysize=0.8, density.info="none",
           RowSideColors=factorColors,
@@ -129,33 +126,10 @@ legend("left",      # location of the legend on the heatmap plot
     bty="n"
 )
 ```
-
-
-
-``` {r, eval=FALSE}
-# TODO: generate proper heatmap of the raw data+-
-library("RColorBrewer")
-col2 <- HeatmapColors()
-# define colors for the time point groups
-Ngroups <- 8 
-colorset <- brewer.pal(Ngroups, "Set1")
-color.map <- function(cluster_id) {return(colorset[cluster_id])}
-clusterColors <- unlist(lapply(groups, color.map))
-
-heatmap.2(cor.cluster, col=col2(100), scale="none",
-          key=TRUE, symkey=FALSE, trace="none", cexRow=0.5, cexCol=0.5,
-          density.info="none", dendrogram="column", Rowv=as.dendrogram(hc), Colv=as.dendrogram(hc), keysize=0.8,
-          ColSideColors=clusterColors, revC=TRUE)
-heatmap
-abline
-```
-
-
-**Results**: Various time course patterns can be observed in the raw data. With an early increased in many of the ADME genes around 6h and a decrease afterwards. The Cytokines and Fibrosis genes as well as most of the biochemical, histological and antibody markers are increse in the later stage after 2-5 days.
-
+**Results**: Various time course patterns are visible in the raw data. For instance many of the ADME genes seem to be increased in the early phase until 6h decrease later on. On the other hand the Cytokines and Fibrosis genes as well as many of the biochemical, histological and antibody markers are increased in the later stage after 2-5 days.
 
 ## Actb quality control
-The Actb (Actin, cytoplasmic 1) probes were included on all Fluidigm chips (`GE_ADME`, `GE_Cytokines`, `GE_Fibrosis`) and not used for the normalization of the gene expression data. Hence, ActB can be used as quality control for the technical reproducibility of the Fluidigm chips. If the data is reproducible between chips the pairwise correlation between all the individual Actb measurements should have high correlation coefficients close to 1.
+Actb (Actin, cytoplasmic 1) probes were included on all Fluidigm chips (`GE_ADME`, `GE_Cytokines`, `GE_Fibrosis`) and not used in the normalization of the gene expression data. Hence, ActB can serve as quality control for the technical reproducibility of the Fluidigm chips. If the data is reproducible between chips the pairwise correlation between all individual Actb measurements should have high correlation coefficients close to 1. Plotting the data of the Actb measurements of two chips against each other should lie on a straight line
 ```{r CheckActB}
 # Actb control figure
 plot_actb_control <- function(path=NULL){
@@ -194,27 +168,30 @@ set.caption(sub(".", " ", "Pearson correlation of Actb controls", fixed = TRUE))
 pander(round(actb.pearson, digits=3))
 ```
 
-``` {r fig.width=10, fig.height=7}
+``` {r fig.width=10, fig.height=7,  htmlcap='<b>Figure Actb</b>: Correlation plot of the Actb'}
 plot_actb_control(path=NULL)
 ```
 **Results**: The Actb Fluidigm gene expression measurements are highly reproducible for the measured chips,  with Spearman as well as Pearson correlation coefficients all > 0.9 for pairwise Actb comparison.
+
 # Dimension reduction via ANOVA
 ## ANOVA for single factor
-A one-way analysis of variance (ANOVA) was applied to isolate factors showing significant ($p_{adjusted}< 0.05$) up- or down-regulation during the time course, using the Holm's procedure to correct for any artificial p-value inflation. In its simplest form, ANOVA provides a statistical test of whether or not the means of several groups are equal, and therefore generalizes the t-test to more than two groups, with the groups being the sampled time points. For every of the individual factors in the BDL data set an ANOVA was calculated.Dimension reduction of the BDL data set was than performed by filtering out factors which did not significantly changing over time.
+A one-way analysis of variance (ANOVA) was applied to reduce the factors to the subset showing significant ($p_{adjusted}< 0.05$) changes during the time course. In its simplest form, ANOVA provides a statistical test of whether or not the means of several groups are equal, and therefore generalizes the t-test to more than two groups, with the groups being the sampled time points. The Holm's procedure was used to correct the p-values for any artificial p-value inflation due to multiple testing. 
 
-An ANOVA is calculated for all factors (N=`r nrow(BDLdata)`). A data.frame with the p-values of the ANOVA is returned which is used for filtering the BDL data set. Significance codes are added for visual inspection.
+For every of the individual factors in the BDL data set an ANOVA was calculated. Dimension reduction of the BDL data set was than performed by filtering out factors which did not significantly changing over time.
 
-The `BDLdata` data set of timecourses for the factors is reshaped into matrix format for the ANOVA calculation, with time points in rows and repeats as columns
+The `BDLdata` data set is reshaped into matrix format for the ANOVA calculation, with time points in rows and repeats as columns for every factor. 
 ```{r BDLmatrix}
 BDLmatrices <- bdl_matrix_data(BDLdata, BDLsamples)
-print(BDLmatrices[[1]])
 ```
 
-The following shows the ANOVA calculation for a single factor, here for `bilirubin`. In the same manner the ANOVA is calculated for all factors.
+The following shows the ANOVA calculation for a single factor, here for `bilirubin`. 
 ``` {r singleanova}
   # example ANOVA for one factor
   mat.anova <- t(BDLmatrices[['bilirubin']])
   colnames(mat.anova) <- levels(BDLsamples$time_fac)
+
+  # show data matrix
+  print(mat.anova)
   
   # concatenate the data rows of df1 into a single vector r .
   r = c(t(as.matrix(mat.anova)))  # response data 
@@ -237,15 +214,10 @@ The following shows the ANOVA calculation for a single factor, here for `bilirub
   p.value <- summary(av)[[1]][["Pr(>F)"]][[1]]
 ```
 
-## Adjust p-values for multiple testing
-A multitude of tests were performed, namely an ANOVA for every single factor. Consequently, the reported p-values of the ANOVA have to be adjusted via multiple testing procedures. Using the p.adjust function which given a set of p-values, returns p-values adjusted using one of several methods. The Bonferroni, Holm, Hochberg, Hommel are designed to give strong control of the family-wise error rate. There seems no reason to use the unmodified Bonferroni correction because it is dominated by Holm's method, which is also valid under arbitrary assumptions.
+## ANOVA for all factors
+Analog to the single factor ANOVA, the ANOVA is performed on all the factors. Hereby, a multitude of tests are performed, namely an ANOVA for every single factor. Consequently, the reported p-values of the ANOVA have to be adjusted via multiple testing procedures. Using the p.adjust function which given a set of p-values, returns p-values adjusted using one of several methods. The Bonferroni, Holm, Hochberg, Hommel are designed to give strong control of the family-wise error rate. We used the Holm's method for adjustment (*Holm, S. (1979). A simple sequentially rejective multiple test procedure. Scandinavian Journal of Statistics 6, 65-70.*).
 
-The correction is performed using Holm []
-
-Holm, S. (1979). A simple sequentially rejective multiple test procedure. Scandinavian Journal of Statistics 6, 65-70.
-TODO: add proper reference
-
-The ANOVA is now calculated for every single factor
+Calculation of ANOVA for all factors
 ```{r ANOVA}
 df.anova <- all_factor_anova()
 df.anova$sig <- sapply(df.anova$p.value, significant_code)  # add significant codes
@@ -264,35 +236,61 @@ save(df.anova, file=file.path(resultsPath, "BDLanova.Rdata"))
 ```
 
 ## Filter factors
-The factors are filtered based on acceptance level, with the cutoff for the adjusted p-value being $p_{accept}$. I.e. all factors with a ANOVA with $p_{adjusted} \ge p_{accept}$ are filtered out. The filtered data sets are generated.
+The factors are filtered based on the respective acceptance level, with the cutoff for the adjusted p-value being $p_{accept}$, i.e. all factors with a ANOVA with $p_{adjusted} \ge p_{accept}$ are filtered out. The filtered raw data is available as `BDLdata.fil`, the filtered mean data set as `BDLmean.fil`. All subsequent analyses are performed on the filtered data set, which is depicted in the following heatmap
 ``` {r filter}
 p.accept = 0.05  # acceptance level
 idx.accept = (df.anova$p.holm < p.accept)  # accepted subset
-  
-# accepted
-table(df.anova$p.holm<p.accept)  # 64 rejected / 90 accepted (adjusted)
-table(df.anova$p.value<p.accept) # 19 rejected / 135 accepted (unadjusted)
-  
 # subset of filtered data
 BDLdata.fil <- BDLdata[, idx.accept]
 BDLmean.fil <- BDLdata[, idx.accept]
+
+# accepted
+table(df.anova$p.holm<p.accept)  # 64 rejected / 90 accepted (adjusted)
+
+# what was filtered out
+table(BDLfactors$ftype[idx.accept])
+# original
+table(BDLfactors$ftype)
+# percentage of factors retained in data set
+round(table(BDLfactors$ftype[idx.accept])/table(BDLfactors$ftype), digits = 2)
+```
+Almost all `Cytokines` genes are retained in the data set whereas many of the `ADME` and `Fibrosis` genes are filtered.
+
+The heatmap of the filtered raw data is depicted in the following picture
+``` {r heatmapFiltered}
+dtmp <- BDLdata.fil
+
+# create better row names
+rownames(dtmp) <- paste(rownames(BDLsamples), BDLsamples$time_fac, sep=" ")
+# create vectors for the horizontal and vertical lines
+v_lines <- ((1:8)*5+0.5)
+f_types <- c("Antibodies", "Histology", "Biochemistry", "GE_Fibrosis", "GE_Cytokines", "GE_ADME")
+
+
+# define colors for type of experimentell data, i.e. factor groups
+colorset <- brewer.pal(length(f_types), "Set2")
+color.map <- function(factor_id) {return(colorset[ which(f_types==BDLfactors$ftype[which(BDLfactors$id==factor_id)]) ])}
+factorColors <- unlist(lapply(colnames(BDLdata.fil), color.map))
 ```
 
-Heatmap of the filtered BDL data.  
-TODO: add the view of the Chips and histopathology
-``` {r heatmapBDL, error=TRUE, width=6, height=6}
-library('ALL')
-# plot of the data subset which is used for the correlation analysis
-col2 <- colorRampPalette(c("#67001F", "#B2182B", "#D6604D", "#F4A582", "#FDDBC7",
-                           "#FFFFFF", "#D1E5F0", "#92C5DE", "#4393C3", "#2166AC", "#053061"))
-heatmap.2(t(as.matrix(BDLdata.fil)), col=col2(100), scale="row", Rowv=FALSE, Colv=FALSE,
-          key=TRUE, trace="none", cexRow=0.5, keysize=0.8)
-
-png(filename=file.path(resultsPath, "BDLdata.fil.png"), width=1600, height=1600, res=200)
-heatmap.2(t(as.matrix(BDLdata.fil)), col=col2(100), scale="row", Rowv=NULL, Colv=NULL,
-          key=TRUE, trace="none", cexRow=0.5, keysize=0.8)
-dev.off()
+``` {r heatmap_filtered, fig.width=10, fig.height=10, error=TRUE, htmlcap='<b>Figure Heatmap 2:</b> Plot of ANOVA filtered data set.'}
+heatmap.2(t(as.matrix(dtmp)), col=colors(100), scale="row", dendrogram="none", Rowv=NULL, Colv=NULL,
+          key=TRUE, trace="none", cexRow=0.5, keysize=0.8, density.info="none",
+          RowSideColors=factorColors,
+          add.expr=abline(v=v_lines, col="black", lwd=0.5),
+          main="Heatmap of BDL time course data")
+          # xlab="sample", ylab="factor")
+legend("left",      # location of the legend on the heatmap plot
+    inset=c(-0.03,0),
+    legend = rev(f_types), # category labels
+    col = rev(colorset),  # color key
+    lty= 1,             # line style
+    lwd = 10,            # line width
+    cex = 0.7,
+    bty="n"
+)
 ```
+
 
 # Correlation analysis
 The correlation and cluster analysis uses a correlation measure for time series data in combination with Complete-Linkage hierarchical clustering, which provided the best enrichments on gene-expression time-series in a recent comparisons of methods {Jaskowiak2014, Jaskowiak2013}. The time-course experiment includes $n=8$ time points denoted by $t_1,..., t_n$ consisting of a total $p=154$ factors, with $N=5$ repeats per time point. Correlation analysis between factors i and j (i,j=1, ...,p) was performed using a modified correlation coefficient based similarity measure developed for clustering of time-course data ($Y_{i,j}^{S2}$ and $Y_{i,j}^{R2}$) {Son2008}. Yi,jS2and Yi,jR2 are linear combinations of a classical correlation part Ri,j*(Pearson) or Si,j*(Spearman), a component Ai,j*accounting for the similarity in changes between the time courses and a component Mi,j* comparing the location of minimum and maximum

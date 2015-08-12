@@ -571,11 +571,110 @@ heatmap.2(cor.cluster, col=col2(100), scale="none",
 
 Overview of the individual time courses in the clusters
 ```{r, eval=FALSE}
-# test
+# TODO
 ```
 
 # Decision Trees
 The decision trees are based on the clusters. This has the large advantage to be not dependent on a single factor, but it uses the combined information available by multiple factors. Consequently, the decision tree is applicable to any subset of factors measured. 
 
-**TODO**
+Example decision tree on the full dataset with `rpart` and `rpart.plot`
+``` {r}
+# Standard decision trees on the full predictor set
+require(rpart)
+require(rpart.plot)
+
+# add the class label to the predictors (time points/period are used as classes)
+treedata <- BDLdata.fil
+treedata$class <- BDLsamples$time_fac
+head(treedata)
+
+# create formula for tree classification
+# full formula using all predictors of filtered data
+formula.fil = paste("class ~ ", paste(colnames(BDLdata.fil), sep="", collapse=" + "), sep="")
+
+# fit the tree with classification
+# tree.fit <- rpart(formula=f, data=treedata, method="class", control=rpart.control(minsplit=1)) 
+tree.fit <- rpart(formula=formula.fil, data=treedata, method="class", control=rpart.control(minsplit=5)) 
+# print information of the tree fit
+printcp(tree.fit)
+print(tree.fit)
+# plot the tree
+plot(tree.fit)
+text(tree.fit)
+# pretty plot
+prp(tree.fit, type=0, extra=101, yesno=TRUE)
+```
+
+Now perform the tree fit on the clustered data set.
+```{r}
+# get the hierarchical clusters for ys3
+method <- "ys3"
+cor.cluster <- correlation_matrix_for_method(method)
+# perform hierarchical clustering and cut into Ngroups clusters.
+hc <- hclust(dist(cor.cluster)) 
+groups <- cutree(hc, k=Ngroups)
+groups.hc.order <- groups[hc$order]
+plot(hc)
+
+group_table <- table(groups)
+print(group_table)
+# Number of combinations
+prod(group_table)
+
+```
+
+``` {r}
+# Create the cluster data set
+
+# data has to be normalized analog to the plotted clusters
+
+BDLtree <- as.data.frame(apply(BDLdata.fil, 2, f_normalize_centering))
+# TODO: fix bug NA for antibodies (mean -> na.rm)
+head(BDLtree)
+plot(BDLsamples$time, BDLtree$bilirubin)
+
+
+# [1] Mean cluster
+Nt <- 8
+Nr <- 5
+na.vec <- rep(NA, Nt*Nr)
+treedata.mean <- data.frame(class=na.vec, c1=na.vec, c2=na.vec, c3=na.vec, c4=na.vec, c5=na.vec, c6=na.vec)
+treedata.mean$class <- BDLsamples$time_fac
+
+# for every sample
+for (ks in 1:(Nt*Nr)){
+  # create the mean over the cluster
+  for (kgroup in 1:Ngroups){
+    cat(ks, kgroup, '\n')
+    # get the factors in the cluster
+    factors <- names(groups[groups==kgroup])
+    treedata.mean[ks, (kgroup+1)] <- mean(as.numeric(BDLtree[ks, factors]), na.rm=TRUE)
+  }
+}
+print(treedata.mean)
+
+# fit the tree with classification
+formula.mean = paste("class ~ c1 + c2 + c3 + c4 + c5 + c6")
+tree.fit <- rpart(formula=formula.mean, data=treedata.mean, method="class", control=rpart.control(minsplit=5)) 
+
+# print information of the tree fit
+printcp(tree.fit)
+print(tree.fit)
+# plot the tree
+plot(tree.fit)
+text(tree.fit)
+# pretty plot
+prp(tree.fit, type=0, extra=101, yesno=TRUE)
+
+
+
+
+# [2] Single factor from cluster
+Ndata <- prod(group_table) * 5  # number of group combinations * number repeats
+na.vec <- rep(NA, )
+treedata.single <- data.frame(class=na.vec, c1=na.vec, c2=na.vec, c3=na.vec, c4=na.vec, c5=na.vec, c6=na.vec, 
+                       c1.id=na.vec, c2.id=na.vec, c3.id=na.vec, c4.id=na.vec, c5.id=na.vec, c6.id=na.vec)
+
+
+```
 

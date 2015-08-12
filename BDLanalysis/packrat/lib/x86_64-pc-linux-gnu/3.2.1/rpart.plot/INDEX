@@ -1,0 +1,5 @@
+prp                     Plot an 'rpart' model.  A superset of
+                        'rpart.plot'.
+ptitanic                Titanic data with passenger names and other
+                        details removed.
+rpart.plot              Plot an 'rpart' model.

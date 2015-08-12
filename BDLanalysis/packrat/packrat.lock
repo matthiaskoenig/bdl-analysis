@@ -233,6 +233,17 @@ Version: 4.1.1
 Hash: 5dce64dda925a35cbbf1c1072dc1eed7
 Requires: Rcpp, brew, digest, stringr
 
+Package: rpart
+Source: CRAN
+Version: 4.1-10
+Hash: 1eeecd328c5297c43e9d139944bb0775
+
+Package: rpart.plot
+Source: CRAN
+Version: 1.5.2
+Hash: 6721d2fdd52b1cfb30e2bff460b93026
+Requires: rpart
+
 Package: rstudioapi
 Source: CRAN
 Version: 0.3.1

@@ -286,7 +286,7 @@ ysr.matrices <- function(data, time_pts, use="pairwise.complete.obs"){
   for (k in 1:N){
     for (i in 1:N){
       # calculate the simple score pairwise between all factors
-      res <- ys1(data[,k], data[,i], time_pts, use=use)
+      res <- ysr(data[,k], data[,i], time_pts, use=use)
       
       # correlation
       R_star[k,i] = res$R_star
@@ -309,5 +309,6 @@ ysr.matrices <- function(data, time_pts, use="pairwise.complete.obs"){
               A_star2=A_star2,
               M=M,
               M_star=M_star,
-              M_star2=M_star2))
+              M_star2=M_star2,
+              M_star3=M_star3))
 }

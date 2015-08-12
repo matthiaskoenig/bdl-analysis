@@ -367,28 +367,25 @@ In ys1, ys2, yr1, yr2 all calculations are performed on the mean time course dat
 # w <- list(w1=0.5, w2=0.25, w3=0.25)
 w <- list(w1=0.34, w2=0.33, w3=0.33)
 
-ys1.mean <- ys1.df(BDLmean.fil, BDLmean.time, w1=w$w1, w2=w$w2, w3=w$w3, use="pairwise.complete.obs")
-ys2.mean <- ys2.df(BDLmean.fil, BDLmean.time, w1=w$w1, w2=w$w2, w3=w$w3, use="pairwise.complete.obs")
-
+# calculate all the matrices on the filtered data set (all ys, yr correlation components are calculated on the mean data)
+ysr.res <- ysr.matrices(BDLmean.fil, BDLmean.time, use="pairwise.complete.obs")
 
 # Pearson & spearman correlation on full dataset as replacement for the 
-# mean Pearson/Spearman in ys1, ys2, yr1, yr2
-# Now calculate the scores with full correlation
-cor.S_star <- ( cor(BDLmean.fil, method="spearman", use="pairwise.complete.obs") + 1 )/2
-cor.R_star <- ( cor(BDLmean.fil, method="pearson", use="pairwise.complete.obs") + 1 )/2
+# mean Pearson/Spearman in ys and yr
+cor.S_star <- ( cor(BDLdata.fil, method="spearman", use="pairwise.complete.obs") + 1 )/2
+cor.R_star <- ( cor(BDLdata.fil, method="pearson", use="pairwise.complete.obs") + 1 )/2
 
 # Calculate the ys(1,2,3) and yr(1,2,3) with single time point correlation for
 # Spearman, respectively Pearson (instead of mean)
 # Takes the individual correlation, slope and min/max components for the respective
 # score parts and weights with the provided weighting factors (w1,w2,w3)
-cor.ys1.raw <- w$w1*cor.S_star + w$w2*ys1.mean$A + w$w3*ys1.mean$M
-cor.ys2.raw <- w$w1*cor.S_star + w$w2*ys2.mean$A_star + w$w3*ys2.mean$M_star
-
-cor.ys3.raw <- w$w1*cor.S_star + w$w2*ys2.mean$A_star2 + w$w3*ys2.mean$M_star
-
-cor.yr1.raw <- w$w1*cor.R_star + w$w2*ys1.mean$A + w$w3*ys1.mean$M
-cor.yr2.raw <- w$w1*cor.R_star + w$w2*ys2.mean$A_star + w$w3*ys2.mean$M_star
-cor.yr3.raw <- w$w1*cor.R_star + w$w2*ys2.mean$A_star2 + w$w3*ys2.mean$M_star 
+cor.ys1.raw <- w$w1*cor.S_star + w$w2*ysr.res$A       + w$w3*ysr.res$M
+cor.ys2.raw <- w$w1*cor.S_star + w$w2*ysr.res$A_star  + w$w3*ysr.res$M_star
+cor.yr1.raw <- w$w1*cor.R_star + w$w2*ysr.res$A       + w$w3*ysr.res$M
+cor.yr2.raw <- w$w1*cor.R_star + w$w2*ysr.res$A_star  + w$w3*ysr.res$M_star
+# extended
+cor.ys3.raw <- w$w1*cor.S_star + w$w2*ysr.res$A_star2 + w$w3*ysr.res$M_star
+cor.yr3.raw <- w$w1*cor.R_star + w$w2*ysr.res$A_star2 + w$w3*ysr.res$M_star 
 
 # scaling of correlation coefficient in interval [-1,1]
 cor.ys1 <- 2*(cor.ys1.raw-0.5)
@@ -399,7 +396,7 @@ cor.yr2 <- 2*(cor.yr2.raw-0.5)
 cor.yr3 <- 2*(cor.yr3.raw-0.5)
 
 # plot subset for further analysis
-f_corrplot("cor.ys2", data=cor.ys2, order="hclust", folder=NULL)
+f_corrplot("cor.ys3", data=cor.ys2, order="hclust", folder=NULL)
 
 # and create all files on disk
 f_corrplot("cor.ys1", data=cor.ys1, order="hclust", folder=resultsPath)

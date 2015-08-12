@@ -25,13 +25,23 @@ test_that("Correlation between x1 and x2", {
 })
 
 test_that("ys1 with test data", {
-  expect_equal(ys1(x1, x2, time_pts, w1=0.25, w2=0.50, w3=0.25)$value, 0.583, tolerance =0.001)
-  expect_equal(ys1(y1, y2, time_pts, w1=0.25, w2=0.50, w3=0.25)$value, 0.833, tolerance =0.001)
+  w1=0.25 
+  w2=0.50
+  w3=0.25
+  x.yrs <- ysr(a=x1, b=x2, time_pts=time_pts)
+  expect_equal(w1*x.yrs$S_star + w2*x.yrs$A + w3*x.yrs$M, 0.583, tolerance =0.001)
+  y.yrs <- ysr(a=y1, b=y2, time_pts=time_pts)
+  expect_equal(w1*y.yrs$S_star + w2*y.yrs$A + w3*y.yrs$M, 0.833, tolerance =0.001)
 })
 
 test_that("yr1 with test data", {
-  expect_equal(yr1(x1, x2, time_pts, w1=0.25, w2=0.50, w3=0.25)$value, 0.555, tolerance=0.001)
-  expect_equal(yr1(y1, y2, time_pts, w1=0.25, w2=0.50, w3=0.25)$value, 0.805, tolerance =0.001)
+  w1=0.25 
+  w2=0.50
+  w3=0.25
+  x.yrs <- ysr(a=x1, b=x2, time_pts=time_pts)
+  expect_equal(w1*x.yrs$R_star + w2*x.yrs$A + w3*x.yrs$M, 0.555, tolerance=0.001)
+  y.yrs <- ysr(a=y1, b=y2, time_pts=time_pts)
+  expect_equal(w1*y.yrs$R_star + w2*y.yrs$A + w3*y.yrs$M, 0.805, tolerance =0.001)
 })
 
 

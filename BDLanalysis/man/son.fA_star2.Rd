@@ -2,11 +2,11 @@
 % Please edit documentation in R/ys1_yr1.R
 \name{son.fA_star2}
 \alias{son.fA_star2}
-\title{Calculating the distance on the slopes.}
+\title{Adapted slope measurement (spearman)}
 \usage{
 son.fA_star2(a, b, time_pts)
 }
 \description{
-The distance based measurement should be preferred in case of unequal time points.
+Analog to fA_star but uses spearman for slope correlation calculation.
 }
 

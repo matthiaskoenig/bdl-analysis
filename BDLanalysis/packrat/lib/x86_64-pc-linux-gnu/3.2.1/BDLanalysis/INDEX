@@ -22,31 +22,16 @@ single_factor_anova     Perform anova for given factor.
 son.L                   Sign of slope.
 son.fA                  Relative count of number of identical slopes
                         between two time courses.
-son.fA.timecourse       fA calculation for time courses with multiple
-                        repeats.
-son.fA.timepoints       fA caluclation for time points with multiple
-                        repeats.
 son.fA_star             Adapted slope measurement.
-son.fA_star2            Calculating the distance on the slopes.
+son.fA_star2            Adapted slope measurement (spearman)
+son.fA_star3            Calculating the distance on the slopes.
 son.fM                  Compare timepoint of minimal and maximal value.
-son.fM.timecourse       fM calculation for timecourse.
 son.fM_star             Alternative index to M.
 son.fM_star2            Alternative index to M.
 son.fM_star3            Curvature based M measure.
 son.fR_star             Adapted Pearson correlation R*.
-son.fR_star.matrix      fR_star calculation for matrix with multiple
-                        repeats.
 son.fS_star             Adapted Spearman correlation S*.
-son.fS_star.matrix      fS_star calculation for matrix with multiple
-                        repeats.
 son.slope               Slope between two adjacent measurments.
-yr1                     yr1 calculation.
-yr1.df                  yr1 correlation matrix for given data frame.
-ys1                     ys1 correlation measure.
-ys1.df                  Calculate ys1 matrix for a given data frame.
-ys1.timecourse          ys1 for time course data.
-ys1.timepoints          ys1 calculation for timepoint data.
-ys1.timepoints.df       Calculate ys1 for factors provided as list of
-                        matrices with size [Nt, Nr].
-ys2                     ys2 calculation.
-ys2.df                  ys2 correlation matrix.
+ysr                     YS and YR correlation measure.
+ysr.matrices            Calculate ys and yr component matrices given
+                        data frame.

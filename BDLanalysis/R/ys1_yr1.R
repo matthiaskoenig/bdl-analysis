@@ -1,9 +1,9 @@
 ##############################################################################################
 #
-#    YS1 and YR1 correlation measures
+#    YS and YR correlation measures
 #
 #    Matthias Koenig
-#    2015-08-03
+#    2015-08-12
 #
 #    Correlation score for time course data based on 
 #    "A modfied correlation coefficient based similarity measure for clustering
@@ -26,8 +26,6 @@
 #
 ##############################################################################################
 
-# TODO: implement how to handle small fluctuations in slope.
-
 # --------------------------------------------------------------------------------------------
 # Classical correlation component (Spearman/Pearson)
 # --------------------------------------------------------------------------------------------
@@ -42,20 +40,6 @@ son.fS_star <- function(a,b){
   return(r)
 }
 
-
-#' fS_star calculation for matrix with multiple repeats.
-#' 
-#' Works in case of the timecourse and timepoint repeat data.
-#' @export
-son.fS_star.matrix <- function(a,b){
-  # create vector of feature matrix
-  a_vec <- as.vector(a)
-  b_vec <- as.vector(b)
-  r = son.fS_star(a_vec, b_vec)
-  return(r)
-}
-
-
 #' Adapted Pearson correlation R*.
 #' 
 #' Shifted pearson correlation on individual data shifted 
@@ -63,16 +47,6 @@ son.fS_star.matrix <- function(a,b){
 #' @export
 son.fR_star <- function(a,b){
   r = (cor(x=a, y=b, method='pearson') + 1) / 2
-  return(r)
-}
-
-
-#' fR_star calculation for matrix with multiple repeats.
-#' 
-#' Works for timecourse and timepoint repeat data.
-#'@export
-son.fR_star.matrix <- function(a,b){
-  r = (cor(x=as.vector(a), y=as.vector(b), method='pearson') + 1) / 2
   return(r)
 }
 
@@ -88,7 +62,6 @@ son.slope <- function(x1,x2,t1,t2){
   return(s)
 }
 
-
 #' Sign of slope.
 #' 
 #' @export
@@ -96,7 +69,6 @@ son.L <- function(x1,x2,t1,t2){
   L = sign(son.slope(x1,x2,t1,t2))
   return(L)
 }
-
 
 #' Relative count of number of identical slopes between two time courses.
 #' 
@@ -112,7 +84,6 @@ son.fA <- function(a,b,time_pts){
   r = count / (N-1)
   return(r)
 }
-
 
 #' Adapted slope measurement.
 #'
@@ -157,54 +128,6 @@ son.fA_star3 <- function(a,b,time_pts){
   return(r)
 }
 
-
-#' fA calculation for time courses with multiple repeats.
-#' 
-#' fA with multiple repeats i.e. multiple samples measured for the same time course.
-#' a and b are matrices of the form [Nt, Nr], with
-#'   Nt : number of time points
-#'   Nr : number of repeats == number of samples per condition in case of time course
-#' This is only applicable if the individual measurements within a column are from the
-#' same sample !, i.e. real timecourse repeats. If every timepoint within a repeat 
-#' belongs to a different sample the timepoint version must be used.
-#' @export
-son.fA.timecourse <- function(a,b,time_pts){
-  Nr = ncol(a)
-  Aab = 0
-  # calulate the mean A over all repeats of time course
-  for (p in 1:Nr){
-    for (q in 1:Nr){
-      Aab = Aab + son.fA(a[,p], b[,q], time_pts) 
-    }
-  }
-  r = Aab/Nr/Nr
-  return(r)
-}
-
-
-#' fA caluclation for time points with multiple repeats.
-#' 
-#' Calculate all the permutations of the datapoint slopes,
-#' and count the identical ones.
-#' @export
-son.fA.timepoints <- function(a,b,time_pts){
-  Nt = length(time_pts)
-  Nr = ncol(a)
-  count = 0
-  for (i in 1:(Nt-1)){
-    for (p in 1:Nr){
-      for (q in 1:Nr){
-        if (son.L(a[i,p],a[i+1,p],time_pts[i],time_pts[i+1]) == son.L(b[i,q],b[i+1,q],time_pts[i],time_pts[i+1])){
-          count = count + 1
-        }
-      }
-    }
-  }
-  r = count/(Nt-1)/Nr/Nr
-  return(r)
-}
-
-
 # --------------------------------------------------------------------------------------------
 # Min/Max component (based on global time course information)
 # --------------------------------------------------------------------------------------------
@@ -230,7 +153,6 @@ son.fM = function(a,b){
   return(r)
 }
 
-
 #' Alternative index to M.
 #'
 #' M index utilizing the distances between two profiles time 
@@ -247,7 +169,6 @@ son.fM_star = function(a,b,time_pts){
   return(r)
 }
 
-
 #' Alternative index to M.
 #' 
 #' Alternative index to M which utilizes the distances between two profiles time.
@@ -263,7 +184,6 @@ son.fM_star2 = function(a,b,time_pts){
   r = 1 - ( (abs(time_pts[idx_min_a]-time_pts[idx_min_b]) + abs(time_pts[idx_max_a]-time_pts[idx_max_b]))/(2*(time_pts[Nt]-time_pts[1])))
   return(r)
 }
-
 
 #' Curvature based M measure. 
 #'
@@ -286,107 +206,57 @@ son.fM_star3 = function(a,b,time_pts){
   return(r)
 }
 
-
-#' fM calculation for timecourse.
-#' 
-#' @export
-son.fM.timecourse <- function(a,b){
-  Nr = ncol(a)
-  Mab = 0
-  # calulate the mean A over all repeats of time course
-  for (p in 1:Nr){
-    for (q in 1:Nr){
-      Mab = Mab + son.fM(a[,p], b[,q]) 
-    }
-  }
-  r = Mab/Nr/Nr
-  return(r)
-}
-
 # --------------------------------------------------------------------------------------------
-# YS1
+# Calculation of all component matrices
 # --------------------------------------------------------------------------------------------
 
-#' ys1 correlation measure.
+#' YS and YR correlation measure.
 #' 
-#' the time course vectors for factor a and b and the time_pts are required,
+#' The time course vectors for factor a and b and the time_pts are required,
 #' with all 3 vectors having the same length.
+#' This function only calculates the components of the various correlation 
+#' scores which still have to be combined via respective weights for the
+#' components, i.e. for instance
+#' w1=0.50, w2=0.25, w3=0.25
 #' @export
-ys1 <- function(a,b,time_pts, w1=0.50, w2=0.25, w3=0.25, use="all.obs"){
-  na.method <- pmatch(use, c("all.obs", "pairwise.complete.obs"))
-  if (is.na(na.method)){
-    stop("invalid 'use' argument")
-  }
-  df <- data.frame(a, b, time_pts)
-  
-  # check if any
+ysr <- function(a,b,time_pts, use="all.obs"){
+  # check if any time point problems
   if (any(table(time_pts)>1)){
     stop("time_pts not unique")
   }  
+  # create a, b data frame
+  df <- data.frame(a, b, time_pts)
+  
   # handle NAs
+  na.method <- pmatch(use, c("all.obs", "pairwise.complete.obs"))
+  if (is.na(na.method)){
+    stop("invalid 'use' argument")
+  }  
   if (identical(use, "pairwise.complete.obs")){
     df <- df[complete.cases(df),]
   }  
+  # correlation
+  R_star <- son.fR_star(df$a,df$b)
   S_star <- son.fS_star(df$a,df$b)
+  # slope
   A <- son.fA(df$a,df$b,df$time_pts)
+  A_star <- son.fA_star(df$a,df$b,df$time_pts)
+  A_star2 <- son.fA_star2(df$a,df$b,df$time_pts)
+  # min/max
   M <- son.fM(df$a,df$b)
-  value = w1*S_star + w2*A + w3*M
-  return( list(value=value, S_star=S_star, A=A, M=M) )
-}
-
-
-#' ys1 for time course data.
-#' 
-#' Uses data matrices with repeated time course measurements in columns.
-#' @export
-ys1.timecourse = function(a,b, time_pts, w1=0.50, w2=0.25, w3=0.25, use="all.obs"){
-  na.method <- pmatch(use, c("all.obs", "pairwise.complete.obs"))
-  if (is.na(na.method)){
-    stop("invalid 'use' argument")
-  }
-  df <- data.frame(a, b, time_pts)
-  # check if any
-  if (any(table(time_pts)>1)){
-    stop("time_pts not unique")
-  }  
-  # handle NAs
-  # TODO: handle the complete cases in matrix
-  # if (identical(use, "pairwise.complete.obs")){
-  #   df <- df[complete.cases(df),]
-  # }  
+  M_star <- son.fM_star(df$a,df$b, df$time_pts)
+  M_star2 <- son.fM_star2(df$a,df$b, df$time_pts)
+  M_star3 <- son.fM_star3(df$a,df$b, df$time_pts)
   
-  S_star <- son.fS_star.matrix(a, b)
-  A <- son.fA.timecourse(a, b, time_pts)
-  M <- son.fM.timecourse(a, b)
-  value = w1*S_star + w2*A + w3*M
-  return( list(value=value, S_star=S_star, A=A, M=M) )
-}
-
-
-#' ys1 calculation for timepoint data. 
-#' 
-#' Every measurement belongs to one sample. The columns are the number of repeats.
-#' @export
-ys1.timepoints = function(a,b,time_pts, w1, w2, use="all.obs"){
-  na.method <- pmatch(use, c("all.obs", "pairwise.complete.obs"))
-  if (is.na(na.method)){
-    stop("invalid 'use' argument")
-  }
-  df <- data.frame(a, b, time_pts)
-  # check if any
-  if (any(table(time_pts)>1)){
-    stop("time_pts not unique")
-  }
-  # handle NAs
-  # TODO: handle the complete cases in matrix
-  # if (identical(use, "pairwise.complete.obs")){
-  #   df <- df[complete.cases(df),]
-  # }  
-  
-  S_star <- son.fS_star.matrix(a, b)
-  A <- son.fA.timepoints(a, b, time_pts)
-  value = w1*S_star + w2*A
-  return( list(value=value, S_star=S_star, A=A) )
+  return( list(R_star=R_star,
+               S_star=S_star, 
+               A=A, 
+               A_star=A_star,
+               A_star2=A_star2,
+               M=M,
+               M_star=M_star,
+               M_star2=M_star2,
+               M_star3=M_star3) )
 }
 
 
@@ -396,13 +266,14 @@ ys1.timepoints = function(a,b,time_pts, w1, w2, use="all.obs"){
 #' the provided time points. 
 #' Use this function to calculate the correlation matrix on the mean data.
 #' @export
-ysr.df <- function(data, time_pts, use="pairwise.complete.obs"){
+ysr.matrices <- function(data, time_pts, use="pairwise.complete.obs"){
   N <- ncol(data)
   value.mat <- matrix(NA, nrow=N, ncol=N)
   colnames(value.mat) <- names(data)
   rownames(value.mat) <- names(data)
   
   # all components used for the various scors
+  R_star <- value.mat
   S_star <- value.mat
   A <- value.mat
   A_star <- value.mat
@@ -410,6 +281,7 @@ ysr.df <- function(data, time_pts, use="pairwise.complete.obs"){
   M <- value.mat
   M_star <- value.mat
   M_star2 <- value.mat
+  M_star3 <- value.mat
   
   for (k in 1:N){
     for (i in 1:N){
@@ -426,7 +298,8 @@ ysr.df <- function(data, time_pts, use="pairwise.complete.obs"){
       # min/max
       M[k,i] = res$M
       M_star[k,i] = res$M_star
-      M_star2.mat[k,i] = res$M_star2
+      M_star2[k,i] = res$M_star2
+      M_star3[k,i] = res$M_star3
     }
   }
   return(list(R_star=R_star,
@@ -437,108 +310,4 @@ ysr.df <- function(data, time_pts, use="pairwise.complete.obs"){
               M=M,
               M_star=M_star,
               M_star2=M_star2))
-}
-
-
-
-#' Calculate ys1 for factors provided as list of matrices with size [Nt, Nr].
-#' 
-#' @export
-ys1.timepoints.df <- function(data_list, time_pts, w1=0.50, w2=0.25, w3=0.25, use="pairwise.complete.obs"){
-  Nf <- length(data_list)
-  value.mat <- matrix(NA, nrow=Nf, ncol=Nf)
-  colnames(value.mat) <- names(data_list)
-  rownames(value.mat) <- names(data_list)
-  S_star.mat <- value.mat
-  A.mat <- value.mat
-  M.mat <- value.mat
-  
-  for (k in 1:Nf){
-    for (i in 1:Nf){
-      cat(sprintf("[%s, %s]\n", k, i))
-      res <- ys1.timepoints(data_list[[k]], data_list[[i]], time_pts, w1=w1, w2=w2, w3=w3, use=use)
-      value.mat[k,i] = res$value
-      S_star.mat[k,i] = res$S_star
-      A.mat[k,i] = res$A
-    }
-  }
-  return(list(value=value.mat, S_star=S_star.mat, A=A.mat))
-}
-
-# --------------------------------------------------------------------------------------------
-# YS2
-# --------------------------------------------------------------------------------------------
-
-#' ys2 calculation.
-#' 
-#' @export
-ys2 <- function(a,b,time_pts, w1=0.50, w2=0.25, w3=0.25, use="all.obs"){
-  na.method <- pmatch(use, c("all.obs", "pairwise.complete.obs"))
-  if (is.na(na.method)){
-    stop("invalid 'use' argument")
-  }
-  df <- data.frame(a, b, time_pts)
-  
-  # check if any
-  if (any(table(time_pts)>1)){
-    stop("time_pts not unique")
-  }  
-  # handle NAs
-  if (identical(use, "pairwise.complete.obs")){
-    df <- df[complete.cases(df),]
-  }  
-  S_star <- son.fS_star(df$a, df$b)
-  A_star <- son.fA_star(df$a, df$b, df$time_pts)
-  A_star2 <- son.fA_star2(df$a, df$b, df$time_pts)
-  M_star <- son.fM_star(df$a, df$b, df$time_pts)
-  M_star2 <- son.fM_star2(df$a, df$b, df$time_pts)
-  value = w1*S_star + w2*A_star + w3*M_star
-  return( list(value=value, S_star=S_star, 
-               A_star=A_star, A_star2=A_star2, 
-               M_star=M_star, M_star2=M_star2) )
-}
-
-
-
-
-# --------------------------------------------------------------------------------------------
-# YR1
-# --------------------------------------------------------------------------------------------
-
-#' yr1 calculation.
-#' 
-#' @export
-yr1 = function(a,b,time_pts, w1=0.50, w2=0.25, w3=0.25, use="all.obs"){
-  na.method <- pmatch(use, c("all.obs", "pairwise.complete.obs"))
-  if (is.na(na.method)){
-    stop("invalid 'use' argument")
-  }
-  df <- data.frame(a, b, time_pts)
-  # handle NAs
-  if (identical(use, "pairwise.complete.obs")){
-    df <- df[complete.cases(df),]
-  }  
-  R_star <- son.fR_star(df$a,df$b)
-  A <- son.fA(df$a,df$b,df$time_pts)
-  M <- son.fM(df$a,df$b)
-  value = w1*R_star + w2*A + w3*M
-  return( list(value=value, R_star=R_star, A=A, M=M) )
-}
-
-#' yr1 correlation matrix for given data frame.
-#' 
-#' This calculates the yr1 correlation matrix for the given set of factors.
-#' @export
-yr1.df <- function(data, time_pts, w1=0.50, w2=0.25, w3=0.25, use="pairwise.complete.obs"){
-  N <- ncol(data)
-  cor.mat <- matrix(NA, nrow=N, ncol=N)
-  colnames(cor.mat) <- names(data)
-  rownames(cor.mat) <- names(data)
-  for (k in 1:N){
-    for (i in 1:N){
-      # cat(sprintf("[%s, %s]\n", k, i))
-      cor.mat[k,i] = yr1(data[,k], data[,i], time_pts, w1=w1, w2=w2, w3=w3, use=use)$value
-    }
-  }
-  return(cor.mat)
 }

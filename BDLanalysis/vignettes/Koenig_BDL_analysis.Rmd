@@ -293,36 +293,39 @@ legend("left",      # location of the legend on the heatmap plot
 
 
 # Correlation analysis
-The correlation and cluster analysis uses a correlation measure for time series data in combination with Complete-Linkage hierarchical clustering, which provided the best enrichments on gene-expression time-series in a recent comparisons of methods {Jaskowiak2014, Jaskowiak2013}. The time-course experiment includes $n=8$ time points denoted by $t_1,..., t_n$ consisting of a total $p=154$ factors, with $N=5$ repeats per time point. Correlation analysis between factors i and j (i,j=1, ...,p) was performed using a modified correlation coefficient based similarity measure developed for clustering of time-course data ($Y_{i,j}^{S2}$ and $Y_{i,j}^{R2}$) {Son2008}. Yi,jS2and Yi,jR2 are linear combinations of a classical correlation part Ri,j*(Pearson) or Si,j*(Spearman), a component Ai,j*accounting for the similarity in changes between the time courses and a component Mi,j* comparing the location of minimum and maximum
-Yi,jS2=1Si,j*+1A<i>,<j>*+2M<i>,<j>*
-Yi,jR2=1Ri,j*+1A<i>,<j>*+2M<i>,<j>*
-with Ri,j*and Si,j*being calculated on the individual data for factor i and j, A<i>,<j>*and M<i>,<j>*on the mean time courses <i>, <j> averaged over the N replicates.Yi,jS2and Yi,jR2were extended in a simple manner to account for the non-equidistant time points t1,..., tn=0h, 6h, 12h, 18h, 30h, 2d, 5d, 14d in the study design
-Yi,jS3=1Si,j*+1A<i>,<j>**+2M<i>,<j>**
-Yi,jR3=1Ri,j*+1A<i>,<j>**+2M<i>,<j>**
-Herein, Ai,j**calculates the correlation of slopes analogue to the correlation in distances in Ai,j* between factors i and j 
-Ai,j**=(Pearson correlation(si,sj)+1)/2
-with si=(si1,si2,...,si(n-1)) being the vector of slopes sik=s(i,tk,tk+1) = xi,tk+1- xi,tktk+1-tk
-Mi,j**calculates the absolute distance in maximum and minimum times instead of the distance of indices in Mi,j*
-Mi,j**=1-|timin-tjmin|+|timax-tjmax|2(tn-t0)
-Throughout the analysis the weights were 
-For comparison Pearson, Spearman and YS2 and YR2 correlation coefficients were calculated.
-See Supporting Information for details.
-All computations were performed in R with all source code and data provided in the supplement.
+For the correlation analysis between factors and the subsequent cluster analysis a correlation measure for time series data {Son2008} in combination with Complete-Linkage hierarchical clustering was used. This combination of methods provided the best enrichments on gene-expression time-series in a recent comparisons of methods {Jaskowiak2014, Jaskowiak2013} testing various correlation measures and clustering algorithms. 
 
+The calculation of correlation coefficients between factors i and j ($i,j=1, ...,N_p$) was performed using the slightly modified correlation coefficient based similarity measure developed for clustering of time-course data ($Y_{i,j}^{S2}$ and $Y_{i,j}^{R2}$) {Son2008}. $Y_{i,j}^{S2}$ and $Y_{i,j}^{R2}$ are linear combinations of (i) a classical correlation part based on Spearman correlation $S_{i,j}^{*}$ in case of $Y_{i,j}^{S2}$ or Pearson $R_{i,j}^{*}$ in case of $Y_{i,j}^{R2}$, (ii) a component $A_{i,j}^{*}$ accounting for the similarity in changes between two time courses, (iii) a component $M_{i,j}^{*}$ comparing the location of minimum and maximum values of the time course (see {Son2008} for definitions)
+$$Y_{i,j}^{S2} = w_1 S_{i,j}^{*} + w_2 A{i,j}^{*} + w_3 M{i,j}^{*}$$
+$$Y_{i,j}^{R2} = w_1 R_{i,j}^{*} + w_2 A{i,j}^{*} + w_3 M{i,j}^{*}$$
+$R_{i,j}^{*}$ and $S_{i,j}^{*}$ are hereby calculated on the individual data points for the factors i and j, $A_{i,j}^{*}$ and $M_{i,j}^{*}$ on the mean time courses averaged over the $N_r$ repeated measurements.
 
-Correlation matrices are calculated using a modified correlation score for the analysis of time course data. Standard Pearson and Spearman scores are calculated as reference values and for comparison.  
-Based on the correlation scores hierarchical clustering is performed using complete linkage (hclust).
+In the calculation of the change component we used a Spearman correlation based measure ($A**$) instead of the originally proposed Pearson measure ($A*$) resulting in the correlation scores $Y_{i,j}^{S3}$ and $Y_{i,j}^{S3}$
+$$Y_{i,j}^{S3} = w_1 S_{i,j}^{*} + w_2 A_{i,j}^{**} + w_3 M_{i,j}^{*}$$
+$$Y_{i,j}^{R3} = w_1 R_{i,j}^{*} + w_2 A_{i,j}^{**} + w_3 M_{i,j}^{*}$$
+
+Herein, $A_{i,j}**$ calculates the correlation of changes between factors i and j based on Spearman correlation analog $A_{i,j}*$ as
+$$A_{i,j}^{**}=(S(d_i,d_j)+1)/2$$
+$$A_{i,j}^{*}=(R(d_i,d_j)+1)/2$$
+The reason for this adaption was that initial analysis showed a strong dependency of the change components on outliers.
+
+The calculated correlation YS and YR are normalized are transformed to the range [-1, 1].
+Throughout the analysis the following weights were used $w_1=0.5$, $w_2=0.3$, $w_3=0.2$.
+
+In addition to YS3 and YR3 Pearson (R) and Spearman (S) correlations were calculated for comparison. Based on the calculated correlation matrices between factors hierarchical clustering is performed on the correlation matrices using complete linkage (hclust).
 
 ## Pearson & Spearman
-Heatmaps of the Spearman & Pearson correlation matrices are plotted reordered via hierarchical clustering
+In a first step Pearson $R_{i,j}$ and Spearman $S_{i,j}$ correlation was calculated for the filtered factors. 
+Heatmaps of the resulting correlation matrices are depicted below with reordering of factors based on hierarchical clustering with Complete Linkage.
 
 ``` {r correlation}
 # correlation matrix
-require(corrplot)
+suppressPackageStartupMessages(require(corrplot))
 cor.pearson <- cor(BDLdata.fil, method="pearson", use="pairwise.complete.obs")
 cor.spearman <- cor(BDLdata.fil, method="spearman", use="pairwise.complete.obs")
 
 # Helper function for creating correlation plot and saving to results folder.
+# TODO: update the corrplot to use the heatmap.2
 f_corrplot <- function(name, data, order, folder="../results",
                        width=1600, height=1600, res=200){
   # TODO: create the plot using the heatmap.2 with color based on histopathology
@@ -347,14 +350,17 @@ f_corrplot("cor.pearson", data=cor.pearson, order="hclust", folder=resultsPath)
 ```
 
 ```{r}
+# Pearson correlation with hierarchical clustering
+f_corrplot("cor.pearson", data=cor.pearson, order="hclust", folder=NULL)
+```
+
+```{r}
 # Spearman correlation with hierarchical clustering
 f_corrplot("cor.spearman", data=cor.spearman, order="hclust", folder=NULL)
 ```
 
-```{r}
-# Pearson correlation with hierarchical clustering
-f_corrplot("cor.pearson", data=cor.pearson, order="hclust", folder=NULL)
-```
+The pearson correlation is highly sensitive to outliers (correlation between factors, but also in the changes between time points). 
+
 
 ## YS & YR correlation
 Calculation of time-course based correlation measurements, namely ys1, ys2, ys3, yr1, yr2, yr3
@@ -365,11 +371,11 @@ In ys1, ys2, yr1, yr2 all calculations are performed on the mean time course dat
 # w <- list(w1=0.5, w2=0.25, w3=0.25)
 w <- list(w1=0.5, w2=0.3, w3=0.2)
 
-# calculate all the matrices on the filtered data set (all ys, yr correlation components are calculated on the mean data)
+# calculate the YSR component matrices on the filtered data set (A, A*, A**, M, M*)
+# all components are calculated on the mean data
 ysr.res <- ysr.matrices(BDLmean.fil, BDLmean.time, use="pairwise.complete.obs")
 
-# Pearson & spearman correlation on full dataset as replacement for the 
-# mean Pearson/Spearman in ys and yr
+# Pearson & spearman correlation on individual data points
 cor.S_star <- ( cor(BDLdata.fil, method="spearman", use="pairwise.complete.obs") + 1 )/2
 cor.R_star <- ( cor(BDLdata.fil, method="pearson", use="pairwise.complete.obs") + 1 )/2
 
@@ -404,10 +410,6 @@ f_corrplot("cor.yr1", data=cor.yr1, order="hclust", folder=resultsPath)
 f_corrplot("cor.yr2", data=cor.yr2, order="hclust", folder=resultsPath)
 f_corrplot("cor.yr3", data=cor.yr3, order="hclust", folder=resultsPath)
 
-
-# extreme example where the difference between pearson and spearman matters
-# plot_cor_pair("Nos2", "Cxcl15")
-# plot_cor_pair("albumin", "Cyp2b10")
 ```
 
 # Hierarchical clustering
@@ -419,7 +421,7 @@ An overview of the clusters is given in the `results/cluster` folder.
 
 ``` {r}
 # Plot the clusters
-require('matrixStats')
+suppressPackageStartupMessages(require('matrixStats'))
 
 # mean plots for clusters 
 f_normalize_centering <- function(a){
@@ -433,11 +435,10 @@ plot_clusters <- function(method, folder=NULL){
   if (!is.null(folder)){
     fname <- sprintf("%s_cluster_overview.png", method)
     path <- file.path(folder, 'cluster', fname)
-    print(path)
     png(filename=path, width=1600, height=1600, res=200)
   }
-  par(mfrow=c(ceiling(sqrt(Ngroups)),ceiling(sqrt(Ngroups))))
-  # par(mfrow=c(2,3))
+  # par(mfrow=c(ceiling(sqrt(Ngroups)),ceiling(sqrt(Ngroups))))
+  par(mfrow=c(2,3))
   
   steps <- 1:8 # time points
     for (k in 1:Ngroups){
@@ -518,8 +519,6 @@ cluster_methods <- c("pearson", "spearman", "ys1", "ys2", "ys3", "yr1", "yr2", "
 Ngroups <-  6
 
 for (method in cluster_methods){
-  print(method)
-
   cor.cluster <- correlation_matrix_for_method(method)
   
   # perform hierarchical clustering and cut into Ngroups clusters.
@@ -527,22 +526,25 @@ for (method in cluster_methods){
   groups <- cutree(hc, k=Ngroups)
   groups.hc.order <- groups[hc$order]
   
-  # plot cluster overview
-  plot_clusters(method=method, folder=NULL)
-
+  # plot cluster overview in report
+  if (identical(method, "ys3")){
+    plot_clusters(method=method, folder=NULL)  
+  }
+  # plot all clusters on disk
   plot_clusters(method=method, folder=resultsPath) 
 
-  # plot individual clusters
+  # plot individual factors in clusters on disk
   plot_clusters_items(folder=resultsPath)
 }
 ```
 
 TODO: overview over the cluster size and content
 
+
+
+
 Display the clusters with the heatmap
-``` {r, error=TRUE}
-library("gplots")
-library("RColorBrewer")
+``` {r heatmap_ys3, fig.width=10, fig.height=10, error=TRUE, htmlcap='<b>Figure Heatmap Cluster:</b> Plot of ANOVA filtered data set.'}
 
 method <- 'ys3'
 cor.cluster <- correlation_matrix_for_method(method)

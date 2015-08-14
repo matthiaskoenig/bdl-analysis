@@ -736,6 +736,49 @@ for (ks in 1:(Nt*Nr)){
 print(treedata.mean)
 ```
 
+``` {r}
+# [2] Single factor from cluster
+Ndata <- prod(group_table) *Nr*Nt  # number of group combinations * number repeats
+na.vec <- rep(NA, Ndata)
+treedata.single <- data.frame(class=na.vec, c1=na.vec, c2=na.vec, c3=na.vec, c4=na.vec, c5=na.vec, c6=na.vec, 
+                       c1.id=na.vec, c2.id=na.vec, c3.id=na.vec, c4.id=na.vec, c5.id=na.vec, c6.id=na.vec)
+head(treedata.single)
+
+group_table
+# Now fill the single factor data frame with data
+# This should work (~450 000 * 15)
+facs_1 <- names(groups[groups==1])
+facs_2 <- names(groups[groups==2])
+facs_3 <- names(groups[groups==3])
+facs_4 <- names(groups[groups==4])
+facs_5 <- names(groups[groups==5])
+facs_6 <- names(groups[groups==6])
+
+# TODO
+counter = 1
+for (n1 in facs_1){
+  for (n2 in facs_2){
+    for (n3 in facs_3){
+      for (n4 in facs_4){
+        for (n5 in facs_5){
+          for (n6 in facs_6){
+            # do all the 40 samples for this combination
+            for (k in 1:(Nr*Nt){
+              # TODO: fill
+              treedata.single[counter, c('class', 'c1', 'c2', 'c3', 'c4', 'c5', 'c6', 
+                                         'c1.id', 'c2.id', 'c3.id', 'c4.id', 'c5.id', 'c6.id')] <- list(  ) 
+              counter = counter + 1
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+```
+
+
 Visualize the pairwise cluster data. The data should be classified/regressed in 
 a 6D space, i.e. 6 predictor variables corresponding to the individual clusters.
 The projection into 2D can provide first insights in problems of the task and
@@ -771,10 +814,11 @@ pred.class
 library(caret)
 confusionMatrix(data=pred.class, reference=treedata.mean$class)
 
-# TODO: evaluate the tree
+# TODO: evaluate the tree on single factor data
 
 ```
 
+Now analog model fitting with a regression tree.
 ``` {r}
 # fit the tree with regression (on log scale)
 # -------------------------------------------
@@ -801,11 +845,7 @@ prp(tree.reg, type=0, extra=101, yesno=TRUE)
 
 
 
-# [2] Single factor from cluster
-Ndata <- prod(group_table) * 5  # number of group combinations * number repeats
-na.vec <- rep(NA, )
-treedata.single <- data.frame(class=na.vec, c1=na.vec, c2=na.vec, c3=na.vec, c4=na.vec, c5=na.vec, c6=na.vec, 
-                       c1.id=na.vec, c2.id=na.vec, c3.id=na.vec, c4.id=na.vec, c5.id=na.vec, c6.id=na.vec)
+
 
 ```
 

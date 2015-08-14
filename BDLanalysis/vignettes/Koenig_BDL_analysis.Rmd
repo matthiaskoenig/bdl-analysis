@@ -699,36 +699,10 @@ Overview of the individual time courses in the clusters
 # Decision Trees
 The decision trees are based on the clusters. This has the large advantage to be not dependent on a single factor, but it uses the combined information available by multiple factors. Consequently, the decision tree is applicable to any subset of factors measured. 
 
-Example decision tree on the full dataset with `rpart` and `rpart.plot`
+Decision trees are calculated using the clusters as predictors using the packages `rpart` and `rpart.plot`
 ``` {r}
-# Standard decision trees on the full predictor set
 require(rpart)
 require(rpart.plot)
-
-# add the class label to the predictors (time points/period are used as classes)
-treedata <- BDLdata.fil
-treedata$class <- BDLsamples$time_fac
-head(treedata)
-
-# create formula for tree classification
-# full formula using all predictors of filtered data
-formula.fil = paste("class ~ ", paste(colnames(BDLdata.fil), sep="", collapse=" + "), sep="")
-
-# fit the tree with classification
-# tree.fit <- rpart(formula=f, data=treedata, method="class", control=rpart.control(minsplit=1)) 
-tree.fit <- rpart(formula=formula.fil, data=treedata, method="class", control=rpart.control(minsplit=5)) 
-# print information of the tree fit
-printcp(tree.fit)
-print(tree.fit)
-# plot the tree
-plot(tree.fit)
-text(tree.fit)
-# pretty plot
-prp(tree.fit, type=0, extra=101, yesno=TRUE)
-```
-
-## Decision tree on cluster data
-Now perform the tree fit on the clustered data set.
 
 ```{r}
 # hierarchical clusters for ys3
@@ -746,6 +720,8 @@ prod(group_table)
 # [1] Mean cluster data set
 na.vec <- rep(NA, Nt*Nr)
 treedata.mean <- data.frame(class=na.vec, c1=na.vec, c2=na.vec, c3=na.vec, c4=na.vec, c5=na.vec, c6=na.vec)
+
+# add class for prediction
 treedata.mean$class <- BDLsamples$time_fac
 
 # for every sample
@@ -760,7 +736,6 @@ for (ks in 1:(Nt*Nr)){
 print(treedata.mean)
 ```
 
-
 Visualize the pairwise cluster data. The data should be classified/regressed in 
 a 6D space, i.e. 6 predictor variables corresponding to the individual clusters.
 The projection into 2D can provide first insights in problems of the task and
@@ -774,15 +749,33 @@ plot(treedata.mean[, 2:7], xlim=c(-0.5, 0.7), ylim=c(-0.5, 0.7), col=treedata.me
 # fit the tree with classification
 # ----------------------------------
 formula.mean = paste("class ~ c1 + c2 + c3 + c4 + c5 + c6")
-tree.fit <- rpart(formula=formula.mean, data=treedata.mean, method="class", control=rpart.control(minsplit=5)) 
+tree.model <- rpart(formula=formula.mean, data=treedata.mean, method="class", control=rpart.control(minsplit=5)) 
 
 # print information of the tree fit
-printcp(tree.fit)
-print(tree.fit)
+printcp(tree.model)
+print(tree.model)
 # pretty plot
-prp(tree.fit, type=0, extra=101, yesno=TRUE)
+prp(tree.model, type=0, extra=101, yesno=TRUE)
 
+# evaluation via prediction
+# http://stats.stackexchange.com/questions/49416/decision-tree-model-evaluation-for-training-set-vs-testing-set-in-r
 
+# probability prediction
+pred <- predict(tree.model, newdata=treedata.mean, type="prob")
+round(pred, digits=2)
+
+# class prediction
+pred.class <- predict(tree.model, newdata=treedata.mean, type="class")
+pred.class
+
+library(caret)
+confusionMatrix(data=pred.class, reference=treedata.mean$class)
+
+# TODO: evaluate the tree
+
+```
+
+``` {r}
 # fit the tree with regression (on log scale)
 # -------------------------------------------
 treedata.reg <- treedata.mean

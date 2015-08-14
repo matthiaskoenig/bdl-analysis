@@ -1,0 +1,8 @@
+confintModel            Confidence intervals for model parameters
+ordinaryDeviance        Objectives to be profiled
+plot.profileModel       Plot methods for 'profileModel' objects
+print.profileModel      Printing 'profileModel' objects
+profileModel            Get the profiles of arbitrary objectives for
+                        arbitrary 'glm'-like models
+signedSquareRoots       Get the signed square roots of the profiles in
+                        'profileModel'

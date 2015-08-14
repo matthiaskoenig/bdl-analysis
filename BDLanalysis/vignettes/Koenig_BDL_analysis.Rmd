@@ -489,6 +489,8 @@ plot_clusters <- function(method, folder=NULL){
   # par(mfrow=c(ceiling(sqrt(Ngroups)),ceiling(sqrt(Ngroups))))
   par(mfrow=c(2,3))
   
+  
+  
   steps <- 1:Nt  # time points
     for (k in 1:Ngroups){
       g <- groups.hc.order[groups.hc.order==k]
@@ -628,17 +630,32 @@ All Pearson based correlation scores showed dependencies on data outliers. Conse
 
 ``` {r}
 # plot ys3 clusters
+# TODO: this dependency is not ideal, try to refactor, so that plot_clusters is clean
 method = "ys3"
+cor.cluster <- correlation_matrix_for_method(method)
+  
+# perform hierarchical clustering and cut into Ngroups clusters.
+hc <- hclust(dist(cor.cluster)) 
+groups <- cutree(hc, k=Ngroups)
+groups.hc.order <- groups[hc$order]
+```
+
+``` {r cluster_mean, fig.width=10, fig.height=8, error=TRUE, htmlcap='<b>Figure Cluster mean:</b> Plot of mean cluster data.'}
 plot_clusters(method=method, folder=NULL)
+```
+``` {r cluster_repeat, fig.width=10, fig.height=8, error=TRUE, htmlcap='<b>Figure Cluster repeat:</b> Plot of repeat cluster data.'}
 plot_clusters2(method=method, folder=NULL)
 ```
 
+
 Which factors are in which clusters?
 ``` {r}
-# print the clusters
+# print the clusters 
+# TODO: refactor the multiple clustering
 cor.cluster <- correlation_matrix_for_method(method="ys3")
 hc <- hclust(dist(cor.cluster)) 
 groups <- cutree(hc, k=Ngroups)
+
 for (k in 1:Ngroups){
   g <- groups[groups==k]
   cat(sprintf("------------------------------------------\n", k, length(g)))
@@ -710,38 +727,23 @@ text(tree.fit)
 prp(tree.fit, type=0, extra=101, yesno=TRUE)
 ```
 
+## Decision tree on cluster data
 Now perform the tree fit on the clustered data set.
+
 ```{r}
-# get the hierarchical clusters for ys3
+# hierarchical clusters for ys3
 method <- "ys3"
 cor.cluster <- correlation_matrix_for_method(method)
-# perform hierarchical clustering and cut into Ngroups clusters.
 hc <- hclust(dist(cor.cluster)) 
 groups <- cutree(hc, k=Ngroups)
-groups.hc.order <- groups[hc$order]
-plot(hc)
-
+# overview of members
 group_table <- table(groups)
 print(group_table)
-# Number of combinations
+# Number of combinations between single members in the clusters
 prod(group_table)
 
-```
-
-``` {r}
-# Create the cluster data set
-
-# data has to be normalized analog to the plotted clusters
-
-BDLtree <- as.data.frame(apply(BDLdata.fil, 2, f_normalize_centering))
-# TODO: fix bug NA for antibodies (mean -> na.rm)
-head(BDLtree)
-plot(BDLsamples$time, BDLtree$bilirubin)
-
-
-# [1] Mean cluster
-Nt <- 8
-Nr <- 5
+# Prepare the data set for prediction
+# [1] Mean cluster data set
 na.vec <- rep(NA, Nt*Nr)
 treedata.mean <- data.frame(class=na.vec, c1=na.vec, c2=na.vec, c3=na.vec, c4=na.vec, c5=na.vec, c6=na.vec)
 treedata.mean$class <- BDLsamples$time_fac
@@ -752,12 +754,25 @@ for (ks in 1:(Nt*Nr)){
   for (kgroup in 1:Ngroups){
     # get the factors in the cluster
     factors <- names(groups[groups==kgroup])
-    treedata.mean[ks, (kgroup+1)] <- mean(as.numeric(BDLtree[ks, factors]), na.rm=TRUE)
+    treedata.mean[ks, (kgroup+1)] <- mean(as.numeric(BDLdata.norm[ks, factors]), na.rm=TRUE)
   }
 }
 print(treedata.mean)
+```
 
+
+Visualize the pairwise cluster data. The data should be classified/regressed in 
+a 6D space, i.e. 6 predictor variables corresponding to the individual clusters.
+The projection into 2D can provide first insights in problems of the task and
+is useful for the later visualization of the tree decision cuts.
+
+``` {r}
+plot(treedata.mean[, 2:7], xlim=c(-0.5, 0.7), ylim=c(-0.5, 0.7), col=treedata.mean$class, pch=19)
+```
+
+``` {r}
 # fit the tree with classification
+# ----------------------------------
 formula.mean = paste("class ~ c1 + c2 + c3 + c4 + c5 + c6")
 tree.fit <- rpart(formula=formula.mean, data=treedata.mean, method="class", control=rpart.control(minsplit=5)) 
 
@@ -767,7 +782,9 @@ print(tree.fit)
 # pretty plot
 prp(tree.fit, type=0, extra=101, yesno=TRUE)
 
-# fit the tree with regression (on the log)
+
+# fit the tree with regression (on log scale)
+# -------------------------------------------
 treedata.reg <- treedata.mean
 treedata.reg$regvalue <- log(BDLsamples$time+1)
 head(treedata.reg)
@@ -777,9 +794,18 @@ formula.fil.reg = paste("regvalue ~ c1 + c2 + c3 + c4 + c5 + c6")
 tree.reg <- rpart(formula=formula.fil.reg, data=treedata.reg, method="anova", control=rpart.control(minsplit=6, minbucket=2, cp=-1))
 tree.reg <- rpart(formula=formula.fil.reg, data=treedata.reg, method="anova", control=rpart.control(minsplit=6, minbucket=2))
 
-printcp(tree.reg)
-text(tree.reg)
+# this seems like the correct idea, the main question is how the classes are defined & how ROC curves
+# are calculated
+
+# printcp(tree.reg)
+# text(tree.reg)
+# pretty plot
 prp(tree.reg, type=0, extra=101, yesno=TRUE)
+
+# fit the ordinal regression
+# ----------------------------
+# TODO
+
 
 
 # [2] Single factor from cluster

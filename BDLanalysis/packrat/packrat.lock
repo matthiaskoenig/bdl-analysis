@@ -34,6 +34,12 @@ Source: Bioconductor
 Version: 1.18.4
 Hash: 197fdd6e4517869fafd77db02b3df924
 
+Package: PKI
+Source: CRAN
+Version: 0.1-3
+Hash: aca3e459c659b6d8266538520f72ba19
+Requires: base64enc
+
 Package: R6
 Source: CRAN
 Version: 2.1.0
@@ -50,10 +56,20 @@ Version: 1.95-4.7
 Hash: 7756ed9df5d79ca87bc9e93f85d89b87
 Requires: bitops
 
+Package: RJSONIO
+Source: CRAN
+Version: 1.3-0
+Hash: fb672e20eb6f3010a3639f855d8ef6de
+
 Package: Rcpp
 Source: CRAN
 Version: 0.12.0
 Hash: 9cad2f0525579d98b5ec2536febaf0da
+
+Package: base64enc
+Source: CRAN
+Version: 0.1-3
+Hash: c590d29e555926af053055e23ee79efb
 
 Package: bitops
 Source: CRAN
@@ -243,6 +259,16 @@ Source: CRAN
 Version: 1.5.2
 Hash: 6721d2fdd52b1cfb30e2bff460b93026
 Requires: rpart
+
+Package: rsconnect
+Source: github
+Version: 0.4.1.4
+Hash: c543adf37e793ee02edc48ad2f9c4dee
+Requires: PKI, RCurl, RJSONIO, digest, packrat, rstudioapi, yaml
+GithubRepo: rsconnect
+GithubUsername: rstudio
+GithubRef: v0.99
+GithubSha1: fcac892a69817febd7b655b189bf57193260cda0
 
 Package: rstudioapi
 Source: CRAN

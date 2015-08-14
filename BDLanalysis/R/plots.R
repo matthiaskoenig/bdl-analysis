@@ -24,7 +24,9 @@ plot_single_factor <- function(name, path=NULL, k=NULL){
   # [A] plot against time
   plot(BDLsamples$time_fac, dA, at=sort(as.numeric(levels(as.factor(BDLsamples$time)))), col="blue",
        xlab="time [h]", ylab=name, main=title, font.lab=2,
-       ylim=c(0, max(dA, na.rm=TRUE)*1.1 ))
+       xlim=c(-0.5, max(BDLsamples$time)*1.1),
+       ylim=c(0, max(dA, na.rm=TRUE)*1.1 ),
+       cex.axis=0.8)
   
   points(BDLsamples$time, dA, col="black")
   points(BDLsamples$time, dA, col=rgb(0,0,1,0.6), pch=16)
@@ -43,9 +45,9 @@ plot_single_factor <- function(name, path=NULL, k=NULL){
   lines(BDLmean.time, BDLmean[, name], col="red")
   
   # [B] plot as factor (non-equidistant time points)
-  plot(BDLsamples$time_fac, dA, xlab="time", ylab=name, main=title, col=rgb(0.5,0.5,0.5, 0.4),
+  plot(BDLsamples$time_fac, dA, xlab="time [class]", ylab=name, main=title, col=rgb(0.5,0.5,0.5, 0.4),
        font.lab=2,
-       ylim=c(0, max(dA, na.rm=TRUE)*1.1))
+       ylim=c(0, max(dA, na.rm=TRUE)*1.1), cex.axis=0.8)
   points(BDLsamples$time_fac, dA, col="black")
   points(BDLsamples$time_fac, dA, col=rgb(0,0,1,0.6), pch=16)
   # labels
@@ -53,6 +55,10 @@ plot_single_factor <- function(name, path=NULL, k=NULL){
   # add mean
   points(1:Nt, BDLmean[, name], col="red", pch=15)
   lines(1:Nt, BDLmean[, name], col="red")
+  
+  legend("topleft", col=c("red", rgb(0,0,1,0.6)), 
+         legend=c("time point mean", "single sample"), bty="n", 
+         pch=c(15,16), cex=0.7)
   
   par(mfrow=c(1,1))
   if (!is.null(path)){

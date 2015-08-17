@@ -696,33 +696,33 @@ Overview of the individual time courses in the clusters
 # TODO
 ```
 
-# Decision Trees
-The decision trees are based on the clusters. This has the large advantage to be not dependent on a single factor, but it uses the combined information available by multiple factors. Consequently, the decision tree is applicable to any subset of factors measured. 
 
-Decision trees are calculated using the clusters as predictors using the packages `rpart` and `rpart.plot`
+
+
+
+
+# Decision Trees
+For the prediction of the phase/time after BDL from measured factors a decision tree was fitted on the data. The fitted decision tree model is a regression tree with the clusters as predictor variables. This allows to combine the information from multiple factors in the individual clusters, resulting in a predictive model which is not depening on single factor variables, but uses the combined information available from multiple factors. The fitted decision tree is applicable to any subset of factors measured.
+
+The decision tree models are fitted using the packages `rpart` and `rpart.plot` with the 6 clusters as predictor variables in the model.
+
+In a first step the data sets are prepared for model fitting and prediction. The used data sets for model evaluation are the mean cluster data set, i.e. the mean data of all factors averaged for the clusters. The data set of all combinations of single factors from the individual clusters and a data set using 2 randomly sampled factors from every cluster.
 ``` {r}
 require(rpart)
 require(rpart.plot)
 
 ```{r}
-# hierarchical clusters for ys3
+# Mean cluster data set
+
+# Get the hierarchical clusters for ys3 for the fitting the decision trees.
 method <- "ys3"
 cor.cluster <- correlation_matrix_for_method(method)
 hc <- hclust(dist(cor.cluster)) 
 groups <- cutree(hc, k=Ngroups)
-# overview of members
-group_table <- table(groups)
-print(group_table)
-# Number of combinations between single members in the clusters
-prod(group_table)
 
-# Prepare the data set for prediction
-# [1] Mean cluster data set
+# Prepare mean cluster data set (i.e. mean over normalized factors in cluster)
 na.vec <- rep(NA, Nt*Nr)
-treedata.mean <- data.frame(class=na.vec, c1=na.vec, c2=na.vec, c3=na.vec, c4=na.vec, c5=na.vec, c6=na.vec)
-
-# add class for prediction
-treedata.mean$class <- BDLsamples$time_fac
+treedata.mean <- data.frame(c1=na.vec, c2=na.vec, c3=na.vec, c4=na.vec, c5=na.vec, c6=na.vec)
 
 # for every sample
 for (ks in 1:(Nt*Nr)){
@@ -730,23 +730,28 @@ for (ks in 1:(Nt*Nr)){
   for (kgroup in 1:Ngroups){
     # get the factors in the cluster
     factors <- names(groups[groups==kgroup])
-    treedata.mean[ks, (kgroup+1)] <- mean(as.numeric(BDLdata.norm[ks, factors]), na.rm=TRUE)
+    treedata.mean[ks, kgroup] <- mean(as.numeric(BDLdata.norm[ks, factors]), na.rm=TRUE)
   }
 }
+
+# add class for classification
+treedata.mean$class <- BDLsamples$time_fac
+# add log transformed time [h] for regression
+treedata.mean$regvalue <- log(BDLsamples$time+1)
+
+# mean cluster data set for model fitting
 print(treedata.mean)
 ```
 
 ``` {r}
-# [2] Single factor from cluster
-Ndata <- prod(group_table) *Nr*Nt  # number of group combinations * number repeats
-na.vec <- rep(NA, Ndata)
-treedata.single <- data.frame(class=na.vec, c1=na.vec, c2=na.vec, c3=na.vec, c4=na.vec, c5=na.vec, c6=na.vec, 
-                       c1.id=na.vec, c2.id=na.vec, c3.id=na.vec, c4.id=na.vec, c5.id=na.vec, c6.id=na.vec)
-head(treedata.single)
+# Single factor data set
+# overview of member count per cluster
+group_table <- table(groups)
+print(group_table)
+# Number of combinations between single members in the clusters
+prod(group_table)
 
-group_table
-# Now fill the single factor data frame with data
-# This should work (~450 000 * 15)
+# names of all clusters
 facs_1 <- names(groups[groups==1])
 facs_2 <- names(groups[groups==2])
 facs_3 <- names(groups[groups==3])
@@ -754,7 +759,9 @@ facs_4 <- names(groups[groups==4])
 facs_5 <- names(groups[groups==5])
 facs_6 <- names(groups[groups==6])
 
-# TODO
+# create all single factor data
+ptm <- proc.time()  # Start timer
+treedata.single <- vector("list", prod(group_table))  # list for all combinations
 counter = 1
 for (n1 in facs_1){
   for (n2 in facs_2){
@@ -762,19 +769,63 @@ for (n1 in facs_1){
       for (n4 in facs_4){
         for (n5 in facs_5){
           for (n6 in facs_6){
-            # do all the 40 samples for this combination
-            for (k in 1:(Nr*Nt){
-              # TODO: fill
-              treedata.single[counter, c('class', 'c1', 'c2', 'c3', 'c4', 'c5', 'c6', 
-                                         'c1.id', 'c2.id', 'c3.id', 'c4.id', 'c5.id', 'c6.id')] <- list(  ) 
-              counter = counter + 1
-            }
+            # THIS HAS TO BE FAST (<0.01 s)
+            # cat(sprintf("%s, %s, %s, %s, %s, %s\n", n1, n2, n3, n4, n5, n6))
+            
+            # ptm <- proc.time() # Start the clock!
+            
+            # get factor data
+            tmp <- BDLdata.norm[, c(n1, n2, n3, n4, n5, n6)]
+            # add class and regression values
+            tmp$class <- BDLsamples$time_fac
+            tmp$regvalue <- log(BDLsamples$time+1)
+            # add factor fields 
+            tmp[, c('c1.id', 'c2.id', 'c3.id', 'c4.id', 'c5.id', 'c6.id')] <- matrix(rep(c(n1, n2, n3, n4, n5, n6), 40), nrow=40, ncol=6, byrow =TRUE)
+            colnames(tmp) <- c('c1', 'c2', 'c3', 'c4', 'c5', 'c6', 'class', 'regvalue', 'c1.id', 'c2.id', 'c3.id', 'c4.id', 'c5.id', 'c6.id')
+            treedata.single[[counter]] <- tmp
+            
+            counter = counter + 1 
+            print(counter)
+            # proc.time() - ptm  # Stop the clock
           }
         }
       }
     }
   }
 }
+# Stop the clock
+proc.time() - ptm      
+```
+
+``` {r}
+# Double factor data set
+set.seed(123456)
+Nsample <- 10000
+treedata.double <- vector("list", Nsample)  # list for sampled double combinations
+for (k in 1:Nsample){
+  n1 = sample(facs_1, 2, replace=FALSE)  
+  n2 = sample(facs_2, 2, replace=FALSE)  
+  n3 = sample(facs_3, 2, replace=FALSE)  
+  n4 = sample(facs_4, 2, replace=FALSE)  
+  n5 = sample(facs_5, 2, replace=FALSE)  
+  n6 = sample(facs_6, 2, replace=FALSE)  
+  tmp <- 0.5 * (BDLdata.norm[, c(n1[1], n2[1], n3[1], n4[1], n5[1], n6[1])] 
+                + BDLdata.norm[, c(n1[2], n2[2], n3[2], n4[2], n5[2], n6[2])])
+  # add class and regression values
+  tmp$class <- BDLsamples$time_fac
+  tmp$regvalue <- log(BDLsamples$time+1)
+  # add factor fields 
+  tmp[, c('c1.id', 'c2.id', 'c3.id', 'c4.id', 'c5.id', 'c6.id')] <- matrix(rep(c(paste(n1, collapse="_"), 
+                                                                                 paste(n2, collapse="_"),
+                                                                                 paste(n3, collapse="_"),
+                                                                                 paste(n4, collapse="_"),
+                                                                                 paste(n5, collapse="_"), 
+                                                                                 paste(n6, collapse="_")), 40), nrow=40, ncol=6, byrow =TRUE)
+  colnames(tmp) <- c('c1', 'c2', 'c3', 'c4', 'c5', 'c6', 'class', 'regvalue', 'c1.id', 'c2.id', 'c3.id', 'c4.id', 'c5.id', 'c6.id')
+  treedata.double[[k]] <- tmp
+  print(k)
+}
+treedata.double[[1]]
 
 ```
 
@@ -783,13 +834,14 @@ Visualize the pairwise cluster data. The data should be classified/regressed in
 a 6D space, i.e. 6 predictor variables corresponding to the individual clusters.
 The projection into 2D can provide first insights in problems of the task and
 is useful for the later visualization of the tree decision cuts.
-
 ``` {r}
-plot(treedata.mean[, 2:7], xlim=c(-0.5, 0.7), ylim=c(-0.5, 0.7), col=treedata.mean$class, pch=19)
+plot(treedata.mean[, 1:6], xlim=c(-0.5, 0.7), ylim=c(-0.5, 0.7), col=treedata.mean$class, pch=19)
 ```
 
+
+To demonstrate the model fitting and model evaluation with the test data sets.
 ``` {r}
-# fit the tree with classification
+# Fit a decision tree for classification
 # ----------------------------------
 formula.mean = paste("class ~ c1 + c2 + c3 + c4 + c5 + c6")
 tree.model <- rpart(formula=formula.mean, data=treedata.mean, method="class", control=rpart.control(minsplit=5)) 
@@ -807,45 +859,103 @@ prp(tree.model, type=0, extra=101, yesno=TRUE)
 pred <- predict(tree.model, newdata=treedata.mean, type="prob")
 round(pred, digits=2)
 
-# class prediction
+# class prediction with data
 pred.class <- predict(tree.model, newdata=treedata.mean, type="class")
 pred.class
 
 library(caret)
 confusionMatrix(data=pred.class, reference=treedata.mean$class)
-
-# TODO: evaluate the tree on single factor data
-
 ```
+
+
 
 Now analog model fitting with a regression tree.
 ``` {r}
 # fit the tree with regression (on log scale)
 # -------------------------------------------
-treedata.reg <- treedata.mean
-treedata.reg$regvalue <- log(BDLsamples$time+1)
+
 head(treedata.reg)
 treedata.reg
 formula.fil.reg = paste("regvalue ~ c1 + c2 + c3 + c4 + c5 + c6")
 
-tree.reg <- rpart(formula=formula.fil.reg, data=treedata.reg, method="anova", control=rpart.control(minsplit=6, minbucket=2, cp=-1))
+# tree.reg <- rpart(formula=formula.fil.reg, data=treedata.reg, method="anova", control=rpart.control(minsplit=6, minbucket=2, cp=-1))
 tree.reg <- rpart(formula=formula.fil.reg, data=treedata.reg, method="anova", control=rpart.control(minsplit=6, minbucket=2))
+print(tree.reg)
+summary(tree.reg)
+
+tree.reg$frame
+
 
 # this seems like the correct idea, the main question is how the classes are defined & how ROC curves
 # are calculated
+printcp(tree.reg)
 
-# printcp(tree.reg)
 # text(tree.reg)
 # pretty plot
 prp(tree.reg, type=0, extra=101, yesno=TRUE)
+pred.time <- exp(predict(tree.reg, newdata=treedata.reg, method="anova"))-1
+data.frame(BDLsamples$time, pred.time)
+
+# classes via predicted times
+node_levels <- levels(as.factor(pred.time))
+# This are the predicted classes
+node_classes <- round(as.numeric(node_levels), digits=1)
+
+
+plot(BDLsamples$time, pred.time, col=rgb(0,0,1, 0.5), pch=16)
+abline(a=0, b=1)
+
+# plot the tree predictions
+for (k in 1:100){
+  pred.time <- exp(predict(tree.reg, newdata=res[[k]], method="anova"))-1
+  points(BDLsamples$time, pred.time, col=rgb(0.5,0.5,0.5, 0.1), pch=16, cex=0.7)  
+}
+
+# make all the predictions
+pred.res <- vector("list", length(res))
+for (k in (1:length(res))){
+  print(k)
+  pred.res[[k]] <- exp(predict(tree.reg, newdata=res[[k]], method="anova"))-1
+}
+
+
+plot(BDLsamples$time, pred.res[[1]])
+pred.single[[1]]
+
+pred.single <- do.call("rbind", pred.res)
+
+# Barplot for the various time points
+par(mfrow=c(2,4))
+for (k in 1:Nt){
+  # single data
+  data <- as.vector(pred.single[, ((1:Nr)+Nr*(k-1))])
+  tab1 <- table(factor(data, levels=node_levels))/length(data)
+  barplot(tab1, main=k, ylim=c(0,1))  
+  # mean data
+  data <- as.vector(pred.time[((1:Nr)+Nr*(k-1))])
+  tab2 <- table(factor(data, levels=node_levels))/length(data)
+  barplot(tab2, main=k, ylim=c(0,1), col=rgb(0,0,1,0.5), add=TRUE)  
+}
+par(mfrow=c(1,1))
+
+
+
+
+
+
+install.packages('party')
+library(party)
+
+
+# look at the predictions
+# tree.model <- tree(log(MedianHouseValue) ~ Longitude + Latitude, data=real.estate)
+# plot(tree.model)
+# text(tree.model, cex=.75)
+
 
 # fit the ordinal regression
 # ----------------------------
 # TODO
-
-
-
-
 
 ```
 

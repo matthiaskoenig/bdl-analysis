@@ -712,8 +712,7 @@ require(rpart)
 require(rpart.plot)
 
 ```{r}
-# Mean cluster data set
-
+# --- Mean cluster data set ---
 # Get the hierarchical clusters for ys3 for the fitting the decision trees.
 method <- "ys3"
 cor.cluster <- correlation_matrix_for_method(method)
@@ -744,7 +743,7 @@ print(treedata.mean)
 ```
 
 ``` {r}
-# Single factor data set
+# --- Single factor data set ---
 # overview of member count per cluster
 group_table <- table(groups)
 print(group_table)
@@ -798,7 +797,7 @@ proc.time() - ptm
 ```
 
 ``` {r}
-# Double factor data set
+# --- Double factor data set ---
 set.seed(123456)
 Nsample <- 10000
 treedata.double <- vector("list", Nsample)  # list for sampled double combinations
@@ -826,7 +825,6 @@ for (k in 1:Nsample){
   print(k)
 }
 treedata.double[[1]]
-
 ```
 
 
@@ -839,6 +837,7 @@ plot(treedata.mean[, 1:6], xlim=c(-0.5, 0.7), ylim=c(-0.5, 0.7), col=treedata.me
 ```
 
 
+## Classification Tree
 To demonstrate the model fitting and model evaluation with the test data sets.
 ``` {r}
 # Fit a decision tree for classification
@@ -858,7 +857,7 @@ prp(tree.model, type=0, extra=101, yesno=TRUE)
 # probability prediction
 pred <- predict(tree.model, newdata=treedata.mean, type="prob")
 round(pred, digits=2)
-
+
 # class prediction with data
 pred.class <- predict(tree.model, newdata=treedata.mean, type="class")
 pred.class
@@ -868,23 +867,19 @@ confusionMatrix(data=pred.class, reference=treedata.mean$class)
 ```
 
 
-
+## Regression Tree
 Now analog model fitting with a regression tree.
 ``` {r}
 # fit the tree with regression (on log scale)
 # -------------------------------------------
 
-head(treedata.reg)
-treedata.reg
-formula.fil.reg = paste("regvalue ~ c1 + c2 + c3 + c4 + c5 + c6")
+formula.reg = paste("regvalue ~ c1 + c2 + c3 + c4 + c5 + c6")
 
 # tree.reg <- rpart(formula=formula.fil.reg, data=treedata.reg, method="anova", control=rpart.control(minsplit=6, minbucket=2, cp=-1))
-tree.reg <- rpart(formula=formula.fil.reg, data=treedata.reg, method="anova", control=rpart.control(minsplit=6, minbucket=2))
+tree.reg <- rpart(formula=formula.reg, data=treedata.mean, method="anova", control=rpart.control(minsplit=6, minbucket=2))
 print(tree.reg)
 summary(tree.reg)
-
 tree.reg$frame
-
 
 # this seems like the correct idea, the main question is how the classes are defined & how ROC curves
 # are calculated
@@ -893,58 +888,135 @@ printcp(tree.reg)
 # text(tree.reg)
 # pretty plot
 prp(tree.reg, type=0, extra=101, yesno=TRUE)
-pred.time <- exp(predict(tree.reg, newdata=treedata.reg, method="anova"))-1
-data.frame(BDLsamples$time, pred.time)
+
+# mean predictions (i.e. with mean cluster data)
+pred.mean <- exp(predict(tree.reg, newdata=treedata.mean, method="anova"))-1
+data.frame(BDLsamples$time, pred.mean)
+
+# plot the tree predictions
+plot(BDLsamples$time, pred.mean, col=rgb(0,0,1, 0.5), pch=16)
+abline(a=0, b=1)
+for (k in 1:100){
+  # back conversion (log)
+  pred.time <- exp(predict(tree.reg, newdata=treedata.single[[k]], method="anova"))-1
+  points(BDLsamples$time, pred.time, col=rgb(0.5,0.5,0.5, 0.1), pch=16, cex=0.7)  
+}
+
+
+# single predictions
+pred.res <- vector("list", length(treedata.single))
+for (k in (1:length(treedata.single))){
+  print(k)
+  # back conversion
+  pred.res[[k]] <- exp(predict(tree.reg, newdata=treedata.single[[k]], method="anova"))-1
+}
+pred.single <- do.call("rbind", pred.res)
+
+
+# double predictions
+pred.res <- vector("list", length(treedata.double))
+for (k in (1:length(treedata.double))){
+  print(k)
+  pred.res[[k]] <- exp(predict(tree.reg, newdata=treedata.double[[k]], method="anova"))-1
+}
+pred.double <- do.call("rbind", pred.res)
+```
+
+
+``` {r}
+# Barplot for the various time points
 
 # classes via predicted times
 node_levels <- levels(as.factor(pred.time))
 # This are the predicted classes
 node_classes <- round(as.numeric(node_levels), digits=1)
 
+dev.off()
 
-plot(BDLsamples$time, pred.time, col=rgb(0,0,1, 0.5), pch=16)
-abline(a=0, b=1)
+ 
+png(filename=file.path(resultsPath, "decision_tree", "predicted_classes.png"), width=1800, height=1000, res=150)  
 
-# plot the tree predictions
-for (k in 1:100){
-  pred.time <- exp(predict(tree.reg, newdata=res[[k]], method="anova"))-1
-  points(BDLsamples$time, pred.time, col=rgb(0.5,0.5,0.5, 0.1), pch=16, cex=0.7)  
-}
-
-# make all the predictions
-pred.res <- vector("list", length(res))
-for (k in (1:length(res))){
-  print(k)
-  pred.res[[k]] <- exp(predict(tree.reg, newdata=res[[k]], method="anova"))-1
-}
-
-
-plot(BDLsamples$time, pred.res[[1]])
-pred.single[[1]]
-
-pred.single <- do.call("rbind", pred.res)
-
-# Barplot for the various time points
 par(mfrow=c(2,4))
 for (k in 1:Nt){
   # single data
   data <- as.vector(pred.single[, ((1:Nr)+Nr*(k-1))])
   tab1 <- table(factor(data, levels=node_levels))/length(data)
-  barplot(tab1, main=k, ylim=c(0,1))  
+  
+  
+  # single double
+  data <- as.vector(pred.double[, ((1:Nr)+Nr*(k-1))])
+  tab2 <- table(factor(data, levels=node_levels))/length(data)
+  
   # mean data
   data <- as.vector(pred.time[((1:Nr)+Nr*(k-1))])
-  tab2 <- table(factor(data, levels=node_levels))/length(data)
-  barplot(tab2, main=k, ylim=c(0,1), col=rgb(0,0,1,0.5), add=TRUE)  
+  tab.mean <- table(factor(data, levels=node_levels))/length(data)
+  
+  # combine data
+  tab <- rbind(tab1, tab2, tab.mean)
+  colnames(tab) <- round(as.numeric(colnames(tab)), digits=1)
+  
+  
+  
+  name <- sprintf("Time after BDL: %sh", 
+                  levels(as.factor(BDLsamples$time))[k])
+  barplot(tab[1,], ylim=c(0,1), col=rgb(0.7,0.7,0.7, 1.0),
+          main=name, xlab="predicted time class [h]", ylab="fraction of predictions")  
+  barplot(tab[2, ], ylim=c(0,1), col=rgb(1,0,0,0.5) , add=TRUE)  
+  barplot(tab[3, ], ylim=c(0,1), col=rgb(0,0,1,0.5), add=TRUE)  
+  
+  if (k==1){
+    legend("topright", legend=c("single factor", "double factor", "mean cluster"), 
+           col=c(rgb(0.7, 0.7, 0.7, 1),rgb(1, 0, 0, 0.5),rgb(0, 0, 1, 0.5)),
+           bty="n", cex=1.0, pch=15)
+  }
 }
 par(mfrow=c(1,1))
+invisible(dev.off())
+```
+
+```
+# Search the best single predictor combinations
+# Best predictor minimizes the distance between predicted and actual time
+
+dist1 <- rep(NA, nrow(pred.single))
+for (k in 1:nrow(pred.single)){
+  dist1[k] <- sum( (log(pred.single[k,]+1) - log(BDLsamples$time+1))^2 )
+}
+dist2 <- rep(NA, nrow(pred.double))
+for (k in 1:nrow(pred.double)){
+  dist2[k] <- sum( (log(pred.double[k,]+1) - log(BDLsamples$time+1))^2 )
+}
+dist.mean <- sum( (log(pred.mean+1) - log(BDLsamples$time+1))^2 )
+dist.mean
+
+hist(dist1, breaks=((0:60)*2.5), freq=FALSE, col=rgb(0.7,0.7,0.7, 1), ylim=c(0, 0.05))
+hist(dist2, breaks=((0:60)*2.5), freq=FALSE, col=rgb(1,0,0, 0.5), add=TRUE)
+hist(dist.mean, breaks=((0:60)*2.5), freq=FALSE, col=rgb(0,0,1, 0.5), add=TRUE)
+
+table(sort(dist[dist<15]))
+
+which(dist==min(dist))
+# 10721 10722 12063 12064 14747 14748 16089 16090
+
+treedata.single[[10721]]
+# c1.id   c2.id c3.id  c4.id c5.id c6.id
+# Cyp1a2 Cyp24a1   Fn1 S100A4 Il17a   Bad
+treedata.single[[10722]]
+# Cyp1a2 Cyp24a1   Fn1 S100A4 Il17a  Cdh2
+treedata.single[[12063]]
+# Cyp1a2 Cyp24a1  GLDH S100A4 Il17a   Bad
+treedata.single[[12064]]
+# Cyp1a2 Cyp24a1  GLDH S100A4 Il17a  Cdh2
+treedata.single[[14747]]
+# Cyp1a2 Nr0b2   Fn1 S100A4 Il17a   Bad
+treedata.single[[14748]]
+# Cyp1a2 Nr0b2   Fn1 S100A4 Il17a   Cdh2
+treedata.single[[16089]]
+# Cyp1a2 Nr0b2  GLDH S100A4 Il17a   Bad
 
 
-
-
-
-
-install.packages('party')
-library(party)
+# install.packages('party')
+# library(party)
 
 
 # look at the predictions

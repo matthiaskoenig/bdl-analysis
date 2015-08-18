@@ -978,25 +978,56 @@ invisible(dev.off())
 # Search the best single predictor combinations
 # Best predictor minimizes the distance between predicted and actual time
 
-dist1 <- rep(NA, nrow(pred.single))
-for (k in 1:nrow(pred.single)){
-  dist1[k] <- sum( (log(pred.single[k,]+1) - log(BDLsamples$time+1))^2 )
-}
-dist2 <- rep(NA, nrow(pred.double))
-for (k in 1:nrow(pred.double)){
-  dist2[k] <- sum( (log(pred.double[k,]+1) - log(BDLsamples$time+1))^2 )
-}
-dist.mean <- sum( (log(pred.mean+1) - log(BDLsamples$time+1))^2 )
-dist.mean
 
-hist(dist1, breaks=((0:60)*2.5), freq=FALSE, col=rgb(0.7,0.7,0.7, 1), ylim=c(0, 0.05))
-hist(dist2, breaks=((0:60)*2.5), freq=FALSE, col=rgb(1,0,0, 0.5), add=TRUE)
+# Transform data to log scale (for comparable time intervals)
+log_transform <- function(data){
+  log(data+1)
+}
+# Back transformation
+log_transform_back <- function(log_data){
+  exp(log_data)-1
+}
+
+# L2 (euclidian) distance measurement on the log transformed data
+log_distance <- function(d1, d2){
+  # sums over all the distances of the samples
+  sum( (log_transform(d1)-log_transform(d2) )^2 )
+}
+
+# distance for all predictions on single factor per cluster
+Nsingle <- nrow(pred.single)
+dist.single <- rep(NA, Nsingle)
+for (k in 1:Nsingle){
+  dist.single[k] <- log_distance(pred.single[k,], BDLsamples$time)
+}
+# distance for predictions on 2 sampled factors per cluster 
+Ndouble <- nrow(pred.double)
+dist.double <- rep(NA, Ndouble)
+for (k in 1:Ndouble){
+  dist.double[k] <- log_distance(pred.double[k,], BDLsamples$time)
+}
+# distance on mean cluster
+dist.mean <- log_distance(pred.mean, BDLsamples$time)
+
+# Plot the distributions of all the distances, i.e. log transformed predictions
+# vs. the real time class
+hist(dist.single, breaks=((0:60)*2.5), freq=FALSE, col=rgb(0.7,0.7,0.7, 1), ylim=c(0, 0.05),
+xlab="sum( (log(time.predicted+1)-log(time.exp+1))^2 )", main="Distance between predicted and experimentell time")
+hist(dist.double, breaks=((0:60)*2.5), freq=FALSE, col=rgb(1,0,0, 0.5), add=TRUE)
 hist(dist.mean, breaks=((0:60)*2.5), freq=FALSE, col=rgb(0,0,1, 0.5), add=TRUE)
 
+legend("topright", legend=c("single factor", "double factor", "mean cluster"), 
+           col=c(rgb(0.7, 0.7, 0.7, 1),rgb(1, 0, 0, 0.5),rgb(0, 0, 1, 0.5)),
+           bty="n", cex=1.0, pch=15)
+
+
+# Find the minimal distances
 table(sort(dist[dist<15]))
 
 which(dist==min(dist))
 # 10721 10722 12063 12064 14747 14748 16089 16090
+
+best.single 
 
 treedata.single[[10721]]
 # c1.id   c2.id c3.id  c4.id c5.id c6.id
@@ -1013,21 +1044,6 @@ treedata.single[[14748]]
 # Cyp1a2 Nr0b2   Fn1 S100A4 Il17a   Cdh2
 treedata.single[[16089]]
 # Cyp1a2 Nr0b2  GLDH S100A4 Il17a   Bad
-
-
-# install.packages('party')
-# library(party)
-
-
-# look at the predictions
-# tree.model <- tree(log(MedianHouseValue) ~ Longitude + Latitude, data=real.estate)
-# plot(tree.model)
-# text(tree.model, cex=.75)
-
-
-# fit the ordinal regression
-# ----------------------------
-# TODO
 
 ```
 

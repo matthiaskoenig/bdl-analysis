@@ -838,21 +838,16 @@ plot(treedata.mean[, 1:6], xlim=c(-0.5, 0.7), ylim=c(-0.5, 0.7), col=treedata.me
 
 
 ## Classification Tree
-To demonstrate the model fitting and model evaluation with the test data sets.
+To demonstrate the model fitting and model evaluation with the test data set a decicison tree is fitted for the class variables.
+This does not take the order of the classes into account.
 ``` {r}
-# Fit a decision tree for classification
-# ----------------------------------
 formula.mean = paste("class ~ c1 + c2 + c3 + c4 + c5 + c6")
 tree.model <- rpart(formula=formula.mean, data=treedata.mean, method="class", control=rpart.control(minsplit=5)) 
 
 # print information of the tree fit
 printcp(tree.model)
 print(tree.model)
-# pretty plot
-prp(tree.model, type=0, extra=101, yesno=TRUE)
-
-# evaluation via prediction
-# http://stats.stackexchange.com/questions/49416/decision-tree-model-evaluation-for-training-set-vs-testing-set-in-r
+prp(tree.model, type=0, extra=101, yesno=TRUE) # pretty plot
 
 # probability prediction
 pred <- predict(tree.model, newdata=treedata.mean, type="prob")
@@ -862,47 +857,83 @@ round(pred, digits=2)
 pred.class <- predict(tree.model, newdata=treedata.mean, type="class")
 pred.class
 
+# evaluation of prediction
+# http://stats.stackexchange.com/questions/49416/decision-tree-model-evaluation-for-training-set-vs-testing-set-in-r
 library(caret)
 confusionMatrix(data=pred.class, reference=treedata.mean$class)
 ```
 
 
 ## Regression Tree
-Now analog model fitting with a regression tree.
-``` {r}
-# fit the tree with regression (on log scale)
-# -------------------------------------------
+A regression tree with the time after BDL as target variable is fitted using the cluster data as predictors. The time data is log transformed to get aprroximately equidistant intervals between the trainings classes. All trees are fitted with the R package `rpart` implementing algorithms for recursive partitioning for classification following in most details closely Breiman et. al (1984).
 
+Breiman L., Friedman J. H., Olshen R. A., and Stone, C. J. (1984) Classification and Regression Trees. Wadsworth. 
+
+The tree is built in a two-step process {Therneau2015}:  First the single variable is found which best
+splits the data into two groups (`best' will be dened later). The data is separated based on the split, and then this process is applied
+separately to each sub-group,  and so on recursively until the subgroups either reach a minimum size (`minbucket`) or until no improvement can be
+made.
+The resultant model is, with a certainty, too complex, and the question arises as it does
+with all stepwise procedures of when to stop.  The second stage of the procedure consists of
+using cross-validation to trim back the full tree. 
+
+An Introduction to Recursive Partitioning Using the RPART Routines
+TM. Therneau and E.J. Atkinson
+Mayo Foundation (June 29, 2015)
+
+
+```{r} 
+# Transform data to log scale (for comparable time intervals)
+log_transform <- function(data){
+  log(data+1)
+}
+# Back transformation
+log_transform_back <- function(log_data){
+  exp(log_data)-1
+}
+```
+
+Two important parameters controlling the resulting tree are 
+
+* `minsplit` : The minimum number of observations in a node for which the routine
+will even try to compute a split. The default is 20 and is set to 6 in the tree calculation ($N_{r}=5$ repeats per time point).
+* `minbucket` : The  minimum  number  of  observations  in  a  terminal  node. This defaults to minsplit/3.
+
+``` {r}
+# formula for regression tree
 formula.reg = paste("regvalue ~ c1 + c2 + c3 + c4 + c5 + c6")
 
+# full tree (complexity parameter set to -1)
 # tree.reg <- rpart(formula=formula.fil.reg, data=treedata.reg, method="anova", control=rpart.control(minsplit=6, minbucket=2, cp=-1))
+
+# fitting the regression tree with the mean cluster data
 tree.reg <- rpart(formula=formula.reg, data=treedata.mean, method="anova", control=rpart.control(minsplit=6, minbucket=2))
+# overview resulting tree
 print(tree.reg)
 summary(tree.reg)
+printcp(tree.reg)
 tree.reg$frame
 
-# this seems like the correct idea, the main question is how the classes are defined & how ROC curves
-# are calculated
-printcp(tree.reg)
+rsq.rpart(tree.reg) # visualize cross-validation results 
 
-# text(tree.reg)
-# pretty plot
+# pretty plot of tree
 prp(tree.reg, type=0, extra=101, yesno=TRUE)
+```
 
-# mean predictions (i.e. with mean cluster data)
-pred.mean <- exp(predict(tree.reg, newdata=treedata.mean, method="anova"))-1
+Predict data with the tree, here the time class leaves based on the mean cluster data.
+The regression tree predicts log classes, which are back-transformed to time in [h].
+So how good is the tree performing on the trainings data set, i.e. the mean cluster data.
+``` {r}
+# mean cluster predictions
+pred.mean <- log_transform_back( predict(tree.reg, newdata=treedata.mean, type="vector") )
 data.frame(BDLsamples$time, pred.mean)
+# plot predicted ~ experimentell
+plot(BDLsamples$time, pred.mean, pch=15, col=rgb(0,0,1, 0.2), main="Regression Tree:\nPredicted ~ experimentell time",
+     xlab="experimentell time [h]", ylab="predicted time [h]")
+abline(a=0, b=1, col="grey")
+```
 
-# plot the tree predictions
-plot(BDLsamples$time, pred.mean, col=rgb(0,0,1, 0.5), pch=16)
-abline(a=0, b=1)
-for (k in 1:100){
-  # back conversion (log)
-  pred.time <- exp(predict(tree.reg, newdata=treedata.single[[k]], method="anova"))-1
-  points(BDLsamples$time, pred.time, col=rgb(0.5,0.5,0.5, 0.1), pch=16, cex=0.7)  
-}
-
-
+``` {r}
 # single predictions
 pred.res <- vector("list", length(treedata.single))
 for (k in (1:length(treedata.single))){
@@ -979,14 +1010,7 @@ invisible(dev.off())
 # Best predictor minimizes the distance between predicted and actual time
 
 
-# Transform data to log scale (for comparable time intervals)
-log_transform <- function(data){
-  log(data+1)
-}
-# Back transformation
-log_transform_back <- function(log_data){
-  exp(log_data)-1
-}
+
 
 # L2 (euclidian) distance measurement on the log transformed data
 log_distance <- function(d1, d2){

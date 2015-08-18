@@ -436,8 +436,14 @@ f_corrplot("cor.yr2", data=cor.yr2, order="hclust", folder=resultsPath)
 f_corrplot("cor.yr3", data=cor.yr3, order="hclust", folder=resultsPath)
 ```
 
+Full correlation matrix with hierarchical clustering based on complete linkage
+``` {r correlation_factors}
+
+```
+
+
 Plot correlation matrix for histological, biochemical and antibody markers
-``` {r}
+``` {r correlation_histological}
 # correlation subset for non RNA factors which were accepted by ANOVA
 hist_facs <- BDLfactors$id[idx.accept & (BDLfactors$ftype %in% c("Antibodies", "Biochemistry", "Histology"))]
 hist_facs
@@ -450,24 +456,30 @@ hist_data <-  cor.ys3[hist_idx, ] # rows of correlation matrix for the factors
 
 # filter out all the columns where there is no correlation value >=0.7 or <=-0.7,
 # i.e. only factors are retained with a absolute correlation coeffient above the
-threshold
+# threshold
 cor.cutoff = 0.6
 col.accept <- rep(NA, ncol(hist_data))
-for (k in 1:ncol(data)){
+for (k in 1:ncol(hist_data)){
   col.accept[k] <- any(hist_data[,k]>=cor.cutoff) | any(hist_data[,k]<=-cor.cutoff)
 }
-# what is filtered out
+# how many factors are filtered out based on correlation threshold
 table(col.accept)
-# plot the subset of the correlation matrix
-corrplot(hist_data[, col.accept], method="circle", type="full", 
-           tl.cex=0.7, tl.col="black", col=col2(10))
 
-corrplot(data[, col.accept], method="pie", type="full", 
+# plot the subset of the correlation matrix to file
+plot_hist_corr <- function(){
+  corrplot(hist_data[, col.accept], method="circle", type="full", 
+           tl.cex=0.7, tl.col="black", col=col2(10))  
+}
+# plot to file
+png(filename=file.path(resultsPath, "correlation", "histological_correlation.png"), width=3000, height=1000, res=300)  
+plot_hist_corr()
+invisible(dev.off())
+# plot in report
+plot_hist_corr()
+# alternative plot
+corrplot(hist_data[, col.accept], method="pie", type="full", 
            tl.cex=0.5, tl.col="black", col=col2(10))
-
 ```
-
-
 
 
 # Hierarchical clustering
@@ -525,9 +537,6 @@ plot_clusters <- function(method, folder=NULL){
   }
   # par(mfrow=c(ceiling(sqrt(Ngroups)),ceiling(sqrt(Ngroups))))
   par(mfrow=c(2,3))
-  
-  
-  
   steps <- 1:Nt  # time points
     for (k in 1:Ngroups){
       g <- groups.hc.order[groups.hc.order==k]
@@ -714,17 +723,40 @@ hc <- hclust(dist(cor.cluster))
 groups <- cutree(hc, k=Ngroups)
 
 # define colors for the Ngroups clusters
-
-# display.brewer.all()
 colorset <- brewer.pal(Ngroups, "Set1")
 color.map <- function(cluster_id) {return(colorset[cluster_id])}
 clusterColors <- unlist(lapply(groups, color.map))
 
-heatmap.2(cor.cluster, col=col2(100), scale="none",
-          key=TRUE, symkey=FALSE, trace="none", cexRow=0.5, cexCol=0.5,
+# Create heatmap plot
+plot_ys3_heatmap <- function(){
+  heatmap.2(cor.cluster, col=col2(10), scale="none",
+          key=TRUE, symkey=FALSE, trace="none", cexRow=0.8, cexCol=0.8,
           main=method,
           density.info="none", dendrogram="column", Rowv=as.dendrogram(hc), Colv=as.dendrogram(hc), keysize=0.8,
-          ColSideColors=clusterColors, revC=TRUE)
+          key.xlab = "ys3 correlation",
+          ColSideColors=clusterColors, revC=TRUE,
+          sepwidth=c(0.01,0.01),
+          sepcolor="black",
+          colsep=1:ncol(cor.cluster),
+          rowsep=1:nrow(cor.cluster))
+  legend("left", legend=paste("c", 1:6, sep=""), col= unlist(lapply(1:6, color.map)), pch=15, bty="n")
+}
+
+# plot to file
+png(filename=file.path(resultsPath, "correlation", "ys3_correlation.png"), width=2500, height=2500, res=200)  
+plot_ys3_heatmap()
+invisible(dev.off())
+
+# plot to report
+plot_ys3_heatmap()
+
+
+# plot the cluster legend
+plot(NA, NA, type="n")
+
+
+
+
 ```
 
 

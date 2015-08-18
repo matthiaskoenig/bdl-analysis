@@ -2,10 +2,10 @@ Package: TH.data
 Title: TH's Data Archive
 Date: 2014-12-19
 Version: 1.0-6
-Authors@R: c(person("Torsten", "Hothorn", role = c("aut", "cre"),
-                    email = "Torsten.Hothorn@R-project.org"))
+Authors@R: c(person("Torsten", "Hothorn", role = c("aut", "cre"), email
+    = "Torsten.Hothorn@R-project.org"))
 Description: Contains data sets used in other packages Torsten Hothorn
-  maintains.
+    maintains.
 Depends: R (>= 2.10.0)
 Suggests: dplyr, gdata, plyr
 LazyData: yes
@@ -17,3 +17,6 @@ NeedsCompilation: no
 Repository: CRAN
 Date/Publication: 2015-01-05 17:33:36
 Built: R 3.2.1; ; 2015-08-17 08:55:42 UTC; unix
+InstallAgent: packrat 0.4.4
+InstallSource: CRAN
+Hash: ecd04be5b50d24c58f70fdf9e4baf1d0

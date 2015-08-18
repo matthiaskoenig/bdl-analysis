@@ -67,6 +67,12 @@ Source: CRAN
 Version: 1.3-0
 Hash: fb672e20eb6f3010a3639f855d8ef6de
 
+Package: ROCR
+Source: CRAN
+Version: 1.0-7
+Hash: 086f78987ebf3c55b01013ee64a5e1e2
+Requires: gplots
+
 Package: Rcpp
 Source: CRAN
 Version: 0.12.0
@@ -82,6 +88,11 @@ Package: SparseM
 Source: CRAN
 Version: 1.6
 Hash: 7c99801b85f7fee3cc06790120ef1be4
+
+Package: TH.data
+Source: CRAN
+Version: 1.0-6
+Hash: ecd04be5b50d24c58f70fdf9e4baf1d0
 
 Package: base64enc
 Source: CRAN
@@ -126,6 +137,12 @@ Source: CRAN
 Version: 6.0-52
 Hash: fa0ac07b37944bb03ab7b9d0d572ce16
 Requires: BradleyTerry2, car, foreach, ggplot2, plyr, reshape2
+
+Package: coin
+Source: CRAN
+Version: 1.1-0
+Hash: 24c32801f0ecdc2ee41677b434b091ba
+Requires: modeltools, multcomp, mvtnorm
 
 Package: colorspace
 Source: CRAN
@@ -303,11 +320,27 @@ Version: 1.2.4
 Hash: 1566e369a7e89e11f64f13ef9ad01a48
 Requires: Rcpp
 
+Package: modeltools
+Source: CRAN
+Version: 0.2-21
+Hash: 3dc03397b2a4375c8a5e5f09c8cf0ae1
+
+Package: multcomp
+Source: CRAN
+Version: 1.4-1
+Hash: 422cc60ea87f38db4eba7931797dd1b3
+Requires: TH.data, mvtnorm, sandwich
+
 Package: munsell
 Source: CRAN
 Version: 0.4.2
 Hash: 72d343a6664778029f49a7ad36de1cab
 Requires: colorspace
+
+Package: mvtnorm
+Source: CRAN
+Version: 1.0-3
+Hash: 3dead1b0de2bb1ce196a43df831f9080
 
 Package: nloptr
 Source: CRAN
@@ -324,6 +357,12 @@ Source: CRAN
 Version: 0.5.2
 Hash: 29791135b1ccd90dfb1b6658e5853065
 Requires: Rcpp, digest
+
+Package: party
+Source: CRAN
+Version: 1.0-23
+Hash: 4b84d674ed1add9f1269e509b90f7211
+Requires: coin, modeltools, mvtnorm, sandwich, strucchange, zoo
 
 Package: pbkrtest
 Source: CRAN
@@ -409,6 +448,12 @@ Version: 1.0.2
 Hash: c006a9eaa80a091dcd87bb4003887b12
 Requires: curl, xml2
 
+Package: sandwich
+Source: CRAN
+Version: 2.3-3
+Hash: 755e429cbb64b1e653a414b04b51e600
+Requires: zoo
+
 Package: scales
 Source: CRAN
 Version: 0.2.5
@@ -425,6 +470,12 @@ Source: CRAN
 Version: 1.0.0
 Hash: 2676dd5f88890910962b733b0f9540e1
 Requires: magrittr, stringi
+
+Package: strucchange
+Source: CRAN
+Version: 1.5-1
+Hash: 79c55eaae619a419b9db1a7e4640cc1b
+Requires: sandwich, zoo
 
 Package: testthat
 Source: CRAN
@@ -447,3 +498,8 @@ Package: yaml
 Source: CRAN
 Version: 2.1.13
 Hash: 4854ccabebc225e8a7309fb4a74980de
+
+Package: zoo
+Source: CRAN
+Version: 1.7-12
+Hash: 8ce4a89536cba4fa6023190959de5658

@@ -828,15 +828,6 @@ treedata.double[[1]]
 ```
 
 
-Visualize the pairwise cluster data. The data should be classified/regressed in 
-a 6D space, i.e. 6 predictor variables corresponding to the individual clusters.
-The projection into 2D can provide first insights in problems of the task and
-is useful for the later visualization of the tree decision cuts.
-``` {r}
-plot(treedata.mean[, 1:6], xlim=c(-0.5, 0.7), ylim=c(-0.5, 0.7), col=treedata.mean$class, pch=19)
-```
-
-
 ## Classification Tree
 To demonstrate the model fitting and model evaluation with the test data set a decicison tree is fitted for the class variables.
 This does not take the order of the classes into account.
@@ -865,7 +856,7 @@ confusionMatrix(data=pred.class, reference=treedata.mean$class)
 
 
 ## Regression Tree
-A regression tree with the time after BDL as target variable is fitted using the cluster data as predictors. The time data is log transformed to get aprroximately equidistant intervals between the trainings classes. All trees are fitted with the R package `rpart` implementing algorithms for recursive partitioning for classification following in most details closely Breiman et. al (1984).
+A regression tree with the time after BDL as target variable is fitted using the cluster data as predictors. The time data is log transformed to get aprroximately equidistant intervals between the trainings classes. All trees are fitted with the R package `rpart` implementing algorithms for recursive partitioning for classification following in most details closely Breiman et. al (1984). `rpart` is the open-source implementation of CART.
 
 Breiman L., Friedman J. H., Olshen R. A., and Stone, C. J. (1984) Classification and Regression Trees. Wadsworth. 
 
@@ -881,6 +872,7 @@ An Introduction to Recursive Partitioning Using the RPART Routines
 TM. Therneau and E.J. Atkinson
 Mayo Foundation (June 29, 2015)
 
+The splitting criterion (for classication this is either the Gini or log-likelihood function), which is used to decide which variable gives the best split for nodes in the regression trees is $SS_{T}-(SS_{L} + SS_{R})$, with $SS_{T} = \sum{(y_{i}-<y>)^2}$ the sum of squares for the node and $SS_{R}$ and $SS_{L}$ the sums of squares for the left and right son. This is equivalent to choosing the split ot maximize the between-groups sum-of-squares in a simple analysis of variance (see {Therneau2015}).
 
 ```{r} 
 # Transform data to log scale (for comparable time intervals)
@@ -932,6 +924,18 @@ plot(BDLsamples$time, pred.mean, pch=15, col=rgb(0,0,1, 0.2), main="Regression T
      xlab="experimentell time [h]", ylab="predicted time [h]")
 abline(a=0, b=1, col="grey")
 ```
+
+TODO: reduce the data sets to the clusters being part of the dataset.
+
+Visualize the pairwise cluster data. The data should be classified/regressed in 
+a 6D space, i.e. 6 predictor variables corresponding to the individual clusters.
+The projection into 2D can provide first insights in problems of the task and
+is useful for the later visualization of the tree decision cuts.
+``` {r}
+plot(treedata.mean[, 1:6], xlim=c(-0.5, 0.7), ylim=c(-0.5, 0.7), col=treedata.mean$class, pch=19)
+```
+
+
 
 ``` {r}
 # single predictions

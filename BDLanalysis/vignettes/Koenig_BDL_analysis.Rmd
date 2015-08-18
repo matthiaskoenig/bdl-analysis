@@ -95,6 +95,9 @@ pander(cat_table)
 ## Data visualization
 ### Time course of single factors
 In a first step overview plots of the raw and mean data for all individual factors are generated. These are available in the `resultsPath/factors` folder
+
+TODO: fix the plots if there are NA in the data set, like in S100A4
+
 ```{r factorPlots, eval=FALSE}
 # Visualize all factors
 plot_all_factors(path=resultsPath)
@@ -432,6 +435,40 @@ f_corrplot("cor.yr1", data=cor.yr1, order="hclust", folder=resultsPath)
 f_corrplot("cor.yr2", data=cor.yr2, order="hclust", folder=resultsPath)
 f_corrplot("cor.yr3", data=cor.yr3, order="hclust", folder=resultsPath)
 ```
+
+Plot correlation matrix for histological, biochemical and antibody markers
+``` {r}
+# correlation subset for non RNA factors which were accepted by ANOVA
+hist_facs <- BDLfactors$id[idx.accept & (BDLfactors$ftype %in% c("Antibodies", "Biochemistry", "Histology"))]
+hist_facs
+# get the indices of these factors in the correlation matrix
+hist_idx <- rep(NA, length(hist_facs))
+for (k in 1:length(hist_facs)){
+  hist_idx[k] <- which(colnames(cor.ys3) == hist_facs[k])
+}
+hist_data <-  cor.ys3[hist_idx, ] # rows of correlation matrix for the factors
+
+# filter out all the columns where there is no correlation value >=0.7 or <=-0.7,
+# i.e. only factors are retained with a absolute correlation coeffient above the
+threshold
+cor.cutoff = 0.6
+col.accept <- rep(NA, ncol(hist_data))
+for (k in 1:ncol(data)){
+  col.accept[k] <- any(hist_data[,k]>=cor.cutoff) | any(hist_data[,k]<=-cor.cutoff)
+}
+# what is filtered out
+table(col.accept)
+# plot the subset of the correlation matrix
+corrplot(hist_data[, col.accept], method="circle", type="full", 
+           tl.cex=0.7, tl.col="black", col=col2(10))
+
+corrplot(data[, col.accept], method="pie", type="full", 
+           tl.cex=0.5, tl.col="black", col=col2(10))
+
+```
+
+
+
 
 # Hierarchical clustering
 Based on the calculated correlation matrices between factors hierarchical clustering is performed on the correlation matrices using complete linkage (hclust).
@@ -834,6 +871,7 @@ This does not take the order of the classes into account.
 ``` {r}
 formula.mean = paste("class ~ c1 + c2 + c3 + c4 + c5 + c6")
 tree.model <- rpart(formula=formula.mean, data=treedata.mean, method="class", control=rpart.control(minsplit=5)) 
+tree.model <- rpart(formula=formula.mean, data=treedata.mean, method="class", control=rpart.control(minsplit=10)) 
 
 # print information of the tree fit
 printcp(tree.model)
@@ -843,7 +881,7 @@ prp(tree.model, type=0, extra=101, yesno=TRUE) # pretty plot
 # probability prediction
 pred <- predict(tree.model, newdata=treedata.mean, type="prob")
 round(pred, digits=2)
-
+
 # class prediction with data
 pred.class <- predict(tree.model, newdata=treedata.mean, type="class")
 pred.class
@@ -908,7 +946,17 @@ tree.reg$frame
 
 rsq.rpart(tree.reg) # visualize cross-validation results 
 
-# pretty plot of tree
+library(caret)
+pred.reg <- predict(tree.reg, newdata=treedata.mean, type="vector")
+pred.reg
+confusionMatrix(data=pred.class, reference=treedata.mean$class)
+
+
+# create pretty plot of tree
+png(filename=file.path(resultsPath, 'decision_tree', "regression_tree.png"), width=2000, height=1000, res=200)  
+prp(tree.reg, type=0, extra=101, yesno=TRUE)
+invisible(dev.off())
+
 prp(tree.reg, type=0, extra=101, yesno=TRUE)
 ```
 
@@ -917,13 +965,42 @@ The regression tree predicts log classes, which are back-transformed to time in 
 So how good is the tree performing on the trainings data set, i.e. the mean cluster data.
 ``` {r}
 # mean cluster predictions
-pred.mean <- log_transform_back( predict(tree.reg, newdata=treedata.mean, type="vector") )
-data.frame(BDLsamples$time, pred.mean)
+pred.mean.log <- predict(tree.reg, newdata=treedata.mean, type="vector")
+# transformation to time in [h]
+pred.mean <- log_transform_back( pred.mean.log )
 # plot predicted ~ experimentell
 plot(BDLsamples$time, pred.mean, pch=15, col=rgb(0,0,1, 0.2), main="Regression Tree:\nPredicted ~ experimentell time",
      xlab="experimentell time [h]", ylab="predicted time [h]")
 abline(a=0, b=1, col="grey")
 ```
+
+Get the ranges of the various classes via the split points on log scale
+``` {r}
+# classes via predicted classes for cluster data
+node_levels <- levels(as.factor(pred.mean))
+# These are the predicted classes
+node_classes <- round(as.numeric(node_levels), digits=1)
+node_classes
+
+# get the intervals of the time classes
+node_mean <- as.numeric(levels(as.factor(pred.mean.log)))
+node_midpoints <- (node_mean[2:length(node_mean)] + node_mean[1:(length(node_mean)-1)])/2
+# minimum of range
+node_min <- node_mean
+node_min[2:length(node_min)] <- node_midpoints
+# maximum of range
+node_max <- node_mean
+node_max[1:(length(node_min)-1)] <- node_midpoints
+# ranges in log scale
+node_ranges.log <- data.frame(node_mean, node_min, node_max)
+
+node_ranges <- data.frame(mean=log_transform_back(node_mean), 
+                          min=log_transform_back(node_min),
+                          max=log_transform_back(node_max))
+round(node_ranges, digits=1)
+```
+
+
 
 TODO: reduce the data sets to the clusters being part of the dataset.
 
@@ -961,52 +1038,55 @@ pred.double <- do.call("rbind", pred.res)
 ``` {r}
 # Barplot for the various time points
 
-# classes via predicted times
-node_levels <- levels(as.factor(pred.time))
-# This are the predicted classes
+# classes via predicted classes for cluster data
+node_levels <- levels(as.factor(pred.mean))
+# These are the predicted classes
 node_classes <- round(as.numeric(node_levels), digits=1)
+node_classes
 
-dev.off()
-
- 
-png(filename=file.path(resultsPath, "decision_tree", "predicted_classes.png"), width=1800, height=1000, res=150)  
-
-par(mfrow=c(2,4))
-for (k in 1:Nt){
-  # single data
-  data <- as.vector(pred.single[, ((1:Nr)+Nr*(k-1))])
-  tab1 <- table(factor(data, levels=node_levels))/length(data)
-  
-  
-  # single double
-  data <- as.vector(pred.double[, ((1:Nr)+Nr*(k-1))])
-  tab2 <- table(factor(data, levels=node_levels))/length(data)
-  
-  # mean data
-  data <- as.vector(pred.time[((1:Nr)+Nr*(k-1))])
-  tab.mean <- table(factor(data, levels=node_levels))/length(data)
-  
-  # combine data
-  tab <- rbind(tab1, tab2, tab.mean)
-  colnames(tab) <- round(as.numeric(colnames(tab)), digits=1)
-  
-  
-  
-  name <- sprintf("Time after BDL: %sh", 
-                  levels(as.factor(BDLsamples$time))[k])
-  barplot(tab[1,], ylim=c(0,1), col=rgb(0.7,0.7,0.7, 1.0),
-          main=name, xlab="predicted time class [h]", ylab="fraction of predictions")  
-  barplot(tab[2, ], ylim=c(0,1), col=rgb(1,0,0,0.5) , add=TRUE)  
-  barplot(tab[3, ], ylim=c(0,1), col=rgb(0,0,1,0.5), add=TRUE)  
-  
-  if (k==1){
-    legend("topright", legend=c("single factor", "double factor", "mean cluster"), 
-           col=c(rgb(0.7, 0.7, 0.7, 1),rgb(1, 0, 0, 0.5),rgb(0, 0, 1, 0.5)),
-           bty="n", cex=1.0, pch=15)
+# Plot of the predicted classes with the decision tree
+plot_predicted_classes <- function(){
+  par(mfrow=c(2,4))
+  for (k in 1:Nt){
+    # single factor predictions
+    data <- as.vector(pred.single[, ((1:Nr)+Nr*(k-1))])
+    tab.single <- table(factor(data, levels=node_levels))/length(data)
+    
+    # two factor predictions
+    data <- as.vector(pred.double[, ((1:Nr)+Nr*(k-1))])
+    tab.double <- table(factor(data, levels=node_levels))/length(data)
+    
+    # mean cluster predictions
+    data <- as.vector(pred.mean[((1:Nr)+Nr*(k-1))])
+    tab.mean <- table(factor(data, levels=node_levels))/length(data)
+    
+    # combined table
+    tab <- rbind(tab.single, tab.double, tab.mean)
+    colnames(tab) <- round(as.numeric(colnames(tab)), digits=1)
+    
+    # create the plot
+    name <- sprintf("Time after BDL: %sh", 
+                    levels(as.factor(BDLsamples$time))[k])
+    barplot(tab[1,], ylim=c(0,1), col=rgb(0.7,0.7,0.7, 1.0),
+            main=name, xlab="predicted time class [h]", ylab="fraction of predictions")  
+    barplot(tab[2, ], ylim=c(0,1), col=rgb(1,0,0,0.5) , add=TRUE)  
+    barplot(tab[3, ], ylim=c(0,1), col=rgb(0,0,1,0.5), add=TRUE)  
+    
+    if (k==1){
+      legend("topright", legend=c("single factor", "double factor", "mean cluster"), 
+             col=c(rgb(0.7, 0.7, 0.7, 1),rgb(1, 0, 0, 0.5),rgb(0, 0, 1, 0.5)),
+             bty="n", cex=1.0, pch=15)
+    }
   }
+  par(mfrow=c(1,1))
 }
-par(mfrow=c(1,1))
+
+# barplot of the predicted classes
+png(filename=file.path(resultsPath, "decision_tree", "predicted_classes.png"), width=1800, height=1000, res=150)  
+plot_predicted_classes()
 invisible(dev.off())
+
+plot_predicted_classes()
 ```
 
 ```
@@ -1072,6 +1152,13 @@ treedata.single[[14748]]
 # Cyp1a2 Nr0b2   Fn1 S100A4 Il17a   Cdh2
 treedata.single[[16089]]
 # Cyp1a2 Nr0b2  GLDH S100A4 Il17a   Bad
+
+
+# TODO: find the best single factors which are only gene expression factors
+# -> add to the tree plot
+
+
+# TODO: create plots of the best factors for prediction (supplement)
 
 ```
 

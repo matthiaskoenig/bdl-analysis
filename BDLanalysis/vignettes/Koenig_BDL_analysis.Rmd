@@ -479,6 +479,9 @@ plot_hist_corr()
 # alternative plot
 corrplot(hist_data[, col.accept], method="pie", type="full", 
            tl.cex=0.5, tl.col="black", col=col2(10))
+# plot the correlation values
+print(t(round(hist_data, digits=2)))
+
 ```
 
 

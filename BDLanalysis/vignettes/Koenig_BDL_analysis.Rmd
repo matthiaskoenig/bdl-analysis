@@ -530,7 +530,7 @@ BDLmean.norm <- bdl_mean_data(BDLdata.norm, BDLsamples)
 ```
 
 ``` {r}
-# plot of mean clusters
+# plot mean clusters
 plot_clusters <- function(method, folder=NULL){  
   # create the figure
   if (!is.null(folder)){
@@ -539,7 +539,7 @@ plot_clusters <- function(method, folder=NULL){
     png(filename=path, width=1600, height=1600, res=200)
   }
   # par(mfrow=c(ceiling(sqrt(Ngroups)),ceiling(sqrt(Ngroups))))
-  par(mfrow=c(2,3))
+  par(mfrow=c(2,3), pty="s")
   steps <- 1:Nt  # time points
     for (k in 1:Ngroups){
       g <- groups.hc.order[groups.hc.order==k]
@@ -553,7 +553,9 @@ plot_clusters <- function(method, folder=NULL){
       g.sd <- rowSds(as.matrix(dgroup), na.rm=TRUE) 
       
       # plot sd range
-      plot(1, type="n", xlab="", ylab="", xlim=c(1, Nt), ylim=c(-1, 1), main=sprintf("%s : Cluster %s (N=%s)", method, k, ncol(dgroup)))
+      plot(1, type="n", xlab="", ylab="", asp=1,
+           xlim=c(1, Nt), ylim=c(-1, 1), 
+           main=sprintf("%s : Cluster %s (N=%s)", method, k, ncol(dgroup)))
       polygon(c(steps, rev(steps)), c(g.mean+g.sd, rev(g.mean-g.sd)),
               col = rgb(0.5,0.5,0.5,0.5), border = NA)
       
@@ -695,6 +697,55 @@ plot_clusters(method=method, folder=NULL)
 ``` {r cluster_repeat, fig.width=10, fig.height=8, error=TRUE, htmlcap='<b>Figure Cluster repeat:</b> Plot of repeat cluster data.'}
 plot_clusters2(method=method, folder=NULL)
 ```
+
+
+``` {r}
+# plot mean clusters
+plot_clusters <- function(method, folder=NULL){  
+  # create the figure
+  if (!is.null(folder)){
+    fname <- sprintf("%s_cluster_overview.png", method)
+    path <- file.path(folder, 'cluster', fname)
+    png(filename=path, width=3000, height=2100, res=300)
+  }
+  # par(mfrow=c(ceiling(sqrt(Ngroups)),ceiling(sqrt(Ngroups))))
+  par(mfrow=c(2,3))
+  steps <- 1:Nt  # time points
+    for (k in 1:Ngroups){
+      g <- groups.hc.order[groups.hc.order==k]
+      N <- ceiling(sqrt(length(g)))
+    
+      # normalized mean data (normalized within factor)
+      dgroup <- BDLmean.norm[names(g)]
+    
+      # mean and sd for timepoints (i.e. over all factors in the cluster) 
+      g.mean <- rowMeans(as.matrix(dgroup), na.rm=TRUE)
+      g.sd <- rowSds(as.matrix(dgroup), na.rm=TRUE) 
+      
+      # plot sd range
+      plot(factor(levels(BDLsamples$time_fac), levels=levels(BDLsamples$time_fac)), rep(-2, 8), type="n", xlab="", ylab="",
+           xlim=c(1, Nt), ylim=1.1*c( min(min(dgroup, na.rm=TRUE), na.rm=TRUE), max(max(dgroup, na.rm=TRUE), na.rm=TRUE) ),# ylim=c(-1, 1), 
+           main=sprintf("%s : Cluster %s (N=%s)", method, k, ncol(dgroup)))
+      
+      polygon(c(steps, rev(steps)), c(g.mean+g.sd, rev(g.mean-g.sd)),
+              col = rgb(0.5,0.5,0.5,0.5), border = NA)
+      
+      # individual data
+      for (name in names(g)){
+        points(steps, dgroup[, name], pch=16, col="black")
+        lines(steps, dgroup[, name], col=rgb(0.5,0.5,0.5, 0.8), lwd=1)
+      }
+      # mean over factors in cluster
+      lines(steps, g.mean, col="blue", lwd=2)
+    }
+    par(mfrow=c(1,1))
+  if (!is.null(folder)){
+    invisible(dev.off())
+  }
+}
+plot_clusters(method=method, folder=resultsPath)
+```
+
 
 
 Which factors are in which clusters?

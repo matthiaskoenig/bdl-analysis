@@ -91,31 +91,6 @@
   Year                     = {2001}
 }
 
-@Article{Hirschfield2010,
-  Title                    = {Pathogenesis of cholestatic liver disease and therapeutic approaches.},
-  Author                   = {Hirschfield, Gideon M. and Heathcote, E Jenny and Gershwin, M Eric},
-  Journal                  = {Gastroenterology},
-  Year                     = {2010},
-
-  Month                    = {Nov},
-  Number                   = {5},
-  Pages                    = {1481--1496},
-  Volume                   = {139},
-
-  __markedentry            = {[mkoenig:6]},
-  Abstract                 = {Cholestatic liver disorders are caused by genetic defects, mechanical aberrations, toxins, or dysregulations in the immune system that damage the bile ducts and cause accumulation of bile and liver tissue damage. They have common clinical manifestations and pathogenic features that include the responses of cholangiocytes and hepatocytes to injury. We review the features of bile acid transport, tissue repair and regulation, apoptosis, vascular supply, immune regulation, and cholangiocytes that are associated with cholestatic liver disorders. We now have a greater understanding of the physiology of cholangiocytes at the cellular and molecular levels, as well as genetic factors, repair pathways, and autoimmunity mechanisms involved in the pathogenesis of disease. These discoveries will hopefully lead to new therapeutic approaches for patients with cholestatic liver disease.},
-  Doi                      = {10.1053/j.gastro.2010.09.004},
-  Institution              = {Liver Centre, Toronto Western Hospital, Toronto, Ontario, Canada.},
-  Keywords                 = {Animals; Apoptosis; Bile, metabolism; Cholagogues and Choleretics, therapeutic use; Cholestasis, complications/drug therapy/metabolism; Cytokines, immunology/metabolism; Hepatocytes, metabolism/pathology; Humans; Immunity, Cellular; Immunosuppressive Agents, therapeutic use; Liver Cirrhosis, Biliary, drug therapy/etiology/metabolism; Prognosis; Risk Factors; Ursodeoxycholic Acid, therapeutic use},
-  Language                 = {eng},
-  Medline-pst              = {ppublish},
-  Owner                    = {mkoenig},
-  Pii                      = {S0016-5085(10)01320-X},
-  Pmid                     = {20849855},
-  Timestamp                = {2015.08.21},
-  Url                      = {http://dx.doi.org/10.1053/j.gastro.2010.09.004}
-}
-
 @Article{Jaskowiak2014,
   Title                    = {On the selection of appropriate distances for gene expression data clustering.},
   Author                   = {Jaskowiak, Pablo A. and Campello, Ricardo J G B. and Costa, Ivan G.},
@@ -197,6 +172,8 @@
   Number                   = {6},
   Pages                    = {409--418},
   Volume                   = {42},
+
+  __markedentry            = {[mkoenig:6]},
   Abstract                 = {Bile salts have a crucial role in hepatobiliary and intestinal homeostasis and digestion. Primary bile salts are synthesized by the liver from cholesterol, and may be modified by the intestinal flora to form secondary and tertiary bile salts. Bile salts are efficiently reabsorbed from the intestinal lumen to undergo enterohepatic circulation. In addition to their function as a surfactant involved in the absorption of dietary lipids and fat-soluble vitamins bile salts are potent signaling molecules in both the liver and intestine. Under physiological conditions the bile salt pool is tightly regulated, but the adaptive capacity may fall short under cholestatic conditions. Elevated serum and tissue levels of potentially toxic hydrophobic bile salts during cholestasis may cause mitochondrial damage, apoptosis or necrosis in susceptible cell types. Therapeutic nontoxic bile salts may restore impaired hepatobiliary secretion in cholestatic disorders. The hydrophilic bile salt ursodeoxycholate is today regarded as the effective standard treatment of primary biliary cirrhosis and intrahepatic cholestasis of pregnancy, and is implicated for use in various other cholestatic conditions. Novel therapeutic bile salts that are currently under evaluation may also prove valuable in the treatment of these diseases.},
   Doi                      = {10.1016/j.dld.2010.03.015},
   Institution              = {Department of Gastroenterology and Hepatology, Tytgat Institute for Liver and Intestinal Research, Academic Medical Center, University of Amsterdam, The Netherlands.},
@@ -236,6 +213,8 @@
   Number                   = {3},
   Pages                    = {3989--4006},
   Volume                   = {15},
+
+  __markedentry            = {[mkoenig:]},
   Abstract                 = {Bile duct ligation (BDL)-treated rats exhibit cholestasis, increased systemic oxidative stress, and liver fibrosis, which ultimately lead to liver cirrhosis. Asymmetric dimethylarginine (ADMA) is a competitive inhibitor of nitric oxide synthase that can decrease the synthesis of nitric oxide. BDL rats have higher plasma and hepatic ADMA levels, which may be due to increased hepatic protein arginine methyltransferase-1 and decreased dimethylarginine dimethylaminohydrolase expression. BDL rats also exhibit renal and brain damage characterized by increased tissue ADMA concentrations. The increased plasma ADMA levels and multiple organ damages seen here are also observed following multiple organ failures associated with critical illness. This review discusses the dysregulation of ADMA in major organs in BDL rats and the role of increased ADMA in multiple organ damages.},
   Doi                      = {10.3390/ijms15033989},
   Institution              = {Department of Pediatrics, Kaohsiung Chang Gung Memorial Hospital and Chang Gung University College of Medicine, Kaohsiung 833, Taiwan. huang_li@pie.com.tw.},
@@ -259,31 +238,6 @@
   Volume                   = {29},
 
   Publisher                = {Elsevier}
-}
-
-@Article{Wagner2009,
-  Title                    = {New molecular insights into the mechanisms of cholestasis.},
-  Author                   = {Wagner, Martin and Zollner, Gernot and Trauner, Michael},
-  Journal                  = {J Hepatol},
-  Year                     = {2009},
-
-  Month                    = {Sep},
-  Number                   = {3},
-  Pages                    = {565--580},
-  Volume                   = {51},
-
-  __markedentry            = {[mkoenig:]},
-  Abstract                 = {Recent progress in basic research has enhanced our understanding of the molecular mechanisms of normal bile secretion and their alterations in cholestasis. Genetic transporter variants contribute to an entire spectrum of cholestatic liver diseases and can cause hereditary cholestatic syndromes or determine susceptibility and disease progression in acquired cholestatic disorders. Cholestasis is associated with complex transcriptional and post-transcriptional alterations of hepatobiliary transporters and enzymes participating in bile formation. Ligand-activated nuclear receptors for bile acids and other biliary compounds play a key role in the regulation of genes required for bile formation. Pharmacological interventions in cholestasis may aim at modulating such novel regulatory pathways. This review will summarize the principles of molecular alterations in cholestasis and will give an overview of potential clinical implications.},
-  Doi                      = {10.1016/j.jhep.2009.05.012},
-  Institution              = {Division of Gastroenterology and Hepatology, Department of Internal Medicine, Laboratory of Experimental and Molecular Hepatology, Medical University of Graz, Auenbruggerplatz 15, 8036 Graz, Austria.},
-  Keywords                 = {ATP-Binding Cassette Transporters, genetics/physiology; Bile, metabolism; Cholestasis, chemically induced/genetics/physiopathology; Humans; Membrane Transport Proteins, genetics/physiology; Receptors, Cytoplasmic and Nuclear, genetics/physiology; Signal Transduction, physiology},
-  Language                 = {eng},
-  Medline-pst              = {ppublish},
-  Owner                    = {mkoenig},
-  Pii                      = {S0168-8278(09)00365-1},
-  Pmid                     = {19595470},
-  Timestamp                = {2015.08.21},
-  Url                      = {http://dx.doi.org/10.1016/j.jhep.2009.05.012}
 }
 
 @Article{Woolbright2012,

@@ -804,13 +804,6 @@ invisible(dev.off())
 # plot to report
 plot_ys3_heatmap()
 
-
-# plot the cluster legend
-plot(NA, NA, type="n")
-
-
-
-
 ```
 
 
@@ -818,10 +811,6 @@ Overview of the individual time courses in the clusters
 ```{r, eval=FALSE}
 # TODO
 ```
-
-
-
-
 
 
 # Decision Trees

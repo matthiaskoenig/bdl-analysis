@@ -26,6 +26,53 @@
   Url                      = {http://dx.doi.org/10.1093/bioinformatics/btu274}
 }
 
+@Article{Alaish2013,
+  Title                    = {CANDIDATE GENES FOR LIMITING CHOLESTATIC INTESTINAL INJURY IDENTIFIED BY GENE EXPRESSION PROFILING.},
+  Author                   = {Alaish, Samuel M. and Timmons, Jennifer and Smith, Alexis and Buzza, Marguerite S. and Murphy, Ebony and Zhao, Aiping and Sun, Yezhou and Turner, Douglas J. and Shea-Donahue, Terez and Antalis, Toni M. and Cross, Alan and Dorsey, Susan G.},
+  Journal                  = {Physiol Rep},
+  Year                     = {2013},
+
+  Month                    = {Sep},
+  Number                   = {4},
+  Volume                   = {1},
+
+  __markedentry            = {[mkoenig:]},
+  Abstract                 = {The lack of bile flow from the liver into the intestine can have devastating complications including hepatic failure, sepsis and even death. This pathologic condition known as cholestasis can result from etiologies as diverse as total parenteral nutrition (TPN), hepatitis and pancreatic cancer. The intestinal injury associated with cholestasis has been shown to result in decreased intestinal resistance, increased bacterial translocation and increased endotoxemia. Anecdotal clinical evidence suggests a genetic predisposition to exaggerated injury. Recent animal research on two different strains of inbred mice demonstrating different rates of bacterial translocation with different mortality rates supports this premise. In this study, a microarray analysis of intestinal tissue following common bile duct ligation (CBDL) performed under general anesthesia on these same two strains of inbred mice was done with the goal of identifying the potential molecular mechanistic pathways responsible. Over 500 genes were increased more than 2.0 fold following CBDL. The most promising candidate genes included MUPs, Serpina1a and LCN-2. RT-PCR validated the microarray results for these candidate genes. In an in vitro experiment using differentiated intestinal epithelial cells, inhibition of MUP-1 by siRNA resulted in increased intestinal epithelial cell permeability. Diverse novel mechanisms involving the growth hormone pathway, the acute phase response and the innate immune response are thus potential avenues for limiting cholestatic intestinal injury. Changes in gene expression were at times found to be not only due to the CBDL but also due to the murine strain. Should further studies in cholestatic patients demonstrate inter-individual variability similar to what we have shown in mice, then a "personalized medicine" approach to cholestatic patients may become possible.},
+  Doi                      = {10.1002/phy2.73},
+  Institution              = {Department of Surgery, University of Maryland School of Medicine, Baltimore, MD.},
+  Language                 = {eng},
+  Medline-pst              = {ppublish},
+  Owner                    = {mkoenig},
+  Pmid                     = {24179676},
+  Timestamp                = {2015.08.23},
+  Url                      = {http://dx.doi.org/10.1002/phy2.73}
+}
+
+@Article{Allen2011,
+  Title                    = {Bile acids induce inflammatory genes in hepatocytes: a novel mechanism of inflammation during obstructive cholestasis.},
+  Author                   = {Allen, Katryn and Jaeschke, Hartmut and Copple, Bryan L.},
+  Journal                  = {Am J Pathol},
+  Year                     = {2011},
+
+  Month                    = {Jan},
+  Number                   = {1},
+  Pages                    = {175--186},
+  Volume                   = {178},
+
+  __markedentry            = {[mkoenig:6]},
+  Abstract                 = {Inflammation contributes to liver injury during cholestasis. The mechanism by which cholestasis initiates an inflammatory response in the liver, however, is not known. Two hypotheses were investigated in the present studies. First, activation of Toll-like receptor 4 (TLR4), either by bacterial lipopolysaccharide or by damage-associated molecular pattern molecules released from dead hepatocytes, triggers an inflammatory response. Second, bile acids act as inflammagens, and directly activate signaling pathways in hepatocytes that stimulate production of proinflammatory mediators. Liver inflammation was not affected in lipopolysaccharide-resistant C3H/HeJ mice after bile duct ligation, indicating that Toll-like receptor 4 is not required for initiation of inflammation. Treatment of hepatocytes with bile acids did not directly cause cell toxicity but increased the expression of numerous proinflammatory mediators, including cytokines, chemokines, adhesion molecules, and other proteins that influence immune cell levels and function. Up-regulation of several of these genes in hepatocytes and in the liver after bile duct ligation required early growth response factor-1, but not farnesoid X receptor. In addition, early growth response factor-1 was up-regulated in the livers of patients with cholestasis and correlated with levels of inflammatory mediators. These data demonstrate that Toll-like receptor 4 is not required for the initiation of acute inflammation during cholestasis. In contrast, bile acids directly activate a signaling network in hepatocytes that promotes hepatic inflammation during cholestasis.},
+  Doi                      = {10.1016/j.ajpath.2010.11.026},
+  Institution              = {Department of Pharmacology, Toxicology, and Experimental Therapeutics, University of Kansas Medical Center, Kansas City, Kansas 66160, USA.},
+  Keywords                 = {Animals; Bile Acids and Salts, metabolism/pharmacology; Cell Survival; Chemokine CCL7, genetics; Chemokine CXCL2, genetics; Cholestasis, complications/metabolism/pathology; Early Growth Response Protein 1, genetics; Gene Expression Regulation; Hepatitis, etiology/genetics/immunology; Hepatocytes, drug effects/metabolism/pathology; Intercellular Adhesion Molecule-1, genetics; Lipopolysaccharides, immunology; Liver, drug effects/metabolism/pathology; Mice; Mice, Inbred C57BL; Neutrophils, immunology; Receptors, Cytoplasmic and Nuclear, genetics; Serpin E2, genetics; Toll-Like Receptor 4, immunology; Vascular Cell Adhesion Molecule-1, genetics; ras-GRF1, genetics},
+  Language                 = {eng},
+  Medline-pst              = {ppublish},
+  Owner                    = {mkoenig},
+  Pii                      = {S0002-9440(10)00072-6},
+  Pmid                     = {21224055},
+  Timestamp                = {2015.08.23},
+  Url                      = {http://dx.doi.org/10.1016/j.ajpath.2010.11.026}
+}
+
 @Article{Archer2010,
   Title                    = {rpartOrdinal: an R package for deriving a classification tree for predicting an ordinal response},
   Author                   = {Archer, Kellie J},
@@ -84,11 +131,164 @@
   Url                      = {http://dx.doi.org/10.1126/scitranslmed.3002564}
 }
 
+@Article{Beuers2015,
+  Title                    = {New paradigms in the treatment of hepatic cholestasis: from UDCA to FXR, PXR and beyond.},
+  Author                   = {Beuers, Ulrich and Trauner, Michael and Jansen, Peter and Poupon, Raoul},
+  Journal                  = {J Hepatol},
+  Year                     = {2015},
+
+  Month                    = {Apr},
+  Number                   = {1 Suppl},
+  Pages                    = {S25--S37},
+  Volume                   = {62},
+  Abstract                 = {Cholestasis is an impairment of bile formation/flow at the level of the hepatocyte and/or cholangiocyte. The first, and for the moment, most established medical treatment is the natural bile acid (BA) ursodeoxycholic acid (UDCA). This secretagogue improves, e.g. in intrahepatic cholestasis of pregnancy or early stage primary biliary cirrhosis, impaired hepatocellular and cholangiocellular bile formation mainly by complex post-transcriptional mechanisms. The limited efficacy of UDCA in various cholestatic conditions urges for development of novel therapeutic approaches. These include nuclear and membrane receptor agonists and BA derivatives. The nuclear receptors farnesoid X receptor (FXR), retinoid X receptor (RXR), peroxisome proliferator-activated receptor α (PPARα), and pregnane X receptor (PXR) are transcriptional modifiers of bile formation and at present are under investigation as promising targets for therapeutic interventions in cholestatic disorders. The membrane receptors fibroblast growth factor receptor 4 (FGFR4) and apical sodium BA transporter (ASBT) deserve attention as additional therapeutic targets, as does the potential therapeutic agent norUDCA, a 23-C homologue of UDCA. Here, we provide an overview on established and future promising therapeutic agents and their potential molecular mechanisms and sites of action in cholestatic diseases.},
+  Doi                      = {10.1016/j.jhep.2015.02.023},
+  Institution              = {UPMC Université Paris 06, INSERM, UMR_S 938, Centre de Recherche Saint-Antoine, AP-HP, Hôpital Saint-Antoine, Service d'Hépatologie, F-75012 Paris, France.},
+  Language                 = {eng},
+  Medline-pst              = {ppublish},
+  Owner                    = {mkoenig},
+  Pii                      = {S0168-8278(15)00133-6},
+  Pmid                     = {25920087},
+  Timestamp                = {2015.08.22},
+  Url                      = {http://dx.doi.org/10.1016/j.jhep.2015.02.023}
+}
+
+@Article{Chiang2009,
+  Title                    = {Bile acids: regulation of synthesis.},
+  Author                   = {Chiang, John Y L.},
+  Journal                  = {J Lipid Res},
+  Year                     = {2009},
+
+  Month                    = {Oct},
+  Number                   = {10},
+  Pages                    = {1955--1966},
+  Volume                   = {50},
+  Abstract                 = {Bile acids are physiological detergents that generate bile flow and facilitate intestinal absorption and transport of lipids, nutrients, and vitamins. Bile acids also are signaling molecules and inflammatory agents that rapidly activate nuclear receptors and cell signaling pathways that regulate lipid, glucose, and energy metabolism. The enterohepatic circulation of bile acids exerts important physiological functions not only in feedback inhibition of bile acid synthesis but also in control of whole-body lipid homeostasis. In the liver, bile acids activate a nuclear receptor, farnesoid X receptor (FXR), that induces an atypical nuclear receptor small heterodimer partner, which subsequently inhibits nuclear receptors, liver-related homolog-1, and hepatocyte nuclear factor 4alpha and results in inhibiting transcription of the critical regulatory gene in bile acid synthesis, cholesterol 7alpha-hydroxylase (CYP7A1). In the intestine, FXR induces an intestinal hormone, fibroblast growth factor 15 (FGF15; or FGF19 in human), which activates hepatic FGF receptor 4 (FGFR4) signaling to inhibit bile acid synthesis. However, the mechanism by which FXR/FGF19/FGFR4 signaling inhibits CYP7A1 remains unknown. Bile acids are able to induce FGF19 in human hepatocytes, and the FGF19 autocrine pathway may exist in the human livers. Bile acids and bile acid receptors are therapeutic targets for development of drugs for treatment of cholestatic liver diseases, fatty liver diseases, diabetes, obesity, and metabolic syndrome.},
+  Doi                      = {10.1194/jlr.R900010-JLR200},
+  Institution              = {Department of Integrative Medical Sciences, Northeastern Ohio University's Colleges of Medicine and Pharmacy, Rootstown, OH 44272, USA. jchiang@neoucom.edu},
+  Keywords                 = {Animals; Bile Acids and Salts, metabolism; Cholesterol 7-alpha-Hydroxylase, metabolism; Humans; Models, Biological; Receptors, Cytoplasmic and Nuclear, metabolism; Signal Transduction, physiology},
+  Language                 = {eng},
+  Medline-pst              = {ppublish},
+  Owner                    = {mkoenig},
+  Pii                      = {R900010-JLR200},
+  Pmid                     = {19346330},
+  Timestamp                = {2015.08.23},
+  Url                      = {http://dx.doi.org/10.1194/jlr.R900010-JLR200}
+}
+
 @Book{Frank2001,
   Title                    = {A simple approach to ordinal classification},
   Author                   = {Frank, Eibe and Hall, Mark},
   Publisher                = {Springer},
   Year                     = {2001}
+}
+
+@Article{Furutani2015,
+  Title                    = {Hepatic fibrosis and angiogenesis after bile duct ligation are endogenously expressed vasohibin-1 independent.},
+  Author                   = {Furutani, Yutaka and Shiozaki-Sato, Yumi and Hara, Mitsuko and Sato, Yasufumi and Kojima, Soichi},
+  Journal                  = {Biochem Biophys Res Commun},
+  Year                     = {2015},
+
+  Month                    = {Jul},
+  Number                   = {3},
+  Pages                    = {384--388},
+  Volume                   = {463},
+  Abstract                 = {Liver fibrosis is linked to VEGF-induced angiogenesis. Overexpression of exogenous vasohibin-1, a feedback inhibitor of angiogenesis, has been reported to reduce liver fibrosis after bile duct ligation (BDL). To uncover the function of endogenous vasohibin-1, we performed BDL using vasohibin-1-deficient mice and analyzed liver fibrosis, injury, and angiogenesis. Liver fibrosis was induced by 14-days of BDL in both wild-type and vasohibin-1-deficient mice. The liver sections were stained with anti-CD31 to visualize endothelial cells and with Sirius red to observe fibrotic regions. Total RNAs were purified from the livers and expression of collagen I α1 mRNA was measured by quantitative PCR. Plasma ALT activity was determined to assess liver injury. Surprisingly, the same extents of increases were seen in anti-CD31 and Sirius red stainings, collagen I α1 mRNA expressions, hepatic hydroxyproline contents, and ALT activity after 14-days of BDL in both wild-type and vasohibin-1-deficient mice. There was unexpectedly no difference between these mice, suggesting that anti-fibrogenic and angiogenic activities of the endogenous vasohibin-1 might be masked in the normal liver at early stage of hepatic fibrosis in mice.},
+  Doi                      = {10.1016/j.bbrc.2015.05.074},
+  Institution              = {Micro-Signaling Regulation Technology Unit, RIKEN Center for Life Science Technologies, Saitama, 2-1 Hirosawa, Wako, Saitama 351-0198, Japan. Electronic address: skojima@riken.jp.},
+  Language                 = {eng},
+  Medline-pst              = {ppublish},
+  Owner                    = {mkoenig},
+  Pii                      = {S0006-291X(15)30003-6},
+  Pmid                     = {26025651},
+  Timestamp                = {2015.08.23},
+  Url                      = {http://dx.doi.org/10.1016/j.bbrc.2015.05.074}
+}
+
+@Article{Georgiev2008,
+  Title                    = {Characterization of time-related changes after experimental bile duct ligation.},
+  Author                   = {Georgiev, P. and Jochum, W. and Heinrich, S. and Jang, J. H. and Nocito, A. and Dahm, F. and Clavien, P-A.},
+  Journal                  = {Br J Surg},
+  Year                     = {2008},
+
+  Month                    = {May},
+  Number                   = {5},
+  Pages                    = {646--656},
+  Volume                   = {95},
+  Abstract                 = {Although bile duct ligation (BDL) in mice is used to study cholestasis, a detailed description of this animal model is lacking. The aim of this study was to define specific phases of acute and chronic injury and repair in the different cellular compartments of the liver.C57BL/6 mice underwent BDL or sham laparotomy, and serum and liver tissue were analysed between 8 h and 6 weeks later.Biliary infarcts and alanine aminotransferase levels revealed acute hepatocellular injury peaking at days 2-3, paralleled by enhanced transcription of pro-proliferative mediators and followed by a distinct peak of hepatocellular proliferation at day 5. Cholangiocellular proliferation occurred in large bile ducts on days 2-3 and in small bile ducts on day 5. Neutrophil infiltration occurred within 8 h, with neutrophils remaining the predominant immune cell type until day 3. Acute injury was followed by continuous tissue repair, lymphocyte and Kupffer cell infiltration, and accumulation of collagen during the second week. Thereafter, the number of alpha-smooth muscle actin-positive cells and the expression of transforming growth factor beta1, tissue inhibitor of metalloproteinases 1 and procollagen (I) decreased, and liver fibrosis stabilized.BDL elicits dynamic changes in mouse liver. The chronological dissection and quantification of these events identified specific phases of acute and chronic cholestatic liver injury.},
+  Doi                      = {10.1002/bjs.6050},
+  Institution              = {Swiss Hepato-Pancreato-Biliary Centre, Department of Visceral and Transplant Surgery, University Hospital of Zurich, Zurich, Switzerland.},
+  Keywords                 = {Alanine Transaminase, metabolism; Alkaline Phosphatase, metabolism; Animals; Bile Ducts, pathology/surgery; Bilirubin, metabolism; Body Weight; Cell Proliferation; Hepatocytes, pathology; Immunohistochemistry; Ligation, methods; Liver Cirrhosis, Biliary, blood/pathology; Liver Diseases, blood/pathology; Male; Mice; Mice, Inbred C57BL; Polymerase Chain Reaction; Postoperative Complications, blood/pathology; Time Factors},
+  Language                 = {eng},
+  Medline-pst              = {ppublish},
+  Owner                    = {mkoenig},
+  Pmid                     = {18196571},
+  Timestamp                = {2015.08.23},
+  Url                      = {http://dx.doi.org/10.1002/bjs.6050}
+}
+
+@Article{Goodwin2000,
+  Title                    = {A regulatory cascade of the nuclear receptors FXR, SHP-1, and LRH-1 represses bile acid biosynthesis.},
+  Author                   = {Goodwin, B. and Jones, S. A. and Price, R. R. and Watson, M. A. and McKee, D. D. and Moore, L. B. and Galardi, C. and Wilson, J. G. and Lewis, M. C. and Roth, M. E. and Maloney, P. R. and Willson, T. M. and Kliewer, S. A.},
+  Journal                  = {Mol Cell},
+  Year                     = {2000},
+
+  Month                    = {Sep},
+  Number                   = {3},
+  Pages                    = {517--526},
+  Volume                   = {6},
+  Abstract                 = {Bile acids repress the transcription of cytochrome P450 7A1 (CYP7A1), which catalyzes the rate-limiting step in bile acid biosynthesis. Although bile acids activate the farnesoid X receptor (FXR), the mechanism underlying bile acid-mediated repression of CYP7A1 remained unclear. We have used a potent, nonsteroidal FXR ligand to show that FXR induces expression of small heterodimer partner 1 (SHP-1), an atypical member of the nuclear receptor family that lacks a DNA-binding domain. SHP-1 represses expression of CYP7A1 by inhibiting the activity of liver receptor homolog 1 (LRH-1), an orphan nuclear receptor that is known to regulate CYP7A1 expression positively. This bile acid-activated regulatory cascade provides a molecular basis for the coordinate suppression of CYP7A1 and other genes involved in bile acid biosynthesis.},
+  Institution              = {Department of Molecular Endocrinology, Glaxo Wellcome Research and Development, Research Triangle Park, North Carolina 27709, USA.},
+  Keywords                 = {Animals; Bile Acids and Salts, biosynthesis; Blotting, Northern; Cells, Cultured; Cholesterol 7-alpha-Hydroxylase, genetics/metabolism; DNA-Binding Proteins, genetics/metabolism; Gene Expression Regulation, Enzymologic, physiology; Hepatocytes, cytology/enzymology; Humans; Intracellular Signaling Peptides and Proteins; Male; Promoter Regions, Genetic, physiology; Protein Tyrosine Phosphatase, Non-Receptor Type 11; Protein Tyrosine Phosphatase, Non-Receptor Type 6; Protein Tyrosine Phosphatases, genetics/metabolism; RNA, Messenger, analysis; Rats; Rats, Inbred F344; Receptors, Cytoplasmic and Nuclear, genetics/metabolism; Repressor Proteins, genetics/metabolism; Transcription Factors, genetics/metabolism; Transfection},
+  Language                 = {eng},
+  Medline-pst              = {ppublish},
+  Owner                    = {mkoenig},
+  Pii                      = {S1097-2765(00)00051-4},
+  Pmid                     = {11030332},
+  Timestamp                = {2015.08.23}
+}
+
+@Article{Hirschfield2010,
+  Title                    = {Pathogenesis of cholestatic liver disease and therapeutic approaches.},
+  Author                   = {Hirschfield, Gideon M. and Heathcote, E Jenny and Gershwin, M Eric},
+  Journal                  = {Gastroenterology},
+  Year                     = {2010},
+
+  Month                    = {Nov},
+  Number                   = {5},
+  Pages                    = {1481--1496},
+  Volume                   = {139},
+  Abstract                 = {Cholestatic liver disorders are caused by genetic defects, mechanical aberrations, toxins, or dysregulations in the immune system that damage the bile ducts and cause accumulation of bile and liver tissue damage. They have common clinical manifestations and pathogenic features that include the responses of cholangiocytes and hepatocytes to injury. We review the features of bile acid transport, tissue repair and regulation, apoptosis, vascular supply, immune regulation, and cholangiocytes that are associated with cholestatic liver disorders. We now have a greater understanding of the physiology of cholangiocytes at the cellular and molecular levels, as well as genetic factors, repair pathways, and autoimmunity mechanisms involved in the pathogenesis of disease. These discoveries will hopefully lead to new therapeutic approaches for patients with cholestatic liver disease.},
+  Doi                      = {10.1053/j.gastro.2010.09.004},
+  Institution              = {Liver Centre, Toronto Western Hospital, Toronto, Ontario, Canada.},
+  Keywords                 = {Animals; Apoptosis; Bile, metabolism; Cholagogues and Choleretics, therapeutic use; Cholestasis, complications/drug therapy/metabolism; Cytokines, immunology/metabolism; Hepatocytes, metabolism/pathology; Humans; Immunity, Cellular; Immunosuppressive Agents, therapeutic use; Liver Cirrhosis, Biliary, drug therapy/etiology/metabolism; Prognosis; Risk Factors; Ursodeoxycholic Acid, therapeutic use},
+  Language                 = {eng},
+  Medline-pst              = {ppublish},
+  Owner                    = {mkoenig},
+  Pii                      = {S0016-5085(10)01320-X},
+  Pmid                     = {20849855},
+  Timestamp                = {2015.08.21},
+  Url                      = {http://dx.doi.org/10.1053/j.gastro.2010.09.004}
+}
+
+@Article{Huss2010,
+  Title                    = {Development and evaluation of an open source Delphi-based software for morphometric quantification of liver fibrosis.},
+  Author                   = {Huss, Sebastian and Schmitz, J{\"{o}}rg and Goltz, Diane and Fischer, Hans-Peter and B{\"{u}}ttner, Reinhard and Weiskirchen, Ralf},
+  Journal                  = {Fibrogenesis Tissue Repair},
+  Year                     = {2010},
+  Number                   = {1},
+  Pages                    = {10},
+  Volume                   = {3},
+  Abstract                 = {Computer-based morphometry can minimize subjectivity in the assessment of liver fibrosis. An image processing program was developed with Delphi for the quantification of fibrosis in liver tissue samples stained with Sirius Red. Bile duct ligated and sham operated wild type C57BL/6 mice served as a model of time-dependent induction of liver fibrosis. Formation of fibrosis was determined with the developed software at day 0, 3, 7, 10, 14, 20, 30 and 60. The results were compared to a semi-quantitative scoring system.Quantitative accumulation of collagen fibres was observed from day 3 to day 14, with a slight further increase thereafter. During ongoing fibrogenesis, there was a significant elevation of alanine aminotransferase (ALT), aspartate transaminase (AST) and bilirubin. The results from our computer-based morphometric analysis were highly correlated with the results that were obtained in a standardized pathology semi-quantitative scoring system (R 2 = 0.89, n = 38).Using our Delphi-based image analysing software, the morphometric assessment of fibrosis is as precise as semi-quantitative scoring by an experienced pathologist. This program can be a valuable tool in any kind of experimental or clinical setting for standardized quantitative assessment of fibrosis.},
+  Doi                      = {10.1186/1755-1536-3-10},
+  Institution              = {Institute of Pathology, University of Bonn, Bonn, Germany. sebastian.huss@ukb.uni-bonn.de.},
+  Language                 = {eng},
+  Medline-pst              = {epublish},
+  Owner                    = {mkoenig},
+  Pii                      = {1755-1536-3-10},
+  Pmid                     = {20565730},
+  Timestamp                = {2015.08.22},
+  Url                      = {http://dx.doi.org/10.1186/1755-1536-3-10}
 }
 
 @Article{Jaskowiak2014,
@@ -154,12 +354,94 @@
   Url                      = {http://dx.doi.org/10.1002/dneu.20362}
 }
 
+@Article{Kountouras1984,
+  Title                    = {Prolonged bile duct obstruction: a new experimental model for cirrhosis in the rat.},
+  Author                   = {Kountouras, J. and Billing, B. H. and Scheuer, P. J.},
+  Journal                  = {Br J Exp Pathol},
+  Year                     = {1984},
+
+  Month                    = {Jun},
+  Number                   = {3},
+  Pages                    = {305--311},
+  Volume                   = {65},
+  Abstract                 = {Hepatic morphological abnormalities were examined in rats whose bile ducts had been either cannulated and then obstructed or irreversibly ligated for 5, 10, 15 and 28 days or longer. Throughout the experiment most of the morphological changes observed in the cannulated group were comparable to those in the ligated group. Portal inflammation and marginal bile duct proliferation were noted with the same frequency in both groups. Biliary obstruction for 15 days or more led to cirrhosis. After 28 days obstruction, five out of six cannulated rats and four out of six ligated animals respectively developed cirrhosis. The development of cirrhosis was progressive and associated with ascites. It is concluded that in the rat the morphological sequelae of long term cholestasis induced by either cannulation and obstruction or ligation of bile ducts are similar and are accompanied by cirrhosis. The advantages of this experimental model for the study of human cirrhosis are discussed.},
+  Keywords                 = {Animals; Bilirubin, blood; Body Weight; Catheterization; Cholestasis, complications; Disease Models, Animal; Ligation; Liver Cirrhosis, Experimental, etiology/pathology; Liver, pathology; Male; Organ Size; Rats; Rats, Inbred Strains; Spleen, pathology},
+  Language                 = {eng},
+  Medline-pst              = {ppublish},
+  Owner                    = {mkoenig},
+  Pmid                     = {6743531},
+  Timestamp                = {2015.08.23}
+}
+
+@Article{Levitt2014,
+  Title                    = {Quantitative assessment of the multiple processes responsible for bilirubin homeostasis in health and disease.},
+  Author                   = {Levitt, David G. and Levitt, Michael D.},
+  Journal                  = {Clin Exp Gastroenterol},
+  Year                     = {2014},
+  Pages                    = {307--328},
+  Volume                   = {7},
+  Abstract                 = {Serum bilirubin measurements are commonly obtained for the evaluation of ill patients and to screen for liver disease in routine physical exams. An enormous research effort has identified the multiple mechanisms involved in the production and metabolism of conjugated (CB) and unconjugated bilirubin (UB). While the qualitative effects of these mechanisms are well understood, their expected quantitative influence on serum bilirubin homeostasis has received less attention. In this review, each of the steps involved in bilirubin production, metabolism, hepatic cell uptake, and excretion is quantitatively examined. We then attempt to predict the expected effect of normal and defective function on serum UB and CB levels in health and disease states including hemolysis, extra- and intrahepatic cholestasis, hepatocellular diseases (eg, cirrhosis, hepatitis), and various congenital defects in bilirubin conjugation and secretion (eg, Gilbert's, Dubin-Johnson, Crigler-Najjar, Rotor syndromes). Novel aspects of this review include: 1) quantitative estimates of the free and total UB and CB in the plasma, hepatocyte, and bile; 2) detailed discussion of the important implications of the recently recognized role of the hepatic OATP transporters in the maintenance of CB homeostasis; 3) discussion of the differences between the standard diazo assay versus chromatographic measurement of CB and UB; 4) pharmacokinetic implications of the extremely high-affinity albumin binding of UB; 5) role of the enterohepatic circulation in physiologic jaundice of newborn and fasting hyperbilirubinemia; and 6) insights concerning the clinical interpretation of bilirubin measurements.},
+  Doi                      = {10.2147/CEG.S64283},
+  Institution              = {Research Service, Veterans Affairs Medical Center, Minneapolis, MN, USA.},
+  Language                 = {eng},
+  Medline-pst              = {epublish},
+  Owner                    = {mkoenig},
+  Pii                      = {ceg-7-307},
+  Pmid                     = {25214800},
+  Timestamp                = {2015.08.23},
+  Url                      = {http://dx.doi.org/10.2147/CEG.S64283}
+}
+
 @InProceedings{Li2006,
   Title                    = {Ordinal regression by extended binary classification},
   Author                   = {Li, Ling and Lin, Hsuan-Tien},
   Booktitle                = {Advances in neural information processing systems},
   Year                     = {2006},
   Pages                    = {865--872}
+}
+
+@Article{Li2014,
+  Title                    = {Cytoplasmic tyrosine phosphatase Shp2 coordinates hepatic regulation of bile acid and FGF15/19 signaling to repress bile acid synthesis.},
+  Author                   = {Li, Shuangwei and Hsu, Diane D F. and Li, Bing and Luo, Xiaolin and Alderson, Nazilla and Qiao, Liping and Ma, Lina and Zhu, Helen H. and He, Zhao and Suino-Powell, Kelly and Ji, Kaihong and Li, Jiefu and Shao, Jianhua and Xu, H Eric and Li, Tiangang and Feng, Gen-Sheng},
+  Journal                  = {Cell Metab},
+  Year                     = {2014},
+
+  Month                    = {Aug},
+  Number                   = {2},
+  Pages                    = {320--332},
+  Volume                   = {20},
+  Abstract                 = {Bile acid (BA) biosynthesis is tightly controlled by intrahepatic negative feedback signaling elicited by BA binding to farnesoid X receptor (FXR) and also by enterohepatic communication involving ileal BA reabsorption and FGF15/19 secretion. However, how these pathways are coordinated is poorly understood. We show here that nonreceptor tyrosine phosphatase Shp2 is a critical player that couples and regulates the intrahepatic and enterohepatic signals for repression of BA synthesis. Ablating Shp2 in hepatocytes suppressed signal relay from FGFR4, receptor for FGF15/19, and attenuated BA activation of FXR signaling, resulting in elevation of systemic BA levels and chronic hepatobiliary disorders in mice. Acting immediately downstream of FGFR4, Shp2 associates with FRS2α and promotes the receptor activation and signal relay to several pathways. These results elucidate a molecular mechanism for the control of BA homeostasis by Shp2 through the orchestration of multiple signals in hepatocytes.},
+  Doi                      = {10.1016/j.cmet.2014.05.020},
+  Institution              = {Department of Pathology, Division of Biological Sciences, University of California, San Diego, La Jolla, CA 92093-0864, USA. Electronic address: gfeng@ucsd.edu.},
+  Keywords                 = {Animals; Bile Acids and Salts, biosynthesis; Bile Ducts, injuries; Cell Line; Cholesterol 7-alpha-Hydroxylase, metabolism; Fibroblast Growth Factors, metabolism; Liver, metabolism/pathology; Membrane Proteins, metabolism; Mice; Mice, Knockout; Protein Tyrosine Phosphatase, Non-Receptor Type 11, deficiency/genetics/metabolism; Receptor, Fibroblast Growth Factor, Type 4, metabolism; Signal Transduction; Up-Regulation},
+  Language                 = {eng},
+  Medline-pst              = {ppublish},
+  Owner                    = {mkoenig},
+  Pii                      = {S1550-4131(14)00228-9},
+  Pmid                     = {24981838},
+  Timestamp                = {2015.08.23},
+  Url                      = {http://dx.doi.org/10.1016/j.cmet.2014.05.020}
+}
+
+@Article{Lu2000,
+  Title                    = {Molecular basis for feedback regulation of bile acid synthesis by nuclear receptors.},
+  Author                   = {Lu, T. T. and Makishima, M. and Repa, J. J. and Schoonjans, K. and Kerr, T. A. and Auwerx, J. and Mangelsdorf, D. J.},
+  Journal                  = {Mol Cell},
+  Year                     = {2000},
+
+  Month                    = {Sep},
+  Number                   = {3},
+  Pages                    = {507--515},
+  Volume                   = {6},
+  Abstract                 = {The catabolism of cholesterol into bile acids is regulated by oxysterols and bile acids, which induce or repress transcription of the pathway's rate-limiting enzyme cholesterol 7alpha-hydroxylase (CYP7A1). The nuclear receptor LXRalpha binds oxysterols and mediates feed-forward induction. Here, we show that repression is coordinately regulated by a triumvirate of nuclear receptors, including the bile acid receptor, FXR; the promoter-specific activator, LRH-1; and the promoter-specific repressor, SHP. Feedback repression of CYP7A1 is accomplished by the binding of bile acids to FXR, which leads to transcription of SHP. Elevated SHP protein then inactivates LRH-1 by forming a heterodimeric complex that leads to promoter-specific repression of both CYP7A1 and SHP. These results reveal an elaborate autoregulatory cascade mediated by nuclear receptors for the maintenance of hepatic cholesterol catabolism.},
+  Institution              = {Department of Pharmacology, University of Texas Southwestern Medical Center at Dallas, 75390, USA.},
+  Keywords                 = {Animals; Bile Acids and Salts, biosynthesis; Cells, Cultured; Cholesterol 7-alpha-Hydroxylase, genetics/metabolism; Cholesterol, metabolism; DNA-Binding Proteins, genetics/metabolism; Feedback, physiology; Gene Expression Regulation, Enzymologic, physiology; Homeostasis, physiology; Humans; Kidney, cytology; Mice; Orphan Nuclear Receptors; Promoter Regions, Genetic, physiology; Receptors, Cytoplasmic and Nuclear, genetics/metabolism; Repressor Proteins, genetics/metabolism; Transcription Factors, genetics/metabolism; Transcription, Genetic, physiology},
+  Language                 = {eng},
+  Medline-pst              = {ppublish},
+  Owner                    = {mkoenig},
+  Pii                      = {S1097-2765(00)00050-2},
+  Pmid                     = {11030331},
+  Timestamp                = {2015.08.23}
 }
 
 @Article{MaillettedeBuyWenniger2010,
@@ -172,8 +454,6 @@
   Number                   = {6},
   Pages                    = {409--418},
   Volume                   = {42},
-
-  __markedentry            = {[mkoenig:6]},
   Abstract                 = {Bile salts have a crucial role in hepatobiliary and intestinal homeostasis and digestion. Primary bile salts are synthesized by the liver from cholesterol, and may be modified by the intestinal flora to form secondary and tertiary bile salts. Bile salts are efficiently reabsorbed from the intestinal lumen to undergo enterohepatic circulation. In addition to their function as a surfactant involved in the absorption of dietary lipids and fat-soluble vitamins bile salts are potent signaling molecules in both the liver and intestine. Under physiological conditions the bile salt pool is tightly regulated, but the adaptive capacity may fall short under cholestatic conditions. Elevated serum and tissue levels of potentially toxic hydrophobic bile salts during cholestasis may cause mitochondrial damage, apoptosis or necrosis in susceptible cell types. Therapeutic nontoxic bile salts may restore impaired hepatobiliary secretion in cholestatic disorders. The hydrophilic bile salt ursodeoxycholate is today regarded as the effective standard treatment of primary biliary cirrhosis and intrahepatic cholestasis of pregnancy, and is implicated for use in various other cholestatic conditions. Novel therapeutic bile salts that are currently under evaluation may also prove valuable in the treatment of these diseases.},
   Doi                      = {10.1016/j.dld.2010.03.015},
   Institution              = {Department of Gastroenterology and Hepatology, Tytgat Institute for Liver and Intestinal Research, Academic Medical Center, University of Amsterdam, The Netherlands.},
@@ -185,6 +465,44 @@
   Pmid                     = {20434968},
   Timestamp                = {2015.08.21},
   Url                      = {http://dx.doi.org/10.1016/j.dld.2010.03.015}
+}
+
+@Article{OBrien2015,
+  Title                    = {Bile duct-ligated mice exhibit multiple phenotypic similarities to acute{~}decompensation patients despite histological differences.},
+  Author                   = {O'Brien, Alastair and China, Louise and Massey, Karen A. and Nicolaou, Anna and Winstanley, Alison and Newson, Justine and Hobbs, Adrian and Audzevich, Tatsiana and Gilroy, Derek W.},
+  Journal                  = {Liver Int},
+  Year                     = {2015},
+
+  Month                    = {May},
+  Abstract                 = {Patients with decompensated cirrhosis are susceptible to infection. Innate immune dysfunction and development of organ failure are considered to underlie this. A rodent model of liver disease sharing these phenotypic features would assist in vivo study of underlying mechanisms and testing of therapeutics. We evaluated three models to identify which demonstrated the greatest clinical and immunological phenotypic similarity to patients with acutely decompensated (AD) cirrhosis.We selected Bile Duct Ligation (BDL) rats at 4 weeks, BDL mice at 14 days and Carbon tetrachloride (CCl4 ) mice at 10 weeks (with studies performed 7 days after final CCl4 infection). We examined organ dysfunction, inflammatory response to carrageenan-in-paw, plasma eicosanoid concentrations, macrophage cytokine production and responses to peritoneal infection.Bile duct ligation caused sarcopenia, liver, cardiovascular and renal dysfunction whereas CCl4 mice demonstrated no clinical abnormalities. BDL rodents exhibited depressed response to carrageenan-in-paw unlike CCl4 mice. BDL rats have slightly elevated plasma eicosanoid levels and plasma showed partial PGE2 -mediated immune suppression whereas CCl4 mice did not. Plasma NOx was elevated in patients with acute or chronic liver failure (AoCLF) compared to healthy volunteers and BDL rodents but not CCl4 mice. Elevated nitric oxide (NO) via inducible nitric oxide synthase (iNOS) mediates defective leucocyte trafficking in BDL rodent models.We conclude that BDL mice and rats are not simply models of cholestatic liver injury but may be used to study mechanisms underlying poor outcome from infection in AD and have identified elevated NO as a potential mediator of depressed leucocyte trafficking.},
+  Doi                      = {10.1111/liv.12876},
+  Institution              = {Manchester Pharmacy School, Faculty of Medical and Human Sciences, the University of Manchester, Manchester, UK.},
+  Language                 = {eng},
+  Medline-pst              = {aheadofprint},
+  Owner                    = {mkoenig},
+  Pmid                     = {26012885},
+  Timestamp                = {2015.08.22},
+  Url                      = {http://dx.doi.org/10.1111/liv.12876}
+}
+
+@Article{Russell2003,
+  Title                    = {The enzymes, regulation, and genetics of bile acid synthesis.},
+  Author                   = {Russell, David W.},
+  Journal                  = {Annu Rev Biochem},
+  Year                     = {2003},
+  Pages                    = {137--174},
+  Volume                   = {72},
+  Abstract                 = {The synthesis and excretion of bile acids comprise the major pathway of cholesterol catabolism in mammals. Synthesis provides a direct means of converting cholesterol, which is both hydrophobic and insoluble, into a water-soluble and readily excreted molecule, the bile acid. The biosynthetic steps that accomplish this transformation also confer detergent properties to the bile acid, which are exploited by the body to facilitate the secretion of cholesterol from the liver. This role in the elimination of cholesterol is counterbalanced by the ability of bile acids to solubilize dietary cholesterol and essential nutrients and to promote their delivery to the liver. The synthesis of a full complement of bile acids requires 17 enzymes. The expression of selected enzymes in the pathway is tightly regulated by nuclear hormone receptors and other transcription factors, which ensure a constant supply of bile acids in an ever changing metabolic environment. Inherited mutations that impair bile acid synthesis cause a spectrum of human disease; this ranges from liver failure in early childhood to progressive neuropathy in adults.},
+  Doi                      = {10.1146/annurev.biochem.72.121801.161712},
+  Institution              = {Department of Molecular Genetics, University of Texas Southwestern Medical Center, 5323 Harry Hines Blvd., Dallas, Texas 75390-9046, USA. david.russell@utsouthwestern.edu},
+  Keywords                 = {Animals; Bile Acids and Salts, biosynthesis/chemistry/genetics/metabolism; Cholesterol, chemistry/metabolism/secretion; Enzymes, deficiency/genetics/metabolism; Homeostasis; Humans; Liver Diseases, enzymology/genetics; Liver, metabolism; Receptors, Cytoplasmic and Nuclear, metabolism},
+  Language                 = {eng},
+  Medline-pst              = {ppublish},
+  Owner                    = {mkoenig},
+  Pii                      = {121801.161712},
+  Pmid                     = {12543708},
+  Timestamp                = {2015.08.23},
+  Url                      = {http://dx.doi.org/10.1146/annurev.biochem.72.121801.161712}
 }
 
 @Article{Schliep2003,
@@ -213,8 +531,6 @@
   Number                   = {3},
   Pages                    = {3989--4006},
   Volume                   = {15},
-
-  __markedentry            = {[mkoenig:]},
   Abstract                 = {Bile duct ligation (BDL)-treated rats exhibit cholestasis, increased systemic oxidative stress, and liver fibrosis, which ultimately lead to liver cirrhosis. Asymmetric dimethylarginine (ADMA) is a competitive inhibitor of nitric oxide synthase that can decrease the synthesis of nitric oxide. BDL rats have higher plasma and hepatic ADMA levels, which may be due to increased hepatic protein arginine methyltransferase-1 and decreased dimethylarginine dimethylaminohydrolase expression. BDL rats also exhibit renal and brain damage characterized by increased tissue ADMA concentrations. The increased plasma ADMA levels and multiple organ damages seen here are also observed following multiple organ failures associated with critical illness. This review discusses the dysregulation of ADMA in major organs in BDL rats and the role of increased ADMA in multiple organ damages.},
   Doi                      = {10.3390/ijms15033989},
   Institution              = {Department of Pediatrics, Kaohsiung Chang Gung Memorial Hospital and Chang Gung University College of Medicine, Kaohsiung 833, Taiwan. huang_li@pie.com.tw.},
@@ -228,6 +544,26 @@
   Url                      = {http://dx.doi.org/10.3390/ijms15033989}
 }
 
+@Article{Shen2015,
+  Title                    = {Epigallocatechin 3-gallate ameliorates bile duct ligation induced liver injury in mice by modulation of mitochondrial oxidative stress and inflammation.},
+  Author                   = {Shen, Kezhen and Feng, Xiaowen and Su, Rong and Xie, Haiyang and Zhou, Lin and Zheng, Shusen},
+  Journal                  = {PLoS One},
+  Year                     = {2015},
+  Number                   = {5},
+  Pages                    = {e0126278},
+  Volume                   = {10},
+  Abstract                 = {Cholestatic liver fibrosis was achieved by bile duct ligation (BDL) in mice. Liver injury associated with BDL for 15 days included significant reactive oxygen/nitrogen species generation, liver inflammation, cell death and fibrosis. Administration of Epigallocatechin 3-Gallate (EGCG) in animals reduced liver fibrosis involving parenchymal cells in BDL model. EGCG attenuated BDL-induced gene expression of pro-fibrotic markers (Collagen, Fibronectin, alpha 2 smooth muscle actin or SMA and connective tissue growth factor or CTGF), mitochondrial oxidative stress, cell death marker (DNA fragmentation and PARP activity), NFκB activity and pro-inflammatory cytokines (TNFα, MIP1α, IL1β, and MIP2). EGCG also improved BDL induced damages of mitochondrial electron transport chain complexes and antioxidant defense enzymes such as glutathione peroxidase and manganese superoxide dismutase. EGCG also attenuated hydrogen peroxide induced cell death in hepatocytes in vitro and alleviate stellate cells mediated fibrosis through TIMP1, SMA, Collagen 1 and Fibronectin in vitro. In conclusion, the reactive oxygen/nitrogen species generated from mitochondria plays critical pathogenetic role in the progression of liver inflammation and fibrosis and this study indicate that EGCG might be beneficial for reducing liver inflammation and fibrosis.},
+  Doi                      = {10.1371/journal.pone.0126278},
+  Institution              = {Key Laboratory of Combined Multi-organ Transplantation, Ministry of Public Health, the First Affiliated Hospital, College of Medicine, Zhejiang University, Hangzhou, Zhejiang Province, China; Collaborative Innovation Center for Diagnosis and Treatment of Infectious Diseases, the First Affiliated Hospital, College of Medicine, Zhejiang University, Hangzhou, Zhejiang Province, China; Division of Hepatobiliary and Pancreatic Surgery, First Affiliated Hospital, Zhejiang University School of Medicine, Hangzhou, China.},
+  Language                 = {eng},
+  Medline-pst              = {epublish},
+  Owner                    = {mkoenig},
+  Pii                      = {PONE-D-15-07192},
+  Pmid                     = {25955525},
+  Timestamp                = {2015.08.23},
+  Url                      = {http://dx.doi.org/10.1371/journal.pone.0126278}
+}
+
 @Article{Son2008,
   Title                    = {A modified correlation coefficient based similarity measure for clustering time-course gene expression data},
   Author                   = {Son, Young Sook and Baek, Jangsun},
@@ -238,6 +574,46 @@
   Volume                   = {29},
 
   Publisher                = {Elsevier}
+}
+
+@Article{Tag2015,
+  Title                    = {Bile duct ligation in mice: induction of inflammatory liver injury and fibrosis by obstructive cholestasis.},
+  Author                   = {Tag, Carmen G. and Sauer-Lehnen, Sibille and Weiskirchen, Sabine and Borkham-Kamphorst, Erawan and Tolba, Ren{\'{e}} H. and Tacke, Frank and Weiskirchen, Ralf},
+  Journal                  = {J Vis Exp},
+  Year                     = {2015},
+  Number                   = {96},
+  Abstract                 = {In most vertebrates, the liver produces bile that is necessary to emulsify absorbed fats and enable the digestion of lipids in the small intestine as well as to excrete bilirubin and other metabolic products. In the liver, the experimental obstruction of the extrahepatic biliary system initiates a complex cascade of pathological events that leads to cholestasis and inflammation resulting in a strong fibrotic reaction originating from the periportal fields. Therefore, surgical ligation of the common bile duct has become the most commonly used model to induce obstructive cholestatic injury in rodents and to study the molecular and cellular events that underlie these pathophysiological mechanisms induced by inappropriate bile flow. In recent years, different surgical techniques have been described that either allow reconnection or reanastomosis after bile duct ligation (BDL), e.g., partial BDL, or other microsurgical methods for specific research questions. However, the most frequently used model is the complete obstruction of the common bile duct that induces a strong fibrotic response after 21 to 28 days. The mortality rate can be high due to infectious complications or technical inaccuracies. Here we provide a detailed surgical procedure for the BDL model in mice that induce a highly reproducible fibrotic response in accordance to the 3R rule for animal welfare postulated by Russel and Burch in 1959.},
+  Doi                      = {10.3791/52438},
+  Institution              = {Institute of Molecular Pathobiochemistry, Experimental Gene Therapy and Clinical Chemistry, RWTH Aachen University; rweiskirchen@ukaachen.de.},
+  Language                 = {eng},
+  Medline-pst              = {epublish},
+  Owner                    = {mkoenig},
+  Pmid                     = {25741630},
+  Timestamp                = {2015.08.22},
+  Url                      = {http://dx.doi.org/10.3791/52438}
+}
+
+@Article{Wagner2009,
+  Title                    = {New molecular insights into the mechanisms of cholestasis.},
+  Author                   = {Wagner, Martin and Zollner, Gernot and Trauner, Michael},
+  Journal                  = {J Hepatol},
+  Year                     = {2009},
+
+  Month                    = {Sep},
+  Number                   = {3},
+  Pages                    = {565--580},
+  Volume                   = {51},
+  Abstract                 = {Recent progress in basic research has enhanced our understanding of the molecular mechanisms of normal bile secretion and their alterations in cholestasis. Genetic transporter variants contribute to an entire spectrum of cholestatic liver diseases and can cause hereditary cholestatic syndromes or determine susceptibility and disease progression in acquired cholestatic disorders. Cholestasis is associated with complex transcriptional and post-transcriptional alterations of hepatobiliary transporters and enzymes participating in bile formation. Ligand-activated nuclear receptors for bile acids and other biliary compounds play a key role in the regulation of genes required for bile formation. Pharmacological interventions in cholestasis may aim at modulating such novel regulatory pathways. This review will summarize the principles of molecular alterations in cholestasis and will give an overview of potential clinical implications.},
+  Doi                      = {10.1016/j.jhep.2009.05.012},
+  Institution              = {Division of Gastroenterology and Hepatology, Department of Internal Medicine, Laboratory of Experimental and Molecular Hepatology, Medical University of Graz, Auenbruggerplatz 15, 8036 Graz, Austria.},
+  Keywords                 = {ATP-Binding Cassette Transporters, genetics/physiology; Bile, metabolism; Cholestasis, chemically induced/genetics/physiopathology; Humans; Membrane Transport Proteins, genetics/physiology; Receptors, Cytoplasmic and Nuclear, genetics/physiology; Signal Transduction, physiology},
+  Language                 = {eng},
+  Medline-pst              = {ppublish},
+  Owner                    = {mkoenig},
+  Pii                      = {S0168-8278(09)00365-1},
+  Pmid                     = {19595470},
+  Timestamp                = {2015.08.21},
+  Url                      = {http://dx.doi.org/10.1016/j.jhep.2009.05.012}
 }
 
 @Article{Woolbright2012,
@@ -260,5 +636,28 @@
   Pmid                     = {23049206},
   Timestamp                = {2015.08.21},
   Url                      = {http://dx.doi.org/10.3748/wjg.v18.i36.4985}
+}
+
+@Article{Zollner2007,
+  Title                    = {Expression of bile acid synthesis and detoxification enzymes and the alternative bile acid efflux pump MRP4 in patients with primary biliary cirrhosis.},
+  Author                   = {Zollner, Gernot and Wagner, Martin and Fickert, Peter and Silbert, Dagmar and Gumhold, Judith and Zatloukal, Kurt and Denk, Helmut and Trauner, Michael},
+  Journal                  = {Liver Int},
+  Year                     = {2007},
+
+  Month                    = {Sep},
+  Number                   = {7},
+  Pages                    = {920--929},
+  Volume                   = {27},
+  Abstract                 = {Bile acid synthesis, transport and metabolism are markedly altered in experimental cholestasis. Whether such coordinated regulation exists in human cholestatic diseases is unclear. We therefore investigated expression of genes for bile acid synthesis, detoxification and alternative basolateral export and regulatory nuclear factors in primary biliary cirrhosis (PBC).Hepatic CYP7A1, CYP27A1, CYP8B1 (bile acid synthesis), CYP3A4 (hydroxylation), SULT2A1 (sulphation), UGT2B4/2B7 (glucuronidation), MRP4 (basolateral export), farnesoid X receptor (FXR), retinoid X receptor (RXR), short heterodimer partner (SHP), hepatocyte nuclear factor 1alpha (HNF1alpha) and HNF4alpha expression was determined in 11 patients with late-stage PBC and this was compared with non-cholestatic controls.CYP7A1 mRNA was repressed in PBC to 10-20\% of controls, while CYP27 and CYP8B1 mRNA remained unchanged. SULT2A1, UGT2B4/2B7 and CYP3A4 mRNA levels were unaltered or only mildly reduced in PBC. MRP4 protein levels were induced three-fold in PBC, whereas mRNA levels remained unchanged. Expression levels of FXR, RXR, SHP, PXR, CAR, HNF1alpha and HNF4alpha were moderately reduced in PBC without reaching statistical significance.Repression of bile acid synthesis and induction of basolateral bile acid export may represent adaptive mechanisms to limit bile acid burden in chronic cholestasis. As these changes do not sufficiently counteract cholestatic liver damage, future therapeutic strategies should aim at stimulation of bile acid detoxification pathways.},
+  Doi                      = {10.1111/j.1478-3231.2007.01506.x},
+  Institution              = {Laboratory of Experimental and Molecular Hepatology, Department of Internal Medicine, Medical University of Graz, Graz, Austria.},
+  Keywords                 = {Bile Acids and Salts, metabolism; Case-Control Studies; Cytochrome P-450 Enzyme System, analysis/genetics; Female; Gene Expression Regulation; Glucuronosyltransferase, analysis/genetics; Humans; Liver Cirrhosis, Biliary, enzymology/genetics/metabolism; Liver, enzymology/metabolism; Male; Middle Aged; Multidrug Resistance-Associated Proteins, analysis/genetics; RNA, Messenger, metabolism; Receptors, Cytoplasmic and Nuclear, analysis/genetics; Severity of Illness Index; Sulfotransferases, analysis/genetics; Transcription Factors, analysis/genetics},
+  Language                 = {eng},
+  Medline-pst              = {ppublish},
+  Owner                    = {mkoenig},
+  Pii                      = {LIV1506},
+  Pmid                     = {17696930},
+  Timestamp                = {2015.08.22},
+  Url                      = {http://dx.doi.org/10.1111/j.1478-3231.2007.01506.x}
 }
 

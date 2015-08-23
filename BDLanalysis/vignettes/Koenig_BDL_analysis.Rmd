@@ -812,7 +812,6 @@ Overview of the individual time courses in the clusters
 # TODO
 ```
 
-
 # Decision Trees
 For the prediction of the phase/time after BDL from measured factors a decision tree was fitted on the data. The fitted decision tree model is a regression tree with the clusters as predictor variables. This allows to combine the information from multiple factors in the individual clusters, resulting in a predictive model which is not depening on single factor variables, but uses the combined information available from multiple factors. The fitted decision tree is applicable to any subset of factors measured.
 

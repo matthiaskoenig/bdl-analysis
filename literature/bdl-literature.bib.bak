@@ -35,8 +35,6 @@
   Month                    = {Sep},
   Number                   = {4},
   Volume                   = {1},
-
-  __markedentry            = {[mkoenig:]},
   Abstract                 = {The lack of bile flow from the liver into the intestine can have devastating complications including hepatic failure, sepsis and even death. This pathologic condition known as cholestasis can result from etiologies as diverse as total parenteral nutrition (TPN), hepatitis and pancreatic cancer. The intestinal injury associated with cholestasis has been shown to result in decreased intestinal resistance, increased bacterial translocation and increased endotoxemia. Anecdotal clinical evidence suggests a genetic predisposition to exaggerated injury. Recent animal research on two different strains of inbred mice demonstrating different rates of bacterial translocation with different mortality rates supports this premise. In this study, a microarray analysis of intestinal tissue following common bile duct ligation (CBDL) performed under general anesthesia on these same two strains of inbred mice was done with the goal of identifying the potential molecular mechanistic pathways responsible. Over 500 genes were increased more than 2.0 fold following CBDL. The most promising candidate genes included MUPs, Serpina1a and LCN-2. RT-PCR validated the microarray results for these candidate genes. In an in vitro experiment using differentiated intestinal epithelial cells, inhibition of MUP-1 by siRNA resulted in increased intestinal epithelial cell permeability. Diverse novel mechanisms involving the growth hormone pathway, the acute phase response and the innate immune response are thus potential avenues for limiting cholestatic intestinal injury. Changes in gene expression were at times found to be not only due to the CBDL but also due to the murine strain. Should further studies in cholestatic patients demonstrate inter-individual variability similar to what we have shown in mice, then a "personalized medicine" approach to cholestatic patients may become possible.},
   Doi                      = {10.1002/phy2.73},
   Institution              = {Department of Surgery, University of Maryland School of Medicine, Baltimore, MD.},
@@ -58,8 +56,6 @@
   Number                   = {1},
   Pages                    = {175--186},
   Volume                   = {178},
-
-  __markedentry            = {[mkoenig:6]},
   Abstract                 = {Inflammation contributes to liver injury during cholestasis. The mechanism by which cholestasis initiates an inflammatory response in the liver, however, is not known. Two hypotheses were investigated in the present studies. First, activation of Toll-like receptor 4 (TLR4), either by bacterial lipopolysaccharide or by damage-associated molecular pattern molecules released from dead hepatocytes, triggers an inflammatory response. Second, bile acids act as inflammagens, and directly activate signaling pathways in hepatocytes that stimulate production of proinflammatory mediators. Liver inflammation was not affected in lipopolysaccharide-resistant C3H/HeJ mice after bile duct ligation, indicating that Toll-like receptor 4 is not required for initiation of inflammation. Treatment of hepatocytes with bile acids did not directly cause cell toxicity but increased the expression of numerous proinflammatory mediators, including cytokines, chemokines, adhesion molecules, and other proteins that influence immune cell levels and function. Up-regulation of several of these genes in hepatocytes and in the liver after bile duct ligation required early growth response factor-1, but not farnesoid X receptor. In addition, early growth response factor-1 was up-regulated in the livers of patients with cholestasis and correlated with levels of inflammatory mediators. These data demonstrate that Toll-like receptor 4 is not required for the initiation of acute inflammation during cholestasis. In contrast, bile acids directly activate a signaling network in hepatocytes that promotes hepatic inflammation during cholestasis.},
   Doi                      = {10.1016/j.ajpath.2010.11.026},
   Institution              = {Department of Pharmacology, Toxicology, and Experimental Therapeutics, University of Kansas Medical Center, Kansas City, Kansas 66160, USA.},
@@ -71,6 +67,26 @@
   Pmid                     = {21224055},
   Timestamp                = {2015.08.23},
   Url                      = {http://dx.doi.org/10.1016/j.ajpath.2010.11.026}
+}
+
+@Article{Aller2008,
+  Title                    = {Experimental obstructive cholestasis: the wound-like inflammatory liver response.},
+  Author                   = {Aller, Mar{\'{\i}}a-Angeles and Arias, Jorge-Luis and Garc{\'{\i}}a-Dom{\'{\i}}nguez, Jose and Arias, Jose-Ignacio and Dur{\'{a}}n, Manuel and Arias, Jaime},
+  Journal                  = {Fibrogenesis Tissue Repair},
+  Year                     = {2008},
+  Number                   = {1},
+  Pages                    = {6},
+  Volume                   = {1},
+  Abstract                 = {Obstructive cholestasis causes hepatic cirrhosis and portal hypertension. The pathophysiological mechanisms involved in the development of liver disease are multiple and linked. We propose grouping these mechanisms according to the three phenotypes mainly expressed in the interstitial space in order to integrate them.Experimental extrahepatic cholestasis is the model most frequently used to study obstructive cholestasis. The early liver interstitial alterations described in these experimental models would produce an ischemia/reperfusion phenotype with oxidative and nitrosative stress. Then, the hyperexpression of a leukocytic phenotype, in which Kupffer cells and neutrophils participate, would induce enzymatic stress. And finally, an angiogenic phenotype, responsible for peribiliary plexus development with sinusoidal arterialization, occurs. In addition, an intense cholangiocyte proliferation, which acquires neuroendocrine abilities, stands out. This histopathological finding is also associated with fibrosis.It is proposed that the sequence of these inflammatory phenotypes, perhaps with a trophic meaning, ultimately produces a benign tumoral biliary process - although it poses severe hepatocytic insufficiency. Moreover, the persistence of this benign tumor disease would induce a higher degree of dedifferentiation and autonomy and, therefore, its malign degeneration.},
+  Doi                      = {10.1186/1755-1536-1-6},
+  Institution              = {Department of Surgery I, School of Medicine, Complutense University of Madrid, Spain.},
+  Language                 = {eng},
+  Medline-pst              = {epublish},
+  Owner                    = {mkoenig},
+  Pii                      = {1755-1536-1-6},
+  Pmid                     = {19014418},
+  Timestamp                = {2015.08.23},
+  Url                      = {http://dx.doi.org/10.1186/1755-1536-1-6}
 }
 
 @Article{Archer2010,
@@ -331,6 +347,25 @@
   Url                      = {http://dx.doi.org/10.1109/TCBB.2013.9}
 }
 
+@Article{Johnstone1976,
+  Title                    = {A quantitative assessment of the structural changes the rat's liver following obstruction of the common bile duct.},
+  Author                   = {Johnstone, J. M. and Lee, E. G.},
+  Journal                  = {Br J Exp Pathol},
+  Year                     = {1976},
+
+  Month                    = {Feb},
+  Number                   = {1},
+  Pages                    = {85--94},
+  Volume                   = {57},
+  Abstract                 = {A study has been made of sequential changes in the rat's liver from 1 to 40 days after obstruction of the common bile duct. The qualitative changes have been described and illustrated. The volume proportions of hepatocytes, bile duct epithelium and biliary stroma have been quantified by histological analysis using a point counting technique. The proliferation of hepatocytes and bile duct cells have been measured by labelling with tritiated thymidine. The absolute quantity of hepatocytes in each liver has been estimated and expressed as a percentage of body weight. Over 40 days there is a relative fall in the volume proportion of hepatocytes and an increase in bile duct cells and biliary stroma. These changes in volume proportions are related directly to the period of jaundice. Biliary stroma increases in support of new bile duct tissue and there is no excessive fibrosis. Hepatocytes proliferate at a greater rate than normal after obstruction of the common bile duct and the degree of proliferation reaches a maximum of 24 times that of normal 4 days after obstruction. Similarly, the proliferation of bile duct epithelium is increased in obstructive jaundice but in this instance it reaches a maximum of 50 times that of normal 24 h after ligation of the common bile duct. The absolute quantity of hepatocytes in the liver probably falls during the period of jaundice. However, the fall is less than anticipated from the volume proportion of hepatocytes because of the overall increase in liver size.},
+  Keywords                 = {Animals; Bile Ducts, pathology; Cell Count; Cholestasis, pathology; Common Bile Duct, pathology; Epithelium, pathology; Ligation; Liver, pathology; Male; Mitosis; Organ Size; Rats},
+  Language                 = {eng},
+  Medline-pst              = {ppublish},
+  Owner                    = {mkoenig},
+  Pmid                     = {1268043},
+  Timestamp                = {2015.08.23}
+}
+
 @Article{Kassen2007,
   Title                    = {Time course analysis of gene expression during light-induced photoreceptor cell death and regeneration in albino zebrafish.},
   Author                   = {Kassen, Sean C. and Ramanan, Vijay and Montgomery, Jacob E. and {T Burket}, Christopher and Liu, Chang-Gong and Vihtelic, Thomas S. and Hyde, David R.},
@@ -564,6 +599,29 @@
   Url                      = {http://dx.doi.org/10.1371/journal.pone.0126278}
 }
 
+@Article{Shifeng2013,
+  Title                    = {Circulating liver-specific miR-122 as a novel potential biomarker for diagnosis of cholestatic liver injury.},
+  Author                   = {Shifeng, Huang and Danni, Wang and Pu, Chen and Ping, Yang and Ju, Cao and Liping, Zhang},
+  Journal                  = {PLoS One},
+  Year                     = {2013},
+  Number                   = {9},
+  Pages                    = {e73133},
+  Volume                   = {8},
+
+  __markedentry            = {[mkoenig:6]},
+  Abstract                 = {Circulating microRNA-122 (miR-122) has been increasingly reported to be a potential biomarker for drug-, viral-, alcohol- and chemical-induced liver injury. The present study was initiated to determine the potential of circulating miR-122 as a biomarker for cholestatic liver injury.Both bile-duct ligation (BDL) mice and patients with biliary calculi were employed as cholestatic liver injury models, and serum miR-122 level was determined by stem-loop real-time reverse-transcription PCR (SLqRT-PCR). All quantitative PCR values were normalized to those for U6 RNA and calculated with the 2(-△Ct) method.Serum miR-122 increased significantly after BDL-induced cholestatic injury and showed a similar time course to ALT concentrations. Compared with the sham controls, BDL mice had increased serum levels of miR-122 by 24.36±12.86, 423.63±322.89, 4.43±2.02 and 12.23±8.92 folds after 1, 3, 7 and 14 days, respectively. Moreover, serum miR-122 level was substantially higher in patients with biliary calculi than that in the healthy control group. In addition, patients with severe liver injury showed significantly higher levels of serum miR-122 when compared with healthy controls or patients with mild or moderate liver injury. Furthermore, serum miR-122 was found to show significant diagnostic value for biliary calculi by yielding an AUC (the areas under the receiver operating characteristic curve) of 0.931 with 77.4\% sensitivity and 96.4\% specificity in discriminating biliary calculi from healthy controls.Collectively, these data suggest that serum miR-122 has strong potential as a novel, specific and noninvasive biomarker for diagnosis of cholestasis-induced liver injury.},
+  Doi                      = {10.1371/journal.pone.0073133},
+  Institution              = {ospital of Chongqing Medical University, Chongqing, China.},
+  Keywords                 = {Animals; Biological Markers, blood; Cholestasis, blood/diagnosis; Female; Humans; Liver Diseases, blood/diagnosis; Mice; Mice, Inbred BALB C; MicroRNAs, blood; ROC Curve; Real-Time Polymerase Chain Reaction},
+  Language                 = {eng},
+  Medline-pst              = {epublish},
+  Owner                    = {mkoenig},
+  Pii                      = {PONE-D-12-30171},
+  Pmid                     = {24086271},
+  Timestamp                = {2015.08.23},
+  Url                      = {http://dx.doi.org/10.1371/journal.pone.0073133}
+}
+
 @Article{Son2008,
   Title                    = {A modified correlation coefficient based similarity measure for clustering time-course gene expression data},
   Author                   = {Son, Young Sook and Baek, Jangsun},
@@ -614,6 +672,53 @@
   Pmid                     = {19595470},
   Timestamp                = {2015.08.21},
   Url                      = {http://dx.doi.org/10.1016/j.jhep.2009.05.012}
+}
+
+@Article{Wang2005,
+  Title                    = {Transcriptional profiling after bile duct ligation identifies PAI-1 as a contributor to cholestatic injury in mice.},
+  Author                   = {Wang, Hongtao and Vohra, Bhupinder P S. and Zhang, Yan and Heuckeroth, Robert O.},
+  Journal                  = {Hepatology},
+  Year                     = {2005},
+
+  Month                    = {Nov},
+  Number                   = {5},
+  Pages                    = {1099--1108},
+  Volume                   = {42},
+  Abstract                 = {Extrahepatic cholestasis leads to complex injury and repair processes that result in bile infarct formation, neutrophil infiltration, cholangiocyte and hepatocyte proliferation, extracellular matrix remodeling, and fibrosis. To identify early molecular mechanisms of injury and repair after bile duct obstruction, microarray analysis was performed on liver tissue 24 hours after bile duct ligation (BDL) or sham surgery. The most upregulated gene identified encodes plasminogen activator inhibitor 1 (PAI-1, Serpine 1), a protease inhibitor that blocks urokinase plasminogen activator (uPA) and tissue-type plasminogen activator (tPA) activity. Because PAI-1, uPA, and tPA influence growth factor and cytokine processing as well as extracellular matrix remodeling, we evaluated the role of PAI-1 in cholestatic liver injury by comparing the injury and repair processes in wild-type (WT) and PAI-1-deficient (PAI-1-/-) mice after BDL. PAI-1-/- mice had fewer and smaller bile infarcts, less neutrophil infiltration, and higher levels of cholangiocyte and hepatocyte proliferation than WT animals after BDL. Furthermore, PAI-1-/- mice had higher levels of tPA activation and mature hepatocyte growth factor (HGF) after BDL than WT mice, suggesting that PAI-1 effects on HGF activation critically influence cholestatic liver injury. This was further supported by elevated levels of c-Met and Akt phosphorylation in PAI-1-/- mice after BDL. In conclusion, PAI-1 deficiency reduces liver injury after BDL in mice. These data suggest that inhibiting PAI-1 might attenuate liver injury in cholestatic liver diseases.},
+  Doi                      = {10.1002/hep.20903},
+  Institution              = {Division of Gastroenterology and Nutrition, Department of Pediatrics, Washington University School of Medicine, St. Louis, MO 63110, USA.},
+  Keywords                 = {Animals; Bile Ducts, blood supply/pathology/surgery; Cell Proliferation; Cholestasis, etiology; Gene Expression Profiling; Hepatitis, etiology/pathology; Hepatocytes, pathology; Incidence; Infarction, epidemiology/pathology; Interleukin-8, genetics; Ligation, adverse effects; Male; Mice; Mice, Inbred C57BL; Mice, Knockout; Oligonucleotide Array Sequence Analysis; Plasminogen Activator Inhibitor 1, genetics/metabolism; RNA, Messenger, metabolism; Tissue Plasminogen Activator, genetics; Transcription, Genetic; Urokinase-Type Plasminogen Activator, genetics},
+  Language                 = {eng},
+  Medline-pst              = {ppublish},
+  Owner                    = {mkoenig},
+  Pmid                     = {16250054},
+  Timestamp                = {2015.08.23},
+  Url                      = {http://dx.doi.org/10.1002/hep.20903}
+}
+
+@Article{Woolbright2013,
+  Title                    = {Plasma biomarkers of liver injury and inflammation demonstrate a lack of apoptosis during obstructive cholestasis in mice.},
+  Author                   = {Woolbright, Benjamin L. and Antoine, Daniel J. and Jenkins, Rosalind E. and Bajt, Mary Lynn and Park, B Kevin and Jaeschke, Hartmut},
+  Journal                  = {Toxicol Appl Pharmacol},
+  Year                     = {2013},
+
+  Month                    = {Dec},
+  Number                   = {3},
+  Pages                    = {524--531},
+  Volume                   = {273},
+
+  __markedentry            = {[mkoenig:]},
+  Abstract                 = {Cholestasis is a pathological common component of numerous liver diseases that results in hepatotoxicity, inflammation, and cirrhosis when untreated. While the predominant hypothesis in cholestatic liver injury remains hepatocyte apoptosis due to direct toxicity of hydrophobic bile acid exposure, recent work suggests that the injury occurs through inflammatory necrosis. In order to resolve this controversy, we used novel plasma biomarkers to assess the mechanisms of cell death during early cholestatic liver injury. C57Bl/6 mice underwent bile duct ligation (BDL) for 6-72 h, or sham operation. Another group of mice were given d-galactosamine and endotoxin as a positive control for apoptosis and inflammatory necrosis. Plasma levels of full length cytokeratin-18 (FL-K18), microRNA-122 (miR-122) and high mobility group box-1 protein (HMGB1) increased progressively after BDL with peak levels observed after 48 h. These results indicate extensive cell necrosis after BDL, which is supported by the time course of plasma alanine aminotransferase activities and histology. In contrast, plasma caspase-3 activity, cleaved caspase-3 protein and caspase-cleaved cytokeratin-18 fragments (cK18) were not elevated at any time during BDL suggesting the absence of apoptosis. In contrast, all plasma biomarkers of necrosis and apoptosis were elevated 6 h after Gal/End treatment. In addition, acetylated HMGB1, a marker for macrophage and monocyte activation, was increased as early as 12 h but mainly at 48-72 h. However, progressive neutrophil accumulation in the area of necrosis started at 6h after BDL. In conclusion, these data indicate that early cholestatic liver injury in mice is an inflammatory event, and occurs through necrosis with little evidence for apoptosis.},
+  Doi                      = {10.1016/j.taap.2013.09.023},
+  Institution              = { Therapeutics, University of Kansas Medical Center, Kansas City, KS, USA.},
+  Keywords                 = {Alanine Transaminase, blood; Animals; Apoptosis; Bile Acids and Salts, adverse effects/metabolism; Bile Ducts, surgery; Biological Markers, blood; Caspase 3, blood; Cholestasis, blood/pathology; Galactosamine, adverse effects; HMGB1 Protein, blood; Hepatocytes, pathology; Inflammation, pathology; Keratin-18, blood; Ligation; Liver Diseases, blood/pathology; Liver, metabolism/pathology; Mice; Mice, Inbred C57BL; MicroRNAs, blood; Necrosis, blood/pathology; Neutrophils, pathology},
+  Language                 = {eng},
+  Medline-pst              = {ppublish},
+  Owner                    = {mkoenig},
+  Pii                      = {S0041-008X(13)00423-7},
+  Pmid                     = {24096036},
+  Timestamp                = {2015.08.23},
+  Url                      = {http://dx.doi.org/10.1016/j.taap.2013.09.023}
 }
 
 @Article{Woolbright2012,

@@ -31,13 +31,13 @@ knitr::knit_hooks$set(htmlcap = function(before, options, envir) {
 
 # Introduction
 
-This document contains the statistical analysis for the publication *Pathobiochemical signatures of cholestatic liver disease in bile duct ligated mice*.
+This document contains the statistical analysis performed in the publication *Pathobiochemical signatures of cholestatic liver disease in bile duct ligated mice*.
 
-To better understand the cascade of histological and biochemical alterations after bile duct ligation (BDL), a comprehensive data set of serum markers, histological parameters and transcript profiles was compiled at 8 time points after BDL in mice, comprising different stages of the disease. The analysed data set consists of $N_{r}=5$ repeats ($N_{r}=3$ for the measured antibodies) for $N_{t}=8$ time points denoted by $t_1,..., t_n$ consisting of a total $N_{f}=154$ measured factors (Fluidigm gene expression, antibodies, serum markers, histological measurements).
+A comprehensive data set of serum markers, histological parameters and transcript profiles was compiled at 8 time points after bile duct ligation (BDL) in mice, comprising different stages of the disease. The data set consists of $N_{r}=5$ repeats ($N_{r}=3$ for the measured antibodies) for $N_{t}=8$ time points denoted by $t_1,..., t_{N_t}$ consisting of a total $N_{f}=154$ measured parameters in the following referred to as factors (Fluidigm gene expression, antibodies, serum markers, histological measurements).
 
 The main steps of the analysis comprise
 
-* **Explorative data anaysis** and data quality control
+* **Explorative data anaysis**
 * **Dimension reduction via ANOVA**
 * **Correlation analysis** based on time course correlation measure
 * **Hierarchical clustering** 
@@ -48,27 +48,32 @@ https://github.com/matthiaskoenig/bdl-analysis .
 
 The following naming conventions are used
 
-* **factor** : one of the measured quantities over time, i.e. either 
+* **factor** : one of the measured quantities/parameters over time, i.e. either 
     + gene expression of a single gene (e.g. Actb); 
     + one of the biomarkers (e.g. ALT, albumin, bilirubin)
     + one of the histological markers (e.g. BrdU-positive Kupffer cells)
     + one of the antibodies (e.g. CTGF, S100A4)
-* **time point** : a single value from the measured time points 0h (control), 6h, 12h, 18h, 30h, 2d, 5d, 14d
-* **sample** : one of the $N_{t}*N_{r}=40$ mice, i.e. a one of the repeats for a given time point
+* **time point** : a single value $t_i$ from the measured time points 0h (control), 6h, 12h, 18h, 30h, 2d, 5d, 14d
+* **sample** : one of the $N_{t} \cdot N_{r}=40$ mice, i.e. a one of the repeats for a given time point
+
+The results of the analysis are written to the results directory defined via the `BDL_RESULTS` environment variable. To reproduce this analysis create the respective variable.
+
+```{r resultsPath, eval=TRUE, strip.white=TRUE}
+# read the folder for results from environment variable
+resultsPath <- Sys.getenv("BDL_RESULTS")
+```
 
 # Explorative data analysis
 ## Data import
-In a first step the processed data set is loaded from the `data` folder. The data consists of the time course data for all factors (`BDLdata`), additional information for the factors (`BDLfactors`), the sample definition, i.e. the assignment of sample ids to respective time point and repeat (`BDLsamples`), and a mapping of the Fluidigm (gene) probe ids to UniProt identifiers (`BDLprobes`).  
-No other data sets are used in this analysis.
+In a first step the processed data set is loaded from the `data` folder. The data consists of the time course data for all factors (`BDLdata`), additional information for the factors (`BDLfactors`), the sample definition, i.e. the assignment of sample ids to respective time point and repeat (`BDLsamples`), and a mapping of the Fluidigm (gene) probe ids to UniProt identifiers (`BDLprobes`).
 
 ```{r BDLdata, eval=TRUE, strip.white=TRUE}
-suppressPackageStartupMessages(library(calibrate))
 suppressPackageStartupMessages(library(BDLanalysis))
+suppressPackageStartupMessages(library(calibrate))
 suppressPackageStartupMessages(library(pander))
 # path definition
 baseLoc <- system.file(package="BDLanalysis")
 extPath <- file.path(baseLoc, "extdata")
-resultsPath <- "/home/mkoenig/git/bdl-analysis/results"
 # load data
 data(BDLdata)
 data(BDLsamples)
@@ -79,16 +84,15 @@ Nr <- 5  # repeats
 Nt <- length(levels(BDLsamples$time_fac))  # time points
 ```
 
-In addition to the single measurement data for the factors, the mean data averaged over the $N_{r}$ repeats is used in parts of the correlation analysis. The mean factor data is calculated once at the beginning via
+In addition to the individual data points per time point, the mean data averaged over the $N_{r}$ repeats per time points is used in parts of the correlation analysis. This mean factor data set is calculated once at the beginning via
 ```{r BDLmean}
 BDLmean <- bdl_mean_data(BDLdata, BDLsamples)
 BDLmean.time <- as.numeric(levels(as.factor(BDLsamples$time)))
 ```
 
-In total `r ncol(BDLdata)` factors were measured in the BDL study falling in the categories: `r levels(BDLfactors$ftype)`.  
-The majority of factors belongs to the 3 fluidigm chips with 47 probes per chip.
+In total `r ncol(BDLdata)` factors were measured in the this BDL study falling in the categories: `r levels(BDLfactors$ftype)`. The majority of factors belongs herby to the 3 fluidigm chips with 47 probes per chip.
 
-An overview of the number of factors per category is given in the following table
+An overview of the number of factors per category is provided in the following table
 ```{r factors}
 cat_table <- as.data.frame(table(BDLfactors$ftype))
 colnames(cat_table) <- c("Category", "Freq")
@@ -100,14 +104,14 @@ pander(cat_table)
 ### Time course of single factors
 In a first step overview plots of the raw and mean data for all individual factors are generated. These are available in the `resultsPath/factors` folder
 
-TODO: fix the plots if there are NA in the data set, like in S100A4
-
-```{r factorPlots, eval=FALSE}
-# Visualize all factors
-plot_all_factors(path=resultsPath)
+```{r factorPlots, eval=TRUE}
+# Create figures for all factors
+factors_path <- file.path(resultsPath, 'factors')
+dir.create(factors_path)
+plot_all_factors(path=factors_path)
 ```
 
-One example of a single factor plot is depicted below, here for the factor `bilirubin`.
+The example for a single factor is depicted below, here for the factor `bilirubin`.
 ``` {r bilirubin, htmlcap='<b>Figure Single factor</b>: Plot of the raw time course data for a single factor, here for bilirubin. On the left the data is plotted against the time [h], on the right against the different time classes. Individual data points are depecticed in blue with the respective sample number shown next to the data points. The mean averaged of the repeats per time point are depicted in red. Box-and-whisker plots were added with default R parameters of boxwex=0.8, staplewex=0.5, outwex=0.5.'}
 plot_single_factor('bilirubin', path=NULL)
 ```
@@ -116,6 +120,7 @@ plot_single_factor('bilirubin', path=NULL)
 In a next step the heatmap of the full data set was generated, i.e. of all time points and repeats. This provides a first overview over the complete data set. Rows correspond to the individual factors (factor order corresponding to the original data set: `GE_ADME`, `GE_Cytokines`, `GE_Fibrosis`, `Biochemistry`, `Histology`, `Antibodies`). Columns correspond to the 40 samples with 5 subsequent samples belonging to one of the 8 time points (with from left to right: `r levels(BDLsamples$time_fac)`). The data is row scaled, i.e. every individual factor is scaled to have mean zero and standard deviation one.
 ```{r heatmap}
 suppressPackageStartupMessages(library(gplots))
+suppressPackageStartupMessages(library("RColorBrewer"))
 colors <- HeatmapColors() 
 dtmp <- BDLdata
 
@@ -127,7 +132,7 @@ f_types <- c("Antibodies", "Histology", "Biochemistry", "GE_Fibrosis", "GE_Cytok
 f_table <- table(BDLfactors$ftype)
 h_lines <- 0.5 + cumsum(f_table[f_types])
 # colors for the different data types
-library("RColorBrewer")
+
 col2 <- HeatmapColors()
 # define colors for type of experimentell data, i.e. factor groups
 colorset <- brewer.pal(length(f_types), "Set2")

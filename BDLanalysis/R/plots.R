@@ -8,17 +8,16 @@
 #' Plot the time course of a single factor, i.e. all individual data points.
 #' @export
 plot_single_factor <- function(name, path=NULL, k=NULL){
+  # get factor for name
   dA <- BDLdata[, name]
-  
-  # search if probe info is available
+  # probe info for gene
   info <- ProbeInformation(geneId=name)  
   
   if (! is.null(path)){
-    fname <- paste(path, "/factors/", sprintf("%03d", k), "_", name, ".png", sep="")
+    fname <- file.path(path, paste(sprintf("%03d", k), "_", name, ".png", sep=""))
     png(filename=fname, width=1600, height=800, res=150)
   }
   par(mfrow=c(1,2))
-  
   title <- sprintf("%s (%s)", name, BDLfactors$ftype[BDLfactors$id==name])
   
   # [A] plot against time
@@ -32,8 +31,8 @@ plot_single_factor <- function(name, path=NULL, k=NULL){
   points(BDLsamples$time, dA, col=rgb(0,0,1,0.6), pch=16)
   # labels
   require(calibrate)
-  dA[is.na(dA)] <- -1  # handle NAs
-  textxy(BDLsamples$time, dA, BDLsamples$sid, col="black", cex=0.5)
+  na.idx <- is.na(dA)
+  textxy(BDLsamples$time[!na.idx], dA[!na.idx], BDLsamples$sid, col="black", cex=0.5)
   # protein name
   if (!is.null(info$Protein.name)){
     text(x=140, y=max(dA, na.rm=TRUE)*1.08, 
@@ -46,12 +45,11 @@ plot_single_factor <- function(name, path=NULL, k=NULL){
   
   # [B] plot as factor (non-equidistant time points)
   plot(BDLsamples$time_fac, dA, xlab="time [class]", ylab=name, main=title, col=rgb(0.5,0.5,0.5, 0.4),
-       font.lab=2,
-       ylim=c(0, max(dA, na.rm=TRUE)*1.1), cex.axis=0.8)
+       font.lab=2, ylim=c(0, max(dA, na.rm=TRUE)*1.1), cex.axis=0.8)
   points(BDLsamples$time_fac, dA, col="black")
   points(BDLsamples$time_fac, dA, col=rgb(0,0,1,0.6), pch=16)
   # labels
-  textxy(as.numeric(BDLsamples$time_fac), dA, BDLsamples$sid, col="black", cex=0.5)
+  textxy(as.numeric(BDLsamples$time_fac[!na.idx]), dA[!na.idx], BDLsamples$sid, col="black", cex=0.5)
   # add mean
   points(1:Nt, BDLmean[, name], col="red", pch=15)
   lines(1:Nt, BDLmean[, name], col="red")
@@ -69,17 +67,17 @@ plot_single_factor <- function(name, path=NULL, k=NULL){
 #' Creates single factor plots of all factors.
 #' 
 #' Iterates over all factor variables in the BDLdata frame and creates
-#' the individual factor plots.
+#' the individual factor plots. BDLdata has to be available in the 
+#' environment
 #' @export 
 plot_all_factors <- function(path){
-  
   factors <- colnames(BDLdata)
   Nf = length(factors)
   for (k in 1:Nf){
-    cat(sprintf("%s / %s\n", k, Nf))
+    # cat(sprintf("%s / %s\n", k, Nf))
     name <- factors[k]
     plot_single_factor(name, path, k)
-  }  
+  }
 }
 
 #' Plot of a single factor.

@@ -2,11 +2,15 @@
 title: "Statistical Analysis of Pathobiochemical Signatures in Bile Duct Ligated Mice"
 author: '[Matthias Koenig](http://www.charite.de/sysbio/people/koenig) (`r Sys.Date()`)'
 output:
-  html_document: default
   pdf_document:
     fig_caption: yes
     keep_tex: yes
     toc: yes
+  html_document:
+    pandoc_args:
+    - +RTS
+    - -K64m
+    - -RTS
   word_document: default
 header-includes: \usepackage{graphicx}
 ---
@@ -111,7 +115,7 @@ plot_single_factor('bilirubin', path=NULL)
 ### Time course of all factors (Heatmap)
 In a next step the heatmap of the full data set was generated, i.e. of all time points and repeats. This provides a first overview over the complete data set. Rows correspond to the individual factors (factor order corresponding to the original data set: `GE_ADME`, `GE_Cytokines`, `GE_Fibrosis`, `Biochemistry`, `Histology`, `Antibodies`). Columns correspond to the 40 samples with 5 subsequent samples belonging to one of the 8 time points (with from left to right: `r levels(BDLsamples$time_fac)`). The data is row scaled, i.e. every individual factor is scaled to have mean zero and standard deviation one.
 ```{r heatmap}
-suppressPackageStartupMessages(library("gplots"))
+suppressPackageStartupMessages(library(gplots))
 colors <- HeatmapColors() 
 dtmp <- BDLdata
 
@@ -346,7 +350,7 @@ Heatmaps of the resulting correlation matrices are depicted below with reorderin
 
 ``` {r correlation}
 # correlation matrix
-suppressPackageStartupMessages(require(corrplot))
+suppressPackageStartupMessages(library(corrplot))
 cor.pearson <- cor(BDLdata.fil, method="pearson", use="pairwise.complete.obs")
 cor.spearman <- cor(BDLdata.fil, method="spearman", use="pairwise.complete.obs")
 
@@ -496,7 +500,7 @@ An overview of the clusters is given in the `results/cluster` folder.
 
 ``` {r}
 # Plot the clusters
-suppressPackageStartupMessages(require('matrixStats'))
+suppressPackageStartupMessages(library('matrixStats'))
 
 # normalize the individual factors
 # centralize and normalize columns so that the the individual factors are comparable
@@ -819,8 +823,8 @@ The decision tree models are fitted using the packages `rpart` and `rpart.plot` 
 
 In a first step the data sets are prepared for model fitting and prediction. The used data sets for model evaluation are the mean cluster data set, i.e. the mean data of all factors averaged for the clusters. The data set of all combinations of single factors from the individual clusters and a data set using 2 randomly sampled factors from every cluster.
 ``` {r}
-require(rpart)
-require(rpart.plot)
+suppressPackageStartupMessages(library(rpart))
+suppressPackageStartupMessages(library(rpart.plot))
 
 ```{r}
 # --- Mean cluster data set ---
@@ -943,6 +947,7 @@ treedata.double[[1]]
 To demonstrate the model fitting and model evaluation with the test data set a decicison tree is fitted for the class variables.
 This does not take the order of the classes into account.
 ``` {r}
+suppressPackageStartupMessages(library(e1071))
 formula.mean = paste("class ~ c1 + c2 + c3 + c4 + c5 + c6")
 tree.model <- rpart(formula=formula.mean, data=treedata.mean, method="class", control=rpart.control(minsplit=5)) 
 tree.model <- rpart(formula=formula.mean, data=treedata.mean, method="class", control=rpart.control(minsplit=10)) 

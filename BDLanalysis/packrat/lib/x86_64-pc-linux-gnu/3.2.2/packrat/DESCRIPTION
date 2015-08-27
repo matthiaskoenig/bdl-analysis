@@ -1,12 +1,12 @@
 Package: packrat
 Type: Package
 Title: A Dependency Management System for Projects and their R Package
-        Dependencies
+    Dependencies
 Version: 0.4.4
 Author: Kevin Ushey, Jonathan McPherson, Joe Cheng, JJ Allaire
 Maintainer: Kevin Ushey <kevin@rstudio.com>
-Description: Manage the R packages your project depends
-    on in an isolated, portable, and reproducible way.
+Description: Manage the R packages your project depends on in an
+    isolated, portable, and reproducible way.
 License: GPL-2
 Depends: R (>= 3.0.0)
 Imports: tools, utils
@@ -20,4 +20,5 @@ Repository: CRAN
 Date/Publication: 2015-06-16 00:28:13
 Built: R 3.2.2; ; 2015-08-22 15:40:01 UTC; unix
 InstallAgent: packrat 0.4.4
-InstallSource: source
+InstallSource: CRAN
+Hash: aed7d17407538df551a57caf6289c8bf

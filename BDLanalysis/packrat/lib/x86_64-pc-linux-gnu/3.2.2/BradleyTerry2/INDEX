@@ -1,0 +1,35 @@
+BTabilities             Estimated Abilities from a Bradley-Terry Model
+BTm                     Bradley-Terry Model and Extensions
+CEMS                    Dittrich, Hatzinger and Katzenbeisser (1998,
+                        2001) Data on Management School Preference in
+                        Europe
+GenDavidson             Specify a Generalised Davidson Term in a gnm
+                        Model Formula
+add1.BTm                Add or Drop Single Terms to/from a Bradley
+                        Terry Model
+anova.BTm               Compare Nested Bradley Terry Models
+baseball                Baseball Data from Agresti (2002)
+chameleons              Male Cape Dwarf Chameleons: Measured Traits and
+                        Contest Outcomes
+citations               Statistics Journal Citation Data from Stigler
+                        (1994)
+countsToBinomial        Convert Contingency Table of Wins to Binomial
+                        Counts
+flatlizards             Augrabies Male Flat Lizards: Contest Results
+                        and Predictor Variables
+football                English Premier League Football Results 2008/9
+                        to 2012/13
+glmmPQL                 PQL Estimation of Generalized Linear Mixed
+                        Models
+glmmPQL.control         Control Aspects of the glmmPQL Algorithm
+icehockey               College Hockey Men's Division I 2009-10 results
+plotProportions         Plot Proportions of Tied Matches and Non-tied
+                        Matches Won
+predict.BTglmmPQL       Predict Method for BTglmmPQL Objects
+predict.BTm             Predict Method for Bradley-Terry Models
+residuals.BTm           Residuals from a Bradley-Terry Model
+seeds                   Seed Germination Data from Crowder (1978)
+sound.fields            Kousgaard (1984) Data on Pair Comparisons of
+                        Sound Fields
+springall               Springall (1973) Data on Subjective Evaluation
+                        of Flavour Strength

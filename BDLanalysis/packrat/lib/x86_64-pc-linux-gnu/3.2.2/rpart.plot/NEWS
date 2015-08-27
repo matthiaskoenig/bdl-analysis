@@ -1,0 +1,106 @@
+Changes to rpart.plot
+---------------------
+
+1.5.2    Feb 4, 2015
+   Added an example to the vignette based on a question on Stack Exchange.
+   Unified some small utility funcs like printf with my other packages.
+
+1.5.1    Dec 14, 2014
+   Removed link in the man pages to obsoleted package mvpart.
+   Documentation touchups.
+
+1.5.0    Nov 30, 2014
+   Updates to the documentation, mostly to satisfy CRAN recommendations.
+   The slowtests postscript file is no longer included, to reduce package size.
+
+1.4-5    Nov 19, 2014
+   Added an example to the vignette for wrapping long split labels over multiple lines.
+   Added inst/slowtests/webpage-figs.R so user can regenerate the web page figures.
+   Added bibliography to the vignette.
+   Minor updates to the vignette and test scripts.
+
+1.4-4    Feb 5, 2014
+   Removed use of ::: by removing outdated conversion from old-style
+   rpart objects.  This change was made mainly to satisfy CRAN checks.
+
+   Moved slow tests from the src/tests to the inst/slowtests directory.
+
+1.4-3    Dec 20, 2012
+   Loosened sanity check in get.class.labs to allow for numerical error.
+   Thanks for Sandrine Lunven for help with this issue.
+
+   Tweaked vignette to refer now to the rpart package vignette (instead
+   of the old rpart reports).
+
+1.4-2    Dec 15, 2012
+
+    Changed some code that was using "0" as a color.
+    Changed some code that was doing rep(NULL, n).
+    R 2.15-2 complains about the above, although previous versions
+    let them slip by.
+
+1.4-1    Oct 24, 2012
+
+    Updates for compatibility with rpart_3.1-55 (R 2.15.2).
+
+    Updates to the vignette (extended section on compatibility
+    with plot.rpart,  added section on using split.fun, other
+    touchups).
+
+1.4-0    Oct 10, 2012
+
+    We now minimally access internal functions in the rpart package
+    (which are accessed using "rpart:::") and thus are now less
+    dependent on changes to those functions.
+
+    We now try harder to support rpart objects with "user" node lab funcs.
+
+    The vignette now has an appendix on mvpart objects.
+
+
+1.3-0    Aug 15, 2012
+
+    There is now more white space in the split text (achieved by
+    adding white space to the default eq, lt, and ge args).
+    To revert to the old behaviour, explictly set these args.
+
+    Added the trim.fun argument, invoked after each mouse click
+    when interactively trimming the tree.
+
+    Incorporated Gene Cutler's fix to get.class.labs (so we no longer
+    get an incorrect error message when case weights are used).
+
+    Added Josh Browning's heat tree example to the vignette.
+
+    Touch-ups for the new version of plotmo (1.3-2).
+
+    Removed unnecessary LICENSE file because rpart is now GSL-3.
+
+1.2-2    Mar 31, 2011
+
+    Touch-ups for the new version of plotmo (1.2-6)
+
+1.2-1    Mar 25, 2011
+
+    Touch-ups to the vignette.
+
+1.2-0    Mar 24, 2011
+
+    Added the clip.left.labs argument.
+    Extended the vignette.
+
+1.1-1    Mar 9, 2011
+
+    We now call the object's text() function unless the object
+    has a standard method ("anova", "class", "poisson" or "exp").
+    We now support mvpart::mrt objects
+
+1.1-0    Mar 5, 2011
+
+    The prp.pdf file is now smaller, thanks to qpdf.
+    Made several miscellaneous touch-ups to docs and code.
+    Thanks to Jason Roberts for his feedback.
+
+1.0-0    Feb 25, 2011
+
+    Initial release

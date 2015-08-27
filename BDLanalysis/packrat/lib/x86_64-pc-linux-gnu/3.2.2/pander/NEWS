@@ -1,0 +1,159 @@
+pander 0.5.2 (2015-04-19)
+----------------------------------------------------------------
+
+New fetures:
+ * optionally add significance stars for P values (#94)
+ * specify full path of the pandoc binary (#127)
+ * define custom "missing value" text in pander outputs (#131)
+ * more general CrossTable renderer (started at #135)
+ * LaTeX-style column-alignment (#149)
+
+Fixes:
+ * Rcpp support for Unicode characters (#144)
+ * S3 method for a bunch of (lm, glm) summary objects
+ * disable "knitr.auto.asis" option for recursive calls (#129)
+ * evals hook trigger
+ * collapse multiple captions instead of rendering multiple captions (#130)
+ * preserve digits, decimal mark etc. settings for splitted tables (#133)
+ * narrower columns without a header (#136)
+ * read default params of set.alignment from panderOptions (#137)
+ * render header for 1D tables (#138)
+ * emphasize cells with missing/empty values (#156)
+
+pander 0.5.1 (2014-10-29)
+----------------------------------------------------------------
+
+ * refix S3 method exports in NAMESPACE
+ * revert to non-Rcpp solution with Unicode characters
+
+pander 0.5.0 (2014-10-27)
+----------------------------------------------------------------
+
+This is a major release with 200+ new commits since last version:
+  https://github.com/Rapporter/pander/compare/v0.3.8...v0.5.0
+
+Special thanks goes to Roman Tsegelskyi, who worked hard on various
+parts of the package in Google Summer of Code 2014.
+
+New features:
+ * no need to specify the `asis` option in `knitr` chunks any more when calling `pander`
+ * show Pandoc command on error for easier debugging in document conversion
+ * supporting tables with more than 3 dimensions by converting those to 2D with `ftable`
+ * optionally keep line breaks inside of cells (keep.line.breaks)
+ * optionally remove any markup from the table (plain.ascii)
+ * optionally do not highlight rownames (emphasize.rownames)
+ * flexible column width of tables
+ * `Pandoc` reference class updates on enabling the new features of the package
+
+New classes supported by the `pander` generic S3 method:
+ * CrossTable
+ * ts
+ * formula
+ * coxph
+ * zoo
+ * lme
+ * aovlist
+ * sessionInfo
+ * mtable
+ * survfit
+ * stat.table
+ * smooth.spline
+ * clogit
+ * rlm
+ * function
+ * microbenchmark
+
+Updates:
+ * dual licensing the package with AGPLv3 and OSL based on user request
+ * defaults to `cairo` graphics device if available
+ * removed the `pandoc` alias for `pander` to avoid conflict with `knitr` pkg
+ * replayPlot workaround for distributed R instances
+ * partial Rcpp rewrite of pandoc.table for increased performance
+
+Fixes:
+ * avoid stacking of markup characters in helper functions
+ * remove dummy image files on Windows (#57)
+ * `simple` and `rmarkdown` tables cannot be split (#60)
+ * fix Windows path issues when looking for Pandoc
+ * `p` function does not fail any more on NULL
+ * POSIXlt typo
+
+pander 0.3.8 (2013-08-29)
+----------------------------------------------------------------
+
+ * dropped custom font for decreased package size (#39)
+ * defaults to self contained HTML file (#39)
+ * remove file extension for `vignetteEngine` (#44)
+ * pander goes stargazer (#46)
+ * new option for big.mark
+ * fix: rounding 2D tables (#45)
+ * fix: pass optional parameters from S3 method to `pandoc.table`
+ * fix: suppress empty rownames
+ * further minor fixes: caption, par, text, pander.booelan
+
+pander 0.3.7 (2013-05-27)
+----------------------------------------------------------------
+
+ * new options for default cell alignment (#41)
+ * new optional HTML class to manually exclude headers from TOC (#40)
+
+pander 0.3.6 (2013-05-15)
+----------------------------------------------------------------
+
+ * added Travis-CI for continuous integration tests
+ * fixed header and footer line of simple and multiline tables
+ * updated `set.alignment` to also work outside of `Pandoc.brew`
+ * minor bugfixes for in pandoc helpers, emphasize and S3 methods (#33 #34 among others)
+
+pander 0.3.5 (2013-04-10)
+----------------------------------------------------------------
+
+ * new functions to highlight parts of a table
+ * let both US/UK spelling of "center"/"centre" work as alignment parameter for tables (#31)
+ * fix `pandoc.table` issue with tables holding only one number (#32)
+ * fix `redraw.recodedplot` compatibility issue with R 3.0.0
+ * fixing alignment of cells with helper outside of `Pandoc.brew`
+ * minor documentation improvements
+
+pander 0.3.4 (2013-04-05)
+----------------------------------------------------------------
+
+ * new options: table caption prefix and split caption messages (#28)
+ * fix for a rather unnoticeable but rapport-related critical bug that resulted in an invisibly returned wrong chunk type (concatenated image URL to the next paragraph)
+
+pander 0.3.3 (2013-03-27)
+----------------------------------------------------------------
+
+ * new option: keep or ditch trailing zeros (#27)
+ * minor bugfixes (#22 #23 #26)
+
+pander 0.3.2 (2013-03-20)
+----------------------------------------------------------------
+
+ * new table style: rmarkdown thanks to @onesandzeroes
+
+pander 0.3.1 (2013-03-10)
+----------------------------------------------------------------
+
+ * further tweaks/fixes with ggplot2's new theme system
+ * table alignment defaults to center
+ * more informative error messages for `evals` about plotting
+ * support for CJK chars (#18)
+ * minor bugfixes (#7 #12 and #16)
+
+pander 0.3   (2012-10-24)
+----------------------------------------------------------------
+
+ * using ggplot2's new theme system (0.9.2)
+ * removed accented chars from examples to let ASCII live long
+ * added captions to most table-like S3 methods
+ * new `evals` graph.name option for chunk ID
+ * new functions to easily toggle caching
+ * a few minor bugfixes
+ * new demo document for brewing about Olympics
+
+
+pander 0.2   (2012-08-17)
+----------------------------------------------------------------
+
+Initial CRAN release.

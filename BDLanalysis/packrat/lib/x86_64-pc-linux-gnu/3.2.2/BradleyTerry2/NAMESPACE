@@ -1,0 +1,25 @@
+export(BTabilities, BTm, countsToBinomial, GenDavidson, glmmPQL, glmmPQL.control,
+       plotProportions)
+
+importFrom(brglm, brglm)
+importFrom(gtools, combinations)
+importFrom(lme4, findbars, nobars)
+importFrom(stats, predict)
+
+S3method(add1, BTm)
+S3method(anova, BTm)
+S3method(drop1, BTm)
+S3method(formula, BTm)
+S3method(model.matrix, BTm)
+S3method(predict, BTm)
+S3method(predict, BTglmmPQL)
+S3method(print, BTm)
+S3method(print, BTglmmPQL)
+S3method(print, summary.BTglmmPQL)
+S3method(residuals, BTm)
+S3method(summary, BTglmmPQL)
+S3method(vcov, BTglmmPQL)
+S3method(print, BTabilities)
+S3method(vcov, BTabilities)
+S3method(coef, BTabilities)
+

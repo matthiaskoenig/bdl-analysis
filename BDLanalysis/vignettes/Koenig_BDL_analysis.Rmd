@@ -978,7 +978,7 @@ A regression tree with the time after BDL as target variable is fitted using the
 Breiman L., Friedman J. H., Olshen R. A., and Stone, C. J. (1984) Classification and Regression Trees. Wadsworth. 
 
 The tree is built in a two-step process {Therneau2015}:  First the single variable is found which best
-splits the data into two groups (`best' will be dened later). The data is separated based on the split, and then this process is applied
+splits the data into two groups (`best' will be defined later). The data is separated based on the split, and then this process is applied
 separately to each sub-group,  and so on recursively until the subgroups either reach a minimum size (`minbucket`) or until no improvement can be
 made.
 The resultant model is, with a certainty, too complex, and the question arises as it does

@@ -61,6 +61,13 @@ The results of the analysis are written to the results directory defined via the
 ```{r resultsPath, eval=TRUE, strip.white=TRUE}
 # read the folder for results from environment variable
 resultsPath <- Sys.getenv("BDL_RESULTS")
+if (identical(resultsPath, "")){
+  stop("No results folder defined, set the BDL_RESULTS environment variable")
+} else {
+  print(resultsPath)
+}
+# create data subfolder to store analysis results
+dir.create(file.path(resultsPath, 'data'), showWarnings=FALSE)
 ```
 
 # Explorative data analysis
@@ -82,6 +89,11 @@ data(BDLprobes)
 # counters
 Nr <- 5  # repeats
 Nt <- length(levels(BDLsamples$time_fac))  # time points
+# store all data sets in the results folder
+save(BDLdata, file=file.path(resultsPath, "data", "BDLdata.Rdata"))
+save(BDLsamples, file=file.path(resultsPath, "data", "BDLsamples.Rdata"))
+save(BDLfactors, file=file.path(resultsPath, "data", "BDLfactors.Rdata"))
+save(BDLprobes, file=file.path(resultsPath, "data", "BDLprobes.Rdata"))
 ```
 
 In addition to the individual data points per time point, the mean data averaged over the $N_{r}$ repeats per time points is used in parts of the correlation analysis. This mean factor data set is calculated once at the beginning via
@@ -107,7 +119,7 @@ In a first step overview plots of the raw and mean data for all individual facto
 ```{r factorPlots, eval=TRUE}
 # Create figures for all factors
 factors_path <- file.path(resultsPath, 'factors')
-dir.create(factors_path)
+dir.create(factors_path, showWarnings=FALSE)
 plot_all_factors(path=factors_path)
 ```
 
@@ -168,7 +180,7 @@ Actb (Actin, cytoplasmic 1) probes were included on all Fluidigm chips (`GE_ADME
 # Actb control figure
 plot_actb_control <- function(path=NULL){
   if (!is.null(path)){
-    png(filename=file.path(path, "Actb_control.png"), width=1600, height=800, res=200)  
+    png(filename=file.path(path, "Actb_control.png"), width=1600, height=1000, res=150)  
   }
   par(mfrow=c(2,3))
   plot_single("Actb")
@@ -262,9 +274,9 @@ df.anova.ordered <- df.anova[with(df.anova, order(p.holm)), ]
 df.anova.ordered
 
 # save results
-write.table(df.anova.ordered, file=file.path(resultsPath, 'BDLanova.csv'), sep="\t", quote=FALSE)
+write.table(df.anova.ordered, file=file.path(resultsPath, "data", 'BDLanova.csv'), sep="\t", quote=FALSE)
 BDLanova <- df.anova
-save(df.anova, file=file.path(resultsPath, "BDLanova.Rdata"))
+save(df.anova, file=file.path(resultsPath, "data", "BDLanova.Rdata"))
 ```
 
 ## Filter factors
@@ -288,7 +300,6 @@ fil_tab <- data.frame(
 fil_tab <- fil_tab[, c('Var1', 'Freq', 'Freq.1', 'Freq.2')]
 names(fil_tab) <- c('Category', 'Accepted', 'All', 'Percent')
 fil_tab
-
 ```
 Almost all `Cytokines` genes are retained in the data set whereas many of the `ADME` and `Fibrosis` genes are filtered.
 
@@ -306,24 +317,36 @@ f_types <- c("Antibodies", "Histology", "Biochemistry", "GE_Fibrosis", "GE_Cytok
 colorset <- brewer.pal(length(f_types), "Set2")
 color.map <- function(factor_id) {return(colorset[ which(f_types==BDLfactors$ftype[which(BDLfactors$id==factor_id)]) ])}
 factorColors <- unlist(lapply(colnames(BDLdata.fil), color.map))
+
 ```
 
 ``` {r heatmap_filtered, fig.width=10, fig.height=10, error=TRUE, htmlcap='<b>Figure Heatmap ANOVA:</b> Plot of ANOVA filtered data set.'}
-heatmap.2(t(as.matrix(dtmp)), col=colors(100), scale="row", dendrogram="none", Rowv=NULL, Colv=NULL,
-          key=TRUE, trace="none", cexRow=0.5, keysize=0.8, density.info="none",
-          RowSideColors=factorColors,
-          add.expr=abline(v=v_lines, col="black", lwd=0.5),
-          main="Heatmap of BDL time course data")
-          # xlab="sample", ylab="factor")
-legend("left",      # location of the legend on the heatmap plot
-    inset=c(-0.03,0),
-    legend = rev(f_types), # category labels
-    col = rev(colorset),  # color key
-    lty= 1,             # line style
-    lwd = 10,            # line width
-    cex = 0.7,
-    bty="n"
-)
+plot_time_heatmap <- function(dtmp, path=NULL){
+  if (!is.null(path)){
+    png(filename=file.path(path, "Factor_time_heatmap_filtered.png"), width=2000, height=2000, res=250)  
+  }
+  heatmap.2(t(as.matrix(dtmp)), col=colors(100), scale="row", dendrogram="none", 
+            Rowv=NULL, Colv=NULL,
+            key=TRUE, trace="none", cexRow=0.5, keysize=0.8, density.info="none",
+            RowSideColors=factorColors,
+            add.expr=abline(v=v_lines, col="black", lwd=0.5),
+            main="ANOVA Filtered BDL factors")
+            # xlab="sample", ylab="factor")
+  legend("left",      # location of the legend on the heatmap plot
+      inset=c(-0.03,0),
+      legend = rev(f_types), # category labels
+      col = rev(colorset),  # color key
+      lty= 1,             # line style
+      lwd = 10,            # line width
+      cex = 0.7,
+      bty="n"
+  )
+  if (!is.null(path)){
+    invisible(dev.off())
+  }
+}
+plot_time_heatmap(dtmp)
+plot_time_heatmap(dtmp, resultsPath)
 ```
 
 
@@ -354,46 +377,59 @@ In a first step Pearson $R_{i,j}$ and Spearman $S_{i,j}$ correlation was calcula
 Heatmaps of the resulting correlation matrices are depicted below with reordering of factors based on hierarchical clustering with Complete Linkage.
 
 ``` {r correlation}
-# correlation matrix
+
 suppressPackageStartupMessages(library(corrplot))
+dir.create(file.path(resultsPath, 'correlation'), showWarnings=FALSE)
+# correlation matrices
 cor.pearson <- cor(BDLdata.fil, method="pearson", use="pairwise.complete.obs")
 cor.spearman <- cor(BDLdata.fil, method="spearman", use="pairwise.complete.obs")
 
 # Helper function for creating correlation plot and saving to results folder.
-# TODO: update the corrplot to use the heatmap.2
-f_corrplot <- function(name, data, order, folder="../results",
-                       width=1600, height=1600, res=200){
-  # TODO: create the plot using the heatmap.2 with color based on histopathology
-  fname <- sprintf("%s_%s.png", name, order)
-  col2 <- HeatmapColors()
-  if (!is.null(folder)){
-    png(filename=file.path(folder, "correlation", fname), width=width, height=height, res=res)  
+# TODO: update the corrplot to use the heatmap.2 (with color based on histopathology)
+f_corrplot <- function(name, data, path=NULL,
+                       width=3000, height=3000, res=200){
+  if (!is.null(path)){
+    png(filename=file.path(path, "correlation", sprintf("%s_original.png", name)),
+        width=width, height=height, res=res)  
   }
-  corrplot(data, order=order, hclust.method="complete", method="color", type="full", 
-           tl.cex=0.3, tl.col="black", col=col2(10))
-  if (!is.null(folder)){
+  
+  col2 <- HeatmapColors()
+  # original corrplot solution
+  # corrplot(data, order=order, hclust.method="complete", method="color", type="full", 
+  #          tl.cex=0.3, tl.col="black", col=col2(10))
+  
+  # Create heatmap plot
+  heatmap.2(data, col=col2(10), scale="none",
+          key=TRUE, symkey=FALSE, trace="none", cexRow=0.8, cexCol=0.8,
+          main=name,
+          density.info="none", dendrogram="none", Rowv=NULL, Colv=NULL, keysize=0.8,
+          key.xlab = "ys3 correlation",
+          #revC=TRUE,
+          sepwidth=c(0.01,0.01),
+          sepcolor="black",
+          colsep=1:ncol(cor.cluster),
+          rowsep=1:nrow(cor.cluster))
+
+  if (!is.null(path)){
     invisible(dev.off())  
   }
 }
 
 # Spearman
-f_corrplot("cor.spearman", data=cor.spearman, order="original", folder=resultsPath)
-f_corrplot("cor.spearman", data=cor.spearman, order="hclust", folder=resultsPath)
+f_corrplot("cor.spearman", data=cor.spearman, path=resultsPath)
 # Pearson
-f_corrplot("cor.pearson", data=cor.pearson, order="original", folder=resultsPath)
-f_corrplot("cor.pearson", data=cor.pearson, order="hclust", folder=resultsPath)
+f_corrplot("cor.pearson", data=cor.pearson, path=resultsPath)
 ```
 
 ```{r}
-# Pearson correlation with hierarchical clustering
-f_corrplot("cor.pearson", data=cor.pearson, order="hclust", folder=NULL)
+# Pearson correlation (no clustering)
+f_corrplot("cor.pearson", data=cor.pearson, order="original", folder=NULL)
 ```
 
 ```{r}
-# Spearman correlation with hierarchical clustering
+# Spearman correlation (no clustering)
 f_corrplot("cor.spearman", data=cor.spearman, order="hclust", folder=NULL)
 ```
-
 The pearson correlation is highly sensitive to outliers (correlation between factors, but also in the changes between time points). 
 
 
@@ -443,11 +479,6 @@ f_corrplot("cor.ys3", data=cor.ys3, order="hclust", folder=resultsPath)
 f_corrplot("cor.yr1", data=cor.yr1, order="hclust", folder=resultsPath)
 f_corrplot("cor.yr2", data=cor.yr2, order="hclust", folder=resultsPath)
 f_corrplot("cor.yr3", data=cor.yr3, order="hclust", folder=resultsPath)
-```
-
-Full correlation matrix with hierarchical clustering based on complete linkage
-``` {r correlation_factors}
-
 ```
 
 
@@ -754,7 +785,6 @@ plot_clusters <- function(method, folder=NULL){
 }
 plot_clusters(method=method, folder=resultsPath)
 ```
-
 
 
 Which factors are in which clusters?

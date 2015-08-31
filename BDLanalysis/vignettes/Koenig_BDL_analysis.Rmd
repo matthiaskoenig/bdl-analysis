@@ -791,12 +791,11 @@ invisible(dev.off())
 plot_hist_corr()
 # plot correlation values
 print(t(round(hist_data, digits=2)))
-# alternative plot
-# corrplot(hist_data[, col.accept], method="pie", type="full",  tl.cex=0.5, tl.col="black", col=col2(10))
 
-# Get the top correlations for every factor
+# Get the top correlations for every non-RNA factor with the RNA factors, 
 # sorted by absolute values
 
+png(filename=file.path(resultsPath, "correlation", "histological_top_correlation.pdf"), width=3000, height=1000, res=200)  
 par(mfrow=c(5,2))
 for (name in hist_facs){
   # get the elements which are not histological factors
@@ -807,15 +806,27 @@ for (name in hist_facs){
   print(name)
   # print(v.sorted[v.sorted>0.5])
   print(v.sorted[1:10])
-  corrplot(t(as.matrix(v.sorted[1:10])), method="pie", type="full", 
-           tl.cex=0.7, tl.col="black", col=col2(100))  
+  mv <- t(as.matrix(v.sorted[1:10]))
+  rownames(mv) <- c(name)
+  corrplot(mv, method="pie", type="full", 
+           tl.cex=1.0, tl.col="black", col=col2(100), insig="p-value", sig.level=-1,
+           p.mat=mv, cl.pos="n")
 }
 par(mfrow=c(1,1))
+dev.off()
 
+# plot color key (do all plots via SVG)
+svg(filename=file.path(resultsPath, "correlation", "histological_top_legend.svg"), 
+    width=5, 
+    height=4, 
+    pointsize=8)
 
+corrplot(matrix(seq(from=-1, to=1, length.out=50), nrow=5, ncol=10), 
+         method="pie", type="full", 
+         tl.cex=1.0, tl.col="black", col=col2(100), insig="p-value", sig.level=-1,
+        p.mat=mv)
+dev.off()
 
-
-v.sorted[1:10]
 
 ```
 

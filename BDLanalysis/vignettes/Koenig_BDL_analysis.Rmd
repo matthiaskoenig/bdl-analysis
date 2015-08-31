@@ -780,7 +780,8 @@ plot_cluster_heatmap <- function(method){
           sepwidth=c(0.01,0.01),
           sepcolor="black",
           colsep=1:ncol(cor.cluster),
-          rowsep=1:nrow(cor.cluster))
+          rowsep=1:nrow(cor.cluster),
+          margins=c(12,8))
   legend("left", legend=paste("c", 1:6, sep=""), col= unlist(lapply(1:6, color.map)), pch=15, bty="n")
 }
 

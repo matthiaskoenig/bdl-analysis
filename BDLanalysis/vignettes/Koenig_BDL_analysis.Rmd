@@ -317,7 +317,6 @@ f_types <- c("Antibodies", "Histology", "Biochemistry", "GE_Fibrosis", "GE_Cytok
 colorset <- brewer.pal(length(f_types), "Set2")
 color.map <- function(factor_id) {return(colorset[ which(f_types==BDLfactors$ftype[which(BDLfactors$id==factor_id)]) ])}
 factorColors <- unlist(lapply(colnames(BDLdata.fil), color.map))
-
 ```
 
 ``` {r heatmap_filtered, fig.width=10, fig.height=10, error=TRUE, htmlcap='<b>Figure Heatmap ANOVA:</b> Plot of ANOVA filtered data set.'}
@@ -377,9 +376,9 @@ In a first step Pearson $R_{i,j}$ and Spearman $S_{i,j}$ correlation was calcula
 Heatmaps of the resulting correlation matrices are depicted below with reordering of factors based on hierarchical clustering with Complete Linkage.
 
 ``` {r correlation}
-
 suppressPackageStartupMessages(library(corrplot))
 dir.create(file.path(resultsPath, 'correlation'), showWarnings=FALSE)
+
 # correlation matrices
 cor.pearson <- cor(BDLdata.fil, method="pearson", use="pairwise.complete.obs")
 cor.spearman <- cor(BDLdata.fil, method="spearman", use="pairwise.complete.obs")
@@ -393,12 +392,8 @@ f_corrplot <- function(name, data, path=NULL,
         width=width, height=height, res=res)  
   }
   
-  col2 <- HeatmapColors()
-  # original corrplot solution
-  # corrplot(data, order=order, hclust.method="complete", method="color", type="full", 
-  #          tl.cex=0.3, tl.col="black", col=col2(10))
-  
-  # Create heatmap plot
+  # Heatmap of correlation matrix
+  col2 <- HeatmapColors()  # color palette for correlation (red - white - blue)
   heatmap.2(data, col=col2(10), scale="none",
           key=TRUE, symkey=FALSE, trace="none", cexRow=0.8, cexCol=0.8,
           main=name,
@@ -423,12 +418,12 @@ f_corrplot("cor.pearson", data=cor.pearson, path=resultsPath)
 
 ```{r}
 # Pearson correlation (no clustering)
-f_corrplot("cor.pearson", data=cor.pearson, order="original", folder=NULL)
+f_corrplot("cor.pearson", data=cor.pearson, path=NULL)
 ```
 
 ```{r}
 # Spearman correlation (no clustering)
-f_corrplot("cor.spearman", data=cor.spearman, order="hclust", folder=NULL)
+f_corrplot("cor.spearman", data=cor.spearman, folder=NULL)
 ```
 The pearson correlation is highly sensitive to outliers (correlation between factors, but also in the changes between time points). 
 
@@ -521,7 +516,6 @@ corrplot(hist_data[, col.accept], method="pie", type="full",
            tl.cex=0.5, tl.col="black", col=col2(10))
 # plot the correlation values
 print(t(round(hist_data, digits=2)))
-
 ```
 
 
@@ -530,24 +524,20 @@ Based on the calculated correlation matrices between factors hierarchical cluste
 
 The next step of dimension reduction is clustering of the correlation matrix. This groups the factors into sets with the correlation within sets being larger than between sets. This effectivly finds groups of factors which have similar time courses.
 
-The hclust function in R was used for clustering with complete linkage method for hierarchical clustering. This particular clustering method defines the cluster distance between two clusters to be the maximum distance between their individual components.
+The hclust function in R was used for clustering with complete linkage method for hierarchical clustering. This particular clustering method defines the cluster distance between two clusters to be the maximum distance between their individual components. An overview of the clusters is given in the `results/cluster` folder.
 
-An overview of the clusters is given in the `results/cluster` folder.
+In a first step all factors are normalized for comparison based on their range.
 
 ``` {r}
-# Plot the clusters
 suppressPackageStartupMessages(library('matrixStats'))
 
-# normalize the individual factors
-# centralize and normalize columns so that the the individual factors are comparable
-# This has to be performed on new data.
+# Normalize the individual factors so that the the individual factors are comparable
 f_normalize_centering <- function(a, min.a, max.a, mean.a){
   res <- (a - mean.a)/(max.a - min.a)
 }
 
-# normalization constants for all factors
-# necessary to store for additional predictions: if new data becomes available
-# the data points have to be measured analog to here
+# The result are normalization constants for all factors. These normalization
+# factors are used in the following to normalized new observations for the predictions.
 factor.norm <- data.frame(min=apply(BDLdata, 2, min, na.rm=TRUE), 
                             max=apply(BDLdata, 2, max, na.rm=TRUE),
                             mean=apply(BDLdata, 2, mean, na.rm=TRUE))
@@ -569,32 +559,83 @@ BDLdata.norm <- normalize_BDLdata(data=BDLdata, factor.norm=factor.norm)
 BDLmean.norm <- bdl_mean_data(BDLdata.norm, BDLsamples)
 ```
 
-``` {r}
-# plot mean clusters
-plot_clusters <- function(method, folder=NULL){  
+Correlation matrices for multiple methods have been calculated in the analysis. 
+The following function provides access to the respective correlation matrix based
+on the method. Within the publication the `ys3` correlation is used.
+```{r correlationMatrixForMethod}
+# TODO: directly store in the creation of the matrices
+
+dir.create(file.path(resultsPath, 'cluster'), showWarnings=FALSE)  # directory for cluster results
+# list of used correlation methods
+correlation_methods <- c("pearson", "spearman", "ys1", "ys2", "ys3", "yr1", "yr2", "yr3")
+
+# Full set of correlation matrices based on the various used methods. Provides simple access to the respective correlation matrix. 
+cor.matrices <- vector("list", length=length(correlation_methods))
+names(cor.matrices) <- correlation_methods
+cor.matrices$pearson <- cor.pearson
+cor.matrices$spearman <- cor.spearman
+cor.matrices$ys1 <- cor.ys1
+cor.matrices$ys2 <- cor.ys2
+cor.matrices$ys3 <- cor.ys3
+cor.matrices$yr1 <- cor.yr1
+cor.matrices$yr2 <- cor.yr2
+cor.matrices$yr3 <- cor.yr3
+# Save correlation matrices
+save(cor.matrices, file=file.path(resultsPath, "data", "cor.matrices.Rdata"))
+```
+
+The hierarchical clustering is now calculated based on the respective correlation matrices. Hierarchical clustering based on the given correlation matrix is applied with `N=6` clusters. For every correlation measure the cluster plots are created.
+``` {r hierarchical clustering}
+hclust.res <- vector("list", length=length(correlation_methods))
+names(hclust.res) <- correlation_methods
+
+Ngroups <-  6  # number of clusters
+for (method in correlation_methods){
+  # get correlation matrix
+  cor.cluster <- cor.matrices[[method]]
+  # perform hierarchical clustering
+  hc <- hclust(dist(cor.cluster, method="euclidian"), method="complete") 
+  # cut into the clusters
+  groups <- cutree(hc, k=Ngroups)
+  groups.hc.order <- groups[hc$order]
+  # store results
+  hclust.res[[method]] <- list(hc=hc,
+                               groups=groups,
+                               groups.hc.order=groups.hc.order)
+}
+# TODO: save the clusters
+
+```
+
+Plots of the mean time course in the clusters and the reresentatives in the clusters.
+``` {r plotClusters}
+
+# Plot mean cluter with SD range and the individual representatives in the
+# cluster.
+plot_clusters_mean <- function(method, path=NULL){  
+  hc.res <- hclust.res[[method]]  # clustering for correlation method
+  groups.hc.order <- hc.res$groups.hc.order
   # create the figure
-  if (!is.null(folder)){
-    fname <- sprintf("%s_cluster_overview.png", method)
-    path <- file.path(folder, 'cluster', fname)
-    png(filename=path, width=1600, height=1600, res=200)
+  if (!is.null(path)){
+    fname <- sprintf("%s_cluster_mean.png", method)
+    png(filename=file.path(path, fname), width=3000, height=2100, res=300)
   }
   # par(mfrow=c(ceiling(sqrt(Ngroups)),ceiling(sqrt(Ngroups))))
-  par(mfrow=c(2,3), pty="s")
+  par(mfrow=c(2,3))
   steps <- 1:Nt  # time points
     for (k in 1:Ngroups){
+      # get representatives of cluster
       g <- groups.hc.order[groups.hc.order==k]
-      N <- ceiling(sqrt(length(g)))
-    
-      # normalized mean data (normalized within factor)
-      dgroup <- BDLmean.norm[names(g)]
+      dgroup <- BDLmean.norm[names(g)]  # normalized mean data for group (normalized within factor)
     
       # mean and sd for timepoints (i.e. over all factors in the cluster) 
       g.mean <- rowMeans(as.matrix(dgroup), na.rm=TRUE)
       g.sd <- rowSds(as.matrix(dgroup), na.rm=TRUE) 
       
       # plot sd range
-      plot(1, type="n", xlab="", ylab="", asp=1,
-           xlim=c(1, Nt), ylim=c(-1, 1), 
+      plot(factor(levels(BDLsamples$time_fac), levels=levels(BDLsamples$time_fac)), rep(-2, 8), type="n", xlab="", ylab="",
+           xlim=c(1, Nt), ylim=1.1*c( min(min(dgroup, na.rm=TRUE), na.rm=TRUE), 
+                                      max(max(dgroup, na.rm=TRUE), na.rm=TRUE) ),
            main=sprintf("%s : Cluster %s (N=%s)", method, k, ncol(dgroup)))
       polygon(c(steps, rev(steps)), c(g.mean+g.sd, rev(g.mean-g.sd)),
               col = rgb(0.5,0.5,0.5,0.5), border = NA)
@@ -608,32 +649,29 @@ plot_clusters <- function(method, folder=NULL){
       lines(steps, g.mean, col="blue", lwd=2)
     }
     par(mfrow=c(1,1))
-  if (!is.null(folder)){
+  if (!is.null(path)){
     invisible(dev.off())
   }
 }
 
 # plot of individual repeat clusters
-plot_clusters2 <- function(method, folder=NULL){  
-  # create the figure
-  if (!is.null(folder)){
-    fname <- sprintf("%s_cluster_overview2.png", method)
-    path <- file.path(folder, 'cluster', fname)
-    png(filename=path, width=1600, height=1600, res=200)
-  }
-  par(mfrow=c(2,3))
+plot_clusters_single <- function(method, path=NULL){  
+  hc.res <- hclust.res[[method]]  # clustering for correlation method
+  groups.hc.order <- hc.res$groups.hc.order
   
+  if (!is.null(path)){
+    fname <- sprintf("%s_cluster_individual.png", method)
+    png(filename=file.path(path, fname), width=1600, height=1600, res=200)
+  }
+  
+  par(mfrow=c(2,3))
   steps <- 1:Nt # time points
   for (k in 1:Ngroups){
     g <- groups.hc.order[groups.hc.order==k]
     N <- ceiling(sqrt(length(g)))
-    # get the normalized individual data
-    dgroup <- BDLdata.norm[names(g)]
-  
-    # mean for all factors for given time point and sample
-    g.mean <- rowMeans(as.matrix(dgroup), na.rm=TRUE)
+    dgroup <- BDLdata.norm[names(g)]  # get normalized individual data
+    g.mean <- rowMeans(as.matrix(dgroup), na.rm=TRUE)  # mean for all factors for given time point and sample
     
-    # plot
     plot(1, type="n", xlab="", ylab="", xlim=c(1, Nt), ylim=c(-1, 1), main=sprintf("%s : Cluster %s (N=%s)", method, k, ncol(dgroup)))
     
     # individual data
@@ -650,19 +688,23 @@ plot_clusters2 <- function(method, folder=NULL){
     }
   }
   par(mfrow=c(1,1))
-  if (!is.null(folder)){
+  if (!is.null(path)){
     invisible(dev.off())
   }
 }
 
 # Plot individual time courses in cluster
-plot_clusters_items <- function(folder=NULL){
+plot_clusters_items <- function(method, path=NULL){
+  # get the cluster assignment for the given method
+  hc.res <- hclust.res[[method]]
+  groups.hc.order <- hc.res$groups.hc.order
+  
   for (k in 1:Ngroups){
-    if (!is.null(folder)){
+    if (!is.null(path)){
       fname <- sprintf("%s_cluster_%s.png", method, k)
-      path <- file.path(folder, 'cluster', fname)
-      png(filename=path, width=3000, height=3000, res=200)  
+      png(filename=file.path(path, fname), width=3000, height=3000, res=200)  
     }
+    
     g <- groups.hc.order[groups.hc.order==k]
     N <- ceiling(sqrt(length(g)))
     par(mfrow=c(N,N))
@@ -670,127 +712,41 @@ plot_clusters_items <- function(folder=NULL){
       plot_single(name_A=name) 
     }
     par(mfrow=c(1,1))  
-    if (!is.null(folder)){
+    if (!is.null(path)){
       invisible(dev.off())
     }
   }  
 }
 
-correlation_matrix_for_method <- function(method){
-   if (identical(method, "ys1")){
-    cor.cluster <- cor.ys1  
-  }else if (identical(method, "ys2")){
-    cor.cluster <- cor.ys2
-  }else if (identical(method, "ys3")){
-    cor.cluster <- cor.ys3
-  }else if (identical(method, "yr1")){
-    cor.cluster <- cor.yr1
-  }else if (identical(method, "yr2")){
-    cor.cluster <- cor.yr2
-  }else if (identical(method, "yr3")){
-    cor.cluster <- cor.yr3
-  }else if (identical(method, "pearson")){
-    cor.cluster <- cor.pearson
-  }else if (identical(method, "spearman")){
-    cor.cluster <- cor.spearman
-  }  
-  return(cor.cluster)
-}
-
-# apply hirarchical clustering based on selected correlation measure
-cluster_methods <- c("pearson", "spearman", "ys1", "ys2", "ys3", "yr1", "yr2", "yr3")
-Ngroups <-  6
-
-for (method in cluster_methods){
-  cor.cluster <- correlation_matrix_for_method(method)
-  
-  # perform hierarchical clustering and cut into Ngroups clusters.
-  hc <- hclust(dist(cor.cluster)) 
-  groups <- cutree(hc, k=Ngroups)
-  groups.hc.order <- groups[hc$order]
+# create plots for clusters based on the different correlation methods
+cluster_path <- file.path(resultsPath, "cluster")
+for (method in correlation_methods){
   
   # plot all clusters on disk
-  plot_clusters(method=method, folder=resultsPath) 
-  plot_clusters2(method=method, folder=resultsPath) 
+  plot_clusters_mean(method=method, path=cluster_path) 
+  plot_clusters_single(method=method, path=cluster_path) 
 
   # plot individual factors in clusters on disk
-  plot_clusters_items(folder=resultsPath)
+  plot_clusters_items(method=method, path=cluster_path)
 }
 ```
-All Pearson based correlation scores showed dependencies on data outliers. Consequently, we used $Y^{S3}$ which is based on a Spearman based correlation component $S^{*}$ and change component $A^{**}$.  
 
-``` {r}
-# plot ys3 clusters
-# TODO: this dependency is not ideal, try to refactor, so that plot_clusters is clean
-method = "ys3"
-cor.cluster <- correlation_matrix_for_method(method)
-  
-# perform hierarchical clustering and cut into Ngroups clusters.
-hc <- hclust(dist(cor.cluster)) 
-groups <- cutree(hc, k=Ngroups)
-groups.hc.order <- groups[hc$order]
-```
+All Pearson based correlation scores showed dependencies on data outliers. Consequently, we used $Y^{S3}$ which is based on a Spearman based correlation component $S^{*}$ and change component $A^{**}$.  
+Now the hierarchical clustering based on complete linkage using euclidian distance is calcualted for the given correlation matrices and the factors are cut into the clusters.
 
 ``` {r cluster_mean, fig.width=10, fig.height=8, error=TRUE, htmlcap='<b>Figure Cluster mean:</b> Plot of mean cluster data.'}
-plot_clusters(method=method, folder=NULL)
+# plot the ys3 clusters
+plot_clusters_mean(method="ys3", path=NULL)
 ```
 ``` {r cluster_repeat, fig.width=10, fig.height=8, error=TRUE, htmlcap='<b>Figure Cluster repeat:</b> Plot of repeat cluster data.'}
-plot_clusters2(method=method, folder=NULL)
-```
-
-
-``` {r}
-# plot mean clusters
-plot_clusters <- function(method, folder=NULL){  
-  # create the figure
-  if (!is.null(folder)){
-    fname <- sprintf("%s_cluster_overview.png", method)
-    path <- file.path(folder, 'cluster', fname)
-    png(filename=path, width=3000, height=2100, res=300)
-  }
-  # par(mfrow=c(ceiling(sqrt(Ngroups)),ceiling(sqrt(Ngroups))))
-  par(mfrow=c(2,3))
-  steps <- 1:Nt  # time points
-    for (k in 1:Ngroups){
-      g <- groups.hc.order[groups.hc.order==k]
-      N <- ceiling(sqrt(length(g)))
-    
-      # normalized mean data (normalized within factor)
-      dgroup <- BDLmean.norm[names(g)]
-    
-      # mean and sd for timepoints (i.e. over all factors in the cluster) 
-      g.mean <- rowMeans(as.matrix(dgroup), na.rm=TRUE)
-      g.sd <- rowSds(as.matrix(dgroup), na.rm=TRUE) 
-      
-      # plot sd range
-      plot(factor(levels(BDLsamples$time_fac), levels=levels(BDLsamples$time_fac)), rep(-2, 8), type="n", xlab="", ylab="",
-           xlim=c(1, Nt), ylim=1.1*c( min(min(dgroup, na.rm=TRUE), na.rm=TRUE), max(max(dgroup, na.rm=TRUE), na.rm=TRUE) ),# ylim=c(-1, 1), 
-           main=sprintf("%s : Cluster %s (N=%s)", method, k, ncol(dgroup)))
-      
-      polygon(c(steps, rev(steps)), c(g.mean+g.sd, rev(g.mean-g.sd)),
-              col = rgb(0.5,0.5,0.5,0.5), border = NA)
-      
-      # individual data
-      for (name in names(g)){
-        points(steps, dgroup[, name], pch=16, col="black")
-        lines(steps, dgroup[, name], col=rgb(0.5,0.5,0.5, 0.8), lwd=1)
-      }
-      # mean over factors in cluster
-      lines(steps, g.mean, col="blue", lwd=2)
-    }
-    par(mfrow=c(1,1))
-  if (!is.null(folder)){
-    invisible(dev.off())
-  }
-}
-plot_clusters(method=method, folder=resultsPath)
+plot_clusters_single(method="ys3", path=NULL)
 ```
 
 
 Which factors are in which clusters?
 ``` {r}
 # print the clusters 
-# TODO: refactor the multiple clustering
+# TODO: refactor 
 cor.cluster <- correlation_matrix_for_method(method="ys3")
 hc <- hclust(dist(cor.cluster)) 
 groups <- cutree(hc, k=Ngroups)

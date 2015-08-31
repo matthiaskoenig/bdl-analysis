@@ -753,81 +753,88 @@ plot_cluster_heatmap(method="ys3")
 ```
 
 Plot correlation matrix for histological, biochemical and antibody markers. Calculation of the largest correlation between the non-transcript factors and other factors.
+The columns in which no correlation coefficient has `abs(value) >= cor.cutoff` are filtered out, i.e. only factors are retained with a absolute correlation coeffient above this threshold.
 ``` {r correlation_histological}
 # correlation subset for non RNA factors which were accepted by ANOVA
 hist_facs <- BDLfactors$id[idx.accept & (BDLfactors$ftype %in% c("Antibodies", "Biochemistry", "Histology"))]
 hist_facs
 
-
 # get the indices of these factors in the correlation matrix
 hist_idx <- rep(NA, length(hist_facs))
 for (k in 1:length(hist_facs)){
-  hist_idx[k] <- which(colnames(cor.ys3) == hist_facs[k])
+  hist_idx[k] <- which(colnames(cor.matrices[["ys3"]]) == hist_facs[k])
 }
-# subset of correlation matrix (corresponding rows)
-hist_data <-  cor.matrices[["ys3"]][hist_idx, ] # rows of correlation matrix for the factors
+# subset of correlation matrix for histological markers (corresponding rows)
+hist_data <-  (cor.matrices[["ys3"]])[hist_idx, ]  # rows of correlation matrix for the factors
+hist_data
 
-# filter out all the columns where there is no correlation value >=0.7 or <=-0.7,
-# i.e. only factors are retained with a absolute correlation coeffient above the
-# threshold
+# filter columns
 cor.cutoff = 0.6
 col.accept <- rep(NA, ncol(hist_data))
 for (k in 1:ncol(hist_data)){
-  col.accept[k] <- any(hist_data[,k]>=cor.cutoff) | any(hist_data[,k]<=-cor.cutoff)
+  col.accept[k] <- any( abs(hist_data[,k])>=cor.cutoff )
 }
-# how many factors are filtered out based on correlation threshold
-table(col.accept)
+table(col.accept)  # how many factors are filtered based on correlation threshold
 
 # plot the subset of the correlation matrix to file
 plot_hist_corr <- function(){
   corrplot(hist_data[, col.accept], method="circle", type="full", 
            tl.cex=0.7, tl.col="black", col=col2(10))  
 }
+
 # plot to file
-png(filename=file.path(resultsPath, "correlation", "histological_correlation.png"), width=3000, height=1000, res=300)  
+pdf(file.path(resultsPath, "correlation", "histological_correlation.pdf"), 
+    width=10, height=4, pointsize=12) 
 plot_hist_corr()
 invisible(dev.off())
+
 # plot in report
 plot_hist_corr()
-# plot correlation values
+# print correlation values
 print(t(round(hist_data, digits=2)))
-
-# Get the top correlations for every non-RNA factor with the RNA factors, 
-# sorted by absolute values
-
-png(filename=file.path(resultsPath, "correlation", "histological_top_correlation.pdf"), width=3000, height=1000, res=200)  
-par(mfrow=c(5,2))
-for (name in hist_facs){
-  # get the elements which are not histological factors
-  v <- cor.ys3[!(colnames(cor.ys3) %in% hist_facs), name]
-  # sort by absolute correlation
-  v.sorted <- rev(v[order(abs(v))])
-  print('----------------------------')
-  print(name)
-  # print(v.sorted[v.sorted>0.5])
-  print(v.sorted[1:10])
-  mv <- t(as.matrix(v.sorted[1:10]))
-  rownames(mv) <- c(name)
-  corrplot(mv, method="pie", type="full", 
-           tl.cex=1.0, tl.col="black", col=col2(100), insig="p-value", sig.level=-1,
-           p.mat=mv, cl.pos="n")
-}
-par(mfrow=c(1,1))
-dev.off()
-
-# plot color key (do all plots via SVG)
-svg(filename=file.path(resultsPath, "correlation", "histological_top_legend.svg"), 
-    width=5, 
-    height=4, 
-    pointsize=8)
-
-corrplot(matrix(seq(from=-1, to=1, length.out=50), nrow=5, ncol=10), 
-         method="pie", type="full", 
-         tl.cex=1.0, tl.col="black", col=col2(100), insig="p-value", sig.level=-1,
-        p.mat=mv)
-dev.off()
-
 ```
+
+Calculation of top correlations for every non-RNA factor with all RNA factors sorted by absolute values.
+``` {r}
+plot_hist_topcors <- function(labels=TRUE, mfrow=c(10,1)){
+  par(mfrow=mfrow)
+  for (name in hist_facs){
+    # get the elements which are not histological factors
+    v <- cor.matrices$ys3[!(colnames(cor.ys3) %in% hist_facs), name]
+    # sort by absolute correlation
+    v.sorted <- rev(v[order(abs(v))])
+    print('----------------------------')
+    print(name)
+    # print(v.sorted[v.sorted>0.5])
+    print(v.sorted[2:11])
+    mv <- t(as.matrix(v.sorted[2:11]))
+    rownames(mv) <- c(name)
+    # plot without labels to have identical size for figure
+    if (labels==FALSE){
+      rownames(mv) <- NULL
+      colnames(mv) <- NULL
+    }
+    corrplot(mv, method="pie", type="full", 
+             tl.cex=1.0, tl.col="black", col=col2(100), insig="p-value", sig.level=-1,
+             p.mat=mv, cl.pos="n")
+  }
+  par(mfrow=c(1,1))
+}
+# files for figures
+pdf(file.path(resultsPath, "correlation", "histological_topcors_1.pdf"), 
+    width=10, height=10, pointsize=12)  
+plot_hist_topcors(labels=TRUE)
+dev.off()
+pdf(file.path(resultsPath, "correlation", "histological_topcors_2.pdf"), 
+    width=10, height=10, pointsize=12)  
+plot_hist_topcors(labels=FALSE)
+dev.off()
+
+
+# plot in report
+plot_hist_topcors(labels=TRUE, mfrow=c(5,2))
+```
+
 
 Calculation of the top cluster representatives.
 ``` {r topClusterRepresentatives}

@@ -1,0 +1,18 @@
+
+importFrom(httr, GET, http_status, content)
+importFrom(png, readPNG, writePNG)
+importFrom(Biostrings, readAAStringSet, readDNAStringSet,
+    DNAStringSet, AAStringSet)
+
+export(
+    keggInfo,
+    keggList,
+    listDatabases,
+    keggFind,
+    keggGet,
+    keggConv,
+    keggLink,
+    mark.pathway.by.objects,
+    color.pathway.by.objects
+)
+

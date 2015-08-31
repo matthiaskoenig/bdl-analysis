@@ -1,0 +1,53 @@
+DataSet                 Datasets gcSample contains a sample of gene
+                        clusters.
+GSEA                    GSEA
+Gff2GeneTable           Gff2GeneTable
+bitr                    bitr
+buildGOmap              buildGOmap
+buildKEGGmap            buildKEGGmap
+clusterProfiler-package
+                        statistical analysis and visualization of
+                        functional profiles for genes and gene clusters
+                        The package implements methods to analyze and
+                        visualize functional profiles of gene and gene
+                        clusters.
+cnetplot                cnetplot
+compareCluster          Compare gene clusters functional profile
+compareClusterResult-class
+                        Class "compareClusterResult" This class
+                        represents the comparison result of gene
+                        clusters by GO categories at specific level or
+                        GO enrichment analysis.
+dotplot,compareClusterResult-method
+                        dotplot
+download.KEGG           download.KEGG
+enrichDAVID             enrichDAVID
+enrichGO                GO Enrichment Analysis of a gene set. Given a
+                        vector of genes, this function will return the
+                        enrichment GO categories after FDR control.
+enrichKEGG              KEGG Enrichment Analysis of a gene set. Given a
+                        vector of genes, this function will return the
+                        enrichment KEGG categories with FDR control.
+enrichMap               enrichMap
+enricher                enricher
+fortify.compareClusterResult
+                        fortify
+getGOLevel              get GOIDs at a specific level
+groupGO                 Functional Profile of a gene set at specific GO
+                        level. Given a vector of genes, this function
+                        will return the GO profile at a specific level.
+groupGOResult-class     Class "groupGOResult" This class represents the
+                        result of functional Profiles of a set of gene
+                        at specific GO level.
+gseGO                   gseGO
+gseKEGG                 gseKEGG
+gseaplot                gseaplot
+idType                  idType
+merge_result            merge_result
+plot                    plot method
+plotGOgraph             plotGOgraph
+plotting.clusterProfile
+                        plotting-clusterProfile
+viewKEGG                viewKEGG function is for visualize KEGG
+                        pathways works with enrichResult object to
+                        visualize enriched KEGG pathway

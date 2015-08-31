@@ -1,0 +1,49 @@
+ALLEXTID                ALLEXTID
+DOSE-package            Disease Ontology Semantic and Enrichment
+                        analysis Implemented five methods proposed by
+                        Resnik, Schlicker, Jiang, Lin and Wang
+                        respectively for measuring DO semantic
+                        similarities, and hypergeometric test for
+                        enrichment analysis.
+DataSet                 Datasets
+EXTID2NAME              EXTID2NAME
+EXTID2TERMID            EXTID2TERMID
+TERM2NAME               TERM2NAME
+TERMID2EXTID            TERMID2EXTID
+barplot.enrichResult    barplot
+clusterSim              clusterSim
+cnetplot                cnetplot method
+cnetplot_internal       cnetplot_internal
+computeIC               compute information content
+doSim                   doSim
+dotplot                 dotplot method
+enrich.internal         enrich.internal
+enrichDO                DO Enrichment Analysis
+enrichMap               enrichMap
+enrichNCG               enrichNCG
+enrichResult-class      Class "enrichResult" This class represents the
+                        result of enrichment analysis.
+fortify.enrichResult    fortify
+fortify.gseaResult      fortify.gseaResult
+gene2DO                 convert Gene ID to DO Terms
+geneSim                 geneSim
+getALLEG                getALLEG
+getGeneSet              getGeneSet
+gseAnalyzer             Gene Set Enrichment Analysis
+gsea                    gsea
+gseaResult-class        Class "gseaResult" This class represents the
+                        result of GSEA analysis
+gseaplot                visualize analyzing result of GSEA
+list2graph              convert gene IDs to igraph object
+mclusterSim             mclusterSim
+netplot                 netplot
+plot                    plot method
+rebuildAnnoData         rebuiding annotation data
+scaleNodeColor          scaleNodeColor
+setReadable             setReadable
+setting.graph.attributes
+                        setting.graph.attributes
+show                    show method
+simplot                 simplot
+summary                 summary method
+theme_dose              theme_dose

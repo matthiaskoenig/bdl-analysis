@@ -14,6 +14,7 @@ ioslides_presentation	ioslides_presentation
 knitr_options	knitr_options
 knitr_options_html	knitr_options_html
 knitr_options_pdf	knitr_options_pdf
+knit_params_ask	knit_params_ask
 md_document	md_document
 metadata	metadata
 output_format	output_format

@@ -603,15 +603,13 @@ for (method in correlation_methods){
                                groups=groups,
                                groups.hc.order=groups.hc.order)
 }
-# TODO: save the clusters
-
+# save clustering
+save(hclust.res, file=file.path(resultsPath, "data", "hclust.res.Rdata"))
 ```
 
 Plots of the mean time course in the clusters and the reresentatives in the clusters.
 ``` {r plotClusters}
-
-# Plot mean cluter with SD range and the individual representatives in the
-# cluster.
+# Plot mean cluster with SD range and the individual representatives in the cluster.
 plot_clusters_mean <- function(method, path=NULL){  
   hc.res <- hclust.res[[method]]  # clustering for correlation method
   groups.hc.order <- hc.res$groups.hc.order
@@ -742,42 +740,37 @@ plot_clusters_mean(method="ys3", path=NULL)
 plot_clusters_single(method="ys3", path=NULL)
 ```
 
-
-Which factors are in which clusters?
+The following factors are in the `ys3` time course clusters
 ``` {r}
-# print the clusters 
-# TODO: refactor 
-cor.cluster <- correlation_matrix_for_method(method="ys3")
-hc <- hclust(dist(cor.cluster)) 
-groups <- cutree(hc, k=Ngroups)
-
+# print representatives of the ys3 based clusters 
+groups.ys3 <- (hclust.res$ys3)$groups
 for (k in 1:Ngroups){
-  g <- groups[groups==k]
+  g <- groups.ys3[groups.ys3==k]
   cat(sprintf("------------------------------------------\n", k, length(g)))
   cat(sprintf("Cluster %s (N=%s)\n", k, length(g)))
   cat(sprintf("------------------------------------------\n", k, length(g)))
   print(names(g))
+  # print(paste(names(g), sep=", ", collapse =", " ))
 }
 ```
 
 Display the clusters with the heatmap
 ``` {r heatmap_ys3, fig.width=10, fig.height=10, error=TRUE, htmlcap='<b>Figure Heatmap Cluster:</b> Plot of ANOVA filtered data set.'}
 
-method <- 'ys3'
-cor.cluster <- correlation_matrix_for_method(method)
-
-col2 <- HeatmapColors()
-hc <- hclust(dist(cor.cluster)) 
-# get cluster IDs for the groups
-groups <- cutree(hc, k=Ngroups)
-
-# define colors for the Ngroups clusters
-colorset <- brewer.pal(Ngroups, "Set1")
-color.map <- function(cluster_id) {return(colorset[cluster_id])}
-clusterColors <- unlist(lapply(groups, color.map))
-
-# Create heatmap plot
-plot_ys3_heatmap <- function(){
+# Create correlation heatmap with hierachical clustering results
+plot_cluster_heatmap <- function(method){
+  # matrix and cluster results
+  cor.cluster <- cor.matrices[[method]]
+  hc.res <- hclust.res[[method]]
+  hc <- hc.res$hc
+  groups <- hc.res$groups
+  # correlation colors
+  col2 <- HeatmapColors()
+  # cluster colors
+  colorset <- brewer.pal(Ngroups, "Set1")
+  color.map <- function(cluster_id) {return(colorset[cluster_id])}
+  clusterColors <- unlist(lapply(groups, color.map))
+  
   heatmap.2(cor.cluster, col=col2(10), scale="none",
           key=TRUE, symkey=FALSE, trace="none", cexRow=0.8, cexCol=0.8,
           main=method,
@@ -793,19 +786,13 @@ plot_ys3_heatmap <- function(){
 
 # plot to file
 png(filename=file.path(resultsPath, "correlation", "ys3_correlation.png"), width=2500, height=2500, res=200)  
-plot_ys3_heatmap()
+plot_cluster_heatmap(method="ys3")
 invisible(dev.off())
 
 # plot to report
-plot_ys3_heatmap()
-
+plot_cluster_heatmap(method="ys3")
 ```
 
-
-Overview of the individual time courses in the clusters
-```{r, eval=FALSE}
-# TODO
-```
 
 # Decision Trees
 For the prediction of the phase/time after BDL from measured factors a decision tree was fitted on the data. The fitted decision tree model is a regression tree with the clusters as predictor variables. This allows to combine the information from multiple factors in the individual clusters, resulting in a predictive model which is not depening on single factor variables, but uses the combined information available from multiple factors. The fitted decision tree is applicable to any subset of factors measured.

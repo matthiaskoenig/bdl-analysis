@@ -1292,71 +1292,79 @@ pred.double <- do.call("rbind", pred.res)
 
 
 Display the performance of the single and double representative trees for prediction. Find the best single trees using all representatives and only genes. The best predictor minimizes hereby the distance between predicted and actual time classes.
-
-``` {r bestSingleTrees}
-
-# L2 (euclidian) distance measurement on the log transformed data
+``` {r predictionDistance}
+# L2 (euclidian) distance measurement on the log transformed data. Analog to the distance measurement in fitting 
+# the regression tree.
 log_distance <- function(d1, d2){
   # sums over all the distances of the samples
-  sum( (log_transform(d1)-log_transform(d2) )^2 )
+  rmsd <- sqrt(sum( (log_transform(d1)-log_transform(d2) )^2 ))/length(d1)
+  # corresponds to hours
+  return(log_transform_back(rmsd))
 }
 
 # distance for all predictions on single factor per cluster
-Nsingle <- nrow(pred.single)
 dist.single <- rep(NA, Nsingle)
 for (k in 1:Nsingle){
   dist.single[k] <- log_distance(pred.single[k,], BDLsamples$time)
 }
+
 # distance for predictions on 2 sampled factors per cluster 
-Ndouble <- nrow(pred.double)
 dist.double <- rep(NA, Ndouble)
 for (k in 1:Ndouble){
   dist.double[k] <- log_distance(pred.double[k,], BDLsamples$time)
 }
 # distance on mean cluster
 dist.mean <- log_distance(pred.mean, BDLsamples$time)
+```
+
+```{r bestTrees}
+# Best decision tree using all factors
+# Find unique combinations with minimal distance
+dist.rep.best <- min(dist.single)
+# best combination of representatives for the clusters (remove duplicates)
+rep.best <- unique(single.combinations[which(dist.single==dist.rep.best), c("c1", "c3", "c4", "c5")])
+rep.best.idx <- rownames(rep.best)[1]
+# predictions of best representative
+pred.rep.best <- pred.single[as.numeric(rep.best.idx), ]
+
+print("Best single representatives for decision tree:")
+print(rep.best)
+print(dist.rep.best)
+
+# Best decision tree using only gene factors, i.e. first reduce to the gene combinations
+dist.single.genes <- dist.single[gene_only.single]
+single.combinations.genes <- single.combinations[gene_only.single,]
+dist.gene.best <- min(dist.single.genes)
+# find best gene combination
+gene.best <- unique(single.combinations.genes[which(dist.single.genes==dist.gene.best), c("c1", "c3", "c4", "c5")])
+# predictions with best representative
+gene.best.idx <- rownames(gene.best)
+pred.gene.best <- pred.single[as.numeric(gene.best.idx), ]
+pred.gene.best
+
+print("Best single representatives based on genes for decision tree:")
+print(gene.best)
+print(dist.gene.best)
 
 # Plot the distributions of all the distances, i.e. log transformed predictions
 # vs. the real time class
-hist(dist.single, breaks=((0:60)*2.5), freq=FALSE, col=rgb(0.7,0.7,0.7, 1), ylim=c(0, 0.05),
-xlab="sum( (log(time.predicted+1)-log(time.exp+1))^2 )", main="Distance between predicted and experimentell time")
-hist(dist.double, breaks=((0:60)*2.5), freq=FALSE, col=rgb(1,0,0, 0.5), add=TRUE)
-hist(dist.mean, breaks=((0:60)*2.5), freq=FALSE, col=rgb(0,0,1, 0.5), add=TRUE)
+breaks <- seq(from=0, to=0.40, by=0.0125)
+hist(dist.single, freq=FALSE, breaks=breaks,
+    main="Distance between predicted and experimentell time",
+    xlab="RMSD(time.predicted, time.exp)",
+    col=rgb(0.7,0.7,0.7, 1),
+    ylim=c(0,15)
+)
+hist(dist.double, freq=FALSE, breaks=breaks,
+     col=rgb(1,0,0, 0.5), add=TRUE)
+
+abline(v=dist.mean, col=rgb(0,0,1, 0.5), lwd=2)
+abline(v=dist.rep.best, col="black", lwd=2)
+abline(v=dist.gene.best, col="grey", lwd=2)
 
 legend("topright", legend=c("single factor", "double factor", "mean cluster"), 
            col=c(rgb(0.7, 0.7, 0.7, 1),rgb(1, 0, 0, 0.5),rgb(0, 0, 1, 0.5)),
            bty="n", cex=1.0, pch=15)
-
-
-# Find the minimal distances
-table(sort(dist[dist<15]))
-
-which(dist==min(dist))
-# 10721 10722 12063 12064 14747 14748 16089 16090
-
-best.single 
-
-treedata.single[[10721]]
-# c1.id   c2.id c3.id  c4.id c5.id c6.id
-# Cyp1a2 Cyp24a1   Fn1 S100A4 Il17a   Bad
-treedata.single[[10722]]
-# Cyp1a2 Cyp24a1   Fn1 S100A4 Il17a  Cdh2
-treedata.single[[12063]]
-# Cyp1a2 Cyp24a1  GLDH S100A4 Il17a   Bad
-treedata.single[[12064]]
-# Cyp1a2 Cyp24a1  GLDH S100A4 Il17a  Cdh2
-treedata.single[[14747]]
-# Cyp1a2 Nr0b2   Fn1 S100A4 Il17a   Bad
-treedata.single[[14748]]
-# Cyp1a2 Nr0b2   Fn1 S100A4 Il17a   Cdh2
-treedata.single[[16089]]
-# Cyp1a2 Nr0b2  GLDH S100A4 Il17a   Bad
-
-
-# TODO: find the best single factors which are only gene expression factors
-# -> add to the tree plot
-
-# TODO: create plots of the best factors for prediction (supplement)
 ```
 
 
@@ -1367,16 +1375,9 @@ node_levels <- levels(as.factor(pred.mean))
 node_classes <- round(as.numeric(node_levels), digits=1)
 node_classes
 
-
-library(RColorBrewer)
-?RColorBrewer
-display.brewer.all()
-
-
-
 # Plot of the predicted classes with the decision tree
 plot_predicted_classes <- function(){
-  bar_colors <- brewer.pal(3, "Set3")
+  bar_colors <- brewer.pal(4, "Set3")
   par(mfrow=c(2,4))
   for (k in 1:Nt){
     # single factor predictions
@@ -1391,24 +1392,27 @@ plot_predicted_classes <- function(){
     data <- as.vector(pred.mean[((1:Nr)+Nr*(k-1))])
     tab.mean <- table(factor(data, levels=node_levels))/length(data)
     
-    # best gene expression representative
-    # TODO
+    # best single representative
+    # data <- as.vector(pred.rep.best[((1:Nr)+Nr*(k-1))])
+    # tab.rep.best <- table(factor(data, levels=node_levels))/length(data)
+    
+    # best single gene representative
+    data <- as.vector(pred.gene.best[((1:Nr)+Nr*(k-1))])
+    tab.gene.best <- table(factor(data, levels=node_levels))/length(data)
     
     # combined table
-    tab <- rbind(tab.single, tab.double, tab.mean)
+    tab <- rbind(tab.single, tab.double, tab.gene.best, tab.mean)
     colnames(tab) <- round(as.numeric(colnames(tab)), digits=1)
     
     # create the bar plot
-    name <- sprintf("Time after BDL: %sh", 
-                    levels(as.factor(BDLsamples$time))[k])
+    name <- sprintf("Time after BDL: %sh", levels(as.factor(BDLsamples$time))[k])
     barplot(tab, beside=TRUE,
             main=name, 
             xlab="predicted time class [h]", ylab="fraction of predictions",
-            ylim=c(0,1), 
-            col=bar_colors) 
-  
+            ylim=c(0,1), col=bar_colors) 
     if (k==1){
-      legend("topright", legend=c("single factor", "double factor", "mean cluster"), 
+      legend("topright", legend=c("single factors", "double factors", 
+                                  "best single gene", "mean cluster"), 
              col=bar_colors,
              bty="n", cex=1.0, pch=15)
     }
@@ -1421,11 +1425,8 @@ plot_predicted_classes()
 
 # barplot to file
 pdf(file.path(resultsPath, "decision_tree", "predicted_classes.pdf"), 
-    width=10, height=7, pointsize=12)  
+    width=14, height=8, pointsize=14)
 plot_predicted_classes()
 invisible(dev.off())
 ```
-
-
-
 

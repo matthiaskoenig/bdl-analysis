@@ -1290,69 +1290,10 @@ for (k in (1:length(treedata.double))){
 pred.double <- do.call("rbind", pred.res)
 ```
 
-Evaluation of the predictions. Which experimental classes were predicted in which time classes of the regression tree for the mean cluster data (trainings data), single representative from each clusters and double representatives from each cluster.
-``` {r}
-# Predicted classes of the regression tree
-node_levels <- levels(as.factor(pred.mean))
-node_classes <- round(as.numeric(node_levels), digits=1)
-node_classes
 
-# Plot of the predicted classes with the decision tree
-plot_predicted_classes <- function(){
-  par(mfrow=c(2,4))
-  for (k in 1:Nt){
-    # single factor predictions
-    data <- as.vector(pred.single[, ((1:Nr)+Nr*(k-1))])
-    tab.single <- table(factor(data, levels=node_levels))/length(data)
-    
-    # two factor predictions
-    data <- as.vector(pred.double[, ((1:Nr)+Nr*(k-1))])
-    tab.double <- table(factor(data, levels=node_levels))/length(data)
-    
-    # mean cluster predictions
-    data <- as.vector(pred.mean[((1:Nr)+Nr*(k-1))])
-    tab.mean <- table(factor(data, levels=node_levels))/length(data)
-    
-    # best gene expression representative
-    # TODO
-    
-    # combined table
-    tab <- rbind(tab.single, tab.double, tab.mean)
-    colnames(tab) <- round(as.numeric(colnames(tab)), digits=1)
-    
-    # create the bar plot
-    name <- sprintf("Time after BDL: %sh", 
-                    levels(as.factor(BDLsamples$time))[k])
-    barplot(tab[1,], ylim=c(0,1), col=rgb(0.7,0.7,0.7, 1.0),
-            main=name, xlab="predicted time class [h]", ylab="fraction of predictions")  
-    barplot(tab[2, ], ylim=c(0,1), col=rgb(1,0,0,0.5) , add=TRUE)  
-    barplot(tab[3, ], ylim=c(0,1), col=rgb(0,0,1,0.5), add=TRUE)  
-    
-    if (k==1){
-      legend("topright", legend=c("single factor", "double factor", "mean cluster"), 
-             col=c(rgb(0.7, 0.7, 0.7, 1),rgb(1, 0, 0, 0.5),rgb(0, 0, 1, 0.5)),
-             bty="n", cex=1.0, pch=15)
-    }
-  }
-  par(mfrow=c(1,1))
-}
+Display the performance of the single and double representative trees for prediction. Find the best single trees using all representatives and only genes. The best predictor minimizes hereby the distance between predicted and actual time classes.
 
-# barplot of the predicted classes
-pdf(file.path(resultsPath, "decision_tree", "predicted_classes.pdf"), 
-    width=10, height=7, pointsize=12)  
-plot_predicted_classes()
-invisible(dev.off())
-
-plot_predicted_classes()
-```
-
-
-```
-# Search the best single predictor combinations
-# Best predictor minimizes the distance between predicted and actual time
-
-
-
+``` {r bestSingleTrees}
 
 # L2 (euclidian) distance measurement on the log transformed data
 log_distance <- function(d1, d2){
@@ -1415,8 +1356,76 @@ treedata.single[[16089]]
 # TODO: find the best single factors which are only gene expression factors
 # -> add to the tree plot
 
-
 # TODO: create plots of the best factors for prediction (supplement)
-
 ```
+
+
+Evaluation of the predictions. Which experimental classes were predicted in which time classes of the regression tree for the mean cluster data (trainings data), single representative from each clusters and double representatives from each cluster.
+``` {r}
+# Predicted classes of the regression tree
+node_levels <- levels(as.factor(pred.mean))
+node_classes <- round(as.numeric(node_levels), digits=1)
+node_classes
+
+
+library(RColorBrewer)
+?RColorBrewer
+display.brewer.all()
+
+
+
+# Plot of the predicted classes with the decision tree
+plot_predicted_classes <- function(){
+  bar_colors <- brewer.pal(3, "Set3")
+  par(mfrow=c(2,4))
+  for (k in 1:Nt){
+    # single factor predictions
+    data <- as.vector(pred.single[, ((1:Nr)+Nr*(k-1))])
+    tab.single <- table(factor(data, levels=node_levels))/length(data)
+    
+    # two factor predictions
+    data <- as.vector(pred.double[, ((1:Nr)+Nr*(k-1))])
+    tab.double <- table(factor(data, levels=node_levels))/length(data)
+    
+    # mean cluster predictions
+    data <- as.vector(pred.mean[((1:Nr)+Nr*(k-1))])
+    tab.mean <- table(factor(data, levels=node_levels))/length(data)
+    
+    # best gene expression representative
+    # TODO
+    
+    # combined table
+    tab <- rbind(tab.single, tab.double, tab.mean)
+    colnames(tab) <- round(as.numeric(colnames(tab)), digits=1)
+    
+    # create the bar plot
+    name <- sprintf("Time after BDL: %sh", 
+                    levels(as.factor(BDLsamples$time))[k])
+    barplot(tab, beside=TRUE,
+            main=name, 
+            xlab="predicted time class [h]", ylab="fraction of predictions",
+            ylim=c(0,1), 
+            col=bar_colors) 
+  
+    if (k==1){
+      legend("topright", legend=c("single factor", "double factor", "mean cluster"), 
+             col=bar_colors,
+             bty="n", cex=1.0, pch=15)
+    }
+  }
+  par(mfrow=c(1,1))
+}
+
+# barplot of the predicted classes
+plot_predicted_classes()
+
+# barplot to file
+pdf(file.path(resultsPath, "decision_tree", "predicted_classes.pdf"), 
+    width=10, height=7, pointsize=12)  
+plot_predicted_classes()
+invisible(dev.off())
+```
+
+
+
 

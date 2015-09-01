@@ -744,7 +744,9 @@ plot_cluster_heatmap <- function(method){
 }
 
 # plot to file
-png(filename=file.path(resultsPath, "correlation", "ys3_correlation.png"), width=2500, height=2500, res=200)  
+# png(filename=file.path(resultsPath, "correlation", "ys3_correlation.png"), width=2500, height=2500, res=200) 
+pdf(file.path(resultsPath, "correlation", "ys3_correlation.pdf"), 
+    width=10, height=10, pointsize=12) 
 plot_cluster_heatmap(method="ys3")
 invisible(dev.off())
 
@@ -775,23 +777,42 @@ for (k in 1:ncol(hist_data)){
   col.accept[k] <- any( abs(hist_data[,k])>=cor.cutoff )
 }
 table(col.accept)  # how many factors are filtered based on correlation threshold
+hist_accept <- hist_data[, col.accept]
+
+
+# sort by the hierarchical cluster ordering
+hist_gene_names <- colnames(hist_accept)[1:(ncol(hist_accept)-nrow(hist_accept))]
+rownames(hist_accept)
+
+hc.res <- hclust.res$ys3
+hc.res$groups.hc.order
+
+# create sort index for gene names based on clustering
+sort_idx <- rep(NA, length(hist_gene_names))
+for (k in 1:length(hist_gene_names)){
+  sort_idx[k] <- which(names(hc.res$groups.hc.order) == hist_gene_names[k])
+}
+# first sorted genes than the histological factors
+hist_sorted <- hist_accept[, c(hist_gene_names[order(sort_idx)], rownames(hist_data))]
+
+
 
 # plot the subset of the correlation matrix to file
-plot_hist_corr <- function(){
-  corrplot(hist_data[, col.accept], method="circle", type="full", 
+plot_hist_corr <- function(hist_data){
+  corrplot(hist_data, method="circle", type="full", 
            tl.cex=0.7, tl.col="black", col=col2(10))  
 }
 
 # plot to file
 pdf(file.path(resultsPath, "correlation", "histological_correlation.pdf"), 
     width=10, height=4, pointsize=12) 
-plot_hist_corr()
+plot_hist_corr(hist_sorted)
 invisible(dev.off())
 
 # plot in report
-plot_hist_corr()
+plot_hist_corr(hist_sorted)
 # print correlation values
-print(t(round(hist_data, digits=2)))
+print(t(round(hist_sorted, digits=2)))
 ```
 
 Calculation of top correlations for every non-RNA factor with all RNA factors sorted by absolute values.
@@ -838,58 +859,70 @@ plot_hist_topcors(labels=TRUE, mfrow=c(5,2))
 
 Calculation of the top cluster representatives.
 ``` {r topClusterRepresentatives}
-# Calculate the ys3 correlation between all cluster members and the cluster mean
-# data
-
-# calculate the YSR component matrices on the filtered data set (A, A*, A**, M, M*)
-# all components are calculated on the mean data
-
-# same for clusters
-hc.res <- hclust.res[[method]]  # clustering for correlation method
+# Get the ys3 cluster definition
+hc.res <- hclust.res$ys3
 groups.hc.order <- hc.res$groups.hc.order
 
-# do for every cluster
-svg(filename=file.path(resultsPath, "correlation", "cluster_top_correlation.svg"), 
-    width=5, 
-    height=5, 
-    pointsize=8)
-par(mfrow=c(Ngroups, 1))
-for (k in 1:Ngroups){
-    g <- groups.hc.order[groups.hc.order==k]
-    
-    dgroup <- BDLdata.norm[names(g)]  # get normalized individual data
-    g.mean <- rowMeans(as.matrix(dgroup), na.rm=TRUE)  # mean for all factors for given time point and sample
-    dgroup[["cluster.mean"]] <- g.mean
-    
-    # calculate the mean over the repeats
-    dgroup.mean <- bdl_mean_data(dgroup, BDLsamples)
-    
-    # data.frame create, now calculate the ys3 correlation on it
-    ysr.res <- ysr.matrices(dgroup.mean, BDLmean.time, use="pairwise.complete.obs")
-    # Spearman correlation on individual data points
-    cor.S_star <- ( cor(dgroup, method="spearman", use="pairwise.complete.obs") + 1 )/2
-    # YS3
-    cor.ys3.raw <- w$w1*cor.S_star + w$w2*ysr.res$A_star2 + w$w3*ysr.res$M_star
-    group.ys3 <- 2*(cor.ys3.raw-0.5)
-    
-    idx.cl <- which(names(dgroup)=="cluster.mean")
-    v <- group.ys3[, idx.cl]
-
-    v.sorted <- rev(v[order(abs(v))])
-    if (length(v.sorted)>13){
-      v.sorted <- v.sorted[2:13]
-    } else {
-      v.sorted <- v.sorted[2:length(v.sorted)]
-    }
-    
-    mv <- t(as.matrix(v.sorted))
-    rownames(mv) <- c(sprintf("Cluster %s", k))
-    corrplot(mv, method="pie", type="full", 
-           tl.cex=1.0, tl.col="black", col=col2(100), insig="p-value", sig.level=-1,
-           p.mat=mv, cl.pos="n")
+plot_top_cluster_representatives <- function(Ntop=11, labels=TRUE){
+  par(mfrow=c(Ngroups, 1))
+  # for every cluster
+  for (k in 1:Ngroups){
+      # get members of cluster
+      g <- groups.hc.order[groups.hc.order==k]
+      # get normalized data for members of cluster
+      dgroup <- BDLdata.norm[names(g)]
+      # add the cluster mean as factor (mean of all factors in cluster for given time point and sample)
+      g.mean <- rowMeans(as.matrix(dgroup), na.rm=TRUE)
+      dgroup[["cluster.mean"]] <- g.mean
+      
+      # calculate mean averaged over repeats
+      dgroup.mean <- bdl_mean_data(dgroup, BDLsamples)
+      
+      # now calculate the ys3 correlation with the created data.frame containing the mean cluster factor
+      ysr.res <- ysr.matrices(dgroup.mean, BDLmean.time, use="pairwise.complete.obs")
+      # Spearman correlation on individual data points
+      cor.S_star <- ( cor(dgroup, method="spearman", use="pairwise.complete.obs") + 1 )/2
+      # YS3
+      cor.ys3.raw <- w$w1*cor.S_star + w$w2*ysr.res$A_star2 + w$w3*ysr.res$M_star
+      group.ys3 <- 2*(cor.ys3.raw-0.5)
+      
+      # get correlation for the cluster mean
+      idx.cl <- which(names(dgroup)=="cluster.mean")
+      v <- group.ys3[, idx.cl]
+      # sort by absolute correlation
+      v.sorted <- rev(v[order(abs(v))])
+      
+      if (length(v.sorted)>=(Ntop+1)){
+        v.sorted <- v.sorted[2:(Ntop+1)]
+      } else {
+        # fill short clusters with zeros to Ntop
+        v.sorted <- c(v.sorted[2:length(v.sorted)], rep(0,Ntop-length(v.sorted)+1))
+      }
+      
+      mv <- t(as.matrix(v.sorted))
+      rownames(mv) <- c(sprintf("Cluster %s", k))
+      if (labels == FALSE){
+        colnames(mv) <- NULL
+      }
+      corrplot(mv, method="pie", type="full", 
+             tl.cex=1.0, tl.col="black", col=col2(100), insig="p-value", sig.level=-1,
+             p.mat=mv, cl.pos="n")
+  }
+  par(mfrow=c(1,1))
 }
-par(mfrow=c(1,1))
+
+# plot to file (with and without names)
+pdf(file.path(resultsPath, "cluster", "cluster_top_representatives_01.pdf"), 
+    width=5, height=5, pointsize=12)
+plot_top_cluster_representatives(labels=FALSE)
 dev.off()
+pdf(file.path(resultsPath, "cluster", "cluster_top_representatives_02.pdf"), 
+    width=5, height=5, pointsize=12)
+plot_top_cluster_representatives(labels=TRUE)
+dev.off()
+
+# plot in report
+plot_top_cluster_representatives(labels=TRUE)
 ```
 
 Overrepresentation analysis within the clusters.

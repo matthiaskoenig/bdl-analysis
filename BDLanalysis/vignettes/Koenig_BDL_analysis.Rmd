@@ -1101,114 +1101,122 @@ prp(tree.reg, type=0, extra=101, yesno=TRUE)
 rsq.rpart(tree.reg) 
 
 # predition on trainings data
-pred.reg <- predict(tree.reg, newdata=treedata.mean, type="vector")
+pred.reg<- predict(tree.reg, newdata=treedata.mean, type="vector")
 pred.reg
-confusionMatrix(data=pred.class, reference=treedata.mean$class)
 ```
 
 
 ## Data sets for prediction
-Prepare the evaluation data sets for the fitted trees consisting of all single factor combinations from the clusters used in the decision tree.
+Prepare the evaluation data sets for the fitted trees consisting of all single factor combinations from the clusters used in the decision tree. Only the combinations are created which are from clusters used for decisions in the tree
 ``` {r}
-# Only create the combinations which are really used for predictions, i.e. reduce to the clusters
-
 # get the variables used for splitting
 tree.nodes <- (tree.reg$frame)$var
 tree.nodes <- tree.nodes[tree.nodes != "<leaf>"]
-tree.vars <- sort(unique(tree.nodes))
+tree.vars <- as.character(sort(unique(tree.nodes)))
+rm(tree.nodes)
+# variables used for splitting decisions in tree
+print(tree.vars)
 
 # overview of member count per cluster
 group_table <- table(groups)
 print(group_table)
-# Number of combinations between single members in the clusters
-prod(group_table)
 
-# names of all clusters
-# TODO: manage in list
-facs_1 <- names(groups[groups==1])
-facs_2 <- names(groups[groups==2])
-facs_3 <- names(groups[groups==3])
-facs_4 <- names(groups[groups==4])
-facs_5 <- names(groups[groups==5])
-facs_6 <- names(groups[groups==6])
+# names of factors in the clusters
+group.factors <- vector("list", length=Ngroups)
+for (k in 1:Ngroups){
+  groups.factors[[k]] <- as.character(names(groups[groups==k]))
+}
+cluster_names <- paste('c', 1:Ngroups, sep="")
+names(groups.factors) <- cluster_names
 
-# create all combinations
-expand.grid(facs_1, facs_2, facs_3)
+# create data.frame of all single combinations from clusters
+single.combinations <- expand.grid(groups.factors, stringsAsFactors=TRUE)
+names(single.combinations) <- names(groups.factors)
 
-
+Nsingle <- nrow(single.combinations)
+print(Nsingle)
+head(single.combinations, 20)
 
 # create all single factor data
-ptm <- proc.time()  # Start timer
-treedata.single <- vector("list", prod(group_table))  # list for all combinations
-counter = 1
-for (n1 in facs_1){
-  for (n2 in facs_2){
-    for (n3 in facs_3){
-      for (n4 in facs_4){
-        for (n5 in facs_5){
-          for (n6 in facs_6){
-            # THIS HAS TO BE FAST (<0.01 s)
-            # ----------------------------------------------------------------
-            # cat(sprintf("%s, %s, %s, %s, %s, %s\n", n1, n2, n3, n4, n5, n6))
-            # ptm <- proc.time() # Start the clock!
-            
-            # get factor data
-            tmp <- BDLdata.norm[, c(n1, n2, n3, n4, n5, n6)]
-            # add class and regression values
-            tmp$class <- BDLsamples$time_fac
-            tmp$regvalue <- log(BDLsamples$time+1)
-            # add factor fields 
-            tmp[, c('c1.id', 'c2.id', 'c3.id', 'c4.id', 'c5.id', 'c6.id')] <- matrix(rep(c(n1, n2, n3, n4, n5, n6), 40), 
-                                                                                     nrow=40, ncol=6, byrow =TRUE)
-            colnames(tmp) <- c('c1', 'c2', 'c3', 'c4', 'c5', 'c6', 'class', 'regvalue', 
-                               'c1.id', 'c2.id', 'c3.id', 'c4.id', 'c5.id', 'c6.id')
-            treedata.single[[counter]] <- tmp
-            counter = counter + 1 
-            print(counter)
-            # proc.time() - ptm  # Stop the clock
-            # ----------------------------------------------------------------
-          }
-        }
-      }
-    }
-  }
+print("Calculating single factor data (~ 3min) ... ")
+ptm <- proc.time()  
+treedata.single <- vector("list", Nsingle)  # list for all combinations
+for (k in 1:Nsingle){
+  # ----------------------------------------------------------------
+  # THIS HAS TO BE FAST (<0.005 s)
+  # ----------------------------------------------------------------
+  # ptm <- proc.time() # Start the clock!
+  
+  # get factor data
+  tmp <- BDLdata.norm[, t(single.combinations[k, ]) ]
+  
+  # add class and regression values
+  tmp[c("class", "regvalue")] <- treedata.mean[ c("class", "regvalue")]
+  
+  # add factor fields 
+  tmp[, paste(cluster_names, '.id', sep="")] <- single.combinations[k,]
+  colnames(tmp) <- c(cluster_names, 'class', 'regvalue', paste(cluster_names, '.id', sep=""))
+  
+  # store data 
+  treedata.single[[k]] <- tmp
+  
+  if (k%%500 == 0){print(k)} 
+  # print(proc.time()-ptm)  # Stop the clock
 }
 # Stop the clock
-proc.time() - ptm      
+print(proc.time() - ptm)
+print("... calculated.")
+treedata.single[[1]]
+
+# which factor combinations only use genes
+factor_is_gene <- BDLfactors$ftype %in% c("GE_ADME", "GE_Cytokines", "GE_Fibrosis")
+names(factor_is_gene) <- BDLfactors$id
+
+# vector for lookup if only genes were used
+gene_only.single <- vector("logical", Nsingle)
+for (k in 1:Nsingle){
+  gene_only.single[k] <- all(factor_is_gene[t(single.combinations[k,])])
+}
 ```
 
 Create a sample of double combinations from the various clusters.
 ``` {r}
-# --- Double factor data set ---
+print("Calculating double factor data (~ 1min) ... ")
+ptm <- proc.time()
 set.seed(123456)
-Nsample <- 10000
-treedata.double <- vector("list", Nsample)  # list for sampled double combinations
-for (k in 1:Nsample){
-  n1 = sample(facs_1, 2, replace=FALSE)  
-  n2 = sample(facs_2, 2, replace=FALSE)  
-  n3 = sample(facs_3, 2, replace=FALSE)  
-  n4 = sample(facs_4, 2, replace=FALSE)  
-  n5 = sample(facs_5, 2, replace=FALSE)  
-  n6 = sample(facs_6, 2, replace=FALSE)  
-  tmp <- 0.5 * (BDLdata.norm[, c(n1[1], n2[1], n3[1], n4[1], n5[1], n6[1])] 
-                + BDLdata.norm[, c(n1[2], n2[2], n3[2], n4[2], n5[2], n6[2])])
-  # add class and regression values
-  tmp$class <- BDLsamples$time_fac
-  tmp$regvalue <- log(BDLsamples$time+1)
+Ndouble <- 10000
+treedata.double <- vector("list", Ndouble)  # list for sampled double combinations
+for (k in 1:Ndouble){
+  # sample from the 4 clusters without replacement
+  n1 = sample(groups.factors[[1]], 2, replace=FALSE)  
+  n2 = sample(groups.factors[[2]], 2, replace=FALSE)  
+  n3 = sample(groups.factors[[3]], 2, replace=FALSE)  
+  n4 = sample(groups.factors[[4]], 2, replace=FALSE)  
+  n5 = sample(groups.factors[[5]], 2, replace=FALSE)  
+  n6 = sample(groups.factors[[6]], 2, replace=FALSE)  
+  
+  # The mean of the combination is used (handle NAs)
+  tmp <- 0.5 * (  BDLdata.norm[, c(n1[1], n2[1], n3[1], n4[1], n5[1], n6[1])] 
+                + BDLdata.norm[, c(n1[2], n2[2], n3[2], n4[2], n5[2], n6[2])] )
+  
+   # add class and regression values
+  tmp[c("class", "regvalue")] <- treedata.mean[ c("class", "regvalue")]
+  
   # add factor fields 
-  tmp[, c('c1.id', 'c2.id', 'c3.id', 'c4.id', 'c5.id', 'c6.id')] <- matrix(rep(c(paste(n1, collapse="_"), 
-                                                                                 paste(n2, collapse="_"),
-                                                                                 paste(n3, collapse="_"),
-                                                                                 paste(n4, collapse="_"),
-                                                                                 paste(n5, collapse="_"), 
-                                                                                 paste(n6, collapse="_")), 40), nrow=40, ncol=6, byrow =TRUE)
-  colnames(tmp) <- c('c1', 'c2', 'c3', 'c4', 'c5', 'c6', 'class', 'regvalue', 'c1.id', 'c2.id', 'c3.id', 'c4.id', 'c5.id', 'c6.id')
+  tmp[ , paste(cluster_names, '.id', sep="")] <- data.frame(paste(n1, collapse="__"), 
+                                              paste(n2, collapse="__"),
+                                              paste(n3, collapse="__"),
+                                              paste(n4, collapse="__"),
+                                              paste(n5, collapse="__"),
+                                              paste(n6, collapse="__"))
+  colnames(tmp) <- c(cluster_names, 'class', 'regvalue', paste(cluster_names, '.id', sep=""))
+  # store data
   treedata.double[[k]] <- tmp
-  print(k)
 }
-treedata.double[[1]]
+print(proc.time() - ptm)
+print("... calculated.")
+treedata.double[[5]]
 ```
-
 
 ##  Predict with the data sets
 The fitted regression tree is now evaluated on multiple test sets.
@@ -1224,7 +1232,6 @@ pred.mean <- log_transform_back( pred.mean.log )
 # plot predicted ~ experimentell
 plot(BDLsamples$time, pred.mean, pch=15, col=rgb(0,0,1, 0.2), main="Regression Tree:\nPredicted ~ experimentell time",
      xlab="experimentell time [h]", ylab="predicted time [h]")
-abline(a=0, b=1, col="grey")
 ```
 
 Get the ranges of the various classes via the split points on log scale
@@ -1250,44 +1257,43 @@ node_ranges.log <- data.frame(node_mean, node_min, node_max)
 node_ranges <- data.frame(mean=log_transform_back(node_mean), 
                           min=log_transform_back(node_min),
                           max=log_transform_back(node_max))
+rownames(node_ranges) <- paste("class", 1:nrow(node_ranges))
+
+# predicted classes by decision tree
 round(node_ranges, digits=1)
+
+# prediction on classification data
+# TODO: create the matrix of how is predicted
+# BDLsamples$time
+# pred.matrix.mean <- matrix(NA, nrow=nrow(node_ranges), ncol=length(levels(as.factor(BDLsamples$time))))
 ```
 
-Visualize the pairwise cluster data. The data should be classified/regressed in a 6D space, i.e. 6 predictor variables corresponding to the individual clusters. The projection into 2D can provide first insights in problems of the task and is useful for the later visualization of the tree decision cuts.
-
-TODO: better graph, a density plot and reduce to the used clusters. Plot the respective cutlines in the plot
-``` {r}
-plot(treedata.mean[, 1:6], xlim=c(-0.5, 0.7), ylim=c(-0.5, 0.7), col=treedata.mean$class, pch=19)
-```
-
-
-``` {r}
+Time class prediction with regression tree for single representative from each cluster
+``` {r singlePrediction}
 # single predictions
+print("Predicting single factor data (~ 3min) ... ")
 pred.res <- vector("list", length(treedata.single))
 for (k in (1:length(treedata.single))){
-  print(k)
   # back conversion
   pred.res[[k]] <- exp(predict(tree.reg, newdata=treedata.single[[k]], method="anova"))-1
 }
 pred.single <- do.call("rbind", pred.res)
+```
 
-
+Time class prediction with regression tree for random selection of two representatives from each clusters
+```{r doublePrediction}
 # double predictions
 pred.res <- vector("list", length(treedata.double))
 for (k in (1:length(treedata.double))){
-  print(k)
   pred.res[[k]] <- exp(predict(tree.reg, newdata=treedata.double[[k]], method="anova"))-1
 }
 pred.double <- do.call("rbind", pred.res)
 ```
 
-
+Evaluation of the predictions. Which experimental classes were predicted in which time classes of the regression tree for the mean cluster data (trainings data), single representative from each clusters and double representatives from each cluster.
 ``` {r}
-# Barplot for the various time points
-
-# classes via predicted classes for cluster data
+# Predicted classes of the regression tree
 node_levels <- levels(as.factor(pred.mean))
-# These are the predicted classes
 node_classes <- round(as.numeric(node_levels), digits=1)
 node_classes
 
@@ -1307,11 +1313,14 @@ plot_predicted_classes <- function(){
     data <- as.vector(pred.mean[((1:Nr)+Nr*(k-1))])
     tab.mean <- table(factor(data, levels=node_levels))/length(data)
     
+    # best gene expression representative
+    # TODO
+    
     # combined table
     tab <- rbind(tab.single, tab.double, tab.mean)
     colnames(tab) <- round(as.numeric(colnames(tab)), digits=1)
     
-    # create the plot
+    # create the bar plot
     name <- sprintf("Time after BDL: %sh", 
                     levels(as.factor(BDLsamples$time))[k])
     barplot(tab[1,], ylim=c(0,1), col=rgb(0.7,0.7,0.7, 1.0),
@@ -1329,7 +1338,8 @@ plot_predicted_classes <- function(){
 }
 
 # barplot of the predicted classes
-png(filename=file.path(resultsPath, "decision_tree", "predicted_classes.png"), width=1800, height=1000, res=150)  
+pdf(file.path(resultsPath, "decision_tree", "predicted_classes.pdf"), 
+    width=10, height=7, pointsize=12)  
 plot_predicted_classes()
 invisible(dev.off())
 

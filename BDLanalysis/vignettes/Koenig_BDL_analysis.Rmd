@@ -917,7 +917,7 @@ pdf(file.path(resultsPath, "cluster", "cluster_top_representatives_01.pdf"),
 plot_top_cluster_representatives(labels=FALSE)
 dev.off()
 pdf(file.path(resultsPath, "cluster", "cluster_top_representatives_02.pdf"), 
-    width=5, height=5, pointsize=12)
+    width=10, height=10, pointsize=12)
 plot_top_cluster_representatives(labels=TRUE)
 dev.off()
 
@@ -1268,6 +1268,7 @@ round(node_ranges, digits=1)
 # pred.matrix.mean <- matrix(NA, nrow=nrow(node_ranges), ncol=length(levels(as.factor(BDLsamples$time))))
 ```
 
+## Single representative predictions
 Time class prediction with regression tree for single representative from each cluster
 ``` {r singlePrediction}
 # single predictions
@@ -1280,6 +1281,7 @@ for (k in (1:length(treedata.single))){
 pred.single <- do.call("rbind", pred.res)
 ```
 
+## Random double representative predictions
 Time class prediction with regression tree for random selection of two representatives from each clusters
 ```{r doublePrediction}
 # double predictions
@@ -1290,7 +1292,7 @@ for (k in (1:length(treedata.double))){
 pred.double <- do.call("rbind", pred.res)
 ```
 
-
+## Distance calculation (predicted to experimental)
 Display the performance of the single and double representative trees for prediction. Find the best single trees using all representatives and only genes. The best predictor minimizes hereby the distance between predicted and actual time classes.
 ``` {r predictionDistance}
 # L2 (euclidian) distance measurement on the log transformed data. Analog to the distance measurement in fitting 
@@ -1317,6 +1319,8 @@ for (k in 1:Ndouble){
 dist.mean <- log_distance(pred.mean, BDLsamples$time)
 ```
 
+## Best regression trees 
+Finding the best regression trees based on i) all single representatives from the clusters; and ii) single representatives only consisting of gene probes. The best is defined by minimal euclidian distance between experimental classes and predicted classes on the log scale. The best tree is not refitted with the respective factors in the tree, but the mean cluster tree uses the respective factor data for prediction.
 ```{r bestTrees}
 # Best decision tree using all factors
 # Find unique combinations with minimal distance
@@ -1346,6 +1350,39 @@ print("Best single representatives based on genes for decision tree:")
 print(gene.best)
 print(dist.gene.best)
 
+# Plot time courses of the representatives/factors in provided tree combinations
+plot_tree_representatives <- function(combination){
+  Nc <- ncol(combination)
+  Nr <- nrow(combination)
+  par(mfrow=c(Nr, Nc))
+  for (kr in 1:Nr){
+    for (kc in 1:Nc){
+      cluster <- colnames(combination)[kc]
+      name <- as.character(combination[kr, kc])
+      plot_single(name)
+    }  
+  }
+  par(mfrow=c(1,1))
+}
+
+# plot to file
+pdf(file.path(resultsPath, "decision_tree", "rep.best.representatives.pdf"), 
+    width=10, height=6, pointsize=12)
+plot_tree_representatives(rep.best)
+invisible(dev.off())
+pdf(file.path(resultsPath, "decision_tree", "gene.best.representatives.pdf"), 
+    width=10, height=3, pointsize=12)
+plot_tree_representatives(gene.best)
+invisible(dev.off())
+
+# plot to report
+plot_tree_representatives(rep.best)
+plot_tree_representatives(gene.best)
+
+```
+
+Plot the distance distributions of single and double representatives and the best gene and representative trees.
+``` {r treeDistanceDistribution}
 # Plot the distributions of all the distances, i.e. log transformed predictions
 # vs. the real time class
 breaks <- seq(from=0, to=0.40, by=0.0125)

@@ -598,46 +598,46 @@ Plot correlation matrix for histological, biochemical and antibody markers. Calc
 ``` {r correlation_histological}
 # TODO: put in proper function
 
+get_histological_correlations <- function(cor.method="ys3", cor.cutoff=0.6){
+  # correlation matrix
+  cor_mat <- cor.matrices[[cor.method]]
+  
+  # non RNA factors which were accepted by ANOVA
+  hist_facs <- BDLfactors$id[annova.accept & (BDLfactors$ftype %in% c("Antibodies", "Biochemistry", "Histology"))]
+  print(hist_facs)
+  
+  # get the indices of these factors in the correlation matrix
+  hist_idx <- rep(NA, length(hist_facs))
+  for (k in 1:length(hist_facs)){
+    hist_idx[k] <- which(colnames(cor_mat) == hist_facs[k])
+  }
+  # subset of correlation matrix for histological markers (corresponding rows)
+  hist_data <-  cor_mat[hist_idx, ]  
+  
+  # filter columns by correlation cutoff
+  col.accept <- rep(NA, ncol(hist_data))
+  for (k in 1:ncol(hist_data)){
+    # if there is any correlation >= cutoff in the column, keep it
+    col.accept[k] <- any( abs(hist_data[,k])>=cor.cutoff )
+  }
+  print(table(col.accept))  # how many factors are filtered based on correlation threshold
+  hist_accept <- hist_data[, col.accept]
+  
+  # sort by the hierarchical cluster ordering
+  hist_gene_names <- colnames(hist_accept)[1:(ncol(hist_accept)-nrow(hist_accept))]
 
-# correlation subset for non RNA factors which were accepted by ANOVA
-hist_facs <- BDLfactors$id[annova.accept & (BDLfactors$ftype %in% c("Antibodies", "Biochemistry", "Histology"))]
-hist_facs
-
-# get the indices of these factors in the correlation matrix
-hist_idx <- rep(NA, length(hist_facs))
-for (k in 1:length(hist_facs)){
-  hist_idx[k] <- which(colnames(cor.matrices[["ys3"]]) == hist_facs[k])
+  # correlation based cluster for ordering
+  hc.res <- hclust.res[[method]]
+  
+  # create sort index for gene names based on clustering
+  sort_idx <- rep(NA, length(hist_gene_names))
+  for (k in 1:length(hist_gene_names)){
+    sort_idx[k] <- which(names(hc.res$groups.hc.order) == hist_gene_names[k])
+  }
+  # first sorted genes than the histological factors
+  hist_sorted <- hist_accept[, c(hist_gene_names[order(sort_idx)], rownames(hist_data))]  
+  return(hist_sorted)
 }
-# subset of correlation matrix for histological markers (corresponding rows)
-hist_data <-  (cor.matrices[["ys3"]])[hist_idx, ]  # rows of correlation matrix for the factors
-hist_data
-
-# filter columns
-cor.cutoff = 0.6
-col.accept <- rep(NA, ncol(hist_data))
-for (k in 1:ncol(hist_data)){
-  col.accept[k] <- any( abs(hist_data[,k])>=cor.cutoff )
-}
-table(col.accept)  # how many factors are filtered based on correlation threshold
-hist_accept <- hist_data[, col.accept]
-
-
-# sort by the hierarchical cluster ordering
-hist_gene_names <- colnames(hist_accept)[1:(ncol(hist_accept)-nrow(hist_accept))]
-rownames(hist_accept)
-
-hc.res <- hclust.res$ys3
-hc.res$groups.hc.order
-
-# create sort index for gene names based on clustering
-sort_idx <- rep(NA, length(hist_gene_names))
-for (k in 1:length(hist_gene_names)){
-  sort_idx[k] <- which(names(hc.res$groups.hc.order) == hist_gene_names[k])
-}
-# first sorted genes than the histological factors
-hist_sorted <- hist_accept[, c(hist_gene_names[order(sort_idx)], rownames(hist_data))]
-
-
 
 # plot the subset of the correlation matrix to file
 plot_hist_corr <- function(hist_data){

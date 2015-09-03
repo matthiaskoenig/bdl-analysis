@@ -78,6 +78,7 @@ In a first step the processed data set is loaded from the `data` folder. The dat
 suppressPackageStartupMessages(library(BDLanalysis))
 suppressPackageStartupMessages(library(calibrate))
 suppressPackageStartupMessages(library(pander))
+dir.create(file.path(resultsPath, 'control'), showWarnings=FALSE)
 # path definition
 baseLoc <- system.file(package="BDLanalysis")
 extPath <- file.path(baseLoc, "extdata")
@@ -110,6 +111,7 @@ cat_table <- as.data.frame(table(BDLfactors$ftype))
 colnames(cat_table) <- c("Category", "Freq")
 set.caption(sub(".", " ", "Factors per category", fixed = TRUE))
 pander(cat_table)
+rm(cat_table)
 ```
 
 ## Data visualization
@@ -121,6 +123,7 @@ In a first step overview plots of the raw and mean data for all individual facto
 factors_path <- file.path(resultsPath, 'factors')
 dir.create(factors_path, showWarnings=FALSE)
 plot_all_factors(path=factors_path)
+rm(factors_path)
 ```
 
 The example for a single factor is depicted below, here for the factor `bilirubin`.
@@ -130,44 +133,52 @@ plot_single_factor('bilirubin', path=NULL)
 
 ### Time course of all factors (Heatmap)
 In a next step the heatmap of the full data set was generated, i.e. of all time points and repeats. This provides a first overview over the complete data set. Rows correspond to the individual factors (factor order corresponding to the original data set: `GE_ADME`, `GE_Cytokines`, `GE_Fibrosis`, `Biochemistry`, `Histology`, `Antibodies`). Columns correspond to the 40 samples with 5 subsequent samples belonging to one of the 8 time points (with from left to right: `r levels(BDLsamples$time_fac)`). The data is row scaled, i.e. every individual factor is scaled to have mean zero and standard deviation one.
-```{r heatmap}
+```{r timecourseHeatmap}
 suppressPackageStartupMessages(library(gplots))
 suppressPackageStartupMessages(library("RColorBrewer"))
-colors <- HeatmapColors() 
-dtmp <- BDLdata
 
-# create better row names
-rownames(dtmp) <- paste(rownames(BDLsamples), BDLsamples$time_fac, sep=" ")
-# create vectors for the horizontal and vertical lines
-v_lines <- ((1:8)*5+0.5)
-f_types <- c("Antibodies", "Histology", "Biochemistry", "GE_Fibrosis", "GE_Cytokines", "GE_ADME")
-f_table <- table(BDLfactors$ftype)
-h_lines <- 0.5 + cumsum(f_table[f_types])
-# colors for the different data types
+# define horizontal and vertical helper lines
+v_lines <- ((1:Nt)*Nr+0.5)
+factor_types <- c("Antibodies", "Histology", "Biochemistry", "GE_Fibrosis", "GE_Cytokines", "GE_ADME")
+factor_table <- table(BDLfactors$ftype)
+h_lines <- 0.5 + cumsum(factor_table[factor_types])
 
-col2 <- HeatmapColors()
-# define colors for type of experimentell data, i.e. factor groups
-colorset <- brewer.pal(length(f_types), "Set2")
-color.map <- function(factor_id) {return(colorset[ which(f_types==BDLfactors$ftype[which(BDLfactors$id==factor_id)]) ])}
-factorColors <- unlist(lapply(BDLfactors$id, color.map))
+timecourse_heatmap <- function(){
+  # create better row names
+  dtmp <- BDLdata
+  rownames(dtmp) <- paste(rownames(BDLsamples), BDLsamples$time_fac, sep=" ")
+  # heatmap colors 
+  hmap_colors <- HeatmapColors()
+  # colors for factor groups
+  colorset <- brewer.pal(length(factor_types), "Set2")
+  color.map <- function(factor_id) {return(colorset[ which(factor_types==BDLfactors$ftype[which(BDLfactors$id==factor_id)]) ])}
+  factorColors <- unlist(lapply(BDLfactors$id, color.map))
+  # heatmap
+  heatmap.2(t(as.matrix(dtmp)), col=hmap_colors(100), scale="row", dendrogram="none", Rowv=NULL, Colv=NULL,
+            key=TRUE, trace="none", cexRow=0.5, keysize=0.8, density.info="none",
+            RowSideColors=factorColors,
+            add.expr=abline(v=v_lines, h=h_lines, col="black", lwd=0.5),
+            main="Heatmap of BDL time course data")
+            # xlab="sample", ylab="factor")
+  # legend
+  legend("left",
+      inset=c(-0.03,0),
+      legend = rev(factor_types), # category labels
+      col = rev(colorset),  # color key
+      lty= 1, lwd = 10, cex = 0.7, bty="n"
+  )
+}
 ```
 
 ``` {r heatmap2, fig.width=10, fig.height=10, error=TRUE, htmlcap='<b>Figure All factors </b>: Heatmap of the complete data set, i.e. all factors and repeats over time. The data is row scaled, i.e. every individual factor is scaled to have mean zero and standard deviation one, with positive Z-score in blue, negative Z-score in red. The row order is according to the the factor categories, the order within the fluidigm chips according to the order of the probes on the chip. the respective categories are depicted on the left.'}
-heatmap.2(t(as.matrix(dtmp)), col=colors(100), scale="row", dendrogram="none", Rowv=NULL, Colv=NULL,
-          key=TRUE, trace="none", cexRow=0.5, keysize=0.8, density.info="none",
-          RowSideColors=factorColors,
-          add.expr=abline(v=v_lines, h=h_lines, col="black", lwd=0.5),
-          main="Heatmap of BDL time course data")
-          # xlab="sample", ylab="factor")
-legend("left",      # location of the legend on the heatmap plot
-    inset=c(-0.03,0),
-    legend = rev(f_types), # category labels
-    col = rev(colorset),  # color key
-    lty= 1,             # line style
-    lwd = 10,            # line width
-    cex = 0.7,
-    bty="n"
-)
+timecourse_heatmap()
+
+# plot to file
+pdf(file.path(resultsPath, "control", "timecourse_heatmap.pdf"), width=10, height=10, pointsize=12) 
+timecourse_heatmap()
+invisible(dev.off())
+# cleanup
+rm(factor_table, h_lines, v_lines)
 ```
 **Results**: Various patterns are visible in the plotted raw data:
 
@@ -178,10 +189,7 @@ legend("left",      # location of the legend on the heatmap plot
 Actb (Actin, cytoplasmic 1) probes were included on all Fluidigm chips (`GE_ADME`, `GE_Cytokines`, `GE_Fibrosis`) and not used in the normalization of the gene expression data. Hence, ActB can serve as quality control for the technical reproducibility of the Fluidigm chips. If the data is reproducible between chips the pairwise correlation between all individual Actb measurements should have high correlation coefficients close to 1. Plotting the data of the Actb measurements of two chips against each other should lie on a straight line
 ```{r CheckActB}
 # Actb control figure
-plot_actb_control <- function(path=NULL){
-  if (!is.null(path)){
-    png(filename=file.path(path, "Actb_control.png"), width=1600, height=1000, res=150)  
-  }
+plot_actb_control <- function(){
   par(mfrow=c(2,3))
   plot_single("Actb")
   plot_single("Actb.x")
@@ -190,11 +198,12 @@ plot_actb_control <- function(path=NULL){
   plot_cor_pair("Actb", "Actb.y", single_plots=FALSE)
   plot_cor_pair("Actb.x", "Actb.y", single_plots=FALSE)
   par(mfrow=c(1,1))
-  if (!is.null(path)){
-    invisible(dev.off())
-  }
 }
-plot_actb_control(path=resultsPath)
+
+# plot to file
+pdf(file.path(resultsPath, "control", "Actb_control.pdf"), width=10, height=6, pointsize=12)  
+plot_actb_control()
+invisible(dev.off())
 
 # calculate Spearman and Pearson correlation coefficients on N=8*5=40 data points 
 actb.spearman <- cor(data.frame(Actb=BDLdata$Actb, 
@@ -212,7 +221,8 @@ pander(round(actb.pearson, digits=3))
 ```
 
 ``` {r fig.width=10, fig.height=7,  htmlcap='<b>Figure Actb control</b>: Correlation plot of the Actb probes from the 3 Fluidigm chips: Actb (fibrosis), Actb.x (ADME), Actb.y (Cytokines). The top row shows the individual time courses, the bottom row the pair wise plot of individual data points.'}
-plot_actb_control(path=NULL)
+plot_actb_control()
+rm(actb.pearson, actb.spearman)
 ```
 **Results**: The Actb Fluidigm gene expression measurements are highly reproducible for the measured chips,  with Spearman as well as Pearson correlation coefficients all > 0.9 for pairwise Actb comparison.
 
@@ -256,10 +266,13 @@ The following shows the ANOVA calculation for a single factor, here for `bilirub
   # show data matrix
   print(mat.anova)
 ```
+```{r}
+  # cleanup
+rm(r, f, k, n, tm, av, p.value, mat.anova) 
+```
 
 ## ANOVA for all factors
 Analog to the single factor ANOVA, the ANOVA is performed on all the factors. Hereby, a multitude of tests are performed, namely an ANOVA for every single factor. Consequently, the reported p-values of the ANOVA have to be adjusted via multiple testing procedures. Using the p.adjust function which given a set of p-values, returns p-values adjusted using one of several methods. The Bonferroni, Holm, Hochberg, Hommel are designed to give strong control of the family-wise error rate. We used the Holm's method for adjustment (*Holm, S. (1979). A simple sequentially rejective multiple test procedure. Scandinavian Journal of Statistics 6, 65-70.*).
-
 
 ```{r ANOVA}
 # Calculation of ANOVA for all factors
@@ -275,7 +288,6 @@ df.anova.ordered
 
 # save results
 write.table(df.anova.ordered, file=file.path(resultsPath, "data", 'BDLanova.csv'), sep="\t", quote=FALSE)
-BDLanova <- df.anova
 save(df.anova, file=file.path(resultsPath, "data", "BDLanova.Rdata"))
 ```
 
@@ -283,69 +295,69 @@ save(df.anova, file=file.path(resultsPath, "data", "BDLanova.Rdata"))
 The factors are filtered based on the respective acceptance level, with the cutoff for the adjusted p-value being $p_{accept}$, i.e. all factors with a ANOVA with $p_{adjusted} \ge p_{accept}$ are filtered out. The filtered raw data is available as `BDLdata.fil`, the filtered mean data set as `BDLmean.fil`. All subsequent analyses are performed on the filtered data set, which is depicted in the following heatmap
 ``` {r filter}
 p.accept = 0.05  # acceptance level
-idx.accept = (df.anova$p.holm < p.accept)  # accepted subset
+anova.accept = (df.anova$p.holm < p.accept)  # accepted subset
 # subset of filtered data
-BDLdata.fil <- BDLdata[, idx.accept]
-BDLmean.fil <- BDLdata[, idx.accept]
+BDLdata.fil <- BDLdata[, anova.accept]
+BDLmean.fil <- BDLdata[, anova.accept]
 
 # accepted
-table(df.anova$p.holm<p.accept)  # 64 rejected / 90 accepted (adjusted)
+table(anova.accept)  # 64 rejected / 90 accepted (adjusted)
 
 # which factors were accepted in the various categories
 fil_tab <- data.frame(
-  table(BDLfactors$ftype[idx.accept]),
+  table(BDLfactors$ftype[anova.accept]),
   table(BDLfactors$ftype),
-  round(table(BDLfactors$ftype[idx.accept])/table(BDLfactors$ftype), 2)
+  round(table(BDLfactors$ftype[anova.accept])/table(BDLfactors$ftype), 2)
 )
 fil_tab <- fil_tab[, c('Var1', 'Freq', 'Freq.1', 'Freq.2')]
 names(fil_tab) <- c('Category', 'Accepted', 'All', 'Percent')
 fil_tab
 ```
-Almost all `Cytokines` genes are retained in the data set whereas many of the `ADME` and `Fibrosis` genes are filtered.
+Based on the adjusted p-values the data set was reduced from original 154 factors to 90. Almost all `Cytokines` genes (inflammation panel) were retained in the data set whereas many of the `ADME` and `Fibrosis` genes are filtered.
 
 ### Heatmap of filtered time course data
 The heatmap of the filtered raw data is depicted below
-``` {r heatmapFiltered}
-# prepare data with row names
-dtmp <- BDLdata.fil
-rownames(dtmp) <- paste(rownames(BDLsamples), BDLsamples$time_fac, sep=" ")
-# create vectors for the horizontal and vertical lines
-v_lines <- ((1:8)*5+0.5)
-f_types <- c("Antibodies", "Histology", "Biochemistry", "GE_Fibrosis", "GE_Cytokines", "GE_ADME")
-
-# define colors for categories
-colorset <- brewer.pal(length(f_types), "Set2")
-color.map <- function(factor_id) {return(colorset[ which(f_types==BDLfactors$ftype[which(BDLfactors$id==factor_id)]) ])}
-factorColors <- unlist(lapply(colnames(BDLdata.fil), color.map))
-```
 
 ``` {r heatmap_filtered, fig.width=10, fig.height=10, error=TRUE, htmlcap='<b>Figure Heatmap ANOVA:</b> Plot of ANOVA filtered data set.'}
-plot_time_heatmap <- function(dtmp, path=NULL){
-  if (!is.null(path)){
-    png(filename=file.path(path, "Factor_time_heatmap_filtered.png"), width=2000, height=2000, res=250)  
-  }
-  heatmap.2(t(as.matrix(dtmp)), col=colors(100), scale="row", dendrogram="none", 
+v_lines <- ((1:Nt)*Nr+0.5)
+
+timecourse_heatmap_filtered <- function(){
+  # prepare data with row names
+  dtmp <- BDLdata.fil
+  rownames(dtmp) <- paste(rownames(BDLsamples), BDLsamples$time_fac, sep=" ")
+  
+  # color definitions
+  hmap_colors <- HeatmapColors()
+  colorset <- brewer.pal(length(factor_types), "Set2")
+  color.map <- function(factor_id) {return(colorset[ which(factor_types==BDLfactors$ftype[which(BDLfactors$id==factor_id)]) ])}
+  factorColors <- unlist(lapply(colnames(BDLdata.fil), color.map))
+  # heatmap
+  heatmap.2(t(as.matrix(dtmp)), col=hmap_colors(100), scale="row", dendrogram="none", 
             Rowv=NULL, Colv=NULL,
             key=TRUE, trace="none", cexRow=0.5, keysize=0.8, density.info="none",
             RowSideColors=factorColors,
             add.expr=abline(v=v_lines, col="black", lwd=0.5),
             main="ANOVA Filtered BDL factors")
             # xlab="sample", ylab="factor")
-  legend("left",      # location of the legend on the heatmap plot
+  # legend
+  legend("left",
       inset=c(-0.03,0),
-      legend = rev(f_types), # category labels
-      col = rev(colorset),  # color key
-      lty= 1,             # line style
-      lwd = 10,            # line width
+      legend = rev(factor_types), # category labels
+      col = rev(colorset),   # color key
+      lty= 1,                # line style
+      lwd = 10,              # line width
       cex = 0.7,
       bty="n"
   )
-  if (!is.null(path)){
-    invisible(dev.off())
-  }
 }
-plot_time_heatmap(dtmp)
-plot_time_heatmap(dtmp, resultsPath)
+# plot to report
+timecourse_heatmap_filtered()
+
+# plot to file
+pdf(file.path(resultsPath, "control", "timecourse_heatmap_filtered.pdf"), 
+    width=10, height=10, pointsize=12)  
+timecourse_heatmap_filtered()
+invisible(dev.off())
 ```
 
 
@@ -452,49 +464,32 @@ w <- list(w1=0.5, w2=0.3, w3=0.2)
 # all components are calculated on the mean data
 ysr.res <- ysr.matrices(BDLmean.fil, BDLmean.time, use="pairwise.complete.obs")
 
-# Pearson & spearman correlation on individual data points
-cor.S_star <- ( cor(BDLdata.fil, method="spearman", use="pairwise.complete.obs") + 1 )/2
-cor.R_star <- ( cor(BDLdata.fil, method="pearson", use="pairwise.complete.obs") + 1 )/2
+# S* and R* (Pearson & Spearman correlation on individual data points)
+cor.S_star <- (cor.matrices$spearman + 1)/2
+cor.R_star <- (cor.matrices$pearson + 1)/2
 
 # Calculate the ys(1,2,3) and yr(1,2,3) with single time point correlation for
 # Spearman, respectively Pearson (instead of mean)
 # Takes the individual correlation, slope and min/max components for the respective
 # score parts and weights with the provided weighting factors (w1,w2,w3)
-cor.ys1.raw <- w$w1*cor.S_star + w$w2*ysr.res$A       + w$w3*ysr.res$M
-cor.ys2.raw <- w$w1*cor.S_star + w$w2*ysr.res$A_star  + w$w3*ysr.res$M_star
-cor.yr1.raw <- w$w1*cor.R_star + w$w2*ysr.res$A       + w$w3*ysr.res$M
-cor.yr2.raw <- w$w1*cor.R_star + w$w2*ysr.res$A_star  + w$w3*ysr.res$M_star
-# extended
-cor.ys3.raw <- w$w1*cor.S_star + w$w2*ysr.res$A_star2 + w$w3*ysr.res$M_star
-cor.yr3.raw <- w$w1*cor.R_star + w$w2*ysr.res$A_star2 + w$w3*ysr.res$M_star 
+ysr_methods <- c("ys1", "ys2", "ys3", "yr1", "yr2", "yr3")
+cor.ysr <- vector("list", length(ysr_methods))
+names(cor.ysr) <- ysr_methods
 
+# unnormalized correlations in [0, 1]
+cor.ysr$ys1 <- w$w1*cor.S_star + w$w2*ysr.res$A       + w$w3*ysr.res$M
+cor.ysr$ys2 <- w$w1*cor.S_star + w$w2*ysr.res$A_star  + w$w3*ysr.res$M_star
+cor.ysr$ys3 <- w$w1*cor.S_star + w$w2*ysr.res$A_star2 + w$w3*ysr.res$M_star
 
-# scaling of correlation coefficient in interval [-1,1]
-cor.ys1 <- 2*(cor.ys1.raw-0.5)
-cor.ys2 <- 2*(cor.ys2.raw-0.5)
-cor.ys3 <- 2*(cor.ys3.raw-0.5)
-cor.yr1 <- 2*(cor.yr1.raw-0.5)
-cor.yr2 <- 2*(cor.yr2.raw-0.5)
-cor.yr3 <- 2*(cor.yr3.raw-0.5)
+cor.ysr$yr1 <- w$w1*cor.R_star + w$w2*ysr.res$A       + w$w3*ysr.res$M
+cor.ysr$yr2 <- w$w1*cor.R_star + w$w2*ysr.res$A_star  + w$w3*ysr.res$M_star
+cor.ysr$yr3 <- w$w1*cor.R_star + w$w2*ysr.res$A_star2 + w$w3*ysr.res$M_star 
 
-# TODO: store all the correlations and save
-```
-Correlation matrices for multiple methods have been calculated in the analysis. 
-The following function provides access to the respective correlation matrix based
-on the method. Within the publication the `ys3` correlation is used.
-```{r correlationMatrixForMethod}
-# TODO: directly store in the creation of the matrices
+# scaling of ysr correlation coefficient to interval [-1,1]
+for (method in ysr_methods){
+  cor.matrices[[method]] <- 2*(cor.ysr[[method]]-0.5)
+}
 
-
-
-cor.matrices$pearson <- cor.pearson
-cor.matrices$spearman <- cor.spearman
-cor.matrices$ys1 <- cor.ys1
-cor.matrices$ys2 <- cor.ys2
-cor.matrices$ys3 <- cor.ys3
-cor.matrices$yr1 <- cor.yr1
-cor.matrices$yr2 <- cor.yr2
-cor.matrices$yr3 <- cor.yr3
 # Save correlation matrices
 save(cor.matrices, file=file.path(resultsPath, "data", "cor.matrices.Rdata"))
 ```

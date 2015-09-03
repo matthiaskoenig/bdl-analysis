@@ -371,62 +371,74 @@ $$Y_{norm}^{R} = 2(Y^{R}-0.5)$$
 
 In addition to the used $Y^{S}$ and $Y^{R}$ correlation scores Pearson (R) and Spearman (S) correlations were calculated for comparison. 
 
-## Pearson & Spearman correlation
-In a first step Pearson $R_{i,j}$ and Spearman $S_{i,j}$ correlation was calculated for the filtered factors. 
-Heatmaps of the resulting correlation matrices are depicted below with reordering of factors based on hierarchical clustering with Complete Linkage.
-
 ``` {r correlation}
 suppressPackageStartupMessages(library(corrplot))
 dir.create(file.path(resultsPath, 'correlation'), showWarnings=FALSE)
 
-# correlation matrices
-cor.pearson <- cor(BDLdata.fil, method="pearson", use="pairwise.complete.obs")
-cor.spearman <- cor(BDLdata.fil, method="spearman", use="pairwise.complete.obs")
+# list of calculated correlation methods
+correlation_methods <- c("pearson", "spearman", "ys1", "ys2", "ys3", "yr1", "yr2", "yr3")
 
-# Helper function for creating correlation plot and saving to results folder.
-# TODO: update the corrplot to use the heatmap.2 (with color based on histopathology)
-f_corrplot <- function(name, data, path=NULL,
-                       width=3000, height=3000, res=200){
-  if (!is.null(path)){
-    png(filename=file.path(path, "correlation", sprintf("%s_original.png", name)),
-        width=width, height=height, res=res)  
+# The calculated correlation matrices are stored in the `cor.matrices
+# Provides simple access to the respective correlation matrix. 
+cor.matrices <- vector("list", length=length(correlation_methods))
+names(cor.matrices) <- correlation_methods
+```
+
+## Pearson & Spearman correlation
+In a first step Pearson $R_{i,j}$ and Spearman $S_{i,j}$ correlation were calculated for the subset of filtered factors. 
+``` {r correlation}
+# Spearman and Pearson on individual data points
+cor.matrices$pearson <- cor(BDLdata.fil, method="pearson", use="pairwise.complete.obs")
+cor.matrices$spearman <- cor(BDLdata.fil, method="spearman", use="pairwise.complete.obs")
+```
+
+Heatmap plot of the correlation matrices with factors in original order
+``` {r correlationPlot}
+# Heatmap of correlation matrix
+f_corrplot <- function(method){
+  data <- cor.matrices[[method]]
+  if(is.null(data)){
+    stop("Correlation matrix does not exist for method: ", method)
   }
-  
-  # Heatmap of correlation matrix
-  col2 <- HeatmapColors()  # color palette for correlation (red - white - blue)
-  heatmap.2(data, col=col2(10), scale="none",
+  cor_colors <- HeatmapColors() # color palette for correlation (red - white - blue)
+  heatmap.2(data, col=cor_colors(10), scale="none",
           key=TRUE, symkey=FALSE, trace="none", cexRow=0.8, cexCol=0.8,
-          main=name,
-          density.info="none", dendrogram="none", Rowv=NULL, Colv=NULL, keysize=0.8,
-          key.xlab = "ys3 correlation",
+          main=method,
+          density.info="none", dendrogram="none", 
+          Rowv=NULL, Colv=NULL, 
+          keysize=0.8, key.xlab = method,
           #revC=TRUE,
           sepwidth=c(0.01,0.01),
           sepcolor="black",
           colsep=1:ncol(cor.cluster),
           rowsep=1:nrow(cor.cluster))
-
-  if (!is.null(path)){
-    invisible(dev.off())  
-  }
 }
+# settings for plots
+hmap.settings <- list(width=10, height=10, pointsize=12)
 
 # Spearman
-f_corrplot("cor.spearman", data=cor.spearman, path=resultsPath)
+pdf(file.path(resultsPath, "correlation", "cor.spearman.pdf"),
+        width=hmap.settings$width, height=hmap.settings$height, pointsize=hmap.settings$pointsize)
+f_corrplot(method="spearman")
+invisible(dev.off())
+
 # Pearson
-f_corrplot("cor.pearson", data=cor.pearson, path=resultsPath)
+pdf(file.path(resultsPath, "correlation", "cor.pearson.pdf"),
+        width=hmap.settings$width, height=hmap.settings$height, pointsize=hmap.settings$pointsize)
+f_corrplot(method="pearson")
+invisible(dev.off())
 ```
 
 ```{r}
 # Pearson correlation (no clustering)
-f_corrplot("cor.pearson", data=cor.pearson, path=NULL)
+f_corrplot("pearson")
 ```
 
 ```{r}
 # Spearman correlation (no clustering)
-f_corrplot("cor.spearman", data=cor.spearman, folder=NULL)
+f_corrplot("spearman")
 ```
 The pearson correlation is highly sensitive to outliers (correlation between factors, but also in the changes between time points). 
-
 
 ## YS & YR correlation
 Here, the time-course based correlation measurements $Y^{S1}$, $Y^{S2}$, $Y^{S3}$, $Y^{R1}$, $Y^{R2}$ and $Y^{R3}$ are calculated for the factors in the filtered BDL data set. To create the correlation matrix all pairwise correlations between all factors are calculated.
@@ -456,6 +468,7 @@ cor.yr2.raw <- w$w1*cor.R_star + w$w2*ysr.res$A_star  + w$w3*ysr.res$M_star
 cor.ys3.raw <- w$w1*cor.S_star + w$w2*ysr.res$A_star2 + w$w3*ysr.res$M_star
 cor.yr3.raw <- w$w1*cor.R_star + w$w2*ysr.res$A_star2 + w$w3*ysr.res$M_star 
 
+
 # scaling of correlation coefficient in interval [-1,1]
 cor.ys1 <- 2*(cor.ys1.raw-0.5)
 cor.ys2 <- 2*(cor.ys2.raw-0.5)
@@ -464,16 +477,40 @@ cor.yr1 <- 2*(cor.yr1.raw-0.5)
 cor.yr2 <- 2*(cor.yr2.raw-0.5)
 cor.yr3 <- 2*(cor.yr3.raw-0.5)
 
+# TODO: store all the correlations and save
+```
+Correlation matrices for multiple methods have been calculated in the analysis. 
+The following function provides access to the respective correlation matrix based
+on the method. Within the publication the `ys3` correlation is used.
+```{r correlationMatrixForMethod}
+# TODO: directly store in the creation of the matrices
+
+
+
+cor.matrices$pearson <- cor.pearson
+cor.matrices$spearman <- cor.spearman
+cor.matrices$ys1 <- cor.ys1
+cor.matrices$ys2 <- cor.ys2
+cor.matrices$ys3 <- cor.ys3
+cor.matrices$yr1 <- cor.yr1
+cor.matrices$yr2 <- cor.yr2
+cor.matrices$yr3 <- cor.yr3
+# Save correlation matrices
+save(cor.matrices, file=file.path(resultsPath, "data", "cor.matrices.Rdata"))
+```
+
+``` {r correlationPlots}
 # plot subset for further analysis
 f_corrplot("cor.ys3", data=cor.ys3, order="hclust", folder=NULL)
 
 # create correlation plot on disk
-f_corrplot("cor.ys1", data=cor.ys1, order="hclust", folder=resultsPath)
-f_corrplot("cor.ys2", data=cor.ys2, order="hclust", folder=resultsPath)
-f_corrplot("cor.ys3", data=cor.ys3, order="hclust", folder=resultsPath)
-f_corrplot("cor.yr1", data=cor.yr1, order="hclust", folder=resultsPath)
-f_corrplot("cor.yr2", data=cor.yr2, order="hclust", folder=resultsPath)
-f_corrplot("cor.yr3", data=cor.yr3, order="hclust", folder=resultsPath)
+# TODO: better handling of path
+f_corrplot("cor.ys1", data=cor.ys1, path=resultsPath)
+f_corrplot("cor.ys2", data=cor.ys2, path=resultsPath)
+f_corrplot("cor.ys3", data=cor.ys3, path=resultsPath)
+f_corrplot("cor.yr1", data=cor.yr1, path=resultsPath)
+f_corrplot("cor.yr2", data=cor.yr2, path=resultsPath)
+f_corrplot("cor.yr3", data=cor.yr3, path=resultsPath)
 ```
 
 
@@ -482,24 +519,23 @@ Based on the calculated correlation matrices between factors hierarchical cluste
 
 The next step of dimension reduction is clustering of the correlation matrix. This groups the factors into sets with the correlation within sets being larger than between sets. This effectivly finds groups of factors which have similar time courses.
 
-The hclust function in R was used for clustering with complete linkage method for hierarchical clustering. This particular clustering method defines the cluster distance between two clusters to be the maximum distance between their individual components. An overview of the clusters is given in the `results/cluster` folder.
+The hclust function in R was used for clustering with complete linkage method for hierarchical clustering. This particular clustering method defines the cluster distance between two clusters to be the maximum distance between their individual components.
 
-In a first step all factors are normalized for comparison based on their range.
-
+In a first step all factors are normalized for comparison based on their range. The normalization is performed for every factor separately via
+$$f_{k}^{norm}(t_{i,r}) = \frac{f_{k}(t_{i,r})-<f_{k}>}{max(f_{x})-min(f_{x})}$$
 ``` {r}
 suppressPackageStartupMessages(library('matrixStats'))
+dir.create(file.path(resultsPath, 'cluster'), showWarnings=FALSE)
 
-# Normalize the individual factors so that the the individual factors are comparable
+# Normalize the individual factors
 f_normalize_centering <- function(a, min.a, max.a, mean.a){
   res <- (a - mean.a)/(max.a - min.a)
 }
-
-# The result are normalization constants for all factors. These normalization
-# factors are used in the following to normalized new observations for the predictions.
+# Calculate min, max and mean for all single factors (normalization constants)
 factor.norm <- data.frame(min=apply(BDLdata, 2, min, na.rm=TRUE), 
                             max=apply(BDLdata, 2, max, na.rm=TRUE),
                             mean=apply(BDLdata, 2, mean, na.rm=TRUE))
-
+# Function for normalizing subset of BDL data with factor normalization constants.
 normalize_BDLdata <- function(data, factor.norm){
   dnorm <- data
   for (name in colnames(data)){
@@ -517,37 +553,12 @@ BDLdata.norm <- normalize_BDLdata(data=BDLdata, factor.norm=factor.norm)
 BDLmean.norm <- bdl_mean_data(BDLdata.norm, BDLsamples)
 ```
 
-Correlation matrices for multiple methods have been calculated in the analysis. 
-The following function provides access to the respective correlation matrix based
-on the method. Within the publication the `ys3` correlation is used.
-```{r correlationMatrixForMethod}
-# TODO: directly store in the creation of the matrices
-
-dir.create(file.path(resultsPath, 'cluster'), showWarnings=FALSE)  # directory for cluster results
-# list of used correlation methods
-correlation_methods <- c("pearson", "spearman", "ys1", "ys2", "ys3", "yr1", "yr2", "yr3")
-
-# Full set of correlation matrices based on the various used methods. Provides simple access to the respective correlation matrix. 
-cor.matrices <- vector("list", length=length(correlation_methods))
-names(cor.matrices) <- correlation_methods
-cor.matrices$pearson <- cor.pearson
-cor.matrices$spearman <- cor.spearman
-cor.matrices$ys1 <- cor.ys1
-cor.matrices$ys2 <- cor.ys2
-cor.matrices$ys3 <- cor.ys3
-cor.matrices$yr1 <- cor.yr1
-cor.matrices$yr2 <- cor.yr2
-cor.matrices$yr3 <- cor.yr3
-# Save correlation matrices
-save(cor.matrices, file=file.path(resultsPath, "data", "cor.matrices.Rdata"))
-```
-
 The hierarchical clustering is now calculated based on the respective correlation matrices. Hierarchical clustering based on the given correlation matrix is applied with `N=6` clusters. For every correlation measure the cluster plots are created.
 ``` {r hierarchical clustering}
 hclust.res <- vector("list", length=length(correlation_methods))
 names(hclust.res) <- correlation_methods
 
-Ngroups <-  6  # number of clusters
+Ngroups <-  7  # number of clusters
 for (method in correlation_methods){
   # get correlation matrix
   cor.cluster <- cor.matrices[[method]]

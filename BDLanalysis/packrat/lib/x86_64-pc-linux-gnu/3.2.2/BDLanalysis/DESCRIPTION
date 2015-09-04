@@ -15,4 +15,4 @@ Suggests: testthat, knitr, reshape, calibrate
 VignetteBuilder: knitr
 Author: "Matthias Koenig" [aut, cre]
 Maintainer: "Matthias Koenig" <konigmatt@googlemail.com>
-Built: R 3.2.2; ; 2015-09-04 14:52:53 UTC; unix
+Built: R 3.2.2; ; 2015-09-04 16:31:55 UTC; unix

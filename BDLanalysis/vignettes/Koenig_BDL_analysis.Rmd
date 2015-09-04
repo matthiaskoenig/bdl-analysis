@@ -279,6 +279,7 @@ df.anova$sig <- sapply(df.anova$p.value, significant_code)  # add significant co
 
 df.anova$p.holm <- p.adjust(df.anova$p.value, method ="holm" , n = length(df.anova$p.value))
 df.anova$sig.holm <- sapply(df.anova$p.holm, significant_code) 
+df.anova$ftype <- BDLfactors$ftype
 
 # order factors by adjusted p-values
 df.anova.ordered <- df.anova[with(df.anova, order(p.holm)), ]
@@ -1126,6 +1127,7 @@ calculate_node_ranges <- function(){
 }
 
 # predicted time classes by decision tree
+node_ranges <- calculate_node_ranges()
 print(round(node_ranges, digits=1))
 ```
 
@@ -1353,7 +1355,6 @@ legend("topright", legend=c("single factor", "double factor", "mean cluster"),
            col=c(rgb(0.7, 0.7, 0.7, 1),rgb(1, 0, 0, 0.5),rgb(0, 0, 1, 0.5)),
            bty="n", cex=1.0, pch=15)
 ```
-
 
 Evaluation of the predictions. Which experimental classes were predicted in which time classes of the regression tree for the mean cluster data (trainings data), single representative from each clusters and double representatives from each cluster.
 ``` {r}

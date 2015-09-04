@@ -104,7 +104,7 @@ BDLmean.time <- as.numeric(levels(as.factor(BDLsamples$time)))
 In total `r ncol(BDLdata)` factors were measured in the this BDL study falling in the categories: `r levels(BDLfactors$ftype)`. The majority of factors belongs herby to the 3 fluidigm chips with 47 probes per chip.
 
 An overview of the number of factors per category is provided in the following table
-```{r factors}
+```{r factorTable}
 cat_table <- as.data.frame(table(BDLfactors$ftype))
 colnames(cat_table) <- c("Category", "Freq")
 set.caption(sub(".", " ", "Factors per category", fixed = TRUE))
@@ -166,15 +166,14 @@ timecourse_heatmap <- function(){
       lty= 1, lwd = 10, cex = 0.7, bty="n"
   )
 }
-```
-
-``` {r heatmap2, fig.width=10, fig.height=10, error=TRUE, htmlcap='<b>Figure All factors </b>: Heatmap of the complete data set, i.e. all factors and repeats over time. The data is row scaled, i.e. every individual factor is scaled to have mean zero and standard deviation one, with positive Z-score in blue, negative Z-score in red. The row order is according to the the factor categories, the order within the fluidigm chips according to the order of the probes on the chip. the respective categories are depicted on the left.'}
-timecourse_heatmap()
-
 # plot to file
 pdf(file.path(resultsPath, "control", "timecourse_heatmap.pdf"), width=10, height=10, pointsize=12) 
 timecourse_heatmap()
 invisible(dev.off())
+```
+
+``` {r timecourse_heatmap, fig.width=10, fig.height=10, error=TRUE, htmlcap='<b>Figure All factors </b>: Heatmap of the complete data set, i.e. all factors and repeats over time. The data is row scaled, i.e. every individual factor is scaled to have mean zero and standard deviation one, with positive Z-score in blue, negative Z-score in red. The row order is according to the the factor categories, the order within the fluidigm chips according to the order of the probes on the chip. the respective categories are depicted on the left.'}
+timecourse_heatmap()
 # cleanup
 rm(factor_table, h_lines, v_lines)
 ```
@@ -218,7 +217,7 @@ set.caption(sub(".", " ", "Pearson correlation of Actb controls", fixed = TRUE))
 pander(round(actb.pearson, digits=3))
 ```
 
-``` {r fig.width=10, fig.height=7,  htmlcap='<b>Figure Actb control</b>: Correlation plot of the Actb probes from the 3 Fluidigm chips: Actb (fibrosis), Actb.x (ADME), Actb.y (Cytokines). The top row shows the individual time courses, the bottom row the pair wise plot of individual data points.'}
+``` {r ActBControlPlot, fig.width=10, fig.height=7,  htmlcap='<b>Figure Actb Control</b>: Correlation plot of the Actb probes from the 3 Fluidigm chips: Actb (fibrosis), Actb.x (ADME), Actb.y (Cytokines). The top row shows the individual time courses, the bottom row the pair wise plot of individual data points.'}
 plot_actb_control()
 rm(actb.pearson, actb.spearman)
 ```
@@ -293,7 +292,7 @@ rm(df.anova.ordered)
 
 ## Filter factors
 The factors are filtered based on the respective acceptance level, with the cutoff for the adjusted p-value being $p_{accept}$, i.e. all factors with a ANOVA with $p_{adjusted} \ge p_{accept}$ are filtered out. The filtered raw data is available as `BDLdata.fil`, the filtered mean data set as `BDLmean.fil`. All subsequent analyses are performed on the filtered data set, which is depicted in the following heatmap
-``` {r filter}
+``` {r filter_factors}
 p.accept = 0.05  # acceptance level
 anova.accept = (df.anova$p.holm < p.accept)  # accepted subset
 # subset of filtered data
@@ -320,7 +319,7 @@ Based on the adjusted p-values the data set was reduced from original 154 factor
 ### Heatmap of filtered time course data
 The heatmap of the filtered raw data is depicted below
 
-``` {r heatmap_filtered, fig.width=10, fig.height=10, error=TRUE, htmlcap='<b>Figure Heatmap ANOVA:</b> Plot of ANOVA filtered data set.'}
+``` {r heatmap_filtered}
 v_lines <- ((1:Nt)*Nr+0.5)
 
 timecourse_heatmap_filtered <- function(){
@@ -352,15 +351,17 @@ timecourse_heatmap_filtered <- function(){
       bty="n"
   )
 }
-# plot to report
-timecourse_heatmap_filtered()
 
 # plot to file
 pdf(file.path(resultsPath, "control", "timecourse_heatmap_filtered.pdf"), 
     width=10, height=10, pointsize=12)  
 timecourse_heatmap_filtered()
 invisible(dev.off())
+```
 
+``` {r heatmap_filtered_plot, fig.width=10, fig.height=10, error=TRUE, htmlcap='<b>Figure Timcourse Filtered:</b> Plot of ANOVA filtered data set.'}
+# plot to report
+timecourse_heatmap_filtered()
 rm(v_lines)
 ```
 
@@ -430,12 +431,12 @@ correlation_heatmap <- function(method){
 }
 ```
 
-```{r}
+``` {r heatmap_pearson, fig.width=10, fig.height=10, error=TRUE, htmlcap='<b>Figure Heatmap Pearson:</b> Correlation matrix based on Pearson correlation.'}
 # Pearson correlation (no clustering)
 correlation_heatmap(method="pearson")
 ```
 
-```{r}
+``` {r heatmap_spearman, fig.width=10, fig.height=10, error=TRUE, htmlcap='<b>Figure Heatmap Spearman:</b> Correlation matrix based on Spearman correlation.'}
 # Spearman correlation (no clustering)
 correlation_heatmap(method="spearman")
 ```
@@ -482,9 +483,6 @@ rm(cor.ysr, cor.R_star, cor.S_star, ysr.res, ysr_methods)
 
 Create heatmap plots for all calculated correlation matrices
 ``` {r correlationPlots}
-# ys3 heatmap in report
-correlation_heatmap(method="ys3")
-
 # create all correlation heatmaps on disk
 hmap.settings <- list(width=10, height=10, pointsize=12)
 for (method in correlation_methods){
@@ -496,6 +494,11 @@ for (method in correlation_methods){
 invisible(dev.off())
 rm(method, fname)
 }
+```
+
+``` {r correlationPlots2, fig.width=10, fig.height=10, error=TRUE, htmlcap='<b>Figure Heatmap YS3:</b> Correlation matrix based on YS3 correlation.'}
+# ys3 heatmap in report
+correlation_heatmap(method="ys3")
 ```
 
 # Hierarchical clustering
@@ -531,7 +534,7 @@ rm(method)
 ```
 
 In the next step the correlation matrices are plotted in combination with the clustering results
-``` {r}
+``` {r correlation_heatmap_cluster}
 # Create correlation heatmap with hierachical clustering results
 correlation_heatmap_cluster <- function(method){
   # matrix and cluster results
@@ -570,13 +573,13 @@ rm(method)
 ```
 
 Display the clusters with the heatmap
-``` {r heatmap_ys3, fig.width=10, fig.height=10, error=TRUE, htmlcap='<b>Figure Heatmap Cluster:</b> Plot of ANOVA filtered data set.'}
+``` {r heatmap_ys3, fig.width=10, fig.height=10, error=TRUE, htmlcap='<b>Figure Heatmap Cluster:</b> Correlation matrix based on YS3 correlation with hierachical clustering infromation.'}
 # plot ys3 to report
 correlation_heatmap_cluster(method="ys3")
 ```
 
 The following factors are in the `ys3` time course clusters
-``` {r}
+``` {r list_cluster_members}
 # print representatives of cluster
 list_cluster_members <- function(method){
   groups <- hclust.res[[method]]$groups
@@ -653,16 +656,18 @@ pdf(file.path(resultsPath, "correlation", "histological_correlations.pdf"),
 plot_histological_correlations(histological_correlations)
 invisible(dev.off())
 
-# plot in report
-plot_histological_correlations(histological_correlations)
-
 # print correlation values
 print(round(t(histological_correlations), digits=2))
 ```
 
+``` {r histological_correlations_plot, fig.width=10, fig.height=4, error=TRUE, htmlcap='<b>Figure Histological Correlations:</b> Correlations between non-RNA factors and all other factors.'}
+# plot in report
+plot_histological_correlations(histological_correlations)
+```
+
 ## Top correlations for non-RNA factors
 List the top correlations of every non-RNA factor, i.e. histological (H), biochemical (B) and immunohistochemical (A). The top correlations are sorted by absolute correlation values.
-``` {r}
+``` {r plot_hist_topcors}
 plot_hist_topcors <- function(method="ys3", labels=TRUE, mfrow=c(10,1), 
                               only_RNA=FALSE, Ntop=10){
   hist_facs <- rownames(histological_correlations)
@@ -711,7 +716,9 @@ pdf(file.path(resultsPath, "correlation", "histological_topcors_2.pdf"),
     width=10, height=10, pointsize=12)  
 plot_hist_topcors(method="ys3", labels=FALSE)
 dev.off()
+```
 
+``` {r plot_hist_topcors_report, fig.width=10, fig.height=10, error=TRUE, htmlcap='<b>Figure Histological Top Correlations:</b> Top correlations between non-RNA factors and all other factors.'}
 # plot in report
 plot_hist_topcors(method="ys3", labels=TRUE, mfrow=c(5,2))
 ```
@@ -720,7 +727,7 @@ plot_hist_topcors(method="ys3", labels=TRUE, mfrow=c(5,2))
 In the next step, we were interested in the time courses of the time course clusters: What are the typical profiles found in the different clusters and which factors are in these clusters. For the comparison of individual factors against each other and against the mean time course of the cluster the factors were normalized. The normalization was hereby performed for every factor separately based on
 $$f_{k}^{norm}(t_{i,r}) = \frac{f_{k}(t_{i,r})-<f_{k}>}{max(f_{x})-min(f_{x})}$$
 
-``` {r}
+``` {r normalize_BDLdata}
 suppressPackageStartupMessages(library('matrixStats'))
 dir.create(file.path(resultsPath, 'cluster'), showWarnings=FALSE)
 
@@ -751,7 +758,7 @@ BDLmean.norm <- bdl_mean_data(BDLdata.norm, BDLsamples)
 ```
 
 Based on the normalized factor data the mean time course of the clusters were calculated, i.e. the time course due to averaging over all factors in the individual clusters. In addition the mean time course averaged over the repeats for all factors are plotted.
-``` {r plotClusters}
+``` {r plot_clusters_mean}
 # Plot mean cluster with SD range and the individual representatives in the cluster.
 plot_clusters_mean <- function(method){  
   # clusters for correlation method
@@ -798,13 +805,13 @@ for (method in correlation_methods){
 }
 ```
 
-``` {r cluster_mean, fig.width=10, fig.height=7.5, error=TRUE, htmlcap='<b>Figure Cluster mean:</b> Plot of mean cluster data.'}
+``` {r plot_clusters_mean_report, fig.width=10, fig.height=7.5, error=TRUE, htmlcap='<b>Figure Cluster mean:</b> Plot of mean cluster data.'}
 # plot ys3 clusters to report
 plot_clusters_mean(method="ys3")
 ```
 
 In addition the plots of the individual factors in the clusters are generated. Despite being clustered together still quit large variance exists between the different factors in the clusters.
-``` {r}
+``` {r plot_clusters_items}
 # Plot individual time courses in cluster
 plot_clusters_items <- function(method, toFile=FALSE){
   # get the cluster assignment for the given method

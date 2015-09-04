@@ -967,6 +967,8 @@ log_transform_back <- function(log_data){
   exp(log_data)-1
 }
 # Resulting time transformations
+time_transformation <- data.frame(time=BDLmean.time, log_time=log_transform(BDLmean.time))
+print(round(time_transformation,2))
 ```
 
 ## Trainings data
@@ -1010,9 +1012,9 @@ save(treedata.mean, file=file.path(resultsPath, "data", "treedata.mean.Rdata"))
 Fit the log transformed time against the mean cluster data for the time points. Set control parameters for the algorithm are `minsplit=6` and `minbucket=2` to account for the low number of samples (`N=40`). 
 ``` {r}
 # formula for regression tree
-formula.reg = paste("regvalue ~ c1 + c2 + c3 + c4 + c5 + c6")
+formula.reg = paste("logtime ~ c1 + c2 + c3 + c4 + c5 + c6")
 
-# fitting regression tree with mean cluster data
+# fit regression tree with mean cluster data
 tree.reg <- rpart(formula=formula.reg, 
                   data=treedata.mean, 
                   method="anova", 
@@ -1036,42 +1038,116 @@ prp(tree.reg, type=0, extra=101, yesno=TRUE)
 # visualize cross-validation results 
 rsq.rpart(tree.reg) 
 
-# predition on trainings data
-pred.reg<- predict(tree.reg, newdata=treedata.mean, type="vector")
-pred.reg
-```
-
-
-## Data sets for prediction
-Prepare the evaluation data sets for the fitted trees consisting of all single factor combinations from the clusters used in the decision tree. Only the combinations are created which are from clusters used for decisions in the tree
-``` {r}
-# get the variables used for splitting
+# variables used for splitting in the decision tree
 tree.nodes <- (tree.reg$frame)$var
 tree.nodes <- tree.nodes[tree.nodes != "<leaf>"]
 tree.vars <- as.character(sort(unique(tree.nodes)))
 rm(tree.nodes)
 # variables used for splitting decisions in tree
 print(tree.vars)
+```
 
-# overview of member count per cluster
-group_table <- table(groups)
-print(group_table)
+## Prediction on trainings data
+Predict data with the tree, here the time class leaves based on the mean cluster data. The regression tree predicts log classes, which are back-transformed to time in [h]. So how good is the tree performing on the trainings data set, i.e. the mean cluster data. Predictons are evaluated based on the distance between the predicted and the experimental time classes based on the following distance measure on log scale
+$$ TODO? $$
 
-# names of factors in the clusters
-group.factors <- vector("list", length=Ngroups)
-for (k in 1:Ngroups){
-  groups.factors[[k]] <- as.character(names(groups[groups==k]))
+``` {r predictionDistance}
+# L2 (euclidian) distance measurement on the log transformed data. Analog to the distance measurement in fitting 
+# the regression tree.
+log_distance <- function(d1, d2){
+  # sums over all the distances of the samples in log space
+  log_rmsd <- sqrt(sum( (log_transform(d1)-log_transform(d2) )^2 ))/length(d1)
+  return(log_rmsd)
 }
+```
+Prediction on trainings data
+``` {r}
+# mean cluster predictions
+pred.mean.log <- predict(tree.reg, newdata=treedata.mean, type="vector")
+# transformation to time in [h]
+pred.mean <- log_transform_back( pred.mean.log )
+
+# TODO: create the matrix of how is predicted (on normal and log scale)
+# prediction on classification data
+# BDLsamples$time
+# pred.matrix.mean <- matrix(NA, nrow=nrow(node_ranges), ncol=length(levels(as.factor(BDLsamples$time))))
+
+
+# Distance calculation (predicted to experimental)
+dist.mean.all <- treedata.mean$logtime - pred.mean.log
+dist.mean <- log_distance(pred.mean, BDLsamples$time)
+
+# plot predicted ~ experimentell
+plot_mean_prediction <- function(){
+  par(mfrow=c(1,2))
+  plot(BDLsamples$time, pred.mean, pch=15, col=rgb(0,0,1, 0.2), main="Regression Tree:\nPredicted ~ experimentell time",
+       xlab="experimentell time [h]", ylab="predicted time [h]")
+  abline(a=0, b=1, col=rgb(0.5,0.5,0.5,0.5))
+  hist(dist.mean.all, breaks=seq(from=-1.05, to=1.05, by=0.1), 
+       main="Histogram prediction error:\nmean cluster data",
+       col=rgb(0.5,0.5,0.5,0.5),
+       xlab="logtime(exp)-logtime(pred)")
+  par(mfrow=c(1,1))  
+}
+# plot to file
+pdf(file.path(resultsPath, 'decision_tree', "prediction_mean.pdf"), 
+    width=10, height=5, pointsize=12)  
+plot_mean_prediction()
+invisible(dev.off())
+# and report
+plot_mean_prediction()
+```
+
+The ranges of the predicted classes by the regression trees can be calculated based on the split points on log scale. These provides the information which time points would be classified in which class in the regression tree.
+``` {r}
+calculate_node_ranges <- function(){
+  # classes via predicted classes for cluster data
+  node_levels <- levels(as.factor(pred.mean))
+  # These are the predicted classes
+  node_classes <- round(as.numeric(node_levels), digits=1)
+  
+  # get the intervals of the time classes
+  node_mean <- as.numeric(levels(as.factor(pred.mean.log)))
+  node_midpoints <- (node_mean[2:length(node_mean)] + node_mean[1:(length(node_mean)-1)])/2
+  # minimum of range
+  node_min <- node_mean
+  node_min[2:length(node_min)] <- node_midpoints
+  # maximum of range
+  node_max <- node_mean
+  node_max[1:(length(node_min)-1)] <- node_midpoints
+  # ranges in log scale
+  node_ranges.log <- data.frame(node_mean, node_min, node_max)
+  
+  node_ranges <- data.frame(mean=log_transform_back(node_mean), 
+                            min=log_transform_back(node_min),
+                            max=log_transform_back(node_max))
+  rownames(node_ranges) <- paste("class", 1:nrow(node_ranges))
+  return(node_ranges)
+}
+
+# predicted time classes by decision tree
+print(round(node_ranges, digits=1))
+```
+
+## Test data for tree evaluation
+### Single factor per cluster
+Prepare the evaluation data sets for the fitted trees consisting of all single factor combinations from the clusters used in the decision tree. Only the combinations are created which are from clusters used for decisions in the tree
+``` {r}
+# names of factors in the clusters
 cluster_names <- paste('c', 1:Ngroups, sep="")
-names(groups.factors) <- cluster_names
+cluster.factors <- vector("list", length=Ngroups)
+groups <- (hclust.res$ys3)$groups  # get the ys3 groups
+for (k in 1:Ngroups){
+  cluster.factors[[k]] <- as.character(names(groups[groups==k]))
+}
+names(cluster.factors) <- cluster_names
 
 # create data.frame of all single combinations from clusters
-single.combinations <- expand.grid(groups.factors, stringsAsFactors=TRUE)
-names(single.combinations) <- names(groups.factors)
-
+single.combinations <- expand.grid(cluster.factors, stringsAsFactors=TRUE)
+names(single.combinations) <- names(cluster.factors)
+# number of single combinations
 Nsingle <- nrow(single.combinations)
-print(Nsingle)
-head(single.combinations, 20)
+print(Nsingle)  # 88572 combinations
 
 # create all single factor data
 print("Calculating single factor data (~ 3min) ... ")
@@ -1085,24 +1161,24 @@ for (k in 1:Nsingle){
   
   # get factor data
   tmp <- BDLdata.norm[, t(single.combinations[k, ]) ]
-  
-  # add class and regression values
-  tmp[c("class", "regvalue")] <- treedata.mean[ c("class", "regvalue")]
+  # add regression values
+  tmp[c("class", "logtime")] <- treedata.mean[ c("class", "logtime")]
   
   # add factor fields 
   tmp[, paste(cluster_names, '.id', sep="")] <- single.combinations[k,]
-  colnames(tmp) <- c(cluster_names, 'class', 'regvalue', paste(cluster_names, '.id', sep=""))
+  colnames(tmp) <- c(cluster_names, 'class', 'logtime', paste(cluster_names, '.id', sep=""))
   
   # store data 
   treedata.single[[k]] <- tmp
   
-  if (k%%500 == 0){print(k)} 
+  # if (k%%500 == 0){print(k)} 
   # print(proc.time()-ptm)  # Stop the clock
 }
 # Stop the clock
 print(proc.time() - ptm)
 print("... calculated.")
-treedata.single[[1]]
+rm(tmp,k)
+# treedata.single[[1]]
 
 # which factor combinations only use genes
 factor_is_gene <- BDLfactors$ftype %in% c("GE_ADME", "GE_Cytokines", "GE_Fibrosis")
@@ -1113,8 +1189,10 @@ gene_only.single <- vector("logical", Nsingle)
 for (k in 1:Nsingle){
   gene_only.single[k] <- all(factor_is_gene[t(single.combinations[k,])])
 }
+rm(k)
 ```
 
+### Double factor per cluster
 Create a sample of double combinations from the various clusters.
 ``` {r}
 print("Calculating double factor data (~ 1min) ... ")
@@ -1124,19 +1202,19 @@ Ndouble <- 10000
 treedata.double <- vector("list", Ndouble)  # list for sampled double combinations
 for (k in 1:Ndouble){
   # sample from the 4 clusters without replacement
-  n1 = sample(groups.factors[[1]], 2, replace=FALSE)  
-  n2 = sample(groups.factors[[2]], 2, replace=FALSE)  
-  n3 = sample(groups.factors[[3]], 2, replace=FALSE)  
-  n4 = sample(groups.factors[[4]], 2, replace=FALSE)  
-  n5 = sample(groups.factors[[5]], 2, replace=FALSE)  
-  n6 = sample(groups.factors[[6]], 2, replace=FALSE)  
+  n1 = sample(cluster.factors[[1]], 2, replace=FALSE)  
+  n2 = sample(cluster.factors[[2]], 2, replace=FALSE)  
+  n3 = sample(cluster.factors[[3]], 2, replace=FALSE)  
+  n4 = sample(cluster.factors[[4]], 2, replace=FALSE)  
+  n5 = sample(cluster.factors[[5]], 2, replace=FALSE)  
+  n6 = sample(cluster.factors[[6]], 2, replace=FALSE)  
   
   # The mean of the combination is used (handle NAs)
   tmp <- 0.5 * (  BDLdata.norm[, c(n1[1], n2[1], n3[1], n4[1], n5[1], n6[1])] 
                 + BDLdata.norm[, c(n1[2], n2[2], n3[2], n4[2], n5[2], n6[2])] )
   
    # add class and regression values
-  tmp[c("class", "regvalue")] <- treedata.mean[ c("class", "regvalue")]
+  tmp[c("class", "logtime")] <- treedata.mean[ c("class", "logtime")]
   
   # add factor fields 
   tmp[ , paste(cluster_names, '.id', sep="")] <- data.frame(paste(n1, collapse="__"), 
@@ -1151,111 +1229,47 @@ for (k in 1:Ndouble){
 }
 print(proc.time() - ptm)
 print("... calculated.")
-treedata.double[[5]]
+rm(k, tmp)
+# treedata.double[[5]]
 ```
 
-##  Predict with the data sets
-The fitted regression tree is now evaluated on multiple test sets.
-### Mean cluster
-Predict data with the tree, here the time class leaves based on the mean cluster data.
-The regression tree predicts log classes, which are back-transformed to time in [h].
-So how good is the tree performing on the trainings data set, i.e. the mean cluster data.
-``` {r}
-# mean cluster predictions
-pred.mean.log <- predict(tree.reg, newdata=treedata.mean, type="vector")
-# transformation to time in [h]
-pred.mean <- log_transform_back( pred.mean.log )
-# plot predicted ~ experimentell
-plot(BDLsamples$time, pred.mean, pch=15, col=rgb(0,0,1, 0.2), main="Regression Tree:\nPredicted ~ experimentell time",
-     xlab="experimentell time [h]", ylab="predicted time [h]")
-```
-
-Get the ranges of the various classes via the split points on log scale
-``` {r}
-# classes via predicted classes for cluster data
-node_levels <- levels(as.factor(pred.mean))
-# These are the predicted classes
-node_classes <- round(as.numeric(node_levels), digits=1)
-node_classes
-
-# get the intervals of the time classes
-node_mean <- as.numeric(levels(as.factor(pred.mean.log)))
-node_midpoints <- (node_mean[2:length(node_mean)] + node_mean[1:(length(node_mean)-1)])/2
-# minimum of range
-node_min <- node_mean
-node_min[2:length(node_min)] <- node_midpoints
-# maximum of range
-node_max <- node_mean
-node_max[1:(length(node_min)-1)] <- node_midpoints
-# ranges in log scale
-node_ranges.log <- data.frame(node_mean, node_min, node_max)
-
-node_ranges <- data.frame(mean=log_transform_back(node_mean), 
-                          min=log_transform_back(node_min),
-                          max=log_transform_back(node_max))
-rownames(node_ranges) <- paste("class", 1:nrow(node_ranges))
-
-# predicted classes by decision tree
-round(node_ranges, digits=1)
-
-# prediction on classification data
-# TODO: create the matrix of how is predicted
-# BDLsamples$time
-# pred.matrix.mean <- matrix(NA, nrow=nrow(node_ranges), ncol=length(levels(as.factor(BDLsamples$time))))
-```
-
-## Single representative predictions
+## Predicting test data
+### Single representative predictions
 Time class prediction with regression tree for single representative from each cluster
 ``` {r singlePrediction}
-# single predictions
-print("Predicting single factor data (~ 3min) ... ")
-pred.res <- vector("list", length(treedata.single))
+print("Predicting single factor data (~ 2min) ... ")
+pred.single.all <- vector("list", length(treedata.single))
 for (k in (1:length(treedata.single))){
-  # back conversion
-  pred.res[[k]] <- exp(predict(tree.reg, newdata=treedata.single[[k]], method="anova"))-1
+  # prediction and back transformation  
+  pred.single.all[[k]] <- log_transform_back( predict(tree.reg, newdata=treedata.single[[k]], method="anova") )
 }
-pred.single <- do.call("rbind", pred.res)
-```
-
-## Random double representative predictions
-Time class prediction with regression tree for random selection of two representatives from each clusters
-```{r doublePrediction}
-# double predictions
-pred.res <- vector("list", length(treedata.double))
-for (k in (1:length(treedata.double))){
-  pred.res[[k]] <- exp(predict(tree.reg, newdata=treedata.double[[k]], method="anova"))-1
-}
-pred.double <- do.call("rbind", pred.res)
-```
-
-## Distance calculation (predicted to experimental)
-Display the performance of the single and double representative trees for prediction. Find the best single trees using all representatives and only genes. The best predictor minimizes hereby the distance between predicted and actual time classes.
-``` {r predictionDistance}
-# L2 (euclidian) distance measurement on the log transformed data. Analog to the distance measurement in fitting 
-# the regression tree.
-log_distance <- function(d1, d2){
-  # sums over all the distances of the samples
-  rmsd <- sqrt(sum( (log_transform(d1)-log_transform(d2) )^2 ))/length(d1)
-  # corresponds to hours
-  return(log_transform_back(rmsd))
-}
+pred.single <- do.call("rbind", pred.single.all)
 
 # distance for all predictions on single factor per cluster
 dist.single <- rep(NA, Nsingle)
 for (k in 1:Nsingle){
   dist.single[k] <- log_distance(pred.single[k,], BDLsamples$time)
 }
+```
+
+## Random double representative predictions
+Time class prediction with regression tree for random selection of two representatives from each clusters
+```{r doublePrediction}
+print("Predicting double factor data (~ 1min) ... ")
+pred.double.all <- vector("list", length(treedata.double))
+for (k in (1:length(treedata.double))){
+  pred.double.all[[k]] <- log_transform_back( predict(tree.reg, newdata=treedata.double[[k]], method="anova") )
+}
+pred.double <- do.call("rbind", pred.double.all)
 
 # distance for predictions on 2 sampled factors per cluster 
 dist.double <- rep(NA, Ndouble)
 for (k in 1:Ndouble){
   dist.double[k] <- log_distance(pred.double[k,], BDLsamples$time)
 }
-# distance on mean cluster
-dist.mean <- log_distance(pred.mean, BDLsamples$time)
 ```
 
-## Best regression trees 
+## Best factor combinations for predicting time classes
 Finding the best regression trees based on i) all single representatives from the clusters; and ii) single representatives only consisting of gene probes. The best is defined by minimal euclidian distance between experimental classes and predicted classes on the log scale. The best tree is not refitted with the respective factors in the tree, but the mean cluster tree uses the respective factor data for prediction.
 ```{r bestTrees}
 # Best decision tree using all factors
@@ -1270,7 +1284,7 @@ pred.rep.best <- pred.single[as.numeric(rep.best.idx), ]
 print("Best single representatives for decision tree:")
 print(rep.best)
 print(dist.rep.best)
-
+# ------------------------
 # Best decision tree using only gene factors, i.e. first reduce to the gene combinations
 dist.single.genes <- dist.single[gene_only.single]
 single.combinations.genes <- single.combinations[gene_only.single,]
@@ -1285,7 +1299,7 @@ pred.gene.best
 print("Best single representatives based on genes for decision tree:")
 print(gene.best)
 print(dist.gene.best)
-
+# ------------------------
 # Plot time courses of the representatives/factors in provided tree combinations
 plot_tree_representatives <- function(combination){
   Nc <- ncol(combination)
@@ -1314,9 +1328,9 @@ invisible(dev.off())
 # plot to report
 plot_tree_representatives(rep.best)
 plot_tree_representatives(gene.best)
-
 ```
 
+## Distributions of prediction distance
 Plot the distance distributions of single and double representatives and the best gene and representative trees.
 ``` {r treeDistanceDistribution}
 # Plot the distributions of all the distances, i.e. log transformed predictions

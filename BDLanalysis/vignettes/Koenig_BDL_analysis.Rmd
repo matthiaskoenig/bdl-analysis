@@ -18,7 +18,7 @@ header-includes: \usepackage{graphicx}
 %\VignetteEngine{knitr}
 %\VignetteIndexEntry{BDL raw data processing}
 -->
-```{r, options, echo=FALSE}
+```{r knitr_setup, options, echo=FALSE}
 # set knitr option
 # knitr::opts_chunk$set()
 knitr::knit_hooks$set(htmlcap = function(before, options, envir) {
@@ -56,7 +56,7 @@ The following naming conventions are used
 
 The results of the analysis are written to the results directory defined via the `BDL_RESULTS` environment variable. To reproduce this analysis create the respective variable.
 
-```{r resultsPath, eval=TRUE, strip.white=TRUE}
+```{r results_path, eval=TRUE, strip.white=TRUE}
 # read the folder for results from environment variable
 resultsPath <- Sys.getenv("BDL_RESULTS")
 if (identical(resultsPath, "")){
@@ -72,7 +72,7 @@ dir.create(file.path(resultsPath, 'data'), showWarnings=FALSE)
 ## Data import
 In a first step the processed data set is loaded from the `data` folder. The data consists of the time course data for all factors (`BDLdata`), additional information for the factors (`BDLfactors`), the sample definition, i.e. the assignment of sample ids to respective time point and repeat (`BDLsamples`), and a mapping of the Fluidigm (gene) probe ids to UniProt identifiers (`BDLprobes`).
 
-```{r BDLdata, eval=TRUE, strip.white=TRUE}
+```{r bdl_data, eval=TRUE, strip.white=TRUE}
 suppressPackageStartupMessages(library(BDLanalysis))
 suppressPackageStartupMessages(library(calibrate))
 suppressPackageStartupMessages(library(pander))
@@ -96,7 +96,7 @@ save(BDLprobes, file=file.path(resultsPath, "data", "BDLprobes.Rdata"))
 ```
 
 In addition to the individual data points per time point, the mean data averaged over the $N_{r}$ repeats per time points is used in parts of the correlation analysis. This mean factor data set is calculated once at the beginning via
-```{r BDLmean}
+```{r bdl_mean_data}
 BDLmean <- bdl_mean_data(BDLdata, BDLsamples)
 BDLmean.time <- as.numeric(levels(as.factor(BDLsamples$time)))
 ```
@@ -104,7 +104,7 @@ BDLmean.time <- as.numeric(levels(as.factor(BDLsamples$time)))
 In total `r ncol(BDLdata)` factors were measured in the this BDL study falling in the categories: `r levels(BDLfactors$ftype)`. The majority of factors belongs herby to the 3 fluidigm chips with 47 probes per chip.
 
 An overview of the number of factors per category is provided in the following table
-```{r factorTable}
+```{r factor_table}
 cat_table <- as.data.frame(table(BDLfactors$ftype))
 colnames(cat_table) <- c("Category", "Freq")
 set.caption(sub(".", " ", "Factors per category", fixed = TRUE))
@@ -116,7 +116,7 @@ rm(cat_table)
 ### Time course of single factors
 In a first step overview plots of the raw and mean data for all individual factors are generated. These are available in the `resultsPath/factors` folder
 
-```{r factorPlots, eval=TRUE}
+```{r factor_plots}
 # Create figures for all factors
 factors_path <- file.path(resultsPath, 'factors')
 dir.create(factors_path, showWarnings=FALSE)
@@ -125,13 +125,13 @@ rm(factors_path)
 ```
 
 The example for a single factor is depicted below, here for the factor `bilirubin`.
-``` {r bilirubin, htmlcap='<b>Figure Single factor</b>: Plot of the raw time course data for a single factor, here for bilirubin. On the left the data is plotted against the time [h], on the right against the different time classes. Individual data points are depecticed in blue with the respective sample number shown next to the data points. The mean averaged of the repeats per time point are depicted in red. Box-and-whisker plots were added with default R parameters of boxwex=0.8, staplewex=0.5, outwex=0.5.'}
+``` {r bilirubin_plot, htmlcap='<b>Figure Single factor</b>: Plot of the raw time course data for a single factor, here for bilirubin. On the left the data is plotted against the time [h], on the right against the different time classes. Individual data points are depecticed in blue with the respective sample number shown next to the data points. The mean averaged of the repeats per time point are depicted in red. Box-and-whisker plots were added with default R parameters of boxwex=0.8, staplewex=0.5, outwex=0.5.'}
 plot_single_factor('bilirubin', path=NULL)
 ```
 
 ### Time course of all factors (Heatmap)
 In a next step the heatmap of the full data set was generated, i.e. of all time points and repeats. This provides a first overview over the complete data set. Rows correspond to the individual factors (factor order corresponding to the original data set: `GE_ADME`, `GE_Cytokines`, `GE_Fibrosis`, `Biochemistry`, `Histology`, `Antibodies`). Columns correspond to the 40 samples with 5 subsequent samples belonging to one of the 8 time points (with from left to right: `r levels(BDLsamples$time_fac)`). The data is row scaled, i.e. every individual factor is scaled to have mean zero and standard deviation one.
-```{r timecourseHeatmap}
+```{r timecourse_heatmap}
 suppressPackageStartupMessages(library(gplots))
 suppressPackageStartupMessages(library("RColorBrewer"))
 
@@ -172,7 +172,7 @@ timecourse_heatmap()
 invisible(dev.off())
 ```
 
-``` {r timecourse_heatmap, fig.width=10, fig.height=10, error=TRUE, htmlcap='<b>Figure All factors </b>: Heatmap of the complete data set, i.e. all factors and repeats over time. The data is row scaled, i.e. every individual factor is scaled to have mean zero and standard deviation one, with positive Z-score in blue, negative Z-score in red. The row order is according to the the factor categories, the order within the fluidigm chips according to the order of the probes on the chip. the respective categories are depicted on the left.'}
+``` {r timecourse_heatmap_report, fig.width=10, fig.height=10, error=TRUE, htmlcap='<b>Figure All factors </b>: Heatmap of the complete data set, i.e. all factors and repeats over time. The data is row scaled, i.e. every individual factor is scaled to have mean zero and standard deviation one, with positive Z-score in blue, negative Z-score in red. The row order is according to the the factor categories, the order within the fluidigm chips according to the order of the probes on the chip. the respective categories are depicted on the left.'}
 timecourse_heatmap()
 # cleanup
 rm(factor_table, h_lines, v_lines)
@@ -184,7 +184,7 @@ rm(factor_table, h_lines, v_lines)
 
 ## Actb quality control
 Actb (Actin, cytoplasmic 1) probes were included on all Fluidigm chips (`GE_ADME`, `GE_Cytokines`, `GE_Fibrosis`) and not used in the normalization of the gene expression data. Hence, ActB can serve as quality control for the technical reproducibility of the Fluidigm chips. If the data is reproducible between chips the pairwise correlation between all individual Actb measurements should have high correlation coefficients close to 1. Plotting the data of the Actb measurements of two chips against each other should lie on a straight line
-```{r CheckActB}
+```{r check_actb}
 # Actb control figure
 plot_actb_control <- function(){
   par(mfrow=c(2,3))
@@ -217,7 +217,7 @@ set.caption(sub(".", " ", "Pearson correlation of Actb controls", fixed = TRUE))
 pander(round(actb.pearson, digits=3))
 ```
 
-``` {r ActBControlPlot, fig.width=10, fig.height=7,  htmlcap='<b>Figure Actb Control</b>: Correlation plot of the Actb probes from the 3 Fluidigm chips: Actb (fibrosis), Actb.x (ADME), Actb.y (Cytokines). The top row shows the individual time courses, the bottom row the pair wise plot of individual data points.'}
+``` {r actb_control_plot, fig.width=10, fig.height=7,  htmlcap='<b>Figure Actb Control</b>: Correlation plot of the Actb probes from the 3 Fluidigm chips: Actb (fibrosis), Actb.x (ADME), Actb.y (Cytokines). The top row shows the individual time courses, the bottom row the pair wise plot of individual data points.'}
 plot_actb_control()
 rm(actb.pearson, actb.spearman)
 ```
@@ -230,12 +230,12 @@ A one-way analysis of variance (ANOVA) was applied to reduce the factors to the 
 For every of the individual factors in the BDL data set an ANOVA was calculated. Dimension reduction of the BDL data set was than performed by filtering out factors which did not significantly changing over time.
 
 The `BDLdata` data set is reshaped into matrix format for the ANOVA calculation, with time points in rows and repeats as columns for every factor. 
-```{r BDLmatrix}
+```{r bdl_matrices}
 BDLmatrices <- bdl_matrix_data(BDLdata, BDLsamples)
 ```
 
 The following shows the ANOVA calculation for a single factor, here for `bilirubin`. 
-``` {r singleanova}
+``` {r single_anova}
   # example ANOVA for one factor
   mat.anova <- t(BDLmatrices[['bilirubin']])
   colnames(mat.anova) <- levels(BDLsamples$time_fac)
@@ -271,7 +271,7 @@ rm(r, f, k, n, tm, av, p.value, mat.anova)
 ## ANOVA for all factors
 Analog to the single factor ANOVA, the ANOVA is performed on all the factors. Hereby, a multitude of tests are performed, namely an ANOVA for every single factor. Consequently, the reported p-values of the ANOVA have to be adjusted via multiple testing procedures. Using the p.adjust function which given a set of p-values, returns p-values adjusted using one of several methods. The Bonferroni, Holm, Hochberg, Hommel are designed to give strong control of the family-wise error rate. We used the Holm's method for adjustment (*Holm, S. (1979). A simple sequentially rejective multiple test procedure. Scandinavian Journal of Statistics 6, 65-70.*).
 
-```{r ANOVA}
+```{r anova_all}
 # Calculation of ANOVA for all factors
 df.anova <- all_factor_anova()
 df.anova$sig <- sapply(df.anova$p.value, significant_code)  # add significant codes
@@ -279,6 +279,7 @@ df.anova$sig <- sapply(df.anova$p.value, significant_code)  # add significant co
 df.anova$p.holm <- p.adjust(df.anova$p.value, method ="holm" , n = length(df.anova$p.value))
 df.anova$sig.holm <- sapply(df.anova$p.holm, significant_code) 
 df.anova$ftype <- BDLfactors$ftype
+df.anova$fshort <- BDLfactors$ftype.short
 
 # order factors by adjusted p-values
 df.anova.ordered <- df.anova[with(df.anova, order(p.holm)), ]
@@ -387,7 +388,7 @@ $$Y_{norm}^{R} = 2(Y^{R}-0.5)$$
 
 In addition to the used $Y^{S}$ and $Y^{R}$ correlation scores Pearson (R) and Spearman (S) correlations were calculated for comparison. 
 
-``` {r correlationMethods}
+``` {r correlation_methods}
 suppressPackageStartupMessages(library(corrplot))
 dir.create(file.path(resultsPath, 'correlation'), showWarnings=FALSE)
 
@@ -402,14 +403,14 @@ names(cor.matrices) <- correlation_methods
 
 ## Pearson & Spearman correlation
 In a first step Pearson $R_{i,j}$ and Spearman $S_{i,j}$ correlation were calculated for the subset of filtered factors. 
-``` {r correlation}
+``` {r correlation_pearson_spearman}
 # Spearman and Pearson on individual data points
 cor.matrices$pearson <- cor(BDLdata.fil, method="pearson", use="pairwise.complete.obs")
 cor.matrices$spearman <- cor(BDLdata.fil, method="spearman", use="pairwise.complete.obs")
 ```
 
 Heatmap plot of the correlation matrices with factors in original order
-``` {r correlationPlot}
+``` {r correlation_heatmap_plot}
 # Heatmap of correlation matrix
 correlation_heatmap <- function(method){
   data <- cor.matrices[[method]]
@@ -445,7 +446,7 @@ The pearson correlation is highly sensitive to outliers (correlation between fac
 ## YS & YR correlation
 Here, the time-course based correlation measurements $Y^{S1}$, $Y^{S2}$, $Y^{S3}$, $Y^{R1}$, $Y^{R2}$ and $Y^{R3}$ are calculated for the factors in the filtered BDL data set. To create the correlation matrix all pairwise correlations between all factors are calculated.
 
-``` {r ys1_yr1}
+``` {r ys_yr_calculation}
 # weighting factors
 w <- list(w1=0.5, w2=0.3, w3=0.2)
 
@@ -482,7 +483,7 @@ rm(cor.ysr, cor.R_star, cor.S_star, ysr.res, ysr_methods)
 ```
 
 Create heatmap plots for all calculated correlation matrices
-``` {r correlationPlots}
+``` {r all_correlation_plots}
 # create all correlation heatmaps on disk
 hmap.settings <- list(width=10, height=10, pointsize=12)
 for (method in correlation_methods){
@@ -496,7 +497,7 @@ rm(method, fname)
 }
 ```
 
-``` {r correlationPlots2, fig.width=10, fig.height=10, error=TRUE, htmlcap='<b>Figure Heatmap YS3:</b> Correlation matrix based on YS3 correlation.'}
+``` {r ys3_correlation_report, fig.width=10, fig.height=10, error=TRUE, htmlcap='<b>Figure Heatmap YS3:</b> Correlation matrix based on YS3 correlation.'}
 # ys3 heatmap in report
 correlation_heatmap(method="ys3")
 ```
@@ -505,7 +506,7 @@ correlation_heatmap(method="ys3")
 In the next step clusters are calculated on the correlation matrices using hierarchical clustering with complete linkage. Hereby, the factors are grouped into a number of clusters with the correlation within each cluster being larger than between clusters. This effectivly finds groups of factors which have similar time courses. The complete linkage method defines the cluster distance between two clusters to be the maximum distance between their individual components.
 
 The hierarchical clustering is now calculated based on the respective correlation matrices. Hierarchical clustering based on the given correlation matrix is applied with `Ngroups=6` clusters. For every correlation measure the cluster plots are created. The number of clusters was choosen, so that at least `>1` members exist per cluster.
-``` {r hierarchical clustering}
+``` {r hierarchical_clustering}
 hclust.res <- vector("list", length=length(correlation_methods))
 names(hclust.res) <- correlation_methods
 
@@ -727,7 +728,7 @@ plot_hist_topcors(method="ys3", labels=TRUE, mfrow=c(5,2))
 In the next step, we were interested in the time courses of the time course clusters: What are the typical profiles found in the different clusters and which factors are in these clusters. For the comparison of individual factors against each other and against the mean time course of the cluster the factors were normalized. The normalization was hereby performed for every factor separately based on
 $$f_{k}^{norm}(t_{i,r}) = \frac{f_{k}(t_{i,r})-<f_{k}>}{max(f_{x})-min(f_{x})}$$
 
-``` {r normalize_BDLdata}
+``` {r normalize_bdl_data}
 suppressPackageStartupMessages(library('matrixStats'))
 dir.create(file.path(resultsPath, 'cluster'), showWarnings=FALSE)
 
@@ -846,7 +847,7 @@ rm(method)
 
 ## Top cluster representatives
 Here, the top cluster representatives are calculated for every cluster. The evaluation of all factors in a cluster is hereby based on the correlation between the factors and the mean cluster time course. 
-``` {r topClusterRepresentatives}
+``` {r top_cluster_representatives}
 # Calculate and plot the top cluster representatives.
 # Currently only ys3 based calculation is supported. This function should be refactored 
 # to support all correlation measures.
@@ -922,41 +923,17 @@ dev.off()
 plot_top_cluster_representatives(labels=TRUE)
 ```
 
-
 # Decision Trees
-For the prediction of the phase/time after BDL from measured factors a decision tree was fitted on the data. The fitted decision tree model is a regression tree with the clusters as predictor variables. This allows to combine the information from multiple factors in the individual clusters, resulting in a predictive model which is not depening on single factor variables, but uses the combined information available from multiple factors. The fitted decision tree is applicable to any subset of factors measured.
+For the prediction of disease progression after BDL a decision tree was used. The regression tree was fitted with the R package `rpart`, being the open-source implementation of CART, implementing algorithms for recursive partitioning for classification following in most details closely Breiman et. al (1984) (Breiman L., Friedman J. H., Olshen R. A., and Stone, C. J. (1984) Classification and Regression Trees. Wadsworth). 
 
-The decision tree models are fitted using the packages `rpart` and `rpart.plot` with the 6 clusters as predictor variables in the model.
-
-In a first step the data sets are prepared for model fitting and prediction. The used data sets for model evaluation are the mean cluster data set, i.e. the mean data of all factors averaged for the clusters. The data set of all combinations of single factors from the individual clusters and a data set using 2 randomly sampled factors from every cluster.
-
-
-## Regression Tree
-A regression tree with the time after BDL as target variable is fitted using the cluster data as predictors. The time data is log transformed to get aprroximately equidistant intervals between the trainings classes. All trees are fitted with the R package `rpart` implementing algorithms for recursive partitioning for classification following in most details closely Breiman et. al (1984). `rpart` is the open-source implementation of CART.
-
-Breiman L., Friedman J. H., Olshen R. A., and Stone, C. J. (1984) Classification and Regression Trees. Wadsworth. 
-
-The tree is built in a two-step process {Therneau2015}:  First the single variable is found which best
-splits the data into two groups (`best' will be defined later). The data is separated based on the split, and then this process is applied
-separately to each sub-group,  and so on recursively until the subgroups either reach a minimum size (`minbucket`) or until no improvement can be made.
-The resultant model is, with a certainty, too complex, and the question arises as it does
-with all stepwise procedures of when to stop.  The second stage of the procedure consists of
-using cross-validation to trim back the full tree. 
-
-An Introduction to Recursive Partitioning Using the RPART Routines
-TM. Therneau and E.J. Atkinson
-Mayo Foundation (June 29, 2015)
-
-The splitting criterion (for classication this is either the Gini or log-likelihood function), which is used to decide which variable gives the best split for nodes in the regression trees is $SS_{T}-(SS_{L} + SS_{R})$, with $SS_{T} = \sum{(y_{i}-<y>)^2}$ the sum of squares for the node and $SS_{R}$ and $SS_{L}$ the sums of squares for the left and right son. This is equivalent to choosing the split ot maximize the between-groups sum-of-squares in a simple analysis of variance (see {Therneau2015}).
-
-Two important parameters controlling the resulting tree are 
+The predictor variables are the 6 mean time courses of the clusters, the dependent variable is the log transformed time class, to get aprroximately equidistant intervals between the trainings classes in the regression models. The tree is hereby built in a two-step process:  First the single variable is found which best splits the data into two groups. The data than separated based on the split, and the splitting process is applied
+separately to each sub-group, and so on recursively until the subgroups either reach a minimum size (`minbucket`) or until no improvement can be made. The second stage of the procedure consists of using cross-validation to trim back the full tree. The splitting criterion, which is used to decide which variable gives the best split for nodes in the regression trees is $SS_{T}-(SS_{L} + SS_{R})$, with $SS_{T} = \sum{(y_{i}-<y>)^2}$ the sum of squares for the node and $SS_{R}$ and $SS_{L}$ the sums of squares for the left and right son. This is equivalent to choosing the split ot maximize the between-groups sum-of-squares in a simple analysis of variance (see {Therneau2015}). Two important parameters controlling the resulting tree are 
 
 * `minsplit` : The minimum number of observations in a node for which the routine
 will even try to compute a split. The default is 20 and is set to 6 in the tree calculation ($N_{r}=5$ repeats per time point).
 * `minbucket` : The  minimum  number  of  observations  in  a  terminal  node. This defaults to minsplit/3.
 
-
-``` {r}
+``` {r decision_tree_folder}
 suppressPackageStartupMessages(library(rpart))
 suppressPackageStartupMessages(library(rpart.plot))
 suppressPackageStartupMessages(library(caret))
@@ -965,7 +942,7 @@ dir.create(file.path(resultsPath, 'decision_tree'), showWarnings=FALSE)
 
 To generate approximatly equally distant time classes for training the regression tree the log transformed time values are used. The transformation used is
 $$\tilde{t_{i}} = log(t_{i} +1)$$
-```{r logTimeTransformation} 
+```{r log_transformation} 
 # Transform data to log scale (for comparable time intervals)
 log_transform <- function(data){
   log(data+1)
@@ -981,7 +958,7 @@ print(round(time_transformation,2))
 
 ## Trainings data
 In a first step the mean cluster trainings data for fitting the decision tree is prepared. The predictor variables are the mean samples of the clusters, the dependent variable is the log transformed time of the respective sample. The trainings set consists of the $N_{t}*N_{r}=40$ samples.
-```{r trainingsData}
+```{r tree_trainings_data}
   prepare_treedata_mean <- function(method="ys3"){
   # Hierarchical clusters based on ys3 to fit the regression tree
   hc.res <- hclust.res[[method]]
@@ -1018,7 +995,7 @@ save(treedata.mean, file=file.path(resultsPath, "data", "treedata.mean.Rdata"))
 
 ## Fit regression tree
 Fit the log transformed time against the mean cluster data for the time points. Set control parameters for the algorithm are `minsplit=6` and `minbucket=2` to account for the low number of samples (`N=40`). 
-``` {r}
+``` {r fit_regression_tree}
 # formula for regression tree
 formula.reg = paste("logtime ~ c1 + c2 + c3 + c4 + c5 + c6")
 
@@ -1057,9 +1034,9 @@ print(tree.vars)
 
 ## Prediction on trainings data
 Predict data with the tree, here the time class leaves based on the mean cluster data. The regression tree predicts log classes, which are back-transformed to time in [h]. So how good is the tree performing on the trainings data set, i.e. the mean cluster data. Predictons are evaluated based on the distance between the predicted and the experimental time classes based on the following distance measure on log scale
-$$ TODO? $$
+$$d = \frac{1}{N_{s}} \sqrt{\sum{TODO}}$$
 
-``` {r predictionDistance}
+``` {r prediction_distance}
 # L2 (euclidian) distance measurement on the log transformed data. Analog to the distance measurement in fitting 
 # the regression tree.
 log_distance <- function(d1, d2){
@@ -1069,17 +1046,16 @@ log_distance <- function(d1, d2){
 }
 ```
 Prediction on trainings data
-``` {r}
+``` {r predict_trainings_data}
 # mean cluster predictions
 pred.mean.log <- predict(tree.reg, newdata=treedata.mean, type="vector")
 # transformation to time in [h]
 pred.mean <- log_transform_back( pred.mean.log )
 
-# TODO: create the matrix of how is predicted (on normal and log scale)
-# prediction on classification data
-# BDLsamples$time
+# TODO: create the overview matrix which experimental time classes are predicted in which
+# tree time classes (on normal and log scale)
+# TODO: heatmap of the matrix
 # pred.matrix.mean <- matrix(NA, nrow=nrow(node_ranges), ncol=length(levels(as.factor(BDLsamples$time))))
-
 
 # Distance calculation (predicted to experimental)
 dist.mean.all <- treedata.mean$logtime - pred.mean.log
@@ -1107,7 +1083,7 @@ plot_mean_prediction()
 ```
 
 The ranges of the predicted classes by the regression trees can be calculated based on the split points on log scale. These provides the information which time points would be classified in which class in the regression tree.
-``` {r}
+``` {r tree_class_ranges}
 calculate_node_ranges <- function(){
   # classes via predicted classes for cluster data
   node_levels <- levels(as.factor(pred.mean))
@@ -1141,7 +1117,7 @@ print(round(node_ranges, digits=1))
 ## Test data for tree evaluation
 ### Single factor per cluster
 Prepare the evaluation data sets for the fitted trees consisting of all single factor combinations from the clusters used in the decision tree. Only the combinations are created which are from clusters used for decisions in the tree
-``` {r}
+``` {r single_factor_data} 
 # names of factors in the clusters
 cluster_names <- paste('c', 1:Ngroups, sep="")
 cluster.factors <- vector("list", length=Ngroups)
@@ -1203,7 +1179,7 @@ rm(k)
 
 ### Double factor per cluster
 Create a sample of double combinations from the various clusters.
-``` {r}
+``` {r double_factor_data}
 print("Calculating double factor data (~ 1min) ... ")
 ptm <- proc.time()
 set.seed(123456)
@@ -1245,7 +1221,7 @@ rm(k, tmp)
 ## Predicting test data
 ### Single representative predictions
 Time class prediction with regression tree for single representative from each cluster
-``` {r singlePrediction}
+``` {r single_prediction}
 print("Predicting single factor data (~ 2min) ... ")
 pred.single.all <- vector("list", length(treedata.single))
 for (k in (1:length(treedata.single))){
@@ -1263,7 +1239,7 @@ for (k in 1:Nsingle){
 
 ## Random double representative predictions
 Time class prediction with regression tree for random selection of two representatives from each clusters
-```{r doublePrediction}
+```{r double_prediction}
 print("Predicting double factor data (~ 1min) ... ")
 pred.double.all <- vector("list", length(treedata.double))
 for (k in (1:length(treedata.double))){
@@ -1280,7 +1256,7 @@ for (k in 1:Ndouble){
 
 ## Best factor combinations for predicting time classes
 Finding the best regression trees based on i) all single representatives from the clusters; and ii) single representatives only consisting of gene probes. The best is defined by minimal euclidian distance between experimental classes and predicted classes on the log scale. The best tree is not refitted with the respective factors in the tree, but the mean cluster tree uses the respective factor data for prediction.
-```{r bestTrees}
+```{r best_trees}
 # Best decision tree using all factors
 # Find unique combinations with minimal distance
 dist.rep.best <- min(dist.single)
@@ -1341,30 +1317,39 @@ plot_tree_representatives(gene.best)
 
 ## Distributions of prediction distance
 Plot the distance distributions of single and double representatives and the best gene and representative trees.
-``` {r treeDistanceDistribution}
-# Plot the distributions of all the distances, i.e. log transformed predictions
-# vs. the real time class
-breaks <- seq(from=0, to=0.40, by=0.0125)
-hist(dist.single, freq=FALSE, breaks=breaks,
-    main="Distance between predicted and experimentell time",
-    xlab="RMSD(time.predicted, time.exp)",
-    col=rgb(0.7,0.7,0.7, 1),
-    ylim=c(0,15)
-)
-hist(dist.double, freq=FALSE, breaks=breaks,
-     col=rgb(1,0,0, 0.5), add=TRUE)
+``` {r tree_distance_distribution}
+# distance histogram
+plot_tree_distance_dist <- function(){
+  breaks <- seq(from=0, to=0.40, by=0.0125)
+  hist(dist.single, freq=FALSE, breaks=breaks,
+      main="Distance between predicted and experimentell time",
+      xlab="RMSD(time.predicted, time.exp)",
+      col=rgb(0.7,0.7,0.7, 1),
+      ylim=c(0,15)
+  )
+  hist(dist.double, freq=FALSE, breaks=breaks,
+       col=rgb(1,0,0, 0.5), add=TRUE)
+  
+  abline(v=dist.mean, col=rgb(0,0,1, 0.5), lwd=2)
+  abline(v=dist.rep.best, col="black", lwd=2)
+  abline(v=dist.gene.best, col="grey", lwd=2)
+  
+  legend("topright", legend=c("single factor", "double factor", "mean cluster"), 
+             col=c(rgb(0.7, 0.7, 0.7, 1),rgb(1, 0, 0, 0.5),rgb(0, 0, 1, 0.5)),
+             bty="n", cex=1.0, pch=15)
+}
+# plot to file
+pdf(file.path(resultsPath, "decision_tree", "tree_distance_distribution.pdf"), 
+    width=10, height=6, pointsize=14)
+plot_tree_distance_dist()
+invisible(dev.off())
 
-abline(v=dist.mean, col=rgb(0,0,1, 0.5), lwd=2)
-abline(v=dist.rep.best, col="black", lwd=2)
-abline(v=dist.gene.best, col="grey", lwd=2)
-
-legend("topright", legend=c("single factor", "double factor", "mean cluster"), 
-           col=c(rgb(0.7, 0.7, 0.7, 1),rgb(1, 0, 0, 0.5),rgb(0, 0, 1, 0.5)),
-           bty="n", cex=1.0, pch=15)
+# plot in report
+plot_tree_distance_dist()
 ```
 
 Evaluation of the predictions. Which experimental classes were predicted in which time classes of the regression tree for the mean cluster data (trainings data), single representative from each clusters and double representatives from each cluster.
-``` {r}
+``` {r barplot_predictions}
 # Predicted classes of the regression tree
 node_levels <- levels(as.factor(pred.mean))
 node_classes <- round(as.numeric(node_levels), digits=1)
@@ -1424,4 +1409,3 @@ pdf(file.path(resultsPath, "decision_tree", "predicted_classes.pdf"),
 plot_predicted_classes()
 invisible(dev.off())
 ```
-

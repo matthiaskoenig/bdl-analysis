@@ -48,7 +48,7 @@ par(mfrow=c(1,2))
 
 # Remove the Mmp10 probe
 fibrosis <- fibrosis[, colnames(fibrosis)!="Mmp10"]
-rm(fibrosis1, fibrosis2)
+rm(fibrosis1, fibrosis2, fibrosis_diff, tmp)
 
 # subset of data is prepared and merged
 d <- list()
@@ -66,7 +66,7 @@ d$nhc <- data.frame(histology[, c("sid_BrdU_NHC", "BrdU_NHC")])
 names(d$nhc) <- c("sid", "BrdU_NHC")
 d$kupffer <- data.frame(histology[, c("sid_BrdU_Kupffer", "BrdU_Kupffer")])
 names(d$kupffer) <- c("sid", "BrdU_Kupffer")
-d$hsc <- data.frame(histology[, c("sid_BrdU_BEC", "BrdU_BEC")])
+d$bec <- data.frame(histology[, c("sid_BrdU_BEC", "BrdU_BEC")])
 names(d$bec) <- c("sid", "BrdU_BEC")
 d$siriusRed <- data.frame(histology[, c("sid_BrdU_SiriusRed", "BrdU_SiriusRed")])
 names(d$siriusRed) <- c("sid", "BrdU_SirirusRed")

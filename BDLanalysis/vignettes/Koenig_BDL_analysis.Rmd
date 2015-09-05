@@ -223,8 +223,8 @@ rm(actb.pearson, actb.spearman)
 ```
 **Results**: The Actb Fluidigm gene expression measurements are highly reproducible for the measured chips,  with Spearman as well as Pearson correlation coefficients all > 0.9 for pairwise Actb comparison.
 
-# Dimension reduction via ANOVA
-## ANOVA for single factor
+# Dimension reduction
+## Introduction
 A one-way analysis of variance (ANOVA) was applied to reduce the factors to the subset showing significant ($p_{adjusted}< 0.05$) changes during the time course. In its simplest form, ANOVA provides a statistical test of whether or not the means of several groups are equal, and therefore generalizes the t-test to more than two groups, with the groups being the sampled time points. The Holm's procedure was used to correct the p-values for any artificial p-value inflation due to multiple testing. 
 
 For every of the individual factors in the BDL data set an ANOVA was calculated. Dimension reduction of the BDL data set was than performed by filtering out factors which did not significantly changing over time.
@@ -234,6 +234,7 @@ The `BDLdata` data set is reshaped into matrix format for the ANOVA calculation,
 BDLmatrices <- bdl_matrix_data(BDLdata, BDLsamples)
 ```
 
+## ANOVA for single factor
 The following shows the ANOVA calculation for a single factor, here for `bilirubin`. 
 ``` {r single_anova}
   # example ANOVA for one factor
@@ -367,6 +368,7 @@ rm(v_lines)
 ```
 
 # Correlation analysis
+## Introduction
 For the correlation analysis between factors and the subsequent cluster analysis a correlation measure for time series data {Son2008} in combination with Complete-Linkage hierarchical clustering was used. This combination of methods provided the best enrichments on gene-expression time-series in a recent comparisons of methods {Jaskowiak2014, Jaskowiak2013} testing various correlation measures and clustering algorithms. 
 
 The calculation of correlation coefficients between factors i and j ($i,j=1, ...,N_p$) was performed using the slightly modified correlation coefficient based similarity measure developed for clustering of time-course data ($Y_{i,j}^{S2}$ and $Y_{i,j}^{R2}$) {Son2008}. $Y_{i,j}^{S2}$ and $Y_{i,j}^{R2}$ are linear combinations of (i) a classical correlation part based on Spearman correlation $S_{i,j}^{*}$ in case of $Y_{i,j}^{S2}$ or Pearson $R_{i,j}^{*}$ in case of $Y_{i,j}^{R2}$, (ii) a component $A_{i,j}^{*}$ accounting for the similarity in changes between two time courses, (iii) a component $M_{i,j}^{*}$ comparing the location of minimum and maximum values of the time course (see {Son2008} for definitions)
@@ -503,6 +505,7 @@ correlation_heatmap(method="ys3")
 ```
 
 # Hierarchical clustering
+# Clustering
 In the next step clusters are calculated on the correlation matrices using hierarchical clustering with complete linkage. Hereby, the factors are grouped into a number of clusters with the correlation within each cluster being larger than between clusters. This effectivly finds groups of factors which have similar time courses. The complete linkage method defines the cluster distance between two clusters to be the maximum distance between their individual components.
 
 The hierarchical clustering is now calculated based on the respective correlation matrices. Hierarchical clustering based on the given correlation matrix is applied with `Ngroups=6` clusters. For every correlation measure the cluster plots are created. The number of clusters was choosen, so that at least `>1` members exist per cluster.
@@ -598,7 +601,7 @@ list_cluster_members <- function(method){
 list_cluster_members(method="ys3")
 ```
 
-## Correlations of histological, biochemical and antibody factors
+## Correlations for non-RNA factors
 Plot correlation matrix for histological, biochemical and antibody markers. Calculation of the largest correlation between the non-transcript factors and other factors. The columns in which no correlation coefficient has `abs(value) >= cor.cutoff` are filtered out, i.e. only factors are retained with a absolute correlation coeffient above this threshold.
 ``` {r correlation_histological}
 get_histological_correlations <- function(method="ys3", cor.cutoff=0.6){
@@ -666,7 +669,7 @@ print(round(t(histological_correlations), digits=2))
 plot_histological_correlations(histological_correlations)
 ```
 
-## Top correlations for non-RNA factors
+### Top correlations for non-RNA factors
 List the top correlations of every non-RNA factor, i.e. histological (H), biochemical (B) and immunohistochemical (A). The top correlations are sorted by absolute correlation values.
 ``` {r plot_hist_topcors}
 plot_hist_topcors <- function(method="ys3", labels=TRUE, mfrow=c(10,1), 
@@ -923,7 +926,8 @@ dev.off()
 plot_top_cluster_representatives(labels=TRUE)
 ```
 
-# Decision Trees
+# Decision trees
+## Introduction
 For the prediction of disease progression after BDL a decision tree was used. The regression tree was fitted with the R package `rpart`, being the open-source implementation of CART, implementing algorithms for recursive partitioning for classification following in most details closely Breiman et. al (1984) (Breiman L., Friedman J. H., Olshen R. A., and Stone, C. J. (1984) Classification and Regression Trees. Wadsworth). 
 
 The predictor variables are the 6 mean time courses of the clusters, the dependent variable is the log transformed time class, to get aprroximately equidistant intervals between the trainings classes in the regression models. The tree is hereby built in a two-step process:  First the single variable is found which best splits the data into two groups. The data than separated based on the split, and the splitting process is applied
@@ -1114,7 +1118,7 @@ node_ranges <- calculate_node_ranges()
 print(round(node_ranges, digits=1))
 ```
 
-## Test data for tree evaluation
+## Test data for evaluation
 ### Single factor per cluster
 Prepare the evaluation data sets for the fitted trees consisting of all single factor combinations from the clusters used in the decision tree. Only the combinations are created which are from clusters used for decisions in the tree
 ``` {r single_factor_data} 
@@ -1218,7 +1222,7 @@ rm(k, tmp)
 # treedata.double[[5]]
 ```
 
-## Predicting test data
+## Prediction on test data
 ### Single representative predictions
 Time class prediction with regression tree for single representative from each cluster
 ``` {r single_prediction}
@@ -1237,7 +1241,7 @@ for (k in 1:Nsingle){
 }
 ```
 
-## Random double representative predictions
+### Double representative predictions
 Time class prediction with regression tree for random selection of two representatives from each clusters
 ```{r double_prediction}
 print("Predicting double factor data (~ 1min) ... ")
@@ -1254,7 +1258,7 @@ for (k in 1:Ndouble){
 }
 ```
 
-## Best factor combinations for predicting time classes
+## Best factor combinations
 Finding the best regression trees based on i) all single representatives from the clusters; and ii) single representatives only consisting of gene probes. The best is defined by minimal euclidian distance between experimental classes and predicted classes on the log scale. The best tree is not refitted with the respective factors in the tree, but the mean cluster tree uses the respective factor data for prediction.
 ```{r best_trees}
 # Best decision tree using all factors
@@ -1315,7 +1319,7 @@ plot_tree_representatives(rep.best)
 plot_tree_representatives(gene.best)
 ```
 
-## Distributions of prediction distance
+## Prediction errors for factor combinations
 Plot the distance distributions of single and double representatives and the best gene and representative trees.
 ``` {r tree_distance_distribution}
 # distance histogram
@@ -1348,6 +1352,7 @@ invisible(dev.off())
 plot_tree_distance_dist()
 ```
 
+## Predictive performance
 Evaluation of the predictions. Which experimental classes were predicted in which time classes of the regression tree for the mean cluster data (trainings data), single representative from each clusters and double representatives from each cluster.
 ``` {r barplot_predictions}
 # Predicted classes of the regression tree

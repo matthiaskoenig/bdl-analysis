@@ -57,14 +57,12 @@ The following naming conventions are used
 The results of the analysis are written to the results directory defined via the `BDL_RESULTS` environment variable. To reproduce this analysis create the respective variable.
 
 ```{r results_path, eval=TRUE, strip.white=TRUE}
-# read the folder for results from environment variable
+# read results directory from environment variable
 resultsPath <- Sys.getenv("BDL_RESULTS")
 if (identical(resultsPath, "")){
-  stop("No results folder defined, set the BDL_RESULTS environment variable")
-} else {
-  print(resultsPath)
+  stop("No results directory defined, set the BDL_RESULTS environment variable")
 }
-# create data subfolder to store analysis results
+# create directory to store data sets of analysis
 dir.create(file.path(resultsPath, 'data'), showWarnings=FALSE)
 ```
 
@@ -857,12 +855,15 @@ rm(method)
 ## Top cluster representatives
 In this step, the top cluster representatives are calculated for all clusters. The higher the correlation between the factor and the cluster mean, the higher the respective factor is scored. The used correlation measure is `YS3`.
 ``` {r top_cluster_representatives}
-# TODO: First calculate than plot
 
 # Calculate and plot the top cluster representatives.
 # Currently only ys3 based calculation is supported. This function should be refactored 
 # to support all correlation measures.
-plot_top_cluster_representatives <- function(method="ys3", Ntop=11, labels=TRUE){
+
+hmap_colors <- HeatmapColors()
+
+# calculates the correlation between the cluster mean and all other members in the cluster
+calculate_cluster_correlations <- function(method="ys3"){
   if (!identical(method, "ys3")){
     stop("Only ys3 top correlation is currently supported")
   }
@@ -870,12 +871,13 @@ plot_top_cluster_representatives <- function(method="ys3", Ntop=11, labels=TRUE)
   hc.res <- hclust.res[[method]]
   groups.hc.order <- hc.res$groups.hc.order
   
+  # mean cluster time course as additional factor
+  name_cluster <- sprintf("cluster.mean")
+  
   # calculate and plot the top correlations for every cluster
-  par(mfrow=c(Ngroups, 1))
-  hmap_colors <- HeatmapColors()
+  cluster.cor <- vector("list", length=Ngroups)
   for (k in 1:Ngroups){
-      name_cluster <- sprintf("cluster.mean.%s", k)
-    
+      
       # get members of cluster
       g <- groups.hc.order[groups.hc.order==k]
       # get normalized data for members of cluster
@@ -894,9 +896,44 @@ plot_top_cluster_representatives <- function(method="ys3", Ntop=11, labels=TRUE)
       cor.S_star <- ( cor(dgroup, method="spearman", use="pairwise.complete.obs") + 1 )/2
       # YS3 in [-1,1]
       ys3 <- 2*( (w$w1*cor.S_star + w$w2*ysr.res$A_star2 + w$w3*ysr.res$M_star) - 0.5)
+      
+      # store the matrix
+      cluster.cor[[k]] <- ys3
+  }
+  return(cluster.cor)
+}
+cluster.cor <- calculate_cluster_correlations(method="ys3")
+
+# plot correlations for individual clusters
+for (k in 1:Ngroups){
+  cluster.cor.mat <- cluster.cor[[k]]
+  if (ncol(cluster.cor.mat)<20){
+    corrplot(cluster.cor.mat, method="pie", type="full", 
+           main=sprintf("Cluster %s", k),
+             tl.cex=0.8, tl.col="black", col=hmap_colors(100), 
+             insig="p-value", sig.level=-1, p.mat=cluster.cor.mat,
+             cl.pos="n")
+  } else {
+    corrplot(cluster.cor.mat, method="circle", type="full", 
+           main=sprintf("Cluster %s", k),
+             tl.cex=0.8, tl.col="black", col=hmap_colors(100), 
+             cl.pos="n")
+  }
+}
+rm(k, cluster.cor.mat)
+```
+
+Now the top correlations between the cluster mean and the members of the respective cluster are plotted.
+``` {r top_cluster_correlations}
+plot_top_cluster_representatives <- function(method="ys3", Ntop=11, labels=TRUE){
+  par(mfrow=c(Ngroups,1))
+  name_cluster <- sprintf("cluster.mean", k)
+  for (k in 1:Ngroups){
+      # YS3 in [-1,1]
+      ys3 <- cluster.cor[[k]]
   
       # correlation for the cluster mean
-      v <- ys3[, which(names(dgroup)==name_cluster)]
+      v <- ys3[, which(colnames(ys3)==name_cluster)]
       # sort by absolute correlation
       v.sorted <- rev(v[order(abs(v))])
 
@@ -936,9 +973,47 @@ plot_top_cluster_representatives(labels=TRUE)
 
 ## Overview YS3 clusters
 Full overview over the members of the `{r} Ngroups` clusters with respective YS3 correlation to the cluster mean and ANOVA result.
-```
-{r ys3_cluster_table}
-# TODO
+``` {r ys3_cluster_table}
+# print representatives of cluster
+list_cluster_information <- function(method="ys3"){
+  if(!identical(method, "ys3")){
+    stop("Cluster correlation only calculated for ys3")
+  }
+  groups <- hclust.res[[method]]$groups
+  cat(sprintf("------------------------------------------\n"))
+  cat(sprintf("Correlation method: *** %s ***\n", method))
+  cat(sprintf("------------------------------------------\n"))
+  for (k in 1:Ngroups){
+    cluster.cor.mat <- cluster.cor[[k]]
+    # create data.frame with ANOVA & cluster correlation
+    g <- groups[groups==k]
+    cat(sprintf("Cluster %s (N=%s)\n", k, length(g)))
+    Ng <- length(names(g))
+    rows <- vector("list", length=Ng)
+    for (kn in 1:Ng){
+      name <- names(g)[kn]
+      row <- df.anova[which(df.anova$factor==name),]
+      row$cluster.cor <- cluster.cor.mat[name, "cluster.mean"]
+      rows[[kn]] <- row
+    }
+    df <- do.call("rbind", rows)
+    df <- df[order(-df$cluster.cor), ]
+
+    # cleanup the data.frame
+    rownames(df) <- df$factors
+    df <- df[, c("p.holm", "sig.holm", "ftype", "fshort", "cluster.cor")]
+    df$cluster.cor <- round(df$cluster.cor, digits=2)
+    df$p.holm <- sprintf("%1.2E", df$p.holm)
+    print(df)
+    
+    cat("\n")
+    # create list for figure legend
+    # print(paste(sprintf("%s (%s)", rownames(df), df$cluster.cor),
+    #            sep=", ", collapse =", " ))
+  }  
+}
+# List information in cluster
+list_cluster_information(method="ys3")
 
 ```
 

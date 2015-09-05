@@ -1552,42 +1552,69 @@ node_levels
 node_classes
 # TODO
 
+# best single gene representative
+
+library(plyr)
+library(reshape2)
+
+# example code
+df <- data.frame(exp=rep(BDLsamples$time, Nsingle)), 
+                 pre=as.vector(t(round(pred.single, digits=1))) )
+tmp <- count(df, c("exp", "pre"))
+tmp <- acast(tmp, exp~pre, value.var="freq", fill=0)
+par(mfrow=c(1,ncol(tmp)))
+for (k in 1:ncol(tmp)){
+  barplot(tmp[,k]/sum(tmp[,k]), 
+  main=sprintf("Predicted in class: %s", node_classes[k]),
+  ylim=c(0, 1.0),
+  xlab="exp class")
+}
+par(mfrow=c(1,1))
+
+
+pred.test
+
+# which experiments are predicted in which class
 plot_predicted_classes2 <- function(){
-  bar_colors <- c(rgb(0.9,0.9,0.9), 
-                  rgb(0.7,0.7,0.7),
+  bar_colors <- c(rgb(1,1,1), 
+                  rgb(0.8,0.8,0.8),
                   rgb(1,0,0, 0.5),
                   rgb(0,0,1, 0.5))
-  par(mfrow=c(2,3))
+  # single
+  df <- data.frame(exp=rep(BDLsamples$time, Nsingle), 
+                 pre=as.vector(t(round(pred.single, digits=1))) )
+  tmp <- count(df, c("exp", "pre"))
+  tab.single <- acast(tmp, exp~pre, value.var="freq", fill=0)
+  # double
+  df <- data.frame(exp=rep(BDLsamples$time, Ndouble), 
+                 pre=as.vector(t(round(pred.double, digits=1))) )
+  tmp <- count(df, c("exp", "pre"))
+  tab.double <- acast(tmp, exp~pre, value.var="freq", fill=0)
+  # best gene
+  df <- data.frame(exp=rep(BDLsamples$time, 1), 
+                 pre=as.vector(t(round(pred.gene.best, digits=1))) )
+  tmp <- count(df, c("exp", "pre"))
+  tab.gene.best <- acast(tmp, exp~pre, value.var="freq", fill=0)
+  # mean cluster
+  df <- data.frame(exp=rep(BDLsamples$time, 1), 
+                 pre=as.vector(t(round(pred.mean, digits=1))) )
+  tmp <- count(df, c("exp", "pre"))
+  tab.mean <- acast(tmp, exp~pre, value.var="freq", fill=0)  
+
+  par(mfrow=c(2,3))  
   for (k in 1:length(node_classes)){
-    # single factor predictions
-    data <- as.vector(pred.single[, ((1:Nr)+Nr*(k-1))])
-    tab.single <- table(factor(data, levels=node_levels))/length(data)
-    
-    # two factor predictions
-    data <- as.vector(pred.double[, ((1:Nr)+Nr*(k-1))])
-    tab.double <- table(factor(data, levels=node_levels))/length(data)
-    
-    # mean cluster predictions
-    data <- as.vector(pred.mean[((1:Nr)+Nr*(k-1))])
-    tab.mean <- table(factor(data, levels=node_levels))/length(data)
-    
-    # best single representative
-    # data <- as.vector(pred.rep.best[((1:Nr)+Nr*(k-1))])
-    # tab.rep.best <- table(factor(data, levels=node_levels))/length(data)
-    
-    # best single gene representative
-    data <- as.vector(pred.gene.best[((1:Nr)+Nr*(k-1))])
-    tab.gene.best <- table(factor(data, levels=node_levels))/length(data)
     
     # combined table
-    tab <- rbind(tab.single, tab.double, tab.gene.best, tab.mean)
-    colnames(tab) <- round(as.numeric(colnames(tab)), digits=1)
-    
+    tab <- rbind(tab.single[,k]/sum(tab.single[,k]),
+                 tab.double[,k]/sum(tab.double[,k]), 
+                 tab.gene.best[,k]/sum(tab.gene.best[,k]),
+                 tab.mean[,k]/sum(tab.mean[,k]))
+
     # create the bar plot
-    name <- sprintf("Time after BDL: %sh", levels(as.factor(BDLsamples$time))[k])
+    name <- sprintf("Predicted class: %sh", node_classes[k])
     barplot(tab, beside=TRUE,
             main=name, 
-            xlab="predicted time class [h]", ylab="fraction of predictions",
+            xlab="experimental time after BDL [h]", ylab="fraction of predictions",
             ylim=c(0,1), col=bar_colors) 
     if (k==1){
       legend("topright", legend=c("single factors", "double factors", 
@@ -1599,17 +1626,11 @@ plot_predicted_classes2 <- function(){
   par(mfrow=c(1,1))
 }
 
-
-
-
-
-
-
-
+plot_predicted_classes2()
 
 # barplot to file
-pdf(file.path(resultsPath, "decision_tree", "predicted_classes.pdf"), 
-    width=14, height=8, pointsize=14)
-plot_predicted_classes()
+pdf(file.path(resultsPath, "decision_tree", "predicted_classes2.pdf"), 
+    width=10, height=7, pointsize=12)
+plot_predicted_classes2()
 invisible(dev.off())
 ```

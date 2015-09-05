@@ -1130,6 +1130,46 @@ rm(tree.nodes)
 print(tree.vars)
 ```
 
+Perform leave one out cross validation
+``` {r leave_one_out_tree}
+# fit the 5 repeat regression trees (leave one out)
+# in total 40 cross validations ! because mice are not time followed
+trees.test <- vector("list", length=Nr*Nt)
+pred.test.log <- rep(NA, length=Nr*Nt)
+for (k in 1:(Nr*Nt)){
+  idx.subset <- 1:(Nr*Nt)
+  idx.subset <- idx.subset[-k]
+  print(idx.subset)
+  
+  # fit tree with the subset
+  t.test <- rpart(formula=formula.reg, 
+                  data=treedata.mean[idx.subset, ], 
+                  method="anova", 
+                  control=rpart.control(minsplit=6, minbucket=2))  
+  trees.test[[k]] <- t.test
+  
+  # prediction on left out sample
+  pred.test.log[k] <- predict(t.test, newdata=treedata.mean[k,], type="vector")
+}
+# transformation to time in [h]
+pred.test <- log_transform_back( pred.test.log )
+
+# plot the log prediction and error
+par(mfrow=c(1,2))
+plot(log_transform(BDLsamples$time), log_transform(pred.test),
+     main="Leave one out cross validation")
+abline(a=0, b=1, col="gray")
+textxy(log_transform(BDLsamples$time), log_transform(pred.test), 1:(Nr*Nt), col="black", cex=0.6)
+
+plot(log_transform(BDLsamples$time), log_transform(BDLsamples$time)-log_transform(pred.test),
+     main="Leave one out cross validation error")
+abline(a=0, b=0, col="gray")
+textxy(log_transform(BDLsamples$time), log_transform(BDLsamples$time)-log_transform(pred.test), 
+       1:(Nr*Nt), col="black", cex=0.6)
+par(mfrow=c(1,1))
+
+```
+
 ## Prediction on trainings data
 Predict data with the tree, here the time class leaves based on the mean cluster data. The regression tree predicts log classes, which are back-transformed to time in [h]. So how good is the tree performing on the trainings data set, i.e. the mean cluster data. Predictons are evaluated based on the distance between the predicted and the experimental time classes based on the following distance measure on log scale
 $$d = \frac{1}{N_{s}} \sqrt{\sum{TODO}}$$
@@ -1456,7 +1496,11 @@ node_classes
 
 # Plot of the predicted classes with the decision tree
 plot_predicted_classes <- function(){
-  bar_colors <- brewer.pal(4, "Set3")
+  # bar_colors <- brewer.pal(4, "Set3")
+  bar_colors <- c(rgb(0.9,0.9,0.9), 
+                  rgb(0.7,0.7,0.7),
+                  rgb(1,0,0, 0.5),
+                  rgb(0,0,1, 0.5))
   par(mfrow=c(2,4))
   for (k in 1:Nt){
     # single factor predictions
@@ -1501,6 +1545,67 @@ plot_predicted_classes <- function(){
 
 # barplot of the predicted classes
 plot_predicted_classes()
+
+# make the bar plot reverse
+# Predicted time:
+node_levels
+node_classes
+# TODO
+
+plot_predicted_classes2 <- function(){
+  bar_colors <- c(rgb(0.9,0.9,0.9), 
+                  rgb(0.7,0.7,0.7),
+                  rgb(1,0,0, 0.5),
+                  rgb(0,0,1, 0.5))
+  par(mfrow=c(2,3))
+  for (k in 1:length(node_classes)){
+    # single factor predictions
+    data <- as.vector(pred.single[, ((1:Nr)+Nr*(k-1))])
+    tab.single <- table(factor(data, levels=node_levels))/length(data)
+    
+    # two factor predictions
+    data <- as.vector(pred.double[, ((1:Nr)+Nr*(k-1))])
+    tab.double <- table(factor(data, levels=node_levels))/length(data)
+    
+    # mean cluster predictions
+    data <- as.vector(pred.mean[((1:Nr)+Nr*(k-1))])
+    tab.mean <- table(factor(data, levels=node_levels))/length(data)
+    
+    # best single representative
+    # data <- as.vector(pred.rep.best[((1:Nr)+Nr*(k-1))])
+    # tab.rep.best <- table(factor(data, levels=node_levels))/length(data)
+    
+    # best single gene representative
+    data <- as.vector(pred.gene.best[((1:Nr)+Nr*(k-1))])
+    tab.gene.best <- table(factor(data, levels=node_levels))/length(data)
+    
+    # combined table
+    tab <- rbind(tab.single, tab.double, tab.gene.best, tab.mean)
+    colnames(tab) <- round(as.numeric(colnames(tab)), digits=1)
+    
+    # create the bar plot
+    name <- sprintf("Time after BDL: %sh", levels(as.factor(BDLsamples$time))[k])
+    barplot(tab, beside=TRUE,
+            main=name, 
+            xlab="predicted time class [h]", ylab="fraction of predictions",
+            ylim=c(0,1), col=bar_colors) 
+    if (k==1){
+      legend("topright", legend=c("single factors", "double factors", 
+                                  "best single gene", "mean cluster"), 
+             col=bar_colors,
+             bty="n", cex=1.0, pch=15)
+    }
+  }
+  par(mfrow=c(1,1))
+}
+
+
+
+
+
+
+
+
 
 # barplot to file
 pdf(file.path(resultsPath, "decision_tree", "predicted_classes.pdf"), 

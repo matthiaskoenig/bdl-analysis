@@ -1545,34 +1545,13 @@ plot_predicted_classes <- function(){
 
 # barplot of the predicted classes
 plot_predicted_classes()
+```
 
+Reverse bar plots showing the classes of the prediction tree
+``` {r}
 # make the bar plot reverse
-# Predicted time:
-node_levels
-node_classes
-# TODO
-
-# best single gene representative
-
 library(plyr)
 library(reshape2)
-
-# example code
-df <- data.frame(exp=rep(BDLsamples$time, Nsingle)), 
-                 pre=as.vector(t(round(pred.single, digits=1))) )
-tmp <- count(df, c("exp", "pre"))
-tmp <- acast(tmp, exp~pre, value.var="freq", fill=0)
-par(mfrow=c(1,ncol(tmp)))
-for (k in 1:ncol(tmp)){
-  barplot(tmp[,k]/sum(tmp[,k]), 
-  main=sprintf("Predicted in class: %s", node_classes[k]),
-  ylim=c(0, 1.0),
-  xlab="exp class")
-}
-par(mfrow=c(1,1))
-
-
-pred.test
 
 # which experiments are predicted in which class
 plot_predicted_classes2 <- function(){
@@ -1603,22 +1582,21 @@ plot_predicted_classes2 <- function(){
 
   par(mfrow=c(2,3))  
   for (k in 1:length(node_classes)){
-    
-    # combined table
+    # combined table (normalized within each class)
     tab <- rbind(tab.single[,k]/sum(tab.single[,k]),
                  tab.double[,k]/sum(tab.double[,k]), 
                  tab.gene.best[,k]/sum(tab.gene.best[,k]),
                  tab.mean[,k]/sum(tab.mean[,k]))
 
     # create the bar plot
-    name <- sprintf("Predicted class: %sh", node_classes[k])
+    name <- sprintf("Predicted: %sh", node_classes[k])
     barplot(tab, beside=TRUE,
             main=name, 
-            xlab="experimental time after BDL [h]", ylab="fraction of predictions",
+            xlab="time after BDL [h]", ylab="fraction",
             ylim=c(0,1), col=bar_colors) 
     if (k==1){
       legend("topright", legend=c("single factors", "double factors", 
-                                  "best single gene", "mean cluster"), 
+                                  "best gene", "mean cluster"), 
              col=bar_colors,
              bty="n", cex=1.0, pch=15)
     }
@@ -1630,7 +1608,7 @@ plot_predicted_classes2()
 
 # barplot to file
 pdf(file.path(resultsPath, "decision_tree", "predicted_classes2.pdf"), 
-    width=10, height=7, pointsize=12)
+    width=12, height=7.5, pointsize=14)
 plot_predicted_classes2()
 invisible(dev.off())
 ```

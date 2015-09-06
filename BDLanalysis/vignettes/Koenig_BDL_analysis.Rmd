@@ -318,7 +318,8 @@ names(fil_tab) <- c('Category', 'Accepted', 'All', 'Percent')
 print(fil_tab)
 rm(fil_tab)
 ```
-Based on the adjusted p-values the data set was reduced from original 154 factors to 90. Almost all `Cytokines` genes (inflammation panel) were retained in the data set whereas many of the `ADME` and `Fibrosis` genes are filtered.
+Based on the adjusted p-values the data set was reduced from original `{r} ncol(BDLdata.fil)` factors to 90. Almost all `Cytokines` genes (inflammation panel) were retained in the data set whereas many of the `ADME` and `Fibrosis` genes are filtered.
+
 
 ### Heatmap of filtered time course data
 The heatmap of the filtered raw data is depicted below
@@ -368,6 +369,59 @@ invisible(dev.off())
 timecourse_heatmap_filtered()
 rm(v_lines)
 ```
+
+## t-test for initial phase
+A t-test was performed to find significantly changed factors in the initial phase after BDL.
+``` {r t_test}
+
+# t-test for the initial phase changes
+calculate_inital_phase_changes <- function(){
+  # empty vectors
+  p.t_test <- rep(NA, ncol(BDLdata))
+  names(p.t_test) <- colnames(BDLdata)
+  up_down <- rep(NA, ncol(BDL_data))
+  names(up_down) <- colnames(BDLdata)
+  
+  for (name in colnames(BDLdata)){
+    # data for control (0h) and initial response (6h)
+    d0 <- BDLdata[BDLsamples$time_fac == "0h", name]
+    d6 <- BDLdata[BDLsamples$time_fac == "6h", name]  
+    # remove NA
+    d0 <- d0[!is.na(d0)]
+    d6 <- d6[!is.na(d6)]
+    # unpaired two.sided t-test
+    t.test.res <- t.test(d0, d6, alternative="two.sided", var.equal=FALSE)
+    p.t_test[name] <- t.test.res$p.value
+    # going up or down
+    up_down[name] <- "-"
+    if (mean(d6) > mean(d0)){
+      up_down[name] <- "up"
+    } else if (mean(d6) < mean(d0)){
+      up_down[name] <- "down"
+    }
+  }
+  
+  # results data.frame
+  p.df <- data.frame(p.value=p.t_test, up_down=up_down)
+  p.df$sig <- sapply(p.df$p.value, significant_code) 
+  rownames(p.df) <- colnames(BDLdata)
+  
+  # sort by p.value
+  p.df.ordered <- p.df[order(p.df$p.value),]  
+  
+  return(p.df.ordered)
+}
+
+# top up and down regulated in initial phase
+p.df.ordered <- calculate_inital_phase_changes() 
+p.df.up <- p.df.ordered[p.df.ordered$p.value<0.05 & p.df.ordered$up_down=="up", ]
+p.df.down <- p.df.ordered[p.df.ordered$p.value<0.05 & p.df.ordered$up_down=="down", ]
+# top up
+print(p.df.up)
+# top down
+print(p.df.down)
+```
+
 
 # Correlation analysis
 ## Introduction

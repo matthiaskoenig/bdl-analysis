@@ -2,15 +2,15 @@
 title: "Statistical Analysis of Pathobiochemical Signatures in Bile Duct Ligated Mice"
 author: '[Matthias Koenig](http://www.charite.de/sysbio/people/koenig) (`r Sys.Date()`)'
 output:
+  pdf_document:
+    fig_caption: yes
+    keep_tex: yes
+    toc: yes
   html_document:
     pandoc_args:
     - +RTS
     - -K64m
     - -RTS
-  pdf_document:
-    fig_caption: yes
-    keep_tex: yes
-    toc: yes
   word_document: default
 header-includes: \usepackage{graphicx}
 ---
@@ -31,18 +31,7 @@ knitr::knit_hooks$set(htmlcap = function(before, options, envir) {
 # Introduction
 This document contains the statistical analysis performed in the publication *Pathobiochemical signatures of cholestatic liver disease in bile duct ligated mice*.
 
-A comprehensive data set of serum markers, histological parameters and transcript profiles was compiled at 8 time points after bile duct ligation (BDL) in mice, comprising different stages of the disease. The data set consists of $N_{r}=5$ repeats ($N_{r}=3$ for the measured antibodies) for $N_{t}=8$ time points denoted by $t_1,..., t_{N_t}$ consisting of a total $N_{f}=154$ measured parameters in the following referred to as factors (Fluidigm gene expression, antibodies, serum markers, histological measurements).
-
-The main steps of the analysis comprise
-
-* **Explorative data anaysis**
-* **Dimension reduction via ANOVA**
-* **Correlation analysis** based on time course correlation measure
-* **Hierarchical clustering** 
-* **Decision trees** for prediction
-
-The complete data set, source code and documentation of this analysis is available from  
-https://github.com/matthiaskoenig/bdl-analysis .
+A comprehensive data set of serum markers, histological parameters and transcript profiles was compiled at 8 time points after bile duct ligation (BDL) in mice, comprising different stages of the disease. The data set consists of $N_{r}=5$ repeats ($N_{r}=3$ for the measured antibodies) for $N_{t}=8$ time points denoted by $t_1,..., t_{N_t}$ consisting of a total $N_{f}=153$ measured parameters in the following referred to as factors (Fluidigm gene expression, immunostainings with antibodies, serum markers, histological measurements).
 
 The following naming conventions are used
 
@@ -50,11 +39,22 @@ The following naming conventions are used
     + gene expression of a single gene (e.g. Actb); 
     + one of the biomarkers (e.g. ALT, albumin, bilirubin)
     + one of the histological markers (e.g. BrdU-positive Kupffer cells)
-    + one of the antibodies (e.g. CTGF, S100A4)
+    + one of the immunostainings (e.g. CTGF, S100A4)
 * **time point** : a single value $t_i$ from the measured time points 0h (control), 6h, 12h, 18h, 30h, 2d, 5d, 14d
-* **sample** : one of the $N_{t} \cdot N_{r}=40$ mice, i.e. a one of the repeats for a given time point
+* **sample** : one of the $N_{t}N_{r}=40$ mice, i.e. a one of the repeats for a given time point
 
-The results of the analysis are written to the results directory defined via the `BDL_RESULTS` environment variable. To reproduce this analysis create the respective variable.
+The main steps of the analysis comprise
+
+* **Explorative data anaysis**
+* **Dimension reduction via ANOVA**
+* **Correlation analysis**
+* **Hierarchical clustering** 
+* **Decision trees**
+
+The complete data set, source code and documentation of this analysis is available from  
+https://github.com/matthiaskoenig/bdl-analysis .
+
+All results of this analysis are written to the results directory defined via the `BDL_RESULTS` environment variable. To reproduce this analysis create the respective variable and run the `Koenig_BDL_analysis.Rmd` file.
 
 ```{r results_path, eval=TRUE, strip.white=TRUE}
 # read results directory from environment variable
@@ -68,7 +68,7 @@ dir.create(file.path(resultsPath, 'data'), showWarnings=FALSE)
 
 # Explorative data analysis
 ## Data import
-In a first step the processed data set is loaded from the `data` folder. The data consists of the time course data for all factors (`BDLdata`), additional information for the factors (`BDLfactors`), the sample definition, i.e. the assignment of sample ids to respective time point and repeat (`BDLsamples`), and a mapping of the Fluidigm (gene) probe ids to UniProt identifiers (`BDLprobes`).
+In a first step the processed data sets are loaded from the `data` folder: These are the time course data for all factors (`BDLdata`), additional information for the factors (`BDLfactors`), the sample definition, i.e. the assignment of sample ids to respective time point and repeat (`BDLsamples`), and a mapping of the Fluidigm (gene) probe ids to UniProt identifiers and names (`BDLprobes`).
 
 ```{r bdl_data, eval=TRUE, strip.white=TRUE}
 suppressPackageStartupMessages(library(BDLanalysis))
@@ -93,13 +93,13 @@ save(BDLfactors, file=file.path(resultsPath, "data", "BDLfactors.Rdata"))
 save(BDLprobes, file=file.path(resultsPath, "data", "BDLprobes.Rdata"))
 ```
 
-In addition to the individual data points per time point, the mean data averaged over the $N_{r}$ repeats per time points is used in parts of the correlation analysis. This mean factor data set is calculated once at the beginning via
+In addition to the individual sample data, the mean data averaged over the $N_{r}$ repeats per time points is used in parts of the analysis. The mean factor data set is calculated once via
 ```{r bdl_mean_data}
 BDLmean <- bdl_mean_data(BDLdata, BDLsamples)
 BDLmean.time <- as.numeric(levels(as.factor(BDLsamples$time)))
 ```
 
-In total `r ncol(BDLdata)` factors were measured in the this BDL study falling in the categories: `r levels(BDLfactors$ftype)`. The majority of factors belongs herby to the 3 fluidigm chips with 47 probes per chip.
+In total `r ncol(BDLdata)` factors were measured in the this BDL study falling in the categories: `r levels(BDLfactors$ftype)`. The majority of factors belongs hereby to the 3 fluidigm chips with 47 probes per chip (one probe was filtered from GE fibrosis during preprocessing of the chips).
 
 An overview of the number of factors per category is provided in the following table
 ```{r factor_table}
@@ -110,9 +110,47 @@ pander(cat_table)
 rm(cat_table)
 ```
 
+## Gene Probes
+In the following an overview of the gene probes is given providing full names and links to UniProt.
+```{r gene_ids}
+
+# create data frame with probe information
+create_probe_df <- function() {
+  # get the gene factors
+  f_names <- colnames(BDLdata)[BDLfactors$ftype.short == ""]
+  # get the probe information
+  Nf = length(f_names)
+  probe_names <- rep(NA, length=Nf)
+  probe_uniprot <- rep(NA, length=Nf)
+  probe_genes <- rep(NA, length=Nf)
+  names(probe_names) <- f_names
+  names(probe_uniprot) <- f_names
+  names(probe_genes) <- f_names
+  for (name in colnames(BDLdata)){
+      probe_info <- ProbeInformation(name)
+      if (!is.null(probe_info)){
+        if (!is.null(probe_info$Protein.name)){
+          probe_names[name] <- probe_info$Protein.name
+          probe_uniprot[name] <- probe_info$Entry
+          probe_genes[name] <- probe_info$Gene.name  
+        }
+      }
+  }
+  probe.df <- data.frame(name=probe_names, genes=probe_genes, uniprot=probe_uniprot)
+  # sort
+  probe.df <- probe.df[order(rownames(probe.df)), ]
+  # remove the double Act probes
+  probe.df <- probe.df[!(rownames(probe.df) %in% c("Actb.x", "Actb.y")) , ]  
+  return(probe.df)
+}
+# print the probe information
+probe.df <- create_probe_df()
+print(probe.df)
+```
+
 ## Data visualization
 ### Time course of single factors
-In a first step overview plots of the raw and mean data for all individual factors are generated. These are available in the `resultsPath/factors` folder
+In a first step overview plots of the raw and mean data for all individual factors were generated. These are available in the `resultsPath/factors` folder
 
 ```{r factor_plots}
 # Create figures for all factors
@@ -122,13 +160,13 @@ plot_all_factors(path=factors_path)
 rm(factors_path)
 ```
 
-The example for a single factor is depicted below, here for the factor `bilirubin`.
-``` {r bilirubin_plot, htmlcap='<b>Figure Single factor</b>: Plot of the raw time course data for a single factor, here for bilirubin. On the left the data is plotted against the time [h], on the right against the different time classes. Individual data points are depecticed in blue with the respective sample number shown next to the data points. The mean averaged of the repeats per time point are depicted in red. Box-and-whisker plots were added with default R parameters of boxwex=0.8, staplewex=0.5, outwex=0.5.'}
+An example plot for a single factor is depicted below, here for the factor `bilirubin`.
+``` {r bilirubin_plot, htmlcap='<b>Figure Single factor</b>: Plot of the raw time course data for bilirubin. On the left the data is plotted against the time [h], on the right against the different time classes. Individual data points are depecticed in blue with the respective sample number shown next to the data points. The mean averaged of the repeats per time point are depicted in red. Box-and-whisker plots were added with default R parameters of boxwex=0.8, staplewex=0.5, outwex=0.5.'}
 plot_single_factor('bilirubin', path=NULL)
 ```
 
 ### Time course of all factors (Heatmap)
-In a next step the heatmap of the full data set was generated, i.e. of all time points and repeats. This provides a first overview over the complete data set. Rows correspond to the individual factors (factor order corresponding to the original data set: `GE_ADME`, `GE_Cytokines`, `GE_Fibrosis`, `Biochemistry`, `Histology`, `Antibodies`). Columns correspond to the 40 samples with 5 subsequent samples belonging to one of the 8 time points (with from left to right: `r levels(BDLsamples$time_fac)`). The data is row scaled, i.e. every individual factor is scaled to have mean zero and standard deviation one.
+In a next step the heatmap of the full data set was generated, i.e. of all time points and repeats. This provides a first overview over the data set. Rows correspond to individual factors (factor order corresponding to the original data set: `GE_ADME`, `GE_Cytokines`, `GE_Fibrosis`, `Biochemistry`, `Histology`, `Antibodies`). Columns correspond to the 40 samples with 5 subsequent samples belonging to one of the 8 time points. The data is row scaled, i.e. every individual factor is scaled to have mean zero and standard deviation one.
 ```{r timecourse_heatmap}
 suppressPackageStartupMessages(library(gplots))
 suppressPackageStartupMessages(library("RColorBrewer"))
@@ -172,16 +210,19 @@ invisible(dev.off())
 
 ``` {r timecourse_heatmap_report, fig.width=10, fig.height=10, error=TRUE, htmlcap='<b>Figure All factors </b>: Heatmap of the complete data set, i.e. all factors and repeats over time. The data is row scaled, i.e. every individual factor is scaled to have mean zero and standard deviation one, with positive Z-score in blue, negative Z-score in red. The row order is according to the the factor categories, the order within the fluidigm chips according to the order of the probes on the chip. the respective categories are depicted on the left.'}
 timecourse_heatmap()
+```
+
+``` {r heatmap_clean}
 # cleanup
 rm(factor_table, h_lines, v_lines)
 ```
 **Results**: Various patterns are visible in the plotted raw data:
 
-* **Two main classes of response can be observed**. One class with an increase in the early phase up to 6h after BDL (many of the ADME genes fall into this class) and a second class increasing in the later stage after 2-5 days after BDL. Many of the genes on the Cytokines and Fibrosis  chips as well as some of the biochemical, histological and antibody fall in this second class.
+* **Two main classes of time course response were observed**. One class with an increase in the early phase up to 6h after BDL (many of the ADME genes fall in this class) and a second class increasing in the later stage after 2-5 days after BDL. Many of the genes on the Cytokines and Fibrosis  chips as well as some of the biochemical, histological and antibody factors fall in this second class.
 * **The individual animals show heterogeneous responses to BDL**. Within one time point the 5 repeats can show very different patterns. For instance at time 6h after BDL 3/5 of the mice show a marked increase in the ADME genes, whereas 2/5 do not show such a marked increase. Another example is the mice sample 27 at time 2d, with a high increase in the genes on the Fibrosis chip, which is not observed in the other 4 samples at time 2d.
 
 ## Actb quality control
-Actb (Actin, cytoplasmic 1) probes were included on all Fluidigm chips (`GE_ADME`, `GE_Cytokines`, `GE_Fibrosis`) and not used in the normalization of the gene expression data. Hence, ActB can serve as quality control for the technical reproducibility of the Fluidigm chips. If the data is reproducible between chips the pairwise correlation between all individual Actb measurements should have high correlation coefficients close to 1. Plotting the data of the Actb measurements of two chips against each other should lie on a straight line
+Actb (Actin, cytoplasmic 1) probes were included on all Fluidigm chips (`GE_ADME`, `GE_Cytokines`, `GE_Fibrosis`) and not used in the normalization of the transcription data. Hence, ActB can serve as quality control for the technical reproducibility of the Fluidigm chips. If the data is reproducible between chips the pairwise correlation between all individual Actb measurements should have high correlation coefficients close to 1. Plotting the data of the Actb measurements of two chips against each other should lie on a straight line
 ```{r check_actb}
 # Actb control figure
 plot_actb_control <- function(){
@@ -559,7 +600,7 @@ correlation_heatmap(method="ys3")
 ```
 
 # Hierarchical clustering
-# Clustering
+## Clustering
 In the next step clusters are calculated on the correlation matrices using hierarchical clustering with complete linkage. Hereby, the factors are grouped into a number of clusters with the correlation within each cluster being larger than between clusters. This effectivly finds groups of factors which have similar time courses. The complete linkage method defines the cluster distance between two clusters to be the maximum distance between their individual components.
 
 The hierarchical clustering is now calculated based on the respective correlation matrices. Hierarchical clustering based on the given correlation matrix is applied with `Ngroups=6` clusters. For every correlation measure the cluster plots are created. The number of clusters was choosen, so that at least `>1` members exist per cluster.
@@ -1024,7 +1065,7 @@ invisible(dev.off())
 plot_top_cluster_representatives(labels=TRUE)
 ```
 
-## Overview YS3 clusters
+## YS3 cluster summary
 Full overview over the members of the `{r} Ngroups` clusters with respective YS3 correlation to the cluster mean and ANOVA result.
 ``` {r ys3_cluster_table}
 # print representatives of cluster
@@ -1067,7 +1108,6 @@ list_cluster_information <- function(method="ys3"){
 }
 # List information in cluster
 list_cluster_information(method="ys3")
-
 ```
 
 # Decision trees
@@ -1506,7 +1546,7 @@ plot_tree_representatives(rep.best)
 plot_tree_representatives(gene.best)
 ```
 
-## Prediction errors for factor combinations
+## Prediction errors
 Plot the distance distributions of single and double representatives and the best gene and representative trees.
 ``` {r tree_distance_distribution}
 # distance histogram

@@ -2,15 +2,15 @@
 title: "Statistical Analysis of Pathobiochemical Signatures in Bile Duct Ligated Mice"
 author: '[Matthias Koenig](http://www.charite.de/sysbio/people/koenig) (`r Sys.Date()`)'
 output:
-  pdf_document:
-    fig_caption: yes
-    keep_tex: yes
-    toc: yes
   html_document:
     pandoc_args:
     - +RTS
     - -K64m
     - -RTS
+  pdf_document:
+    fig_caption: yes
+    keep_tex: yes
+    toc: yes
   word_document: default
 header-includes: \usepackage{graphicx}
 ---
@@ -373,13 +373,12 @@ rm(v_lines)
 ## t-test for initial phase
 A t-test was performed to find significantly changed factors in the initial phase after BDL.
 ``` {r t_test}
-
 # t-test for the initial phase changes
 calculate_inital_phase_changes <- function(){
   # empty vectors
   p.t_test <- rep(NA, ncol(BDLdata))
   names(p.t_test) <- colnames(BDLdata)
-  up_down <- rep(NA, ncol(BDL_data))
+  up_down <- rep(NA, ncol(BDLdata))
   names(up_down) <- colnames(BDLdata)
   
   for (name in colnames(BDLdata)){
@@ -981,7 +980,7 @@ Now the top correlations between the cluster mean and the members of the respect
 ``` {r top_cluster_correlations}
 plot_top_cluster_representatives <- function(method="ys3", Ntop=11, labels=TRUE){
   par(mfrow=c(Ngroups,1))
-  name_cluster <- sprintf("cluster.mean", k)
+  name_cluster <- sprintf("cluster.mean")
   for (k in 1:Ngroups){
       # YS3 in [-1,1]
       ys3 <- cluster.cor[[k]]

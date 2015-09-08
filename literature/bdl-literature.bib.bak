@@ -208,6 +208,29 @@
   Url                      = {http://dx.doi.org/10.1194/jlr.R900010-JLR200}
 }
 
+@Article{Diehl2013,
+  Title                    = {Underlying potential: cellular and molecular determinants of adult liver repair.},
+  Author                   = {Diehl, Anna Mae and Chute, John},
+  Journal                  = {J Clin Invest},
+  Year                     = {2013},
+
+  Month                    = {May},
+  Number                   = {5},
+  Pages                    = {1858--1860},
+  Volume                   = {123},
+  Abstract                 = {The liver has a unique and extraordinary capacity for regeneration, even in adult organisms. This regenerative potential has traditionally been attributed to the replicative capabilities of mature hepatocytes and cholangiocytes, though emerging evidence suggests that other resident liver cell types such as progenitors, liver sinusoidal endothelial cells, and hepatic stellate cells respond to liver injury and contribute to repair. These other cells types are also associated with liver scarring, dysfunction, and carcinogenesis, which suggests that appropriate regulation of these cells is a major determinant of response to liver injury. The Reviews in this series explore possible contributions of liver progenitor cells, liver sinusoidal endothelial cells, and hepatic stellate cells to liver homeostasis and repair and highlight how these processes can go awry in chronic liver injury, fibrosis, and liver cancer.},
+  Doi                      = {10.1172/JCI69966},
+  Institution              = {Division of Gastroenterology, Duke University, Durham, North Carolina 27710, USA. annamae.diehl@dm.duke.edu},
+  Keywords                 = {Animals; Endothelial Cells, cytology; Hepatic Stellate Cells, cytology/pathology; Hepatocytes, cytology; Humans; Liver Cirrhosis, physiopathology/therapy; Liver Diseases, physiopathology/therapy; Liver Neoplasms, physiopathology/therapy; Liver Regeneration; Liver, injuries/metabolism/physiology; Stem Cells, cytology; Wound Healing},
+  Language                 = {eng},
+  Medline-pst              = {ppublish},
+  Owner                    = {mkoenig},
+  Pii                      = {69966},
+  Pmid                     = {23635782},
+  Timestamp                = {2015.09.07},
+  Url                      = {http://dx.doi.org/10.1172/JCI69966}
+}
+
 @Article{Firrincieli2013,
   Title                    = {Vitamin D nuclear receptor deficiency promotes cholestatic liver injury by disruption of biliary epithelial cell junctions in mice.},
   Author                   = {Firrincieli, Delphine and Z{\'{u}}{\~{n}}iga, Silvia and Rey, Colette and Wendum, Dominique and Lasnier, Elisabeth and Rainteau, Dominique and Braescu, Thomas and Falgui{\`{e}}res, Thomas and Boissan, Mathieu and Cadoret, Axelle and Housset, Chantal and Chignard, Nicolas},
@@ -259,6 +282,29 @@
   Pmid                     = {26025651},
   Timestamp                = {2015.08.23},
   Url                      = {http://dx.doi.org/10.1016/j.bbrc.2015.05.074}
+}
+
+@Article{Geerts2008,
+  Title                    = {Comparison of three research models of portal hypertension in mice: macroscopic, histological and portal pressure evaluation.},
+  Author                   = {Geerts, Anja M. and Vanheule, Eline and Praet, Marleen and {Van Vlierberghe}, Hans and {De Vos}, Martine and Colle, Isabelle},
+  Journal                  = {Int J Exp Pathol},
+  Year                     = {2008},
+
+  Month                    = {Aug},
+  Number                   = {4},
+  Pages                    = {251--263},
+  Volume                   = {89},
+  Abstract                 = {The characterization of mice models of portal hypertension (PHT) is lacking in the literature. Therefore, the aim of the present study was to make a histological approach during development of PHT in two models of cirrhosis with PHT compared with one model of isolated PHT. The model of isolated PHT was developed by partial portal vein ligation (PPVL). Two portal hypertensive cirrhotic mice models were developed either by common bile duct ligation (CBDL) or administration of carbon tetrachloride (CCl(4)) subcutaneously (twice weekly, 1 ml/kg). These models represent, respectively, a secondary biliary cirrhosis and alcoholic cirrhosis. Mice were killed at several time points to evaluate liver changes by histological and ultrastructural methods. A correlation was made with portal pressure measurements. Histology revealed the absence of fibrosis or cirrhosis in PPVL mice. They developed an isolated portal hypertension. After CBDL induction, the mice developed the characteristics of cirrhosis after 6 weeks, with simultaneous increase in portal pressures. Fifty percent of the mice had ascites at that time point. Sixteen weeks after administration of CCl(4), a micronodular cirrhotic aspect of the liver was seen associated with signs of portal hypertension. This is the first descriptive study of three widely used animal models in mice, allowing the study of pathophysiological changes in cirrhosis and portal hypertension. The PPVL in mice leads to a model of isolated portal hypertension. Secondary biliary cirrhosis developed after 6 weeks of common bile duct ligation in 50\% of the mice that developed ascites. Subcutaneous injection of CCl(4) for 16 weeks induces cirrhosis and portal hypertension, without ascites. Moreover, the present study is the first description of a cirrhotic model in mice developed by subcutaneous injections of CCl(4). Well-described mice models will facilitate use of knock-out or transgenic mice and lead to a better understanding of the underlying molecular pathways in the field of portal hypertension and cirrhosis.},
+  Doi                      = {10.1111/j.1365-2613.2008.00597.x},
+  Institution              = { Gastroenterology, Ghent Univerity Hospital, Ghent, Belgium. anja.geerts@ugent.be},
+  Keywords                 = {Animals; Ascites, pathology/physiopathology; Carbon Tetrachloride; Common Bile Duct; Disease Progression; Hypertension, Portal, pathology/physiopathology; Injections, Subcutaneous; Ligation; Liver Cirrhosis, Biliary; Liver Cirrhosis, Experimental, pathology/physiopathology; Liver, pathology/ultrastructure; Male; Mice; Mice, Inbred Strains; Microscopy, Electron; Models, Animal; Portal Pressure; Portal Vein; Staining and Labeling},
+  Language                 = {eng},
+  Medline-pst              = {ppublish},
+  Owner                    = {mkoenig},
+  Pii                      = {IEP597},
+  Pmid                     = {18715470},
+  Timestamp                = {2015.09.07},
+  Url                      = {http://dx.doi.org/10.1111/j.1365-2613.2008.00597.x}
 }
 
 @Article{Georgiev2008,
@@ -330,6 +376,29 @@
   Url                      = {http://dx.doi.org/10.1053/jhep.2003.50341}
 }
 
+@Article{Heinrichs2013,
+  Title                    = {The chemokine CCL3 promotes experimental liver fibrosis in mice.},
+  Author                   = {Heinrichs, Daniel and Berres, Marie-Luise and Nellen, Andreas and Fischer, Petra and Scholten, David and Trautwein, Christian and Wasmuth, Hermann E. and Sahin, Hacer},
+  Journal                  = {PLoS One},
+  Year                     = {2013},
+  Number                   = {6},
+  Pages                    = {e66106},
+  Volume                   = {8},
+
+  __markedentry            = {[mkoenig:6]},
+  Abstract                 = {Liver fibrosis is associated with infiltrating immune cells and activation of hepatic stellate cells. We here aimed to investigate the effects of the CC chemokine CCL3, also known as macrophage inflammatory protein-1α, in two different fibrosis models. To this end, we treated mice either with carbon tetrachloride or with a methionine- and choline-deficient diet to induce fibrosis in CCL3 deficient and wild-type mice. The results show that the protein expression of CCL3 is increased in wild-type mice after chronic liver injury. Deletion of CCL3 exhibited reduced liver fibrosis compared to their wild-type counterparts. We could validate these results by treating the two mouse groups with either carbon tetrachloride or by feeding a methionine- and choline-deficient diet. In these models, lack of CCL3 is functionally associated with reduced stellate cell activation and liver immune cell infiltration. In vitro, we show that CCL3 leads to increased proliferation and migration of hepatic stellate cells. In conclusion, our results define the chemokine CCL3 as a mediator of experimental liver fibrosis. Thus, therapeutic modulation of CCL3 might be a promising target for chronic liver diseases.},
+  Doi                      = {10.1371/journal.pone.0066106},
+  Institution              = {Medical Department III, University Hospital Aachen, Aachen, Germany.},
+  Keywords                 = {Animals; Carbon Tetrachloride, administration /&/ dosage; Cell Proliferation; Chemokine CCL3, physiology; Enzyme-Linked Immunosorbent Assay; Lipogenesis; Liver Cirrhosis, pathology/physiopathology; Male; Mice; Mice, Inbred BALB C; Mice, Knockout; T-Lymphocytes, cytology},
+  Language                 = {eng},
+  Medline-pst              = {epublish},
+  Owner                    = {mkoenig},
+  Pii                      = {PONE-D-13-07999},
+  Pmid                     = {23799074},
+  Timestamp                = {2015.09.07},
+  Url                      = {http://dx.doi.org/10.1371/journal.pone.0066106}
+}
+
 @Article{Hirschfield2010,
   Title                    = {Pathogenesis of cholestatic liver disease and therapeutic approaches.},
   Author                   = {Hirschfield, Gideon M. and Heathcote, E Jenny and Gershwin, M Eric},
@@ -362,6 +431,29 @@
 
   Owner                    = {mkoenig},
   Timestamp                = {2015.08.27}
+}
+
+@Article{Holt2008,
+  Title                    = {Immune interactions in hepatic fibrosis.},
+  Author                   = {Holt, Andrew P. and Salmon, Mike and Buckley, Christopher D. and Adams, David H.},
+  Journal                  = {Clin Liver Dis},
+  Year                     = {2008},
+
+  Month                    = {Nov},
+  Number                   = {4},
+  Pages                    = {861--82, x},
+  Volume                   = {12},
+  Abstract                 = {Liver cirrhosis is caused by iterative cycles of tissue injury, inflammation, and repair. Although most causes of acute hepatitis resolve without scarring, chronic hepatitis is associated with persistent inflammation and matrix remodeling, which leads to fibrosis and, eventually, cirrhosis. The mechanisms that govern wound healing involve interactions between the innate and adaptive immune systems and stromal cells within a microenvironment composed of cytokines, growth factors, and modified matricellular proteins. The immune system plays a central role in the regulation of fibrosis, tissue repair, and recovery that is vital for the maintenance of tissue homeostasis. Chronic inflammation and fibrosis are inextricably linked and the cellular interactions between immune effector cells, local fibroblasts, and tissue macrophages at sites of scar formation determine the outcome of liver injury and the development of scarring.},
+  Doi                      = {10.1016/j.cld.2008.07.002},
+  Institution              = {Liver Research Group, MRC Centre for Immune Regulation, University of Birmingham, Birmingham, UK.},
+  Keywords                 = {Animals; Chemotaxis, Leukocyte; Cytokines, metabolism; Fibroblasts, immunology; Hepatic Stellate Cells, immunology; Hepatitis, complications/immunology; Humans; Immunity, Innate; Leukocytes, immunology; Liver Cirrhosis, immunology; Macrophages, immunology; Recovery of Function, immunology; Stromal Cells, immunology},
+  Language                 = {eng},
+  Medline-pst              = {ppublish},
+  Owner                    = {mkoenig},
+  Pii                      = {S1089-3261(08)00073-1},
+  Pmid                     = {18984471},
+  Timestamp                = {2015.09.07},
+  Url                      = {http://dx.doi.org/10.1016/j.cld.2008.07.002}
 }
 
 @Article{Huss2010,
@@ -469,6 +561,29 @@
   Url                      = {http://dx.doi.org/10.1002/dneu.20362}
 }
 
+@Article{Kisseleva2011,
+  Title                    = {Anti-fibrogenic strategies and the regression of fibrosis.},
+  Author                   = {Kisseleva, Tatiana and Brenner, David A.},
+  Journal                  = {Best Pract Res Clin Gastroenterol},
+  Year                     = {2011},
+
+  Month                    = {Apr},
+  Number                   = {2},
+  Pages                    = {305--317},
+  Volume                   = {25},
+  Abstract                 = {Liver fibrosis is an outcome of many chronic diseases, and often results in cirrhosis, liver failure, and portal hypertension. Liver transplantation is the only treatment available for patients with advanced stage of fibrosis. Therefore, alternative methods are required to develop new strategies for anti-fibrotic therapy. Available treatments are designed to substitute for liver transplantation or bridge the patients, they include inhibitors of fibrogenic cytokines such as TGF-β1 and EGF, inhibitors of rennin angiotensin system, and blockers of TLR4 signalling. Development of liver fibrosis is orchestrated by many cell types. However, activated myofibroblasts remain the primary target for anti-fibrotic therapy. Hepatic stellate cells and portal fibroblasts are considered to play a major role in development of liver fibrosis. Here we discuss the origin of activated myofibroblasts and different aspects of their activation, differentiation and potential inactivation during regression of liver fibrosis.},
+  Doi                      = {10.1016/j.bpg.2011.02.011},
+  Institution              = {Department of Medicine, University of California, San Diego, La Jolla, CA 92093-0602, USA.},
+  Keywords                 = {Animals; Apoptosis; Cell Transplantation; Epithelial-Mesenchymal Transition; Extracellular Matrix, metabolism; Hepatic Stellate Cells, pathology; Humans; Liver Cirrhosis, metabolism/pathology/therapy; Liver, cytology; Myofibroblasts, cytology/pathology; Renin-Angiotensin System; Toll-Like Receptor 4, antagonists /&/ inhibitors},
+  Language                 = {eng},
+  Medline-pst              = {ppublish},
+  Owner                    = {mkoenig},
+  Pii                      = {S1521-6918(11)00037-0},
+  Pmid                     = {21497747},
+  Timestamp                = {2015.09.07},
+  Url                      = {http://dx.doi.org/10.1016/j.bpg.2011.02.011}
+}
+
 @Article{Kountouras1984,
   Title                    = {Prolonged bile duct obstruction: a new experimental model for cirrhosis in the rat.},
   Author                   = {Kountouras, J. and Billing, B. H. and Scheuer, P. J.},
@@ -549,8 +664,6 @@
   Number                   = {4},
   Pages                    = {395--400},
   Volume                   = {12},
-
-  __markedentry            = {[mkoenig:]},
   Abstract                 = {Total bile acid concentration was determined in systemic and portal serum and in liver tissue from patients with presumably normal liver function, and from patients with extrahepatic cholestasis. Systemic and portal serum bile acids were also determined in patients with alcoholic liver cirrhosis. In 5 patients, in whom a portal catheter was inserted through the umbilical vein, the diurnal variation in systemic and portal serum bile acid concentration was studied. In patients with presumably normal liver function the fasting systemic serum bile acid concentration was 4.8+/-0.5 mumol times 1(-1), and the portal concentration was 12.9+/-1.5 mumol times 1(-1). In cholestasis and liver cirrhosis the systemic and portal bile acid concentration was substantially elevated. The bile acid concentration gradient between systemic serum, portal serum, liver tissue, and hepatic bile was 1:3:80:2600 in the patients with normal liver function. In both the cholestatic and cirrhotic condition the systemic and portal serum bile acid concentration was equilibrated. Postprandially both the systemic and portal bile acid concentration increased, but the gradient between these concentrations was unchanged. The results are compatible with the hypothesis that portal and systemic serum bile acid concentrations are determined by the intestinal absorption rate in subjects with normal liver function and by the hepatic and renal clearance capacity in cholestatic and cirrhotic conditions.},
   Keywords                 = {Adult; Aged; Bile Acids and Salts, blood; Bile, analysis; Cholestasis, blood/physiopathology; Circadian Rhythm; Female; Humans; Liver Cirrhosis, blood/physiopathology; Liver, physiopathology; Male; Middle Aged; Portal Vein},
   Language                 = {eng},
@@ -604,6 +717,26 @@
   Pmid                     = {20434968},
   Timestamp                = {2015.08.21},
   Url                      = {http://dx.doi.org/10.1016/j.dld.2010.03.015}
+}
+
+@Article{Mederacke2013,
+  Title                    = {Fate tracing reveals hepatic stellate cells as dominant contributors to liver fibrosis independent of its aetiology.},
+  Author                   = {Mederacke, Ingmar and Hsu, Christine C. and Troeger, Juliane S. and Huebener, Peter and Mu, Xueru and Dapito, Dianne H. and Pradere, Jean-Philippe and Schwabe, Robert F.},
+  Journal                  = {Nat Commun},
+  Year                     = {2013},
+  Pages                    = {2823},
+  Volume                   = {4},
+  Abstract                 = {Although organ fibrosis causes significant morbidity and mortality in chronic diseases, the lack of detailed knowledge about specific cellular contributors mediating fibrogenesis hampers the design of effective antifibrotic therapies. Different cellular sources, including tissue-resident and bone marrow-derived fibroblasts, pericytes and epithelial cells, have been suggested to give rise to myofibroblasts, but their relative contributions remain controversial, with profound differences between organs and different diseases. Here we employ a novel Cre-transgenic mouse that marks 99\% of hepatic stellate cells (HSCs), a liver-specific pericyte population, to demonstrate that HSCs give rise to 82-96\% of myofibroblasts in models of toxic, cholestatic and fatty liver disease. Moreover, we exclude that HSCs function as facultative epithelial progenitor cells in the injured liver. On the basis these findings, HSCs should be considered the primary cellular target for antifibrotic therapies across all types of liver disease.},
+  Doi                      = {10.1038/ncomms3823},
+  Institution              = {Department of Medicine, College of Physicians and Surgeons, Columbia University, New York, New York 10032, USA.},
+  Keywords                 = {Animals; Female; Genes, Reporter; Hepatic Stellate Cells, pathology/physiology; Integrases, genetics; Liver Cirrhosis, etiology/genetics/pathology; Male; Mice; Mice, Inbred C57BL; Mice, Inbred CBA; Myofibroblasts, pathology/physiology},
+  Language                 = {eng},
+  Medline-pst              = {ppublish},
+  Owner                    = {mkoenig},
+  Pii                      = {ncomms3823},
+  Pmid                     = {24264436},
+  Timestamp                = {2015.09.07},
+  Url                      = {http://dx.doi.org/10.1038/ncomms3823}
 }
 
 @Article{Mennone2010,
@@ -728,8 +861,6 @@
   Number                   = {2},
   Pages                    = {153--159},
   Volume                   = {84},
-
-  __markedentry            = {[mkoenig:6]},
   Abstract                 = {The portal area is the 'main entrance' and one of the two main exits of the liver lobule. Through the main entrance portal and arterial blood reach the liver sinusoids. Through the exit the bile flows towards the duodenum. The three main structures, portal vein and artery with their own wall (and vascular smooth muscle cells) and bile duct with its basal membrane, are surrounded by loose myofibroblasts and by the first layer of hepatocytes and non-parenchymal cells. Chronic diseases of the liver can lead to development of liver cirrhosis, characterized by formation of fibrotic septa which can be portal-portal in the case of the chronic biliary damage or portal-central in the case of the chronic viral hepatitis. Central-central septa can also be observed under other pathological conditions. When damaging noxae are introduced to the liver, inflammatory cells are first recruited to the portal field, the first layer of hepatocytes may be destroyed (enlargement of the portal field) and portal (myo)fibroblasts become activated. A similar reaction may take place when the target of inflammation is the bile duct with consecutive reduction of the bile flow, activation of the portal (myo)fibroblasts, proliferation of bile ducts and destruction of the hepatocytes around the portal field. Increased matrix deposition may be the consequence. During the past years several publications dealt with the pathomechanisms of portal fibrogenesis as well as with its resolution. One of the most intriguing observations was that it is not hepatic stellate cells of the hepatic sinusoid, but portal (myo)fibroblasts which rapidly acquire the phenotype of 'activated' (myo)fibroblasts in the early stages of cholestatic fibrosis. These may also become the main mesenchymal cells of the porto-portal or porto-central fibrotic septa. This article reviews the similarities as well as differences between the mesenchymal cells of the portal tract and of the fibrotic septa vs 'activated' stellate cells of the hepatic sinusoids, and discusses the debate over their relative contributions to liver fibrogenesis.},
   Doi                      = {10.1038/labinvest.3700030},
   Institution              = {Department of Internal Medicine, Section of Gastroenterology and Endocrinology, University of Göttingen, Goettingen, Germany. gramado@med.uni-goettingen.de},
@@ -741,6 +872,29 @@
   Pmid                     = {14688800},
   Timestamp                = {2015.08.26},
   Url                      = {http://dx.doi.org/10.1038/labinvest.3700030}
+}
+
+@Article{Rockey2013,
+  Title                    = {Translating an understanding of the pathogenesis of hepatic fibrosis to novel therapies.},
+  Author                   = {Rockey, Don C.},
+  Journal                  = {Clin Gastroenterol Hepatol},
+  Year                     = {2013},
+
+  Month                    = {Mar},
+  Number                   = {3},
+  Pages                    = {224--31.e1-5},
+  Volume                   = {11},
+  Abstract                 = {The response to injury is one of wound healing and fibrogenesis, which ultimately leads to fibrosis. The fibrogenic response to injury is a generalized one across virtually all organ systems. In the liver, the injury response, typically occurring over a prolonged period of time, leads to cirrhosis (although it should be pointed out that not all patients with liver injury develop cirrhosis). The fact that many different diseases result in cirrhosis suggests a common pathogenesis. The study of hepatic fibrogenesis over the past 2 decades has been remarkably active, leading to a considerable understanding of this process. It clearly has been shown that the hepatic stellate cell is a central component in the fibrogenic process. It also has been recognized that other effector cells are important in the fibrogenic process, including resident fibroblasts, bone marrow-derived cells, fibrocytes, and even perhaps cells derived from epithelial cells (ie, through epithelial to mesenchymal transition). A key aspect of the biology of fibrogenesis is that the fibrogenic process is dynamic; thus, even advanced fibrosis (or cirrhosis) is reversible. Together, an understanding of the cellular basis for liver fibrogenesis, along with multiple aspects of the basic pathogenesis of fibrosis, have highlighted many exciting potential therapeutic opportunities. Thus, although the most effective antifibrotic therapy is simply treatment of the underlying disease, in situations in which this is not possible, specific antifibrotic therapy is likely not only to become feasible, but will soon become a reality. This review highlights the mechanisms underlying fibrogenesis that may be translated into future antifibrotic therapies and to review the current state of clinical development.},
+  Doi                      = {10.1016/j.cgh.2013.01.005},
+  Institution              = {Department of Internal Medicine, Medical University of South Carolina, Charleston, South Carolina 29425, USA. rockey@musc.edu},
+  Keywords                 = {Humans; Liver Cirrhosis, pathology/therapy; Translational Medical Research, methods/trends; Wound Healing, physiology},
+  Language                 = {eng},
+  Medline-pst              = {ppublish},
+  Owner                    = {mkoenig},
+  Pii                      = {S1542-3565(13)00006-2},
+  Pmid                     = {23305825},
+  Timestamp                = {2015.09.07},
+  Url                      = {http://dx.doi.org/10.1016/j.cgh.2013.01.005}
 }
 
 @Article{Russell2003,
@@ -780,6 +934,29 @@
   Owner                    = {mkoenig},
   Pmid                     = {12855468},
   Timestamp                = {2015.08.01}
+}
+
+@Article{Schuppan2013,
+  Title                    = {Evolving therapies for liver fibrosis.},
+  Author                   = {Schuppan, Detlef and Kim, Yong Ook},
+  Journal                  = {J Clin Invest},
+  Year                     = {2013},
+
+  Month                    = {May},
+  Number                   = {5},
+  Pages                    = {1887--1901},
+  Volume                   = {123},
+  Abstract                 = {Fibrosis is an intrinsic response to chronic injury, maintaining organ integrity when extensive necrosis or apoptosis occurs. With protracted damage, fibrosis can progress toward excessive scarring and organ failure, as in liver cirrhosis. To date, antifibrotic treatment of fibrosis represents an unconquered area for drug development, with enormous potential but also high risks. Preclinical research has yielded numerous targets for antifibrotic agents, some of which have entered early-phase clinical studies, but progress has been hampered due to the relative lack of sensitive and specific biomarkers to measure fibrosis progression or reversal. Here we focus on antifibrotic approaches for liver that address specific cell types and functional units that orchestrate fibrotic wound healing responses and have a sound preclinical database or antifibrotic activity in early clinical trials. We also touch upon relevant clinical study endpoints, optimal study design, and developments in fibrosis imaging and biomarkers.},
+  Doi                      = {10.1172/JCI66028},
+  Institution              = {Institute of Molecular and Translational Medicine and Department of Medicine I, University Medical Center, Johannes Gutenberg University Mainz, Mainz, Germany. detlef.schuppan@unimedizin-mainz.de},
+  Keywords                 = {Animals; Apoptosis; Biological Markers, metabolism; Disease Progression; Fibrosis; Hepatic Stellate Cells, cytology; Hepatocytes, cytology; Humans; Inflammation; Liver Cirrhosis, pathology/therapy; Liver Diseases; Liver, injuries; Macrophages, cytology; Mice; Monocytes, cytology; Myofibroblasts, cytology; Stem Cells, cytology; T-Lymphocytes, cytology; Wound Healing},
+  Language                 = {eng},
+  Medline-pst              = {ppublish},
+  Owner                    = {mkoenig},
+  Pii                      = {66028},
+  Pmid                     = {23635787},
+  Timestamp                = {2015.09.07},
+  Url                      = {http://dx.doi.org/10.1172/JCI66028}
 }
 
 @Article{Sheen2014,
@@ -858,6 +1035,26 @@
 
   Owner                    = {mkoenig},
   Timestamp                = {2015.08.27}
+}
+
+@Article{Spurgeon2008,
+  Title                    = {High throughput gene expression measurement with real time PCR in a microfluidic dynamic array.},
+  Author                   = {Spurgeon, Sandra L. and Jones, Robert C. and Ramakrishnan, Ramesh},
+  Journal                  = {PLoS One},
+  Year                     = {2008},
+  Number                   = {2},
+  Pages                    = {e1662},
+  Volume                   = {3},
+  Abstract                 = {We describe a high throughput gene expression platform based on microfluidic dynamic arrays. This system allows 2,304 simultaneous real time PCR gene expression measurements in a single chip, while requiring less pipetting than is required to set up a 96 well plate. We show that one can measure the expression of 45 different genes in 18 tissues with replicates in a single chip. The data have excellent concordance with conventional real time PCR and the microfluidic dynamic arrays show better reproducibility than commercial DNA microarrays.},
+  Doi                      = {10.1371/journal.pone.0001662},
+  Institution              = {Fluidigm Corporation, South San Francisco, California, USA.},
+  Keywords                 = {Gene Expression Profiling, instrumentation/methods; Microfluidics; Oligonucleotide Array Sequence Analysis, standards; Polymerase Chain Reaction},
+  Language                 = {eng},
+  Medline-pst              = {epublish},
+  Owner                    = {mkoenig},
+  Pmid                     = {18301740},
+  Timestamp                = {2015.09.07},
+  Url                      = {http://dx.doi.org/10.1371/journal.pone.0001662}
 }
 
 @Article{Tag2015,
@@ -978,6 +1175,31 @@
   Pmid                     = {16250054},
   Timestamp                = {2015.08.23},
   Url                      = {http://dx.doi.org/10.1002/hep.20903}
+}
+
+@Article{Wasmuth2009,
+  Title                    = {Antifibrotic effects of CXCL9 and its receptor CXCR3 in livers of mice and humans.},
+  Author                   = {Wasmuth, Hermann E. and Lammert, Frank and Zaldivar, Mirko Moreno and Weiskirchen, Ralf and Hellerbrand, Claus and Scholten, David and Berres, Marie-Luise and Zimmermann, Henning and Streetz, Konrad L. and Tacke, Frank and Hillebrandt, Sonja and Schmitz, Petra and Keppeler, Hildegard and Berg, Thomas and Dahl, Edgar and Gassler, Nikolaus and Friedman, Scott L. and Trautwein, Christian},
+  Journal                  = {Gastroenterology},
+  Year                     = {2009},
+
+  Month                    = {Jul},
+  Number                   = {1},
+  Pages                    = {309--19, 319.e1-3},
+  Volume                   = {137},
+
+  __markedentry            = {[mkoenig:]},
+  Abstract                 = {Fibrosis is the hallmark of chronic liver diseases, yet many aspects of its mechanism remain to be defined. Chemokines are ubiquitous chemotactic molecules that mediate many acute and chronic inflammatory conditions, and CXC chemokine genes colocalize with a locus previously shown to include fibrogenic genes. We investigated the roles of the chemokine CXCL9 and its receptor CXCR3 in liver fibrosis.The effects of CXCL variants on fibrogenesis were analyzed using samples from patients with hepatitis C virus infection and by induction of fibrosis in CXCR3(-/-) and wild-type mice. In mice, intrahepatic immune cell subsets were investigated and interferon gamma messenger RNA levels were measured at baseline and after injury. Human serum CXCL9 levels were measured and correlated with CXCL9 variant and fibrosis severity. The effects of stimulation with CXCL9 were investigated on human hepatic stellate cells (LX-2).Specific CXCL9 variants were associated with liver fibrosis in mice and humans; CXCL9 serum concentrations correlated with genotypes and levels of fibrosis in patients. In contrast to other chemokines, CXCL9 exerted antifibrotic effects in vitro, suppressing collagen production in LX-2 cells. CXCR3(-/-) mice had increased liver fibrosis; progression was associated with decreased numbers of intrahepatic interferon gamma-positive T cells and reduced interferon gamma messenger RNA, indicating that CXCL9-CXCR3 regulates Th1-associated immune pathways.This is the first description of a chemokine-based antifibrotic pathway in the liver; antifibrotic therapies might be developed to modulate CXC chemokine levels.},
+  Doi                      = {10.1053/j.gastro.2009.03.053},
+  Institution              = {Department of Medicine III, University Hospital Aachen, Aachen, Germany. hwasmuth@ukaachen.de},
+  Keywords                 = {Animals; Carbon Tetrachloride; Cells, Cultured; Chemokine CXCL9, blood/genetics/metabolism; Cohort Studies; Collagen, metabolism; Disease Models, Animal; Genotype; Hepatic Stellate Cells, immunology; Hepatitis C, Chronic, complications/immunology; Humans; Interferon-gamma, metabolism; Liver Cirrhosis, chemically induced/immunology/pathology/prevention /&/ control/virology; Liver, immunology/metabolism/pathology/virology; Mice; Mice, Inbred BALB C; Mice, Inbred C57BL; Mice, Knockout; Phenotype; Polymorphism, Single Nucleotide; RNA, Messenger, metabolism; Receptors, CXCR3, deficiency/genetics/metabolism; Severity of Illness Index; Th1 Cells, immunology},
+  Language                 = {eng},
+  Medline-pst              = {ppublish},
+  Owner                    = {mkoenig},
+  Pii                      = {S0016-5085(09)00517-4},
+  Pmid                     = {19344719},
+  Timestamp                = {2015.09.07},
+  Url                      = {http://dx.doi.org/10.1053/j.gastro.2009.03.053}
 }
 
 @Article{Woolbright2013,

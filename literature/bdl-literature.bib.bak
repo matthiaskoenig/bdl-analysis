@@ -26,6 +26,29 @@
   Url                      = {http://dx.doi.org/10.1093/bioinformatics/btu274}
 }
 
+@Article{Oesterreicher2011,
+  Title                    = {Fibroblast-specific protein 1 identifies an inflammatory subpopulation of macrophages in the liver.},
+  Author                   = {{\"{O}}sterreicher, Christoph H. and Penz-{\"{O}}sterreicher, Melitta and Grivennikov, Sergei I. and Guma, Monica and Koltsova, Ekaterina K. and Datz, Christian and Sasik, Roman and Hardiman, Gary and Karin, Michael and Brenner, David A.},
+  Journal                  = {Proc Natl Acad Sci U S A},
+  Year                     = {2011},
+
+  Month                    = {Jan},
+  Number                   = {1},
+  Pages                    = {308--313},
+  Volume                   = {108},
+  Abstract                 = {Cirrhosis is the end result of chronic liver disease. Hepatic stellate cells (HSC) are believed to be the major source of collagen-producing myofibroblasts in cirrhotic livers. Portal fibroblasts, bone marrow-derived cells, and epithelial to mesenchymal transition (EMT) might also contribute to the myofibroblast population in damaged livers. Fibroblast-specific protein 1 (FSP1, also called S100A4) is considered a marker of fibroblasts in different organs undergoing tissue remodeling and is used to identify fibroblasts derived from EMT in several organs including the liver. The aim of this study was to characterize FSP1-positive cells in human and experimental liver disease. FSP1-positive cells were increased in human and mouse experimental liver injury including liver cancer. However, FSP1 was not expressed by HSC or type I collagen-producing fibroblasts. Likewise, FSP1-positive cells did not express classical myofibroblast markers, including αSMA and desmin, and were not myofibroblast precursors in injured livers as evaluated by genetic lineage tracing experiments. Surprisingly, FSP1-positive cells expressed F4/80 and other markers of the myeloid-monocytic lineage as evaluated by double immunofluorescence staining, cell fate tracking, flow cytometry, and transcriptional profiling. Similar results were obtained for bone marrow-derived and peritoneal macrophages. FSP1-positive cells were characterized by increased expression of COX2, osteopontin, inflammatory cytokines, and chemokines but reduced expression of MMP3 and TIMP3 compared with Kupffer cells/macrophages. These findings suggest that FSP1 is a marker of a specific subset of inflammatory macrophages in liver injury, fibrosis, and cancer.},
+  Doi                      = {10.1073/pnas.1017547108},
+  Institution              = {Department of Medicine, University of California at San Diego, La Jolla, CA 92093, USA. christoph.oesterreicher@meduniwien.ac.at},
+  Keywords                 = {Animals; Biological Markers, metabolism; Cell Lineage; Flow Cytometry; Fluorescent Antibody Technique; Gene Expression Profiling; Hepatic Stellate Cells, metabolism; Humans; Immunoblotting; Immunohistochemistry; Liver Cirrhosis, metabolism; Liver Neoplasms, metabolism; Liver, pathology; Macrophages, metabolism; Mice; Mice, Mutant Strains; Microarray Analysis; Myofibroblasts, metabolism; Polymerase Chain Reaction; S100 Proteins, metabolism},
+  Language                 = {eng},
+  Medline-pst              = {ppublish},
+  Owner                    = {mkoenig},
+  Pii                      = {1017547108},
+  Pmid                     = {21173249},
+  Timestamp                = {2015.09.08},
+  Url                      = {http://dx.doi.org/10.1073/pnas.1017547108}
+}
+
 @Article{Alaish2013,
   Title                    = {CANDIDATE GENES FOR LIMITING CHOLESTATIC INTESTINAL INJURY IDENTIFIED BY GENE EXPRESSION PROFILING.},
   Author                   = {Alaish, Samuel M. and Timmons, Jennifer and Smith, Alexis and Buzza, Marguerite S. and Murphy, Ebony and Zhao, Aiping and Sun, Yezhou and Turner, Douglas J. and Shea-Donahue, Terez and Antalis, Toni M. and Cross, Alan and Dorsey, Susan G.},
@@ -92,6 +115,28 @@
   Url                      = {http://dx.doi.org/10.1186/1755-1536-1-6}
 }
 
+@Article{Aparicio-Vergara2013,
+  Title                    = {Tumor necrosis factor receptor 1 gain-of-function mutation aggravates nonalcoholic fatty liver disease but does not cause insulin resistance in a murine model.},
+  Author                   = {Aparicio-Vergara, Marcela and Hommelberg, Pascal P H. and Schreurs, Marijke and Gruben, Nanda and Stienstra, Rinke and Shiri-Sverdlov, Ronit and Kloosterhuis, Niels J. and {de Bruin}, Alain and {van de Sluis}, Bart and Koonen, Debby P Y. and Hofker, Marten H.},
+  Journal                  = {Hepatology},
+  Year                     = {2013},
+
+  Month                    = {Feb},
+  Number                   = {2},
+  Pages                    = {566--576},
+  Volume                   = {57},
+  Abstract                 = {Ectodomain shedding of tumor necrosis factor receptor 1 (TNFR1) provides negative feedback to the inflammatory loop induced by TNFα. As the significance of this mechanism in obesity-associated pathologies is unclear, we aimed to unravel how much TNFR1 ectodomain shedding controls the development of nonalcoholic fatty liver disease (NAFLD), as well as its role in the development of insulin resistance. We used knockin mice expressing a mutated TNFR1 ectodomain (p55(Δns)), incapable of shedding and dampen the inflammatory response. Our data show that persistent TNFα signaling through this inability of TNFR1 ectodomain shedding contributes to chronic low-grade inflammation, which is confined to the liver. In spite of this, hepatic lipid levels were not affected by the nonshedding mutation in mice fed a chow diet, nor were they worse off following 12 weeks of high-fat diet (HFD) than controls (p55(+/+)) fed an HFD. We detected inflammatory infiltrates, hepatocellular necrosis, and apoptosis in livers of p55(Δns/Δns) mice fed an HFD, suggesting advanced progression of NAFLD toward nonalcoholic steatohepatitis (NASH). Indeed, fibrosis was present in p55(Δns/Δns) mice, but absent in wildtype mice, confirming that the p55(Δns/Δns) mice had a more severe NASH phenotype. Despite low-grade hepatic inflammation, insulin resistance was not observed in p55(Δns/Δns) mice fed a chow diet, and HFD-induced insulin resistance was no worse in p55(Δns/Δns) mice than p55(+/+) mice.TNFR1 ectodomain shedding is not an essential feedback mechanism in preventing the development of hepatic steatosis or insulin resistance. It is, however, pivotal in attenuating the progression from "simple steatosis" towards a more serious phenotype with many NASH features. Targeting TNFR1 could therefore be beneficial in attenuating NASH.},
+  Doi                      = {10.1002/hep.26046},
+  Institution              = {Molecular Genetics, Medical Biology Section, Department of Pathology and Medical Biology, University of Groningen, University Medical Center Groningen, Groningen, the Netherlands.},
+  Keywords                 = {Animals; Diet, High-Fat; Fatty Liver, etiology; Female; Inflammation, etiology; Insulin Resistance, genetics; Liver, pathology; Male; Mice; Mutation; Non-alcoholic Fatty Liver Disease; Receptors, Tumor Necrosis Factor, Type I, genetics},
+  Language                 = {eng},
+  Medline-pst              = {ppublish},
+  Owner                    = {mkoenig},
+  Pmid                     = {22941955},
+  Timestamp                = {2015.09.08},
+  Url                      = {http://dx.doi.org/10.1002/hep.26046}
+}
+
 @Article{Archer2010,
   Title                    = {rpartOrdinal: an R package for deriving a classification tree for predicting an ordinal response},
   Author                   = {Archer, Kellie J},
@@ -101,6 +146,67 @@
   Volume                   = {34},
 
   Publisher                = {NIH Public Access}
+}
+
+@Article{Baclig2012,
+  Title                    = {Association of glutathione S-transferase T1 and M1 genotypes with chronic liver diseases among Filipinos.},
+  Author                   = {Baclig, Michael O. and Alvarez, May R. and Lozada, Xerxes Morgan R. and Mapua, Cynthia A. and Lozano-K{\"{u}}hne, Jingky P. and Dimamay, Mark Pierre S. and Natividad, Filipinas F. and Gopez-Cervantes, Juliet and Matias, Ronald R.},
+  Journal                  = {Int J Mol Epidemiol Genet},
+  Year                     = {2012},
+  Number                   = {2},
+  Pages                    = {153--159},
+  Volume                   = {3},
+  Abstract                 = {The glutathione S-transferase (GST) supergene family is made up of four gene families responsible for the biotransformation of drugs and other xenobiotics. Genetic variations in this supergene family influence individual detoxification levels and may contribute to the development of cancer. A hospital-based case-control study was conducted to evaluate the association between GST polymorphism among Filipino patients positive for hepatitis B virus (HBV DNA) and clinically diagnosed as either with chronic active hepatitis, liver cirrhosis, and hepatocellular carcinoma as well as normal individuals negative for HBV infection. Multiplex PCR was used to detect the presence or absence of the GSTT1 and GSTM1 polymorphisms in peripheral blood. DNA sequencing of the S gene region of the virus was used to determine the predominant genotype found among HBV-infected patients. Our results showed that the odds of having a chronic liver disease is only 0.95 (95\% CI 0.58-1.57) among those with GSTT1 null genotype compared to those with GSTT1+ genotype. On the other hand, the odds of chronic liver disease is 17.85 times (95\% CI 7.34-43.45) for those with GSTM1 null genotype compared to those with GSTM1+ genotype. Using the GSTT1+/GSTM1+ genotype as the reference, both GSTT1+/GSTM1- (OR 16.61; 95\% CI 6.69-41.22) and GSTT1-/GSTM1- (OR 11.91; 95\% CI 4.48-31.66) genotypes seem to be risk factors for chronic liver disease. From our observations, we conclude that polymorphism in GSTM1 null genotype (OR 17.85; 95\% CI 7.34-43.45) seem to be associated with an increased risk of chronic liver disease among Filipinos.},
+  Institution              = {Research and Biotechnology Division, St. Luke's Medical Center-Quezon City, Philippines. mobaclig@stluke.com.ph},
+  Language                 = {eng},
+  Medline-pst              = {ppublish},
+  Owner                    = {mkoenig},
+  Pmid                     = {22724052},
+  Timestamp                = {2015.09.08}
+}
+
+@Article{Bai2012,
+  Title                    = {Yes-associated protein regulates the hepatic response after bile duct ligation.},
+  Author                   = {Bai, Haibo and Zhang, Nailing and Xu, Yang and Chen, Qian and Khan, Mehtab and Potter, James J. and Nayar, Suresh K. and Cornish, Toby and Alpini, Gianfranco and Bronk, Steven and Pan, Duojia and Anders, Robert A.},
+  Journal                  = {Hepatology},
+  Year                     = {2012},
+
+  Month                    = {Sep},
+  Number                   = {3},
+  Pages                    = {1097--1107},
+  Volume                   = {56},
+  Abstract                 = {Human chronic cholestatic liver diseases are characterized by cholangiocyte proliferation, hepatocyte injury, and fibrosis. Yes-associated protein (YAP), the effector of the Hippo tumor-suppressor pathway, has been shown to play a critical role in promoting cholangiocyte and hepatocyte proliferation and survival during embryonic liver development and hepatocellular carcinogenesis. Therefore, the aim of this study was to examine whether YAP participates in the regenerative response after cholestatic injury. First, we examined human liver tissue from patients with chronic cholestasis. We found more-active nuclear YAP in the bile ductular reactions of primary sclerosing cholangitis and primary biliary cirrhosis patient liver samples. Next, we used the murine bile duct ligation (BDL) model to induce cholestatic liver injury. We found significant changes in YAP activity after BDL in wild-type mice. The function of YAP in the hepatic response after BDL was further evaluated with liver-specific Yap conditional deletion in mice. Ablating Yap in the mouse liver not only compromised bile duct proliferation, but also enhanced hepatocyte necrosis and suppressed hepatocyte proliferation after BDL. Furthermore, primary hepatocytes and cholangiocytes isolated from Yap-deficient livers showed reduced proliferation in response to epidermal growth factor in vitro. Finally, we demonstrated that YAP likely mediates its biological effects through the modulation of Survivin expression.Our data suggest that YAP promotes cholangiocyte and hepatocyte proliferation and prevents parenchymal damage after cholestatic injury in mice and thus may mediate the response to cholestasis-induced human liver disease.},
+  Doi                      = {10.1002/hep.25769},
+  Institution              = {e, MD 21205, USA.},
+  Keywords                 = {Animals; Bile Ducts, cytology; Cholestasis, complications; Hepatocytes, physiology; Humans; Ligation; Liver Regeneration; Male; Mice; Proto-Oncogene Proteins c-yes, physiology},
+  Language                 = {eng},
+  Medline-pst              = {ppublish},
+  Owner                    = {mkoenig},
+  Pmid                     = {22886419},
+  Timestamp                = {2015.09.08},
+  Url                      = {http://dx.doi.org/10.1002/hep.25769}
+}
+
+@Article{Barashi2013,
+  Title                    = {Inflammation-induced hepatocellular carcinoma is dependent on CCR5 in mice.},
+  Author                   = {Barashi, Neta and Weiss, Ido D. and Wald, Ori and Wald, Hanna and Beider, Katia and Abraham, Michal and Klein, Shiri and Goldenberg, Daniel and Axelrod, Jonathan and Pikarsky, Eli and Abramovitch, Rinat and Zeira, Evelyne and Galun, Eithan and Peled, Amnon},
+  Journal                  = {Hepatology},
+  Year                     = {2013},
+
+  Month                    = {Sep},
+  Number                   = {3},
+  Pages                    = {1021--1030},
+  Volume                   = {58},
+  Abstract                 = {Human hepatocellular carcinoma (HCC) is an inflammation-induced cancer, which is the third-leading cause of cancer mortality worldwide. We investigated the role of the chemokine receptors, CCR5 and CCR1, in regulating inflammation and tumorigenesis in an inflammation-induced HCC model in mice. Multidrug resistance 2 gene (Mdr2)-knockout (Mdr2-KO) mice spontaneously develop chronic cholestatic hepatitis and fibrosis that is eventually followed by HCC. We generated two new strains from the Mdr2-KO mouse, the Mdr2:CCR5 and the Mdr2:CCR1 double knockouts (DKOs), and set out to compare inflammation and tumorigenesis among these strains. We found that in Mdr2-KO mice lacking the chemokine receptor, CCR5 (Mdr2:CCR5 DKO mice), but not CCR1 (Mdr2:CCR1 DKO), macrophage recruitment and trafficking to the liver was significantly reduced. Furthermore, in the absence of CCR5, reduced inflammation was also associated with reduced periductal accumulation of CD24(+) oval cells and abrogation of fibrosis. DKO mice for Mdr2 and CCR5 exhibited a significant decrease in tumor incidence and size.Our results indicate that CCR5 has a critical role in both the development and progression of liver cancer. Therefore, we propose that a CCR5 antagonist can serve for HCC cancer prevention and treatment.},
+  Doi                      = {10.1002/hep.26403},
+  Institution              = {Goldyne Savad Institute of Gene Therapy, Human Biology Research Center, Hadassah Hebrew University Hospital, Jerusalem, Israel.},
+  Keywords                 = {Animals; Carcinoma, Hepatocellular, epidemiology/etiology/physiopathology; Chemokine CCL5, physiology; Disease Models, Animal; Disease Progression; Hepatitis, Chronic, complications/genetics; Incidence; Liver Cirrhosis, complications/genetics; Liver Neoplasms, epidemiology/etiology/physiopathology; Liver, pathology/physiopathology; Mice; Mice, Inbred C57BL; Mice, Knockout; P-Glycoproteins, deficiency/genetics/physiology; Receptors, CCR1, deficiency/genetics/physiology; Receptors, CCR5, deficiency/genetics/physiology},
+  Language                 = {eng},
+  Medline-pst              = {ppublish},
+  Owner                    = {mkoenig},
+  Pmid                     = {23526353},
+  Timestamp                = {2015.09.08},
+  Url                      = {http://dx.doi.org/10.1002/hep.26403}
 }
 
 @Article{Bar-Joseph2004,
@@ -184,6 +290,28 @@
   Timestamp                = {2015.08.27}
 }
 
+@Article{Chen2012,
+  Title                    = {Notch3 regulates the activation of hepatic stellate cells.},
+  Author                   = {Chen, Yi-Xiong and Weng, Zhi-Hong and Zhang, Shu-Ling},
+  Journal                  = {World J Gastroenterol},
+  Year                     = {2012},
+
+  Month                    = {Mar},
+  Number                   = {12},
+  Pages                    = {1397--1403},
+  Volume                   = {18},
+  Abstract                 = {To investigate whether Notch signaling is involved in liver fibrosis by regulating the activation of hepatic stellate cells (HSCs).Immunohistochemistry was used to detect the expression of Notch3 in fibrotic liver tissues of patients with chronic active hepatitis. The expression of Notch3 in HSC-T6 cells treated or not with transforming growth factor (TGF)-β1 was analyzed by immunofluorescence staining. The expression of Notch3 and myoﬁbroblastic marker α-smooth muscle actin (α-SMA) and collagen I in HSC-T6 cells transfected with pcDNA3.1-N3ICD or control vector were detected by Western blotting and immunofluorescence staining. Moreover, effects of Notch3 knockdown in HSC-T6 by Notch3 siRNA were investigated by Western blotting and immunofluorescence staining.The expression of Notch3 was significantly up-regulated in fibrotic liver tissues of patients with chronic active hepatitis, but not detected in normal liver tissues. Active Notch signaling was found in HSC-T6 cells. TGF-β1 treatment led to up-regulation of Notch3 expression in HSC-T6 cells, and over-expression of Notch3 increased the expression of α-SMA and collagen I in HSC-T6 without TGF-β1 treatment. Interestingly, transient knockdown of Notch3 decreased the expression of myoﬁbroblastic marker and antagonized TGF-β1-induced expression of α-SMA and collagen I in HSC-T6.Notch3 may regulate the activation of HSCs, and the selective interruption of Notch3 may provide an anti-ﬁbrotic strategy in hepatic ﬁbrosis.},
+  Doi                      = {10.3748/wjg.v18.i12.1397},
+  Institution              = {Department of Hepatology and Infectious Disease, Union Hospital, Tongji Medical College, Huazhong University of Science and Technology, Wuhan 430022, Hubei Province, China.},
+  Keywords                 = {Adult; Cell Line; Female; Hepatic Stellate Cells, cytology/drug effects/metabolism; Humans; Liver Cirrhosis, metabolism/pathology; Male; Middle Aged; RNA, Small Interfering, genetics/metabolism; Receptors, Notch, genetics/metabolism; Transforming Growth Factor beta1, pharmacology; Up-Regulation},
+  Language                 = {eng},
+  Medline-pst              = {ppublish},
+  Owner                    = {mkoenig},
+  Pmid                     = {22493555},
+  Timestamp                = {2015.09.08},
+  Url                      = {http://dx.doi.org/10.3748/wjg.v18.i12.1397}
+}
+
 @Article{Chiang2009,
   Title                    = {Bile acids: regulation of synthesis.},
   Author                   = {Chiang, John Y L.},
@@ -208,6 +336,49 @@
   Url                      = {http://dx.doi.org/10.1194/jlr.R900010-JLR200}
 }
 
+@Article{Colak2012,
+  Title                    = {Concentrations of connective tissue growth factor in patients with nonalcoholic fatty liver disease: association with liver fibrosis.},
+  Author                   = {Colak, Yasar and Senates, Ebubekir and Coskunpinar, Ender and Oltulu, Yasemin Musteri and Zemheri, Ebru and Ozturk, Oguzhan and Doganay, Levent and Mesci, Banu and Yilmaz, Yusuf and Enc, Feruze Yilmaz and Kiziltas, Safak and Ulasoglu, Celal and Tuncer, Ilyas},
+  Journal                  = {Dis Markers},
+  Year                     = {2012},
+  Number                   = {2},
+  Pages                    = {77--83},
+  Volume                   = {33},
+  Abstract                 = {In this study, we aimed to investigate the relationship between the histological fibrosis stage of nonalcoholic fatty liver disease (NAFLD) and serum connective tissue growth factor (CTGF) to determine the usefulness of this relationship in clinical practice.Serum samples were collected from 51 patients with biopsy-proven NAFLD and 28 healthy controls, and serum levels of CTGF were assayed by ELISA.Levels of CTGF were significantly higher in patients with NAFLD compared with controls (P=0.001). The serum CTGF levels were significantly increased, that correlated with histological fibrosis stage, in patients with NAFLD [in patients with no fibrosis (stage 0) 308.2 ± 142.9, with mild fibrosis (stage 1-2) 519.9 ± 375.2 and with advanced fibrosis (stage 3-4) 1353.2 ± 610 ng/l, P < 0.001]. Also serum level of CTGF was found as an independent predictor of histological fibrosis stage in patients with NAFLD (β = 0.662, t=5.6, P <0.001). The area under the ROC curve was estimated 0.931 to separate patients with severe fibrosis from patients with other fibrotic stages.Serum levels of CTGF may be a clinical utility for distinguishing NAFLD patients with and without advanced fibrosis.},
+  Doi                      = {10.3233/DMA-2012-0907},
+  Institution              = {Department of Gastroenterology, Istanbul Medeniyet University, Medical Faculty, Istanbul, Turkey. dryasarcolak@yahoo.com},
+  Keywords                 = {Adult; Connective Tissue Growth Factor, blood; Fatty Liver, blood/epidemiology/pathology; Female; Humans; Liver Cirrhosis, epidemiology; Male; Middle Aged; Non-alcoholic Fatty Liver Disease},
+  Language                 = {eng},
+  Medline-pst              = {ppublish},
+  Owner                    = {mkoenig},
+  Pii                      = {W875036Q93881327},
+  Pmid                     = {22846210},
+  Timestamp                = {2015.09.08},
+  Url                      = {http://dx.doi.org/10.3233/DMA-2012-0907}
+}
+
+@Article{Dendooven2011,
+  Title                    = {Connective tissue growth factor (CTGF/CCN2) ELISA: a novel tool for monitoring fibrosis.},
+  Author                   = {Dendooven, Am{\'{e}}lie and Gerritsen, Karin G. and Nguyen, Tri Q. and Kok, Robbert J. and Goldschmeding, Roel},
+  Journal                  = {Biomarkers},
+  Year                     = {2011},
+
+  Month                    = {Jun},
+  Number                   = {4},
+  Pages                    = {289--301},
+  Volume                   = {16},
+  Abstract                 = {Connective tissue growth factor (CTGF) has been identified as a key factor in the pathogenesis of diseases with significant fibrosis-related complications such as hepatitis, diabetes and renal transplantation. Increasing evidence shows that CTGF levels in plasma, serum and urine have promising biomarker applicability in these disorders.To present an overview of current knowledge on CTGF in various patient populations and the technical aspects of CTGF measurement by enzyme-linked immunosorbent assay (ELISA).We performed a comprehensive literature search by using electronic bibliographic databases.CTGF is associated with disease severity parameters and outcome in fibrotic disease and may have diagnostic and prognostic values. However, CTGF ELISA needs standardization.},
+  Doi                      = {10.3109/1354750X.2011.561366},
+  Institution              = {Department of Pathology, University Medical Center Utrecht, The Netherlands.},
+  Keywords                 = {Animals; Biological Markers, analysis; Connective Tissue Growth Factor, analysis; Data Collection; Databases, Bibliographic; Enzyme-Linked Immunosorbent Assay, methods; Fibrosis, diagnosis; Humans; Severity of Illness Index},
+  Language                 = {eng},
+  Medline-pst              = {ppublish},
+  Owner                    = {mkoenig},
+  Pmid                     = {21595567},
+  Timestamp                = {2015.09.08},
+  Url                      = {http://dx.doi.org/10.3109/1354750X.2011.561366}
+}
+
 @Article{Diehl2013,
   Title                    = {Underlying potential: cellular and molecular determinants of adult liver repair.},
   Author                   = {Diehl, Anna Mae and Chute, John},
@@ -218,6 +389,7 @@
   Number                   = {5},
   Pages                    = {1858--1860},
   Volume                   = {123},
+
   Abstract                 = {The liver has a unique and extraordinary capacity for regeneration, even in adult organisms. This regenerative potential has traditionally been attributed to the replicative capabilities of mature hepatocytes and cholangiocytes, though emerging evidence suggests that other resident liver cell types such as progenitors, liver sinusoidal endothelial cells, and hepatic stellate cells respond to liver injury and contribute to repair. These other cells types are also associated with liver scarring, dysfunction, and carcinogenesis, which suggests that appropriate regulation of these cells is a major determinant of response to liver injury. The Reviews in this series explore possible contributions of liver progenitor cells, liver sinusoidal endothelial cells, and hepatic stellate cells to liver homeostasis and repair and highlight how these processes can go awry in chronic liver injury, fibrosis, and liver cancer.},
   Doi                      = {10.1172/JCI69966},
   Institution              = {Division of Gastroenterology, Duke University, Durham, North Carolina 27710, USA. annamae.diehl@dm.duke.edu},
@@ -229,6 +401,46 @@
   Pmid                     = {23635782},
   Timestamp                = {2015.09.07},
   Url                      = {http://dx.doi.org/10.1172/JCI69966}
+}
+
+@Article{Eipel2013,
+  Title                    = {Hepatoprotection in bile duct ligated mice mediated by darbepoetin-$\alpha$ is not caused by changes in hepatobiliary transporter expression.},
+  Author                   = {Eipel, Christian and Menschikow, Elena and Sigal, Michael and Kuhla, Angela and Abshagen, Kerstin and Vollmar, Brigitte},
+  Journal                  = {Int J Clin Exp Pathol},
+  Year                     = {2013},
+  Number                   = {1},
+  Pages                    = {80--90},
+  Volume                   = {6},
+  Abstract                 = {Darbepoetin-α (DPO), a long-acting erythropoietin analog, has been shown to protect the liver against cholestatic injury, to exert an antifibrotic effect, and to increase the survival time in a model of common bile duct ligation. Here we evaluate whether these tissue-protective effects are caused by DPO induced regulation of hepatobiliary transporters.C57BL/6J mice underwent common bile duct ligation and were treated with either DPO or physiological saline. Time dependent (2, 5, 14, 28 days after bile duct ligation) protein expression of different hepatobiliary transporters which have been established to play an important role in hepatocellular (i) bile acid uptake, (ii) bile acid excretion, and (iii) retrograde bile acid efflux were assessed. mRNA and protein expression of Lhx2, an important negative regulator of hepatic stellate cell activation, was determined.Saline treated cholestatic mice impress with increased mRNA expression of Lhx2 as a defense mechanism, while there is less need for such an upregulation in mice treated with DPO. Whereas Ntcp (slc10a1) protein expression is suppressed as early as 2 days after bile duct ligation to 40\% in untreated animals, DPO treated mice exhibit decreased protein level not before day 5. Similarly, the steady decline of Mrp4 (abcc4) protein level during extrahepatic cholestasis in control treated animals does not occur upon DPO application.The collected data show that DPO affects expression of hepatobilliary transporters during obstructive cholestasis but do not provide sufficient evidence to demonstrate a direct correlation between this regulation and hepatoprotection by DPO.},
+  Institution              = {Institute for Experimental Surgery, University of Rostock Schillingallee 69 a, 18055 Rostock, Germany. christian.eipel@uni-rostock.de},
+  Keywords                 = {Animals; Bile Ducts, surgery; Blotting, Western; Cholestasis, metabolism; Erythropoietin, analogs /&/ derivatives/pharmacology; LIM-Homeodomain Proteins, biosynthesis; Ligation; Liver, drug effects/metabolism; Male; Membrane Transport Proteins, analysis/biosynthesis; Mice; Mice, Inbred C57BL; Multidrug Resistance-Associated Proteins, biosynthesis; Organic Anion Transporters, Sodium-Dependent, biosynthesis; Real-Time Polymerase Chain Reaction; Symporters, biosynthesis; Transcription Factors, biosynthesis},
+  Language                 = {eng},
+  Medline-pst              = {ppublish},
+  Owner                    = {mkoenig},
+  Pmid                     = {23236546},
+  Timestamp                = {2015.09.08}
+}
+
+@Article{Estep2009,
+  Title                    = {Expression of cytokine signaling genes in morbidly obese patients with non-alcoholic steatohepatitis and hepatic fibrosis.},
+  Author                   = {Estep, J Michael and Baranova, Ancha and Hossain, Noreen and Elariny, Hazem and Ankrah, Kathy and Afendy, Arian and Chandhoke, Vikas and Younossi, Zobair M.},
+  Journal                  = {Obes Surg},
+  Year                     = {2009},
+
+  Month                    = {May},
+  Number                   = {5},
+  Pages                    = {617--624},
+  Volume                   = {19},
+  Abstract                 = {White adipose tissue (WAT) from visceral adiposity plays an important role in the pathogenesis of non-alcoholic steatohepatitis (NASH). Development of NASH and its progression to fibrosis is partially due to cytokines and adipokines produced by WAT. The aim of this study was to assess the association of hepatic fibrosis and NASH by evaluating the intrinsic differences in the inflammatory cytokine signaling in the visceral adipose tissue obtained from morbidly obese patients.We used targeted microarrays representing human genes involved in the inflammatory and fibrogenic reactions to profile visceral adipose samples of 15 well-matched NASH patients with and without fibrosis. Additionally, visceral adipose samples were subjected to real-time polymerase chain reaction profiling of 84 inflammations related genes.Eight genes (CCL2, CCL4, CCL18, CCR1, IL10RB, IL15RA, and LTB) were differentially expressed in NASH with fibrosis. Additionally, an overlapping but distinct list of the differentially expressed genes were found in NASH with type II diabetes (DM; IL8, BLR1, IL2RA, CD40LG, IL1RN, IL15RA, and CCL4) as compared to NASH without DM.Inflammatory cytokines are differentially expressed in the adipose tissue of NASH with fibrosis, as well in NASH with DM. These findings point at the interaction of adipose inflammatory cytokines, DM, hepatic fibrosis in NASH, and its progression to cirrhosis and end-stage liver disease.},
+  Doi                      = {10.1007/s11695-009-9814-x},
+  Institution              = {Center for Liver Diseases, Inova Fairfax Hospital, 3300 Gallows Road, Falls Church, VA, 22042, USA.},
+  Keywords                 = {Adult; Case-Control Studies; Cytokines, genetics; Diabetes Mellitus, Type 2, complications/genetics/pathology; Fatty Liver, complications/genetics/pathology; Female; Gene Expression Profiling; Humans; Intra-Abdominal Fat; Liver Cirrhosis, complications/genetics/pathology; Male; Middle Aged; Obesity, Morbid, complications/genetics/pathology; Oligonucleotide Array Sequence Analysis; Polymerase Chain Reaction; Receptors, Cytokine, genetics},
+  Language                 = {eng},
+  Medline-pst              = {ppublish},
+  Owner                    = {mkoenig},
+  Pmid                     = {19280268},
+  Timestamp                = {2015.09.08},
+  Url                      = {http://dx.doi.org/10.1007/s11695-009-9814-x}
 }
 
 @Article{Firrincieli2013,
@@ -254,11 +466,92 @@
   Url                      = {http://dx.doi.org/10.1002/hep.26453}
 }
 
+@Article{Floreani2013,
+  Title                    = {Severe liver cirrhosis markedly reduces AhR-mediated induction of cytochrome P450 in rats by decreasing the transcription of target genes.},
+  Author                   = {Floreani, Maura and {De Martin}, Sara and Gabbia, Daniela and Barbierato, Massimo and Nassi, Alberto and Mescoli, Claudia and Orlando, Rocco and Bova, Sergio and Angeli, Paolo and Gola, Elisabetta and Sticca, Antonietta and Palatini, Pietro},
+  Journal                  = {PLoS One},
+  Year                     = {2013},
+  Number                   = {4},
+  Pages                    = {e61983},
+  Volume                   = {8},
+  Abstract                 = {Although the induction of cytochrome P450 (CYP) has long been investigated in patients with cirrhosis, the question whether liver dysfunction impairs the response to CYP inducers still remains unresolved. Moreover, the mechanism underlying the possible effect of cirrhosis on induction has not been investigated. Since ethical constraints do not permit methodologically rigorous studies in humans, this question was addressed by investigating the effect of the prototypical inducer benzo[a]pyrene (BP) on CYP1A1 and CYP1A2 in cirrhotic rats stratified according to the severity of liver dysfunction. We simultaneously assessed mRNA level, protein expression and enzymatic activity of the CYP1A enzymes, as well as mRNA and protein expressions of the aryl hydrocarbon receptor (AhR), which mediates the BP effect. Basal mRNA and protein expressions of CYP1A1 were virtually absent in both healthy and cirrhotic rats. On the contrary, CYP1A2 mRNA, protein and enzyme activity were constitutively present in healthy rats and decreased significantly as liver function worsened. BP treatment markedly increased the concentrations of mRNA and immunodetectable protein, and the enzymatic activities of both CYP1A enzymes to similar levels in healthy and non-ascitic cirrhotic rats. Induced mRNA levels, protein expressions and enzymatic activities of both CYPs were much lower in ascitic rats and were proportionally reduced. Both constitutive and induced protein expressions of AhR were significantly lower in ascitic than in healthy rats. These results indicate that the inducibility of CYP1A enzymes is well preserved in compensated cirrhosis, whereas it is markedly reduced when liver dysfunction becomes severe. Induction appears to be impaired at the transcriptional level, due to the reduced expression of AhR, which controls the transcription of CYP1A genes.},
+  Doi                      = {10.1371/journal.pone.0061983},
+  Institution              = {Department of Pharmaceutical and Pharmacological Sciences, University of Padova, Padova, Italy.},
+  Keywords                 = {Animals; Ascites, chemically induced/enzymology/genetics/pathology; Benzo(a)pyrene; Cytochrome P-450 CYP1A1, genetics/metabolism; Cytochromes, genetics/metabolism; Enzyme Induction, genetics; Gene Expression Regulation; Liver Cirrhosis, Experimental, chemically induced/enzymology/genetics/pathology; Liver Function Tests; Liver, enzymology/pathology; Male; RNA, Messenger, genetics/metabolism; Rats; Rats, Wistar; Receptors, Aryl Hydrocarbon, genetics/metabolism; Severity of Illness Index; Transcription, Genetic},
+  Language                 = {eng},
+  Medline-pst              = {epublish},
+  Owner                    = {mkoenig},
+  Pii                      = {PONE-D-12-36652},
+  Pmid                     = {23626760},
+  Timestamp                = {2015.09.08},
+  Url                      = {http://dx.doi.org/10.1371/journal.pone.0061983}
+}
+
+@Article{Fosang1992,
+  Title                    = {The interglobular domain of cartilage aggrecan is cleaved by PUMP, gelatinases, and cathepsin B.},
+  Author                   = {Fosang, A. J. and Neame, P. J. and Last, K. and Hardingham, T. E. and Murphy, G. and Hamilton, J. A.},
+  Journal                  = {J Biol Chem},
+  Year                     = {1992},
+
+  Month                    = {Sep},
+  Number                   = {27},
+  Pages                    = {19470--19474},
+  Volume                   = {267},
+  Abstract                 = {The action of three matrix metalloproteinases (MMPs), 72- and 95-kDa gelatinases (MMP-2 and MMP-9) and PUMP (MMP-7), and a cysteine proteinase, cathepsin B, were investigated on aggrecan the major proteoglycan of cartilage. All the enzymes cleaved aggrecan although the activity of the 95-kDa gelatinase was very low. Specific cleavage sites were investigated following incubation with a purified aggrecan G1-G2 domain fragment (150 kDa). Both gelatinases produced 110-kDa G2 and 56-kDa G1 products by a single cleavage at an Asn-Phe bond within the interglobular domain close to the G1 domain. This was similar to the action of stromelysin (MMP-3) (Fosang, A. J., Neame, P. J., Hardingham, T. E., Murphy, G., and Hamilton, J. A. (1991) J. Biol. Chem. 266, 15579-15582). Cathepsin B also produced two fragments from a single cleavage at a Gly-Val bond only three amino acids C-terminal to the metalloproteinase cleavage site. PUMP cleaved at the metalloproteinase Asn-Phe site, but in addition produced a low yield of a smaller G2 fragment (56 kDa) corresponding to cleavage between Asp441 and Leu442 (human sequence), within the interglobular domain, close to the G2 domain. The apparent difference in size between the two G2 fragments released by PUMP (110 and 56 kDa) was much greater than predicted from the peptide length between the cleavage sites (100 amino acids). However, keratanase digestion greatly reduced the size of the 110-kDa G2 fragment, while producing only a small reduction in size of the 56-kDa product, showing that there was approximately 30-40 kDa of keratan sulfate attached to the interglobular domain between the PUMP cleavage sites. This new structural information on aggrecan may account for the previously observed stiffness of the interglobular domains when viewed by rotary shadowing electron microscopy (Paulsson, M., Morgelin, M., Wiedemann, H., Beardmore-Gray, M., Dunham, D. G., Hardingham, T. E., Heinegard, D., Timpl, R., and Engel, J. (1987) Biochem. J. 245, 763-772). These results show that in spite of a high keratan sulfate content the interglobular domain provides important sites for cleavage by different proteinases, including several members of the matrix metalloproteinase family.},
+  Institution              = {Department of Medicine, University of Melbourne, Royal Melbourne Hospital, Parkville, Australia.},
+  Keywords                 = {Aggrecans; Amino Acid Sequence; Animals; Cartilage, metabolism; Cathepsin B, metabolism; Extracellular Matrix Proteins; In Vitro Techniques; Lectins, C-Type; Matrix Metalloproteinase 2; Matrix Metalloproteinase 7; Matrix Metalloproteinase 9; Metalloendopeptidases, metabolism; Microbial Collagenase, metabolism; Molecular Sequence Data; Peptide Mapping; Proteoglycans, metabolism; Swine},
+  Language                 = {eng},
+  Medline-pst              = {ppublish},
+  Owner                    = {mkoenig},
+  Pmid                     = {1326552},
+  Timestamp                = {2015.09.08}
+}
+
 @Book{Frank2001,
   Title                    = {A simple approach to ordinal classification},
   Author                   = {Frank, Eibe and Hall, Mark},
   Publisher                = {Springer},
   Year                     = {2001}
+}
+
+@Article{Fujii2010,
+  Title                    = {Mouse model of carbon tetrachloride induced liver fibrosis: Histopathological changes and expression of CD133 and epidermal growth factor.},
+  Author                   = {Fujii, Tsutomu and Fuchs, Bryan C. and Yamada, Suguru and Lauwers, Gregory Y. and Kulu, Yakup and Goodwin, Jonathan M. and Lanuti, Michael and Tanabe, Kenneth K.},
+  Journal                  = {BMC Gastroenterol},
+  Year                     = {2010},
+  Pages                    = {79},
+  Volume                   = {10},
+  Abstract                 = {In the setting of chronic liver injury in humans, epidermal growth factor (EGF) and EGF receptor (EGFR) are up-regulated and have been proposed to have vital roles in both liver regeneration and development of hepatocellular carcinoma (HCC). Chronic liver injury also leads to hepatic stellate cell (HSC) differentiation and a novel subpopulation of HSCs which express CD133 and exhibit properties of progenitor cells has been described in rats. The carbon tetrachloride (CCl4)-induced mouse model has been historically relied upon to study liver injury and regeneration. We exposed mice to CCl4 to assess whether EGF and CD133+ HSCs are up-regulated in chronically injured liver.CCl4 in olive oil was administered to strain A/J mice three times per week by oral gavage.Multiple well-differentiated HCCs were found in all livers after 15 weeks of CCl4 treatment. Notably, HCCs developed within the setting of fibrosis and not cirrhosis. CD133 was dramatically up-regulated after CCl4 treatment, and increased expression of desmin and glial fibrillary acidic protein, representative markers of HSCs, was also observed. EGF expression significantly decreased, contrary to observations in humans, whereas the expression of amphiregulin, another EGFR ligand, was significantly increased.Species-specific differences exist with respect to the histopathological and molecular pathogenesis of chronic liver disease. CCl4-induced chronic liver injury in A/J mice has important differences compared to human cirrhosis leading to HCC.},
+  Doi                      = {10.1186/1471-230X-10-79},
+  Institution              = {Massachusetts General Hospital Cancer Center, Harvard Medical School, Boston, USA.},
+  Keywords                 = {Amphiregulin; Animals; Antigens, CD, metabolism; Carbon Tetrachloride, adverse effects; Cell Differentiation; Desmin, metabolism; Disease Models, Animal; Down-Regulation; EGF Family of Proteins; Epidermal Growth Factor, metabolism; Glial Fibrillary Acidic Protein, metabolism; Glycoproteins, metabolism; Hepatic Stellate Cells, metabolism/pathology; Intercellular Signaling Peptides and Proteins, metabolism; Liver Cirrhosis, chemically induced/metabolism/pathology; Male; Mice; Mice, Inbred Strains; Peptides, metabolism; Receptor, Epidermal Growth Factor, metabolism; Up-Regulation},
+  Language                 = {eng},
+  Medline-pst              = {epublish},
+  Owner                    = {mkoenig},
+  Pii                      = {1471-230X-10-79},
+  Pmid                     = {20618941},
+  Timestamp                = {2015.09.08},
+  Url                      = {http://dx.doi.org/10.1186/1471-230X-10-79}
+}
+
+@Article{Fukushima2008,
+  Title                    = {Effect of biliary obstruction and internal biliary drainage on hepatic cytochrome P450 isozymes in rats.},
+  Author                   = {Fukushima, Shintaro and Okuno, Hiroyasu and Shibatani, Nobuyuki and Nakahashi, Yoshitsugu and Seki, Toshihito and Okazaki, Kazuichi},
+  Journal                  = {World J Gastroenterol},
+  Year                     = {2008},
+
+  Month                    = {Apr},
+  Number                   = {16},
+  Pages                    = {2556--2560},
+  Volume                   = {14},
+  Abstract                 = {To investigate the total cytochrome P450 (CYP) content, microsomal mixed-function oxidase (MFO) activity, and expression of mRNAs for various CYP isozymes in a simple rat model of reversible obstructive jaundice.Obstructive jaundice was created in male rats by causing bile duct obstruction with polyester tape. In another group of rats, bile duct obstruction was followed by internal biliary drainage after releasing the tape. The expression of various CYP isozyme mRNAs was semi-quantitatively assessed by competitive RT-PCR.The total CYP content and microsomal MFO activity showed a significant decrease after biliary obstruction, but returned to respective control levels after biliary drainage. A marked reduction in the expression of CYP1A2, 2B1/2, 2C11, 2E1, 3A1, and 3A2 mRNA was detected during biliary obstruction, while expression increased significantly toward the control level after biliary drainage. Although expression of CYP4A1 mRNA showed no reduction during biliary obstruction, it still increased significantly after biliary drainage.These results suggest that not only obstructive jaundice, but also the subsequent internal biliary drainage may affect regulatory medications of the synthesis of individual CYP isozymes differently.},
+  Institution              = {Third Department of Internal Medicine, Kansai Medical University, Moriguchi, Osaka 570-8506, Japan. fukushis@takii.kmu.ac.jp},
+  Keywords                 = {Animals; Cholestasis, enzymology/therapy; Cytochrome P-450 Enzyme System, genetics/metabolism; Isoenzymes, genetics/metabolism; Liver, enzymology; Male; Microsomes, Liver, enzymology; Mixed Function Oxygenases, metabolism; RNA, Messenger, genetics; Rats; Rats, Wistar; Reverse Transcriptase Polymerase Chain Reaction; Suction, methods},
+  Language                 = {eng},
+  Medline-pst              = {ppublish},
+  Owner                    = {mkoenig},
+  Pmid                     = {18442205},
+  Timestamp                = {2015.09.08}
 }
 
 @Article{Furutani2015,
@@ -284,6 +577,28 @@
   Url                      = {http://dx.doi.org/10.1016/j.bbrc.2015.05.074}
 }
 
+@Article{Garcia-Irigoyen2014,
+  Title                    = {Matrix metalloproteinase-10 expression is induced during hepatic injury and plays a fundamental role in liver tissue repair.},
+  Author                   = {Garcia-Irigoyen, Oihane and Carotti, Simone and Latasa, Maria U. and Uriarte, Iker and Fern{\'{a}}ndez-Barrena, Maite G. and Elizalde, Maria and Urtasun, Raquel and Vespasiani-Gentilucci, Umberto and Morini, Sergio and Banales, Jes{\'{u}}s M. and Parks, William C. and Rodriguez, Jose A. and Orbe, Josune and Prieto, Jes{\'{u}}s and P{\'{a}}ramo, Jose A. and Berasain, Carmen and {\'{A}}vila, Mat{\'{\i}}as A.},
+  Journal                  = {Liver Int},
+  Year                     = {2014},
+
+  Month                    = {Aug},
+  Number                   = {7},
+  Pages                    = {e257--e270},
+  Volume                   = {34},
+  Abstract                 = {Upon tissue injury, the liver mounts a potent reparative and regenerative response. A role for proteases, including serine and matrix metalloproteinases (MMPs), in this process is increasingly recognized. We have evaluated the expression and function of MMP10 (stromelysin-2) in liver wound healing and regeneration.The hepatic expression of MMP10 was examined in two murine models: liver regeneration after two-thirds partial hepatectomy (PH) and bile duct ligation (BDL). MMP10 was detected in liver tissues by qPCR, western blotting and immunohistochemistry. The effect of growth factors and toll-like receptor 4 (TLR4) agonists on MMP10 expression was studied in cultured parenchymal and biliary epithelial cells and macrophages respectively. The role of MMP10 was evaluated by comparing the response of Mmp10+/+ and Mmp10-/- mice to PH and BDL. The intrahepatic turnover of the extracellular matrix proteins fibrin (ogen) and fibronectin was examined.MMP10 mRNA was readily induced after PH and BDL. MMP10 protein was detected in hepatocytes, cholangiocytes and macrophages. In cultured liver epithelial cells, MMP10 expression was additively induced by transforming growth factor-β and epidermal growth factor receptor ligands. TLR4 ligands also stimulated MMP10 expression in macrophages. Lack of MMP10 resulted in increased liver injury upon PH and BDL. Resolution of necrotic areas was impaired, and Mmp10-/- mice showed increased fibrogenesis and defective turnover of fibrin (ogen) and fibronectin.MMP10 expression is induced during mouse liver injury and participates in the hepatic wound healing response. The profibrinolytic activity of MMP10 may be essential in this novel hepatoprotective role.},
+  Doi                      = {10.1111/liv.12337},
+  Institution              = {Centro de Investigación Médica Aplicada (CIMA), Division of Hepatology and Gene Therapy, Universidad de Navarra, Pamplona, Spain.},
+  Keywords                 = {Animals; Bile Ducts, physiopathology/surgery; Blotting, Western; Fibrinogen, metabolism; Gene Expression Regulation, Enzymologic, physiology; Hepatectomy; Immunohistochemistry; Ligation; Liver Diseases, enzymology/physiopathology; Liver, physiology; Matrix Metalloproteinase 10, metabolism; Mice; Mice, Knockout; Polymerase Chain Reaction; Regeneration, physiology; Toll-Like Receptor 4, antagonists /&/ inhibitors},
+  Language                 = {eng},
+  Medline-pst              = {ppublish},
+  Owner                    = {mkoenig},
+  Pmid                     = {24119197},
+  Timestamp                = {2015.09.08},
+  Url                      = {http://dx.doi.org/10.1111/liv.12337}
+}
+
 @Article{Geerts2008,
   Title                    = {Comparison of three research models of portal hypertension in mice: macroscopic, histological and portal pressure evaluation.},
   Author                   = {Geerts, Anja M. and Vanheule, Eline and Praet, Marleen and {Van Vlierberghe}, Hans and {De Vos}, Martine and Colle, Isabelle},
@@ -294,6 +609,7 @@
   Number                   = {4},
   Pages                    = {251--263},
   Volume                   = {89},
+
   Abstract                 = {The characterization of mice models of portal hypertension (PHT) is lacking in the literature. Therefore, the aim of the present study was to make a histological approach during development of PHT in two models of cirrhosis with PHT compared with one model of isolated PHT. The model of isolated PHT was developed by partial portal vein ligation (PPVL). Two portal hypertensive cirrhotic mice models were developed either by common bile duct ligation (CBDL) or administration of carbon tetrachloride (CCl(4)) subcutaneously (twice weekly, 1 ml/kg). These models represent, respectively, a secondary biliary cirrhosis and alcoholic cirrhosis. Mice were killed at several time points to evaluate liver changes by histological and ultrastructural methods. A correlation was made with portal pressure measurements. Histology revealed the absence of fibrosis or cirrhosis in PPVL mice. They developed an isolated portal hypertension. After CBDL induction, the mice developed the characteristics of cirrhosis after 6 weeks, with simultaneous increase in portal pressures. Fifty percent of the mice had ascites at that time point. Sixteen weeks after administration of CCl(4), a micronodular cirrhotic aspect of the liver was seen associated with signs of portal hypertension. This is the first descriptive study of three widely used animal models in mice, allowing the study of pathophysiological changes in cirrhosis and portal hypertension. The PPVL in mice leads to a model of isolated portal hypertension. Secondary biliary cirrhosis developed after 6 weeks of common bile duct ligation in 50\% of the mice that developed ascites. Subcutaneous injection of CCl(4) for 16 weeks induces cirrhosis and portal hypertension, without ascites. Moreover, the present study is the first description of a cirrhotic model in mice developed by subcutaneous injections of CCl(4). Well-described mice models will facilitate use of knock-out or transgenic mice and lead to a better understanding of the underlying molecular pathways in the field of portal hypertension and cirrhosis.},
   Doi                      = {10.1111/j.1365-2613.2008.00597.x},
   Institution              = { Gastroenterology, Ghent Univerity Hospital, Ghent, Belgium. anja.geerts@ugent.be},
@@ -352,6 +668,47 @@
   Timestamp                = {2015.08.23}
 }
 
+@Article{Gressner2002,
+  Title                    = {Roles of TGF-beta in hepatic fibrosis.},
+  Author                   = {Gressner, Axel M. and Weiskirchen, Ralf and Breitkopf, Katja and Dooley, Steven},
+  Journal                  = {Front Biosci},
+  Year                     = {2002},
+
+  Month                    = {Apr},
+  Pages                    = {d793--d807},
+  Volume                   = {7},
+  Abstract                 = {TGF-beta has multiple profibrogenic but also anti-inflammatory and immunosuppressive effects. The balance of these actions is required for maintaining tissue homeostasis and an aberrant expression of TGF-beta is involved in a number of disease processes in the liver. In addition to its fibrogenic action leading to transdifferentiation of hepatic stellate cells into myofibroblasts, TGF-beta is also an important negative regulator of proliferation and an inducer of apoptosis. The major portion of TGF-beta is secreted as part of an inactive complex and the details of the activation process in liver have not yet been elucidated. The initially striking simplicity of the core TGF-beta/Smad signaling pathways is rapidly giving way to a much more complex view of intracellular signal transduction mechanisms and recent work has demonstrated the importance of cross-talk among different signaling pathways to either specify, enhance, or inhibit TGF-beta responses. The ubiquitous pathophysiologic relevance of TGF-beta suggests its measurement in blood as a diagnostic tool. Other strategies aim at inhibition of TGF-beta1 function or synthesis as a primary target for the development of antifibrotic strategies and recent advances in cell biology have opened several ways to approach the inhibition of TGF-beta action.},
+  Institution              = {Institute of Clinical Chemistry and Pathobiochemistry, RWTH-University Hospital, D-52074 Aachen, Germany. agressner@ukaachen.de},
+  Keywords                 = {Activins, pharmacology; Animals; Apoptosis; Humans; Liver Cirrhosis, diagnosis/etiology/therapy; Liver, cytology/metabolism; Models, Biological; Models, Molecular; Rats; Signal Transduction; Transforming Growth Factor beta, antagonists /&/ inhibitors/blood/chemistry/physiology; Transforming Growth Factor beta1},
+  Language                 = {eng},
+  Medline-pst              = {epublish},
+  Owner                    = {mkoenig},
+  Pmid                     = {11897555},
+  Timestamp                = {2015.09.08}
+}
+
+@Article{Gressner2013,
+  Title                    = {Connective tissue growth factor (CTGF/CCN2) in serum is an indicator of fibrogenic progression and malignant transformation in patients with chronic hepatitis B infection.},
+  Author                   = {Gressner, Olav A. and Fang, Meng and Li, Hui and Lu, Lun Gen and Gressner, Axel M. and Gao, Chun Fang},
+  Journal                  = {Clin Chim Acta},
+  Year                     = {2013},
+
+  Month                    = {Jun},
+  Pages                    = {126--131},
+  Volume                   = {421},
+  Abstract                 = {Still a challenging medical problem is the non-invasive monitoring of patients with a variety of chronic liver diseases being on risk to develop fibrosis, cirrhosis, and, finally, primary liver cell carcinoma. Previously, we have shown that CTGF/CCN2, a down-stream mediator of TGF-β, in serum might be a promising non-invasive biomarker of fibrosis, which is extended in the following study to cirrhosis and liver cell carcinoma. Healthy individuals (n=56), as well as fibrotic (n=77), cirrhotic (n=17), and HCC-patients (n=72) with chronic hepatitis B (HBV) infection, clinically, biochemically and histopathologically well characterized and classified, were included for the measurements of CTGF-concentrations in serum using a newly developed CTGF-enzyme immunoassay. A statistical significant increase of the mean serum CTGF-concentrations was associated with different stages of fibrosis, ranging from 15.9 μg/L (S0), 20.3 μg/L (S1/2) to 36.9 μg/L (S3/4). The highest CTGF-concentrations were measured in cirrhotic patients (43.6 μg/L), compared to healthy subjects (17.7 μg/L), followed by a decrease in cirrhotic HCC-patients (38.5 μg/L; p=0.001). Of note, HCC patients without underlying cirrhosis (n=8) had CTGF levels (13.5±13.2 μg/L) comparable to those in healthy controls. No statistical relation between CTGF levels and parameters of liver injury (e.g. AST, ALT) was noticed, but CTGF levels are correlated negatively with serum albumin levels (p=0.007) and platelet counts (p=0.0032), respectively. The latter was negatively correlated with the stage of fibrosis (p=0.025). In HCC patients, CTGF concentrations decreased with tumor progression and size, with lower levels in TNM stage II (30.5 μg/L) and stage III (33.6 μg/L) compared to TNM stage I (41.6 μg/L). Our data suggest a valuable diagnostic impact of CTGF in serum for the follow-up of patients suffering from chronic liver diseases developing fibrosis, cirrhosis and finally HCC. CTGF serum levels in HCC are most likely due to underlying fibrosis/cirrhosis but not due to malignancy per se.},
+  Doi                      = {10.1016/j.cca.2013.02.029},
+  Institution              = {Wisplinghoff Medical Laboratories, Cologne, Germany. o.gressner@wisplinghoff.de},
+  Keywords                 = {Adult; Albumins, genetics/metabolism; Biological Markers, blood; Carcinogenesis, genetics/metabolism/pathology; Carcinoma, Hepatocellular, blood/etiology/pathology/virology; Case-Control Studies; Connective Tissue Growth Factor, blood/genetics; Female; Gene Expression; Hepatitis B virus; Hepatitis B, Chronic, blood/complications/pathology/virology; Humans; Liver Cirrhosis, blood/complications/pathology/virology; Liver Neoplasms, blood/etiology/pathology/virology; Liver, metabolism/pathology/virology; Male; Middle Aged; Severity of Illness Index},
+  Language                 = {eng},
+  Medline-pst              = {ppublish},
+  Owner                    = {mkoenig},
+  Pii                      = {S0009-8981(13)00084-3},
+  Pmid                     = {23501329},
+  Timestamp                = {2015.09.08},
+  Url                      = {http://dx.doi.org/10.1016/j.cca.2013.02.029}
+}
+
 @Article{Gujral2003,
   Title                    = {Neutrophils aggravate acute liver injury during obstructive cholestasis in bile duct-ligated mice.},
   Author                   = {Gujral, Jaspreet S. and Farhood, Anwar and Bajt, Mary Lynn and Jaeschke, Hartmut},
@@ -376,6 +733,91 @@
   Url                      = {http://dx.doi.org/10.1053/jhep.2003.50341}
 }
 
+@Article{Gupta2001,
+  Title                    = {Down-regulation of cholesterol 7alpha-hydroxylase (CYP7A1) gene expression by bile acids in primary rat hepatocytes is mediated by the c-Jun N-terminal kinase pathway.},
+  Author                   = {Gupta, S. and Stravitz, R. T. and Dent, P. and Hylemon, P. B.},
+  Journal                  = {J Biol Chem},
+  Year                     = {2001},
+
+  Month                    = {May},
+  Number                   = {19},
+  Pages                    = {15816--15822},
+  Volume                   = {276},
+  Abstract                 = {Cholesterol 7alpha-hydroxylase (CYP7A1), the rate-limiting enzyme in the neutral pathway of bile acid biosynthesis, is feedback-inhibited at the transcriptional level by hydrophobic bile acids. Recent studies show that bile acids are physiological ligands for farnesoid X receptor (FXR). Activated FXR indirectly represses CYP7A1 transcription through induction of small heterodimer protein (SHP-1). In this study, we provide evidence that bile acids rapidly down-regulate CYP7A1 transcription via activation of the JNK/c-Jun pathway. Furthermore, we demonstrate that SHP-1 is also a direct target of activated c-Jun. In primary rat hepatocyte cultures, taurocholate (TCA) strongly activated JNK in a time- and concentration-dependent manner. Tumor necrosis factor-alpha, a potent activator of JNK, also rapidly activated JNK and down-regulated CYP7A1 mRNA levels. Overexpression of dominant-negative JNK1 or a transactivating domain mutant of c-Jun significantly blocked the ability of TCA to down-regulate CYP7A1 mRNA. In contrast, overexpression of wild-type c-Jun (c-Jun(wt)) enhanced the repression of CYP7A1 by TCA. Moreover, overexpression of c-Jun(wt) resulted in increased SHP-1 promoter activity. Mutation of a putative AP-1 (c-Jun) element suppressed c-Jun-mediated activation of the SHP-1 promoter construct. These results indicate that the bile acid-activated JNK pathway plays a pivotal role in regulating CYP7A1 levels in primary rat hepatocytes.},
+  Doi                      = {10.1074/jbc.M010878200},
+  Institution              = {Department of Medicine-Gastroenterology, Virginia Commonwealth University, Medical College of Virginia Campus, Richmond, Virginia 23298, USA.},
+  Keywords                 = {Animals; Base Sequence; Bile Acids and Salts, pharmacology; Cells, Cultured; Cholesterol 7-alpha-Hydroxylase, genetics; Gene Expression Regulation, Enzymologic, drug effects; Genes, Reporter; Hepatocytes, enzymology; Humans; JNK Mitogen-Activated Protein Kinases; Kinetics; Liver, cytology/enzymology; Luciferases, genetics; MAP Kinase Signaling System, drug effects/physiology; Male; Mice; Mitogen-Activated Protein Kinase 8; Mitogen-Activated Protein Kinases, genetics/metabolism; Molecular Sequence Data; Promoter Regions, Genetic; RNA, Messenger, genetics; Rats; Rats, Sprague-Dawley; Sequence Alignment; Sequence Homology, Nucleic Acid; Taurine, pharmacology; Transcription, Genetic, drug effects; Transfection; Tumor Necrosis Factor-alpha, pharmacology},
+  Language                 = {eng},
+  Medline-pst              = {ppublish},
+  Owner                    = {mkoenig},
+  Pii                      = {M010878200},
+  Pmid                     = {11278771},
+  Timestamp                = {2015.09.08},
+  Url                      = {http://dx.doi.org/10.1074/jbc.M010878200}
+}
+
+@Article{Hara2013,
+  Title                    = {Interleukin-17A plays a pivotal role in cholestatic liver fibrosis in mice.},
+  Author                   = {Hara, Michio and Kono, Hiroshi and Furuya, Shinji and Hirayama, Kazuyoshi and Tsuchiya, Masato and Fujii, Hideki},
+  Journal                  = {J Surg Res},
+  Year                     = {2013},
+
+  Month                    = {Aug},
+  Number                   = {2},
+  Pages                    = {574--582},
+  Volume                   = {183},
+  Abstract                 = {It was recently reported that serum interleukin (IL)-17 levels increased in liver fibrosis associated with human alcoholic liver disease. However, the role of IL-17 in liver fibrosis has not yet been elucidated. Therefore, the aim of this study was to evaluate the role of IL-17 on cholestatic liver fibrosis.IL-17A knockout (KO) and wild-type (WT) mice were subjected to bile duct ligation. Animals were sacrificed at designated times, and serum and liver tissues were collected. The mRNA expression of hepatic fibrotic markers was assessed, and distribution of activated hepatic stellate cells (HSCs) was determined by immunohistochemical staining. In an in vitro study, Kupffer cells (KCs) and HSCs were isolated from WT mice. KCs were cultured with IL-17A or IL-17F, and production of tumor necrosis factor α (TNF-α) and transforming growth factor β1 (TGF-β1) was measured. HSCs were cultured with IL-17A or IL-17F, and morphologic changes were assessed by immunohistochemical staining.Liver damage observed in the WT mice was significantly improved in the KO mice. Serum TNF-α and TGF-β1 levels were significantly decreased in the KO compared with the WT mice. The hepatic mRNA expression of TNF-α, TGF-β1, and collagen 1α1, which increased in the WT mice, also significantly decreased in the KO mice. Increased hepatic fibrosis in the WT mice was significantly improved in the KO mice. Cytokine production was increased in IL-17A-treated KCs. The most remarkable myofibroblast-like changes were observed in isolated HSCs in the presence of IL-17A.IL-17A was involved in the pathogenesis of cholestatic liver fibrosis by activation of both the KCs and HSCs.},
+  Doi                      = {10.1016/j.jss.2013.03.025},
+  Institution              = {First Department of Surgery, University of Yamanashi, Yamanashi, Japan.},
+  Keywords                 = {Actins, metabolism; Animals; Cells, Cultured; Collagen Type I, metabolism; Disease Models, Animal; Hepatic Stellate Cells, drug effects/metabolism/pathology; Hydroxyproline, metabolism; In Vitro Techniques; Interleukin-17, genetics/pharmacology/physiology; Kupffer Cells, drug effects/metabolism/pathology; Liver Cirrhosis, metabolism/pathology/physiopathology; Male; Mice; Mice, Inbred C57BL; Mice, Knockout; Transforming Growth Factor beta1, metabolism; Tumor Necrosis Factor-alpha, metabolism},
+  Language                 = {eng},
+  Medline-pst              = {ppublish},
+  Owner                    = {mkoenig},
+  Pii                      = {S0022-4804(13)00220-5},
+  Pmid                     = {23578751},
+  Timestamp                = {2015.09.08},
+  Url                      = {http://dx.doi.org/10.1016/j.jss.2013.03.025}
+}
+
+@Article{Hattori2003,
+  Title                    = {C/EBP homologous protein (CHOP) up-regulates IL-6 transcription by trapping negative regulating NF-IL6 isoform.},
+  Author                   = {Hattori, Takayuki and Ohoka, Nobumichi and Hayashi, Hidetoshi and Onozaki, Kikuo},
+  Journal                  = {FEBS Lett},
+  Year                     = {2003},
+
+  Month                    = {Apr},
+  Number                   = {1-3},
+  Pages                    = {33--39},
+  Volume                   = {541},
+  Abstract                 = {Interleukin-6 (IL-6) production is up-regulated by several stimuli through the activation of transcription factors. We have previously demonstrated that CCAAT/enhancer binding protein homologous protein (CHOP) positively regulates IL-6 production at the transcriptional level in the human melanoma cell line A375. In this study, we provide evidence that CHOP up-regulates the IL-6 transcription without binding to the IL-6 promoter. CHOP dimerized more preferentially with an inhibitory isoform of nuclear factor for IL-6 expression (LIP (liver-enriched inhibitory protein)) than with a positively acting isoform (LAP, liver-enriched activator protein). These results indicate that CHOP plays an important role in IL-6 production without binding to its promoter, probably by trapping protein(s) such as LIP, which would otherwise inhibit IL-6 transcription.},
+  Institution              = {Department of Molecular Health Sciences, Graduate School of Pharmaceutical Sciences, Nagoya City University, Mizuho, Japan.},
+  Keywords                 = {CCAAT-Enhancer-Binding Protein-beta, metabolism; CCAAT-Enhancer-Binding Proteins, metabolism/physiology; Cell Line; Humans; Interleukin-6, biosynthesis/genetics; Models, Biological; Promoter Regions, Genetic; Protein Isoforms, metabolism; Response Elements; Transcription Factor CHOP; Transcription Factors, metabolism/physiology; Transcriptional Activation; Tumor Cells, Cultured; Up-Regulation},
+  Language                 = {eng},
+  Medline-pst              = {ppublish},
+  Owner                    = {mkoenig},
+  Pii                      = {S0014579303002837},
+  Pmid                     = {12706815},
+  Timestamp                = {2015.09.08}
+}
+
+@Article{Hayashi2002,
+  Title                    = {Connective tissue growth factor is directly related to liver fibrosis.},
+  Author                   = {Hayashi, N. and Kakimuma, T. and Soma, Y. and Grotendorst, G. R. and Tamaki, K. and Harada, M. and Igarashi, A.},
+  Journal                  = {Hepatogastroenterology},
+  Year                     = {2002},
+  Number                   = {43},
+  Pages                    = {133--135},
+  Volume                   = {49},
+  Abstract                 = {Connective tissue growth factor is a mitogenic, chemotactic, and cell matrix-inducing factor for fibroblasts, and is exclusively and directly induced by transforming growth factor-beta 1. In skin fibrosis, connective tissue growth factor is thought to be a downstream effector of transforming growth factor-beta 1 that is directly involved in the proliferation of connective tissue cells and the accumulation of matrix. Our aim is to confirm the involvement of connective tissue growth factor in liver fibrosis.Specimens obtained from autopsy of 12 patients with normal liver (n = 3), hepatocellular carcinoma (n = 3), liver cirrhosis secondary to alcoholic abuse (n = 3), or viral hepatitis (n = 3), were used for digoxigenin labeled in situ hybridization.Abundant connective tissue growth factor messages were detected in the fibrotic area between cirrhotic nodules. Hepatocytes did not show any signals even when they became carcinomas. Normal livers showed few or no signals.These results confirmed the direct relationship between connective tissue growth factor gene expression and liver fibrotic change.},
+  Institution              = {Department of Dermatology, Faculty of Medicine, University of Tokyo. nobu-tky@umin.ac.jp},
+  Keywords                 = {Carcinoma, Hepatocellular, metabolism/pathology; Connective Tissue Growth Factor; Gene Expression; Growth Substances, genetics/physiology; Hepatitis, Viral, Human, metabolism/pathology; Humans; Immediate-Early Proteins, genetics/physiology; In Situ Hybridization, methods; Intercellular Signaling Peptides and Proteins; Liver Cirrhosis, metabolism/pathology; Liver Neoplasms, metabolism/pathology; Liver, metabolism/pathology},
+  Language                 = {eng},
+  Medline-pst              = {ppublish},
+  Owner                    = {mkoenig},
+  Pmid                     = {11941937},
+  Timestamp                = {2015.09.08}
+}
+
 @Article{Heinrichs2013,
   Title                    = {The chemokine CCL3 promotes experimental liver fibrosis in mice.},
   Author                   = {Heinrichs, Daniel and Berres, Marie-Luise and Nellen, Andreas and Fischer, Petra and Scholten, David and Trautwein, Christian and Wasmuth, Hermann E. and Sahin, Hacer},
@@ -384,8 +826,6 @@
   Number                   = {6},
   Pages                    = {e66106},
   Volume                   = {8},
-
-  __markedentry            = {[mkoenig:6]},
   Abstract                 = {Liver fibrosis is associated with infiltrating immune cells and activation of hepatic stellate cells. We here aimed to investigate the effects of the CC chemokine CCL3, also known as macrophage inflammatory protein-1α, in two different fibrosis models. To this end, we treated mice either with carbon tetrachloride or with a methionine- and choline-deficient diet to induce fibrosis in CCL3 deficient and wild-type mice. The results show that the protein expression of CCL3 is increased in wild-type mice after chronic liver injury. Deletion of CCL3 exhibited reduced liver fibrosis compared to their wild-type counterparts. We could validate these results by treating the two mouse groups with either carbon tetrachloride or by feeding a methionine- and choline-deficient diet. In these models, lack of CCL3 is functionally associated with reduced stellate cell activation and liver immune cell infiltration. In vitro, we show that CCL3 leads to increased proliferation and migration of hepatic stellate cells. In conclusion, our results define the chemokine CCL3 as a mediator of experimental liver fibrosis. Thus, therapeutic modulation of CCL3 might be a promising target for chronic liver diseases.},
   Doi                      = {10.1371/journal.pone.0066106},
   Institution              = {Medical Department III, University Hospital Aachen, Aachen, Germany.},
@@ -443,6 +883,7 @@
   Number                   = {4},
   Pages                    = {861--82, x},
   Volume                   = {12},
+
   Abstract                 = {Liver cirrhosis is caused by iterative cycles of tissue injury, inflammation, and repair. Although most causes of acute hepatitis resolve without scarring, chronic hepatitis is associated with persistent inflammation and matrix remodeling, which leads to fibrosis and, eventually, cirrhosis. The mechanisms that govern wound healing involve interactions between the innate and adaptive immune systems and stromal cells within a microenvironment composed of cytokines, growth factors, and modified matricellular proteins. The immune system plays a central role in the regulation of fibrosis, tissue repair, and recovery that is vital for the maintenance of tissue homeostasis. Chronic inflammation and fibrosis are inextricably linked and the cellular interactions between immune effector cells, local fibroblasts, and tissue macrophages at sites of scar formation determine the outcome of liver injury and the development of scarring.},
   Doi                      = {10.1016/j.cld.2008.07.002},
   Institution              = {Liver Research Group, MRC Centre for Immune Regulation, University of Birmingham, Birmingham, UK.},
@@ -454,6 +895,50 @@
   Pmid                     = {18984471},
   Timestamp                = {2015.09.07},
   Url                      = {http://dx.doi.org/10.1016/j.cld.2008.07.002}
+}
+
+@Article{Horvath2012,
+  Title                    = {Marked increase of CYP24A1 mRNA level in hepatocellular carcinoma cell lines following vitamin D administration.},
+  Author                   = {Horvath, Evelin and Lakatos, P{\'{e}}ter and Balla, Bernadett and K{\'{o}}sa, J{\'{a}}nos P{\'{a}}l and T{\'{o}}bi{\'{a}}s, B{\'{a}}lint and Jozilan, Hasan and Borka, Katalin and Horv{\'{a}}th, Henrik Csaba and Kovalszky, Ilona and Szalay, Ferenc},
+  Journal                  = {Anticancer Res},
+  Year                     = {2012},
+
+  Month                    = {Nov},
+  Number                   = {11},
+  Pages                    = {4791--4796},
+  Volume                   = {32},
+  Abstract                 = {1,25-Dihydroxyvitamin D(3) (1,25(OH)(2)D(3)) inhibits cell growth and induces apoptosis in numerous types of tumors. We aimed to examine the mRNA and protein expression of 1,25(OH)(2)D(3)-inactivating CYP24A1 and mRNA expression of the activating CYP27B1 enzymes, as well as that of vitamin D receptor (VDR), in hepatocellular carcinoma (HCC) cell cultures in response to 1,25(OH)(2)D(3) administration.Increasing amounts of 1,25(OH)(2)D(3) (0.256-10 nM) were added to cultures of HepG2, Huh-Neo, Hep3B, Huh5-15 human HCC cell lines and cells then incubated for various time periods (30 min-28 h). The mRNA expression was analyzed by real time reverse transcription-polymerase chain reaction (RT-PCR). CYP24A1 protein in HepG2 cells was detected by immuncytochemistry.CYP24A1 mRNA expression significantly (p<0.0001) increased in response to 1,25(OH)(2)D(3) administration in two cell lines: in HepG2 cells, the CYP24A1 mRNA level exhibited 5,300-fold elevation, reaching a maximum value at 8 h; in Huh-Neo cells, the increase was 152-fold that of the baseline value, with the maximum being reached at 14 h. There was no significant change in Hep3B and Huh5-15 cell lines, nor was there any change in CYP27B1 and VDR gene expression in any cell cultures. Immuncytochemistry in HepG2 cells proved that gene activation was followed by CYP24A1 protein synthesis.Our novel data indicate that administration of 1,25(OH)(2)D(3) results in a marked increase of CYP24A1 mRNA expression in some, but not all, human HCC lines in vitro. These differences could be dependent upon the origin of the tumor cells.},
+  Institution              = {First Department of Internal Medicine, Semmelweis University, Korányi Sándor Street 2/A, H-1083 Budapest, Hungary. horvath.evelyn@gmail.com},
+  Keywords                 = {Carcinoma, Hepatocellular, genetics/metabolism; Cell Line, Tumor; Gene Expression, drug effects; Humans; Immunohistochemistry; Liver Neoplasms, genetics/metabolism; RNA, Messenger, analysis; Real-Time Polymerase Chain Reaction; Reverse Transcriptase Polymerase Chain Reaction; Steroid Hydroxylases, biosynthesis/genetics; Vitamin D, pharmacology; Vitamin D3 24-Hydroxylase},
+  Language                 = {eng},
+  Medline-pst              = {ppublish},
+  Owner                    = {mkoenig},
+  Pii                      = {32/11/4791},
+  Pmid                     = {23155244},
+  Timestamp                = {2015.09.08}
+}
+
+@Article{Huang2003,
+  Title                    = {Induction of bilirubin clearance by the constitutive androstane receptor (CAR).},
+  Author                   = {Huang, Wendong and Zhang, Jun and Chua, Steven S. and Qatanani, Mohammed and Han, Yunqing and Granata, Riccarda and Moore, David D.},
+  Journal                  = {Proc Natl Acad Sci U S A},
+  Year                     = {2003},
+
+  Month                    = {Apr},
+  Number                   = {7},
+  Pages                    = {4156--4161},
+  Volume                   = {100},
+  Abstract                 = {Bilirubin clearance is one of the numerous important functions of the liver. Defects in this process result in jaundice, which is particularly common in neonates. Elevated bilirubin levels can be decreased by treatment with phenobarbital. Because the nuclear hormone receptor constitutive androstane receptor (CAR) mediates hepatic effects of this xenobiotic inducer, we hypothesized that CAR could be a regulator of bilirubin clearance. Activation of the nuclear hormone receptor CAR increases hepatic expression of each of five components of the bilirubin-clearance pathway. This induction is absent in homozygous CAR null mice but is observed in mice expressing human CAR instead of mouse CAR. Pretreatment with xenobiotic inducers markedly increases the rate of clearance of an exogenous bilirubin load in wild-type but not CAR knockout animals. Bilirubin itself can also activate CAR, and mice lacking CAR are defective in clearing chronically elevated bilirubin levels. Unexpectedly, CAR expression is very low in livers of neonatal mice and humans. We conclude that CAR directs a protective response to elevated bilirubin levels and suggest that a functional deficit of CAR activity may contribute to neonatal jaundice.},
+  Doi                      = {10.1073/pnas.0630614100},
+  Institution              = {Department of Molecular and Cellular Biology, Baylor College of Medicine, 1 Baylor Plaza, Houston, TX 77030, USA.},
+  Keywords                 = {Actins, genetics; Animals; Bilirubin, metabolism; DNA Primers; Gene Expression Regulation; Glucuronosyltransferase, genetics; Hepatocytes, physiology; Humans; Metabolic Clearance Rate; Mice; Mice, Transgenic; Polymerase Chain Reaction; Receptors, Cytoplasmic and Nuclear, genetics/metabolism; Transcription Factors, genetics/metabolism},
+  Language                 = {eng},
+  Medline-pst              = {ppublish},
+  Owner                    = {mkoenig},
+  Pii                      = {0630614100},
+  Pmid                     = {12644704},
+  Timestamp                = {2015.09.08},
+  Url                      = {http://dx.doi.org/10.1073/pnas.0630614100}
 }
 
 @Article{Huss2010,
@@ -475,6 +960,28 @@
   Pmid                     = {20565730},
   Timestamp                = {2015.08.22},
   Url                      = {http://dx.doi.org/10.1186/1755-1536-3-10}
+}
+
+@Article{Inagaki2007,
+  Title                    = {Emerging insights into Transforming growth factor beta Smad signal in hepatic fibrogenesis.},
+  Author                   = {Inagaki, Y. and Okazaki, I.},
+  Journal                  = {Gut},
+  Year                     = {2007},
+
+  Month                    = {Feb},
+  Number                   = {2},
+  Pages                    = {284--292},
+  Volume                   = {56},
+  Doi                      = {10.1136/gut.2005.088690},
+  Institution              = {Liver Fibrosis Research Unit, Department of Community Health, Tokai University School of Medicine, Bohseidai, Isehara 259-1193, Japan. yutakai@is.icc.u-tokai.ac.jp},
+  Keywords                 = {Bone Morphogenetic Protein 7; Bone Morphogenetic Proteins, genetics; Collagen Type I; Collagen, genetics; Enzyme Inhibitors; Gene Expression Regulation, genetics; Genetic Therapy, methods; Humans; Interferons, genetics; Liver Cirrhosis, genetics/therapy; Mitogen-Activated Protein Kinases, genetics; Signal Transduction, genetics; Smad Proteins, genetics; Transforming Growth Factor beta, antagonists /&/ inhibitors/genetics; Tumor Necrosis Factor-alpha, genetics},
+  Language                 = {eng},
+  Medline-pst              = {ppublish},
+  Owner                    = {mkoenig},
+  Pii                      = {56/2/284},
+  Pmid                     = {17303605},
+  Timestamp                = {2015.09.08},
+  Url                      = {http://dx.doi.org/10.1136/gut.2005.088690}
 }
 
 @Article{Jaskowiak2014,
@@ -561,6 +1068,31 @@
   Url                      = {http://dx.doi.org/10.1002/dneu.20362}
 }
 
+@Article{Khan2009,
+  Title                    = {Polymorphism in glutathione-S-transferases: a risk factor in alcoholic liver cirrhosis.},
+  Author                   = {Khan, Anwar Jamal and Choudhuri, Gourdas and Husain, Qayyum and Parmar, Devendra},
+  Journal                  = {Drug Alcohol Depend},
+  Year                     = {2009},
+
+  Month                    = {May},
+  Number                   = {3},
+  Pages                    = {183--190},
+  Volume                   = {101},
+
+  __markedentry            = {[mkoenig:6]},
+  Abstract                 = {In a case-control study, association of polymorphism in glutathione-S-transferases (GSTM1, GSTT1, GSTP1), involved in detoxification of reactive oxygen species (ROS), was studied with alcoholic liver cirrhosis. The study included 175 alcoholic cirrhotic patients (ACPs), 140 non-alcoholic cirrhotic patients (NACPs), visiting Sanjay Gandhi Post Graduate Institute of Medical Sciences (SGPGI), Lucknow, India, 255 non-alcoholic controls and 140 alcoholic controls. The data showed an increase in risk to alcoholic cirrhosis in ACPs with GSTM1 (null) genotype when compared with non-alcoholic controls (OR: 1.7; 95\% CI: 1.15-2.56) or alcoholic controls (OR: 1.7; 95\% CI: 1.07-2.73). Significant increase in risk was also observed in ACPs with variant genotype of GSTP1 when compared with non-alcoholic controls (OR: 1.65; 95\% CI: 1.12-2.43). A much higher risk to alcoholic liver cirrhosis was observed in patients carrying combination of null genotypes of GSTM1 and GSTT1 (OR: 2.8; 95\% CI: 1.3-6.06) or variant genotype of GSTP1 and null genotype of GSTM1 (OR: 2.8; 95\% CI: 1.58-4.90) or GSTT1 (OR: 2.16; 95\% CI: 1.08-4.28). Likewise, greater risk for alcoholic cirrhosis was observed in patients carrying combination of GSTM1, GSTT1 (null) and variant genotype of GSTP1 (OR: 5.8; 95\% CI: 2.17-15.80). Our data further showed that interaction of GSTs with variant genotype of manganese superoxide dismutase (MnSOD), which detoxifies free radicals, or cytochrome P450 2E1, which generates free radicals, resulted in several fold increase in risk to alcoholic liver cirrhosis in ACPs when compared with non-alcoholic controls thus demonstrating the role of gene-gene interactions in modulating the risk to alcoholic liver cirrhosis.},
+  Doi                      = {10.1016/j.drugalcdep.2008.12.001},
+  Institution              = {Developmental Toxicology Division, Indian Institute of Toxicology Research (Formerly ITRC), CSIR, PO Box 80, M.G. Marg, Lucknow 226001, UP, India.},
+  Keywords                 = {Adult; Aged; Case-Control Studies; DNA, genetics/isolation /&/ purification; Gene Frequency; Glutathione S-Transferase pi, genetics; Glutathione Transferase, genetics; Humans; Life Style; Liver Cirrhosis, Alcoholic, enzymology/epidemiology/genetics; Middle Aged; Polymorphism, Genetic; Risk Factors},
+  Language                 = {eng},
+  Medline-pst              = {ppublish},
+  Owner                    = {mkoenig},
+  Pii                      = {S0376-8716(08)00435-3},
+  Pmid                     = {19157724},
+  Timestamp                = {2015.09.08},
+  Url                      = {http://dx.doi.org/10.1016/j.drugalcdep.2008.12.001}
+}
+
 @Article{Kisseleva2011,
   Title                    = {Anti-fibrogenic strategies and the regression of fibrosis.},
   Author                   = {Kisseleva, Tatiana and Brenner, David A.},
@@ -571,6 +1103,7 @@
   Number                   = {2},
   Pages                    = {305--317},
   Volume                   = {25},
+
   Abstract                 = {Liver fibrosis is an outcome of many chronic diseases, and often results in cirrhosis, liver failure, and portal hypertension. Liver transplantation is the only treatment available for patients with advanced stage of fibrosis. Therefore, alternative methods are required to develop new strategies for anti-fibrotic therapy. Available treatments are designed to substitute for liver transplantation or bridge the patients, they include inhibitors of fibrogenic cytokines such as TGF-β1 and EGF, inhibitors of rennin angiotensin system, and blockers of TLR4 signalling. Development of liver fibrosis is orchestrated by many cell types. However, activated myofibroblasts remain the primary target for anti-fibrotic therapy. Hepatic stellate cells and portal fibroblasts are considered to play a major role in development of liver fibrosis. Here we discuss the origin of activated myofibroblasts and different aspects of their activation, differentiation and potential inactivation during regression of liver fibrosis.},
   Doi                      = {10.1016/j.bpg.2011.02.011},
   Institution              = {Department of Medicine, University of California, San Diego, La Jolla, CA 92093-0602, USA.},
@@ -602,6 +1135,71 @@
   Owner                    = {mkoenig},
   Pmid                     = {6743531},
   Timestamp                = {2015.08.23}
+}
+
+@Article{Krampert2004,
+  Title                    = {Activities of the matrix metalloproteinase stromelysin-2 (MMP-10) in matrix degradation and keratinocyte organization in wounded skin.},
+  Author                   = {Krampert, Monika and Bloch, Wilhelm and Sasaki, Takako and Bugnon, Philippe and R{\"{u}}licke, Thomas and Wolf, Eckhard and Aumailley, Monique and Parks, William C. and Werner, Sabine},
+  Journal                  = {Mol Biol Cell},
+  Year                     = {2004},
+
+  Month                    = {Dec},
+  Number                   = {12},
+  Pages                    = {5242--5254},
+  Volume                   = {15},
+  Abstract                 = {The matrix metalloproteinase stromelysin-2 is expressed in keratinocytes of the epithelial tongue of skin wounds, suggesting a role in keratinocyte migration. Here, we show that stromelysin-2 enhances migration of cultured keratinocytes. To gain insight into the in vivo activities of stromelysin-2 in epithelial repair, we generated transgenic mice expressing a constitutively active stromelysin-2 mutant in keratinocytes. These animals had no alterations in skin architecture, and the healing rate of skin wounds was normal. Histologically, however, we found abnormalities in the organization of the wound epithelium. Keratinocytes at the migrating epidermal tip were scattered in most sections of mice with high expression level, and there was a reduced deposition of new matrix. In particular, the staining pattern of laminin-5 at the wound site was altered. This may be due to proteolytic processing of laminin-5 by stromelysin-2, because degradation of laminin-5 by this enzyme was observed in vitro. The inappropriate matrix contact of keratinocytes was accompanied by aberrant localization of beta1-integrins and phosphorylated focal adhesion kinase, as well as by increased apoptosis of wound keratinocytes. These results suggest that a tightly regulated expression level of stromelysin-2 is required for limited matrix degradation at the wound site, thereby controlling keratinocyte migration.},
+  Doi                      = {10.1091/mbc.E04-02-0109},
+  Institution              = {Department of Biology, Institute of Cell Biology, Eidgenössishe Technische Hochschule Zurich, 8093 Zurich, Switzerland.},
+  Keywords                 = {Animals; Antigens, CD29, metabolism; Apoptosis; Cell Adhesion Molecules, metabolism; Cell Movement; Cells, Cultured; Epithelium, pathology; Extracellular Matrix, enzymology/pathology; Female; Focal Adhesion Kinase 1; Focal Adhesion Protein-Tyrosine Kinases; Gene Expression; Humans; Keratinocytes, enzymology/pathology; Male; Matrix Metalloproteinase 10; Metalloendopeptidases, genetics/metabolism; Mice; Mice, Transgenic; Mutation, genetics; Phosphorylation; Protein-Serine-Threonine Kinases, metabolism; Protein-Tyrosine Kinases, metabolism; Proto-Oncogene Proteins c-akt; Proto-Oncogene Proteins, metabolism; Signal Transduction; Skin Diseases, enzymology/genetics/pathology; Skin, cytology/enzymology/pathology; Wound Healing; Wounds and Injuries, enzymology/genetics/pathology},
+  Language                 = {eng},
+  Medline-pst              = {ppublish},
+  Owner                    = {mkoenig},
+  Pii                      = {E04-02-0109},
+  Pmid                     = {15371548},
+  Timestamp                = {2015.09.08},
+  Url                      = {http://dx.doi.org/10.1091/mbc.E04-02-0109}
+}
+
+@Article{LaFramboise2006,
+  Title                    = {Hepatic gene expression response to acute indomethacin exposure.},
+  Author                   = {LaFramboise, William A. and Bombach, Kelly L. and Pogozelski, Andrew R. and Cullen, Ryan F. and Muha, Noah and Lyons-Weiler, James and Spear, Scott J. and Dhir, Rajiv J. and Guthrie, Robert D. and Magovern, James A.},
+  Journal                  = {Mol Diagn Ther},
+  Year                     = {2006},
+  Number                   = {3},
+  Pages                    = {187--196},
+  Volume                   = {10},
+  Abstract                 = {Rising morbidity and mortality related to the use of NSAIDs has led to the withdrawal of some of these agents and reconsideration of the adverse effects and usage paradigms of commonly available NSAIDs. Our objective in this study was to assay molecular indicators of acute hepatic injury associated with the administration of indomethacin, a prototypical NSAID, metabolized by the liver that undergoes enterohepatic circulation with associated gastrointestinal adverse effects.Analysis of gene expression, using high-throughput, ADME (absorption, distribution, metabolism, excretion)-specific microarrays, was performed on RNA extracted from the livers of control or indomethacin treated rats, in parallel with serum enzyme tests and histological analysis of paraffin-embedded liver specimens. Male Sprague-Dawley rats (n = 45) were administered intraperitoneal injections of indomethacin for 3 days at the recommended normal dose (6.7 mg/kg), indomethacin at a high dose (20 mg/kg) or vehicle alone (controls).Upon termination of the study on day 4, serum gamma-glutamyl transferase activity and alkaline phosphatase/alanine aminotransferase ratios were significantly elevated in both high- and normal-dose cohorts compared with vehicle-treated animals. Diffuse microvascular steatosis was present in hepatic serial sections obtained from all animals subjected to the high-dosage regimen. High-resolution microarray analysis (six replicates/gene/animal) identified 256 genes, after outlier removal, in 17 functional classifications that were significantly altered by the high, but not by the normal dosage. These included depression of 10 of 11 cytochrome P450 genes (2B3, 2C70, 1A2-P2, 4F1, 2E1, 3A1, 2F1, 3AP7, 2C11, phenobarb-inducible P6) and 7 of 9 genes involved in the response to reactive oxygen species (e.g. glutathione reductase, glutathione transferase, and superoxide dismutase). Of 16 genes associated with toxin removal, nine exhibited significantly decreased transcripts. There was a marked shift away from lipid metabolism (decreased expression of eight genes) towards glucose utilization associated with steatosis. Despite the compromise of detoxification programs and a shift in metabolic substrate utilization, a compensatory remodeling response was activated, including genes for metalloproteases (ADAM10, MMP10, MMP11), integrins (integrin alpha-1 and alpha-E1), and extracellular matrix molecules (platelet/endothelial cell adhesion molecule-1 and heparan sulfate proteoglycan, perlecan), as well as transcripts associated with cell proliferation. The expression levels of only five genes were significantly altered among animals receiving the normal indomethacin dosage.These data confirmed that even brief exposure to indomethacin altered serum enzymatic activities and that high levels significantly altered gene expression in the liver and hepatic histology (by interfering with the clearance of toxins and xenobiotic substrates) and the regulation of basal metabolism.},
+  Institution              = {Department of Pathology, University of Pittsburgh School of Medicine, Shadyside Hospital, Pittsburgh, Pennsylvania 15232, USA. laframboisewa@wpmc.edu},
+  Keywords                 = {Animals; Anti-Inflammatory Agents, Non-Steroidal, administration /&/ dosage/toxicity; Cytochrome P-450 Enzyme System, blood/metabolism; Drug-Induced Liver Injury, etiology/metabolism; Gene Expression Profiling; Indomethacin, administration /&/ dosage/toxicity; Liver, drug effects/metabolism/pathology; Male; RNA, Messenger, metabolism; Rats; Rats, Sprague-Dawley},
+  Language                 = {eng},
+  Medline-pst              = {ppublish},
+  Owner                    = {mkoenig},
+  Pii                      = {1035},
+  Pmid                     = {16771604},
+  Timestamp                = {2015.09.08}
+}
+
+@Article{Leask2006,
+  Title                    = {All in the CCN family: essential matricellular signaling modulators emerge from the bunker.},
+  Author                   = {Leask, Andrew and Abraham, David J.},
+  Journal                  = {J Cell Sci},
+  Year                     = {2006},
+
+  Month                    = {Dec},
+  Number                   = {Pt 23},
+  Pages                    = {4803--4810},
+  Volume                   = {119},
+  Abstract                 = {The CCN family is a group of six secreted proteins that specifically associate with the extracellular matrix. Structurally, CCN proteins are modular, containing up to four distinct functional domains. CCN family members are induced by growth factors and cytokines such as TGFbeta and endothelin 1 and cellular stress such as hypoxia, and are overexpressed in pathological conditions that affect connective tissues, including scarring, fibrosis and cancer. Although CCN family members were discovered over a decade ago, the precise biological role, mechanism of action and physiological function of these proteins has remained elusive until recently, when several key mechanistic insights into the CCN family emerged. The CCNs have been shown to have key roles as matricellular proteins, serving as adaptor molecules connecting the cell surface and extracellular matrix (ECM). Although they appear not to have specific high-affinity receptors, they signal through integrins and proteoglycans. Furthermore, in addition to having inherent adhesive abilities that modulate focal adhesions and control cell attachment and migration, they execute their functions by modulating the activity of a variety of different growth factors, such as TGFbeta. CCN proteins not only regulate crucial biological processes including cell differentiation, proliferation, adhesion, migration, apoptosis, ECM production, chondrogenesis and angiogenesis, but also have more sinister roles promoting conditions such as fibrogenesis.},
+  Doi                      = {10.1242/jcs.03270},
+  Institution              = {CIHR Group in Skeletal Development and Remodeling, Division of Oral Biology, and Department of Physiology and Pharmacology, Schulich School of Medicine and Dentistry, University of Western Ontario, London, ON N6A 5C1, Canada. Andrew.Leask@schulich.uwo.ca},
+  Keywords                 = {Animals; Cell Adhesion, physiology; Cell Movement, physiology; Cysteine-Rich Protein 61; Cytokines, metabolism; Extracellular Matrix Proteins, metabolism; Extracellular Matrix, metabolism/pathology; Fibrosis, metabolism; Humans; Immediate-Early Proteins, genetics/metabolism/physiology; Integrins, metabolism; Intercellular Signaling Peptides and Proteins, metabolism/physiology; Models, Biological; Multigene Family, physiology; Neoplasms, etiology; Neovascularization, Pathologic, etiology; Osteogenesis, physiology; Signal Transduction, physiology; Wound Healing},
+  Language                 = {eng},
+  Medline-pst              = {ppublish},
+  Owner                    = {mkoenig},
+  Pii                      = {119/23/4803},
+  Pmid                     = {17130294},
+  Timestamp                = {2015.09.07},
+  Url                      = {http://dx.doi.org/10.1242/jcs.03270}
 }
 
 @Article{Levitt2014,
@@ -656,6 +1254,27 @@
   Url                      = {http://dx.doi.org/10.1016/j.cmet.2014.05.020}
 }
 
+@Article{Liang2012,
+  Title                    = {Interleukin-6 and oncostatin M are elevated in liver disease in conjunction with candidate hepatocellular carcinoma biomarker GP73.},
+  Author                   = {Liang, Hongyan and Block, Timothy M. and Wang, Mengjun and Nefsky, Bradley and Long, Ronald and Hafner, Julie and Mehta, Anand S. and Marrero, Jorge and Gish, Robert and Norton, Pamela A.},
+  Journal                  = {Cancer Biomark},
+  Year                     = {2012},
+  Number                   = {4},
+  Pages                    = {161--171},
+  Volume                   = {11},
+  Abstract                 = {The Golgi phosphoprotein GP73 is elevated in the circulation of individuals with a diagnosis of hepatocellular carcinoma. Its usefulness as a biomarker of HCC is questioned, since it has also been reported to be elevated in the circulation of people with liver cirrhosis. Regulation of GP73 by inflammatory cytokines is therefore of interest. The interleukin-6 (IL-6) family cytokines were tested for effects on GP73 mRNA and/or protein levels in human hepatoblastoma HepG2 cells. Levels of GP73 mRNA and protein were up-regulated in HepG2 cells following treatment with either proinflammatory cytokine IL-6 or the related cytokine oncostatin M (OSM). Induction required the shared receptor subunit gp130, and correlated with increased tyrosine phosphorylation of STAT3. Maximal cytokine-mediated induction was not observed in the presence of protein synthesis inhibitor cycloheximide, suggesting additional regulatory factors play an important role. ELISA measurement of GP73 and IL-6 levels in the sera of patients with pre-malignant liver disease revealed a significant correlation between circulating levels of the two proteins. Similarly, a sensitive ELISA assay was developed to measure circulating OSM. OSM levels were elevated 6-7 fold in sera from patients with either cirrhosis or HCC relative to controls without liver disease. Although there was an association between levels of GP73 and OSM in serum from people with liver cirrhosis, there was not a statistically significant correlation in HCC, suggesting that the role of the cytokines in determining circulating levels may be complex. To our knowledge, this is the first report of OSM elevation being associated with liver disease.},
+  Doi                      = {10.3233/CBM-2012-00276},
+  Institution              = {Department of Microbiology and Immunology, Drexel Institute for Biotechnology and Virology Research, Drexel University College of Medicine, Doylestown, PA 18902, USA.},
+  Keywords                 = {Adult; Aged; Carcinoma, Hepatocellular, blood/diagnosis/drug therapy/genetics; Female; Hep G2 Cells; Humans; Interleukin-6, blood/pharmacology; Liver Cirrhosis, blood; Liver Neoplasms, blood/diagnosis/drug therapy/genetics; Male; Membrane Proteins, blood/genetics; Middle Aged; Oncostatin M, blood/pharmacology; RNA, Messenger, biosynthesis/genetics; Tumor Markers, Biological, blood/genetics},
+  Language                 = {eng},
+  Medline-pst              = {ppublish},
+  Owner                    = {mkoenig},
+  Pii                      = {Q602P6368472222X},
+  Pmid                     = {23144154},
+  Timestamp                = {2015.09.08},
+  Url                      = {http://dx.doi.org/10.3233/CBM-2012-00276}
+}
+
 @Article{Lindblad1977,
   Title                    = {Bile acid concentrations in systemic and portal serum in presumably normal man and in cholestatic and cirrhotic conditions.},
   Author                   = {Lindblad, L. and Lundholm, K. and Schersten, T.},
@@ -664,6 +1283,7 @@
   Number                   = {4},
   Pages                    = {395--400},
   Volume                   = {12},
+
   Abstract                 = {Total bile acid concentration was determined in systemic and portal serum and in liver tissue from patients with presumably normal liver function, and from patients with extrahepatic cholestasis. Systemic and portal serum bile acids were also determined in patients with alcoholic liver cirrhosis. In 5 patients, in whom a portal catheter was inserted through the umbilical vein, the diurnal variation in systemic and portal serum bile acid concentration was studied. In patients with presumably normal liver function the fasting systemic serum bile acid concentration was 4.8+/-0.5 mumol times 1(-1), and the portal concentration was 12.9+/-1.5 mumol times 1(-1). In cholestasis and liver cirrhosis the systemic and portal bile acid concentration was substantially elevated. The bile acid concentration gradient between systemic serum, portal serum, liver tissue, and hepatic bile was 1:3:80:2600 in the patients with normal liver function. In both the cholestatic and cirrhotic condition the systemic and portal serum bile acid concentration was equilibrated. Postprandially both the systemic and portal bile acid concentration increased, but the gradient between these concentrations was unchanged. The results are compatible with the hypothesis that portal and systemic serum bile acid concentrations are determined by the intestinal absorption rate in subjects with normal liver function and by the hepatic and renal clearance capacity in cholestatic and cirrhotic conditions.},
   Keywords                 = {Adult; Aged; Bile Acids and Salts, blood; Bile, analysis; Cholestasis, blood/physiopathology; Circadian Rhythm; Female; Humans; Liver Cirrhosis, blood/physiopathology; Liver, physiopathology; Male; Middle Aged; Portal Vein},
   Language                 = {eng},
@@ -671,6 +1291,29 @@
   Owner                    = {mkoenig},
   Pmid                     = {560715},
   Timestamp                = {2015.08.26}
+}
+
+@Article{Liu2013,
+  Title                    = {Transforming growth factor-$\beta$ (TGF-$\beta$)-mediated connective tissue growth factor (CTGF) expression in hepatic stellate cells requires Stat3 signaling activation.},
+  Author                   = {Liu, Yan and Liu, Heng and Meyer, Christoph and Li, Jun and Nadalin, Silvio and K{\"{o}}nigsrainer, Alfred and Weng, Honglei and Dooley, Steven and {ten Dijke}, Peter},
+  Journal                  = {J Biol Chem},
+  Year                     = {2013},
+
+  Month                    = {Oct},
+  Number                   = {42},
+  Pages                    = {30708--30719},
+  Volume                   = {288},
+  Abstract                 = {In fibrotic liver, connective tissue growth factor (CTGF) is constantly expressed in activated hepatic stellate cells (HSCs) and acts downstream of TGF-β to modulate extracellular matrix production. Distinct from other cell types in which Smad signaling plays major role in regulating CTGF production, TGF-β stimulated CTGF expression in activated HSCs is only in part dependent on Smad3. Other signaling molecules like MAPKs and PI3Ks may also participate in this process, and the underlying mechanisms have yet to be clarified. In this study, we report involvement of Stat3 activation in modulating CTGF production upon TGF-β challenge in activated HSCs. Stat3 is phosphorylated via JAK1 and acts as a critical ALK5 (activin receptor-like kinase 5) downstream signaling molecule to mediate CTGF expression. This process requires de novo gene transcription and is additionally modulated by MEK1/2, JNK, and PI3K pathways. Cell-specific knockdown of Smad3 partially decreases CTGF production, whereas it has no significant influence on Stat3 activation. The total CTGF production induced by TGF-β in activated HSCs is therefore, to a large extent, dependent on the balance and integration of the canonical Smad3 and Stat3 signaling pathways.},
+  Doi                      = {10.1074/jbc.M113.478685},
+  Institution              = {From the Department of Medicine II, Section Molecular Hepatology, Medical Faculty Mannheim, Heidelberg University, Theodor-Kutzer-Ufer 1-3, 68167 Mannheim, Germany.},
+  Keywords                 = {Cell Line, Transformed; Connective Tissue Growth Factor, biosynthesis/genetics; Extracellular Matrix, genetics/metabolism/physiology; Extracellular Signal-Regulated MAP Kinases, genetics/metabolism; Female; Gene Expression Regulation; Hepatic Stellate Cells, metabolism/pathology; Humans; Janus Kinase 1, genetics/metabolism; Liver Cirrhosis, genetics/metabolism/pathology; MAP Kinase Signaling System; Male; Phosphatidylinositol 3-Kinases, genetics/metabolism; STAT3 Transcription Factor, genetics/metabolism; Smad3 Protein, genetics/metabolism; Transforming Growth Factor beta, genetics/metabolism},
+  Language                 = {eng},
+  Medline-pst              = {ppublish},
+  Owner                    = {mkoenig},
+  Pii                      = {M113.478685},
+  Pmid                     = {24005672},
+  Timestamp                = {2015.09.08},
+  Url                      = {http://dx.doi.org/10.1074/jbc.M113.478685}
 }
 
 @Article{Lu2000,
@@ -719,6 +1362,27 @@
   Url                      = {http://dx.doi.org/10.1016/j.dld.2010.03.015}
 }
 
+@Article{Malizia1995,
+  Title                    = {Growth factor and procollagen type I gene expression in human liver disease.},
+  Author                   = {Malizia, G. and Brunt, E. M. and Peters, M. G. and Rizzo, A. and Broekelmann, T. J. and McDonald, J. A.},
+  Journal                  = {Gastroenterology},
+  Year                     = {1995},
+
+  Month                    = {Jan},
+  Number                   = {1},
+  Pages                    = {145--156},
+  Volume                   = {108},
+  Abstract                 = {Growth factors have been implicated in the pathogenesis of liver fibrosis, a major determinant of the clinical course of chronic liver disease. The aim of this study was to study the relationship of growth factor expression to inflammation and fibrosis in a variety of human liver diseases.We studied by in situ hybridization the expression of transforming growth factor (TGF) beta 1, platelet-derived growth factor (PDGF) A and PDGF-B, and procollagen type I (pro-I) messenger RNAs (mRNAs) in liver diseases of various etiologies.Pro-I mRNA was expressed by mesenchymal cells at sites of inflammation and scarring, where TGF-beta 1 immunoreactivity was often found, and by perisinusoidal cells. TGF-beta 1 and PDGF-A mRNAs were expressed mainly by mononuclear cells and proliferating ductular cells. TGF-beta 1 mRNA was also expressed by perisinusoidal cells. PDGF-A gene expression was more common than that of PDGF-B. Pro-I and TGF-beta 1 expression correlated with both ductular proliferation and tissue inflammation, whereas PDGF-A and PDGF-B only correlated with ductular proliferation.Our data suggest that TGF-beta 1 and PDGF are involved in human liver inflammation and fibrosis. The expression of growth factor mRNAs in proliferating ductular cells may indicate a role for these cells in liver fibrogenesis and may help explain the pathophysiology of conditions such as biliary atresia progressing to fibrosis despite the absence of marked inflammation.},
+  Institution              = {Divisione di Medicina, Ospedale V. Cervello, Palermo, Italy.},
+  Keywords                 = {Gene Expression; Growth Substances, genetics/metabolism; Humans; Immunohistochemistry; In Situ Hybridization; Liver Diseases, genetics/pathology; Liver, metabolism; Platelet-Derived Growth Factor, genetics; Procollagen, genetics; Proto-Oncogene Proteins c-sis; Proto-Oncogene Proteins, genetics; RNA, Messenger, metabolism; Reference Values; Transforming Growth Factor beta, genetics},
+  Language                 = {eng},
+  Medline-pst              = {ppublish},
+  Owner                    = {mkoenig},
+  Pii                      = {0016-5085(95)90019-5},
+  Pmid                     = {7806036},
+  Timestamp                = {2015.09.08}
+}
+
 @Article{Mederacke2013,
   Title                    = {Fate tracing reveals hepatic stellate cells as dominant contributors to liver fibrosis independent of its aetiology.},
   Author                   = {Mederacke, Ingmar and Hsu, Christine C. and Troeger, Juliane S. and Huebener, Peter and Mu, Xueru and Dapito, Dianne H. and Pradere, Jean-Philippe and Schwabe, Robert F.},
@@ -726,6 +1390,7 @@
   Year                     = {2013},
   Pages                    = {2823},
   Volume                   = {4},
+
   Abstract                 = {Although organ fibrosis causes significant morbidity and mortality in chronic diseases, the lack of detailed knowledge about specific cellular contributors mediating fibrogenesis hampers the design of effective antifibrotic therapies. Different cellular sources, including tissue-resident and bone marrow-derived fibroblasts, pericytes and epithelial cells, have been suggested to give rise to myofibroblasts, but their relative contributions remain controversial, with profound differences between organs and different diseases. Here we employ a novel Cre-transgenic mouse that marks 99\% of hepatic stellate cells (HSCs), a liver-specific pericyte population, to demonstrate that HSCs give rise to 82-96\% of myofibroblasts in models of toxic, cholestatic and fatty liver disease. Moreover, we exclude that HSCs function as facultative epithelial progenitor cells in the injured liver. On the basis these findings, HSCs should be considered the primary cellular target for antifibrotic therapies across all types of liver disease.},
   Doi                      = {10.1038/ncomms3823},
   Institution              = {Department of Medicine, College of Physicians and Surgeons, Columbia University, New York, New York 10032, USA.},
@@ -851,6 +1516,113 @@
   Url                      = {http://dx.doi.org/10.1371/journal.pone.0065251}
 }
 
+@Article{Page2013,
+  Title                    = {Knowledge-based identification of soluble biomarkers: hepatic fibrosis in NAFLD as an example.},
+  Author                   = {Page, Sandra and Birerdinc, Aybike and Estep, Michael and Stepanova, Maria and Afendy, Arian and Petricoin, Emanuel and Younossi, Zobair and Chandhoke, Vikas and Baranova, Ancha},
+  Journal                  = {PLoS One},
+  Year                     = {2013},
+  Number                   = {2},
+  Pages                    = {e56009},
+  Volume                   = {8},
+  Abstract                 = {The discovery of biomarkers is often performed using high-throughput proteomics-based platforms and is limited to the molecules recognized by a given set of purified and validated antigens or antibodies. Knowledge-based, or systems biology, approaches that involve the analysis of integrated data, predominantly molecular pathways and networks may infer quantitative changes in the levels of biomolecules not included by the given assay from the levels of the analytes profiled. In this study we attempted to use a knowledge-based approach to predict biomarkers reflecting the changes in underlying protein phosphorylation events using Nonalcoholic Fatty Liver Disease (NAFLD) as a model. Two soluble biomarkers, CCL-2 and FasL, were inferred in silico as relevant to NAFLD pathogenesis. Predictive performance of these biomarkers was studied using serum samples collected from patients with histologically proven NAFLD. Serum levels of both molecules, in combination with clinical and demographic data, were predictive of hepatic fibrosis in a cohort of NAFLD patients. Our study suggests that (1) NASH-specific disruption of the kinase-driven signaling cascades in visceral adipose tissue lead to detectable changes in the levels of soluble molecules released into the bloodstream, and (2) biomarkers discovered in silico could contribute to predictive models for non-malignant chronic diseases.},
+  Doi                      = {10.1371/journal.pone.0056009},
+  Institution              = {Center for the Study of Chronic Metabolic Diseases, School of Systems Biology, College of Science, George Mason University, Fairfax, Virginia, United States of America.},
+  Keywords                 = {Biological Markers, blood; Chemokine CCL2, blood; Cohort Studies; Enzyme-Linked Immunosorbent Assay; Fas Ligand Protein, blood; Fatty Liver, blood/diagnosis; Female; Humans; Knowledge Bases; Liver Cirrhosis, blood/diagnosis; Male; Middle Aged; Non-alcoholic Fatty Liver Disease; Phosphorylation; Proteomics; Signal Transduction; Systems Biology},
+  Language                 = {eng},
+  Medline-pst              = {ppublish},
+  Owner                    = {mkoenig},
+  Pii                      = {PONE-D-12-29625},
+  Pmid                     = {23405244},
+  Timestamp                = {2015.09.08},
+  Url                      = {http://dx.doi.org/10.1371/journal.pone.0056009}
+}
+
+@Article{Paradis1999,
+  Title                    = {Expression of connective tissue growth factor in experimental rat and human liver fibrosis.},
+  Author                   = {Paradis, V. and Dargere, D. and Vidaud, M. and {De Gouville}, A. C. and Huet, S. and Martinez, V. and Gauthier, J. M. and Ba, N. and Sobesky, R. and Ratziu, V. and Bedossa, P.},
+  Journal                  = {Hepatology},
+  Year                     = {1999},
+
+  Month                    = {Oct},
+  Number                   = {4},
+  Pages                    = {968--976},
+  Volume                   = {30},
+  Abstract                 = {Connective tissue growth factor (CTGF) stimulates in vitro fibroblast proliferation and extracellular matrix synthesis. The aim of this study was to assess the role of CTGF in liver fibrogenesis. CTGF expression was investigated both at the protein and mRNA level in biopsies of chronic liver diseases, in experimental models of liver fibrosis, and in hepatic stellate cells in culture. CTGF immunostaining was observed in most human liver biopsies with significant fibrosis. An increase of CTGF immunostaining was associated with a higher score of fibrosis both in the group of chronic hepatitis C (chi(2) = 9.3; P <.01) and in the non-hepatitis C group (chi(2) = 7.2; P <.02). In situ hybridization showed CTGF mRNA expression in spindle cells in both the fibrous septa and sinusoidal lining. In experimental models of liver fibrosis, CTGF accumulated in parallel with the development of septal fibrosis and cirrhosis. Quantification of CTGF mRNA by a real-time reverse-transcription polymerase chain reaction (RT-PCR) assay showed a significant increase of CTGF mRNA in both CCl(4)-induced and bile duct-ligated rat models of liver fibrosis. Expression of CTGF protein and mRNA was definitively assigned to hepatic stellate cells, because CTGF was detected by Western blot both in lysate and supernatant of a hepatic stellate cell line derived from rats. These cells also displayed CTGF protein and mRNA as shown by immunohistochemistry and in situ hybridization. In conclusion, this study shows that CTGF is strongly expressed during liver fibrogenesis, and hepatic stellate cells seem to be the major cellular sources of CTGF in the liver.},
+  Doi                      = {10.1002/hep.510300425},
+  Institution              = {Service d'Anatomie Pathologique, Hôpital de Bicêtre, Le Kremlin-Bicêtre, France. bparadis@teaser.fr},
+  Keywords                 = {Adolescent; Adult; Animals; Bile Ducts; Carbon Tetrachloride; Cell Line, Transformed; Connective Tissue Growth Factor; Female; Growth Substances, genetics/metabolism; Humans; Immediate-Early Proteins; Immunohistochemistry; In Situ Hybridization; Intercellular Signaling Peptides and Proteins; Ligation; Liver Cirrhosis, Experimental, chemically induced/etiology/metabolism; Liver Cirrhosis, metabolism; Liver, cytology/metabolism; Male; Middle Aged; Rats; Rats, Wistar},
+  Language                 = {eng},
+  Medline-pst              = {ppublish},
+  Owner                    = {mkoenig},
+  Pii                      = {S0270913999004474},
+  Pmid                     = {10498649},
+  Timestamp                = {2015.09.08},
+  Url                      = {http://dx.doi.org/10.1002/hep.510300425}
+}
+
+@Article{Qian2012,
+  Title                    = {$\beta$-Catenin pathway is required for TGF-$\beta$1 inhibition of PPAR$\gamma$ expression in cultured hepatic stellate cells.},
+  Author                   = {Qian, Jingjing and Niu, Minghui and Zhai, Xuguang and Zhou, Qian and Zhou, Yajun},
+  Journal                  = {Pharmacol Res},
+  Year                     = {2012},
+
+  Month                    = {Sep},
+  Number                   = {3},
+  Pages                    = {219--225},
+  Volume                   = {66},
+  Abstract                 = {Hepatic stellate cell (HSC) activation is a key step in process of liver fibrosis. Transforming growth factor-β1 (TGF-β1) is the most powerful mediator of HSC activation and plays a central role in liver fibrosis. Peroxisome proliferator-activated receptor-γ (PPARγ) is an important regulator of adipocyte differentiation and has been proposed as a crucial factor for inhibition of HSC activation. The effect of TGF-β1 on PPARγ in HSCs is largely unknown. This study is aimed to examine whether TGF-β1 can influence PPARγ expression, focusing on the role of β-catenin pathway, a key pathway linked to adipogenesis, in TGF-β1 regulation of PPARγ in cultured HSCs. Our results demonstrated that TGF-β1 evidently inhibited PPARγ expression and activity in cultured HSCs, which were mediated through β-catenin pathway. TGF-β1 promoted β-catenin expression and also increased the stability of β-catenin protein through ERK1/2/glycogen synthase kinase-3β (GSK-3β) axis in cultured HSCs. Moreover, TGF-β1 inhibition of PPARγ expression by β-catenin pathway caused the increase in alpha1(1) collagen and tissue inhibitor of matrix metalloproteinase expression. These results indicated for the first time that TGF-β1 could down-regulate PPARγ expression through β-catenin pathway and subsequently contributed to the increase in alpha1(1) collagen level in cultured HSCs.},
+  Doi                      = {10.1016/j.phrs.2012.06.003},
+  Institution              = {Affiliated Hospital of Nantong University, Qi xiou road 19, Nantong 226001, Jiangsu, China.},
+  Keywords                 = {Adipogenesis, drug effects; Animals; Cell Differentiation, drug effects; Collagen Type I, metabolism; Down-Regulation, drug effects; Glycogen Synthase Kinase 3, metabolism; Hepatic Stellate Cells, drug effects/metabolism; Liver Cirrhosis, drug therapy/metabolism; MAP Kinase Signaling System, drug effects; Matrix Metalloproteinases, metabolism; PPAR gamma, antagonists /&/ inhibitors/biosynthesis/metabolism; Rats; Rats, Sprague-Dawley; Signal Transduction; Transforming Growth Factor beta1, metabolism/pharmacology; beta Catenin, metabolism},
+  Language                 = {eng},
+  Medline-pst              = {ppublish},
+  Owner                    = {mkoenig},
+  Pii                      = {S1043-6618(12)00121-1},
+  Pmid                     = {22706027},
+  Timestamp                = {2015.09.08},
+  Url                      = {http://dx.doi.org/10.1016/j.phrs.2012.06.003}
+}
+
+@Article{Rachfal2003,
+  Title                    = {Connective tissue growth factor (CTGF/CCN2) in hepatic fibrosis.},
+  Author                   = {Rachfal, Amy W. and Brigstock, David R.},
+  Journal                  = {Hepatol Res},
+  Year                     = {2003},
+
+  Month                    = {May},
+  Number                   = {1},
+  Pages                    = {1--9},
+  Volume                   = {26},
+  Abstract                 = {Connective tissue growth factor (CTGF/CCN2) is a highly profibrogenic molecule which is overexpressed in many fibrotic lesions, including those of the liver. CTGF/CCN2 is transcriptionally activated by transforming growth factor-beta (TGF-beta) and appears to mediate some of the extracellular matrix (ECM)-inducing properties that have been previously attributed to TGF-beta. CTGF/CCN2 and TGF-beta stimulate connective tissue cell proliferation and ECM synthesis in vitro and exhibit shared fibrogenic and angiogenic properties in vivo. In fibrotic liver, CTGF/CCN2 mRNA and protein are produced by fibroblasts, myofibroblasts, hepatic stellate cells (HSCs), endothelial cells, and bile duct epithelial cells. CTGF/CCN2 is also produced at high levels in hepatocytes during cytochrome P-4502E1-mediated ethanol oxidation. CTGF/CCN2 expression in cultured HSCs is enhanced following their activation or stimulation by TGF-beta while exogenous CTGF/CCN2 is able to promote HSC adhesion, proliferation, locomotion, and collagen production. Collectively, these data suggest that during initiating or downstream fibrogenic events in the liver, production of CTGF/CCN2 is regulated primarily by TGF-beta in one or more cell types and that CTGF/CCN2 plays important roles in HSC activation and progression of fibrosis. This article reviews the data that support the importance of CTGF/CCN2 in hepatic fibrosis and highlights the concept that CTGF/CCN2 may represent a new therapeutic target in this disease.},
+  Institution              = {Department of Surgery, The Ohio State University, 43212, Columbus, OH, USA},
+  Language                 = {eng},
+  Medline-pst              = {ppublish},
+  Owner                    = {mkoenig},
+  Pii                      = {S1386634603001153},
+  Pmid                     = {12787797},
+  Timestamp                = {2015.09.08}
+}
+
+@Article{Rachmawati2004,
+  Title                    = {Pharmacokinetic and biodistribution profile of recombinant human interleukin-10 following intravenous administration in rats with extensive liver fibrosis.},
+  Author                   = {Rachmawati, Heni and Beljaars, Leonie and Reker-Smit, Catharina and {Van Loenen-Weemaes}, Anne-miek M. and Hagens, Werner I. and Meijer, Dirk K F. and Poelstra, Klaas},
+  Journal                  = {Pharm Res},
+  Year                     = {2004},
+
+  Month                    = {Nov},
+  Number                   = {11},
+  Pages                    = {2072--2078},
+  Volume                   = {21},
+  Abstract                 = {Because interleukin-10 (IL-10) seems a promising new antifibrotic drug, we investigated the pharmacokinetic and biodistribution profile of this potent therapeutic cytokine in rats with extensive liver fibrosis (BDL-3). IL-10 receptor expression was also determined in relation to these aspects.To study the pharmacokinetic and biodistribution of IL-10, rhIL-10 was labeled with 125-iodine. Plasma samples of 125IrhIL-10 were obtained over a 30-min time period after administration of radiolabeled-cytokine to BDL-3 and normal rats. The tissue distribution was assessed 10 and 30 min after i.v. administration of 125IrhlL-10. IL-10 receptor expression was determined by immurohistochemical staining and RT-PCR technique.. The 125IrhIL-10 plasma curves followed two-compartment kinetics with a lower AUC in BDL-3 rats as compared to control. Plasma clearance and distribution volume at steady state were larger in BDL-3 rats. Tissue distribution analysis in normal rats showed that 125IrhIL-10 highly accumulated in kidneys. In BDL-3 rats, the liver content of 125IrhIL-10 increased by a factor of 2, whereas kidney accumulation did not significantly change. Immunohistochemical staining and RT-PCR analysis showed that IL-10 receptor was clearly upregulated in BDL-3 rat livers.. In normal rats, 125IrhIL-10 rapidly disappears from the circulation, and the kidney is predominantly responsible for this. In BDL-3 rats, the liver largely contributes to this rapid plasma disappearance, probably due to an increase in IL-10 receptor expression. The extensive renal clearance of IL-10 in vivo may limit a clinical application of this cytokine for the treatment of chronic liver diseases. To optimize the therapeutic effects of IL-10 in hepatic diseases, alternative approaches that either decrease renal disposition or that further enhance hepatic delivery should be considered.},
+  Institution              = {Department of Pharmacokinetics and Drug Delivery, University Centre for Pharmacy, University of Groningen, 9713 AV Groningen, The Netherlands. H.Rachmawati@farm.rug.nl},
+  Keywords                 = {Animals; Area Under Curve; Dose-Response Relationship, Drug; Humans; Injections, Intravenous; Interleukin-10, metabolism/pharmacokinetics; Iodine Radioisotopes, diagnostic use; Isotope Labeling; Liver Cirrhosis, metabolism; RNA, Messenger, biosynthesis/genetics; Rats; Receptors, Interleukin, biosynthesis/metabolism; Recombinant Proteins, pharmacokinetics; Reverse Transcriptase Polymerase Chain Reaction; Tissue Distribution},
+  Language                 = {eng},
+  Medline-pst              = {ppublish},
+  Owner                    = {mkoenig},
+  Pmid                     = {15587930},
+  Timestamp                = {2015.09.08}
+}
+
 @Article{Ramadori2004,
   Title                    = {Portal tract fibrogenesis in the liver.},
   Author                   = {Ramadori, Giuliano and Saile, Bernhard},
@@ -861,6 +1633,7 @@
   Number                   = {2},
   Pages                    = {153--159},
   Volume                   = {84},
+
   Abstract                 = {The portal area is the 'main entrance' and one of the two main exits of the liver lobule. Through the main entrance portal and arterial blood reach the liver sinusoids. Through the exit the bile flows towards the duodenum. The three main structures, portal vein and artery with their own wall (and vascular smooth muscle cells) and bile duct with its basal membrane, are surrounded by loose myofibroblasts and by the first layer of hepatocytes and non-parenchymal cells. Chronic diseases of the liver can lead to development of liver cirrhosis, characterized by formation of fibrotic septa which can be portal-portal in the case of the chronic biliary damage or portal-central in the case of the chronic viral hepatitis. Central-central septa can also be observed under other pathological conditions. When damaging noxae are introduced to the liver, inflammatory cells are first recruited to the portal field, the first layer of hepatocytes may be destroyed (enlargement of the portal field) and portal (myo)fibroblasts become activated. A similar reaction may take place when the target of inflammation is the bile duct with consecutive reduction of the bile flow, activation of the portal (myo)fibroblasts, proliferation of bile ducts and destruction of the hepatocytes around the portal field. Increased matrix deposition may be the consequence. During the past years several publications dealt with the pathomechanisms of portal fibrogenesis as well as with its resolution. One of the most intriguing observations was that it is not hepatic stellate cells of the hepatic sinusoid, but portal (myo)fibroblasts which rapidly acquire the phenotype of 'activated' (myo)fibroblasts in the early stages of cholestatic fibrosis. These may also become the main mesenchymal cells of the porto-portal or porto-central fibrotic septa. This article reviews the similarities as well as differences between the mesenchymal cells of the portal tract and of the fibrotic septa vs 'activated' stellate cells of the hepatic sinusoids, and discusses the debate over their relative contributions to liver fibrogenesis.},
   Doi                      = {10.1038/labinvest.3700030},
   Institution              = {Department of Internal Medicine, Section of Gastroenterology and Endocrinology, University of Göttingen, Goettingen, Germany. gramado@med.uni-goettingen.de},
@@ -874,6 +1647,50 @@
   Url                      = {http://dx.doi.org/10.1038/labinvest.3700030}
 }
 
+@Article{Reister2011,
+  Title                    = {The epigenetic regulation of stem cell factors in hepatic stellate cells.},
+  Author                   = {Reister, Sven and Kordes, Claus and Sawitza, Iris and H{\"{a}}ussinger, Dieter},
+  Journal                  = {Stem Cells Dev},
+  Year                     = {2011},
+
+  Month                    = {Oct},
+  Number                   = {10},
+  Pages                    = {1687--1699},
+  Volume                   = {20},
+  Abstract                 = {The epigenetic regulation by DNA methylation is an important mechanism to control the expression of stem cell factors as demonstrated in tumor cells. It was recently shown that hepatic stellate cells (HSC) express stem/progenitor cell factors and have a differentiation potential. The aim of this work was to investigate if the expression of stem cell markers is regulated by DNA methylation during activation of rat HSC. It was found that CD133, Notch1, and Notch3 are regulated via DNA methylation in HSC, whereas Nestin shows no DNA methylation in HSC and other undifferentiated cells such as embryonic stem cells and umbilical cord blood stem cells from rats. In contrast to this, DNA methylation controls Nestin expression in differentiated cells like hepatocytes and the hepatoma cell line H4IIE. Demethylation by 5-Aza-2-deoxycytidine was sufficient to induce Nestin in H4IIE cells. In quiescent stellate cells and embryonic stem cells, the Nestin expression was suppressed by histone H3 methylation at lysine 9, which is another epigenetic mechanism. Apart from the known induction of Nestin in cultured HSC, this intermediate filament protein was also induced after partial hepatectomy, indicating activation of HSC during liver regeneration. Taken together, this study demonstrates for the first time that the expression of stem cell-associated factors such as CD133, Notch1, and Notch3 is controlled by DNA methylation in HSC. The regulation of Nestin by DNA methylation seems to be restricted to differentiated cells, whereas undifferentiated cells use different epigenetic mechanisms such as histone H3 methylation to control Nestin expression.},
+  Doi                      = {10.1089/scd.2010.0418},
+  Institution              = {Klinik für Gastroenterologie, Hepatologie und Infektiologie, Heinrich-Heine-Universität, Düsseldorf, Germany.},
+  Keywords                 = {Animals; Antigens, CD, metabolism; Blotting, Western; Chromatin Immunoprecipitation; DNA Methylation, genetics; Epigenesis, Genetic; Fetal Blood, cytology; Fibroblasts, cytology/metabolism; Fluorescent Antibody Technique; Glycoproteins, metabolism; Hepatic Stellate Cells, cytology/metabolism; Histones, metabolism; Intermediate Filament Proteins, genetics/metabolism; Liver Regeneration; Male; Nerve Tissue Proteins, genetics/metabolism; Nestin; Peptides, metabolism; Rats; Rats, Wistar; Receptors, Notch, genetics/metabolism; Reverse Transcriptase Polymerase Chain Reaction; Stem Cell Factor, metabolism; Stem Cells, cytology/metabolism},
+  Language                 = {eng},
+  Medline-pst              = {ppublish},
+  Owner                    = {mkoenig},
+  Pmid                     = {21219128},
+  Timestamp                = {2015.09.08},
+  Url                      = {http://dx.doi.org/10.1089/scd.2010.0418}
+}
+
+@Article{Robertson2007,
+  Title                    = {Biliary epithelial-mesenchymal transition in posttransplantation recurrence of primary biliary cirrhosis.},
+  Author                   = {Robertson, Helen and Kirby, John A. and Yip, William W. and Jones, David E J. and Burt, Alastair D.},
+  Journal                  = {Hepatology},
+  Year                     = {2007},
+
+  Month                    = {Apr},
+  Number                   = {4},
+  Pages                    = {977--981},
+  Volume                   = {45},
+  Abstract                 = {Primary biliary cirrhosis (PBC) recurs in the allograft after liver transplantation. Study of early tissue changes in the time-course of disease recurrence provides a unique insight into the initial stages of the disease process, which, in nontransplant patients, occurs long before clinical presentation. We describe a patient who developed classical clinical, biochemical, immunological, and histological features of PBC within 9 months after transplantation. Use of tissue from this patient before and during the development of PBC allowed us to identify biliary epithelial cell (BEC) epithelial-mesenchymal transition (EMT) as a key pathogenetic process. BEC expression of S100A4 (an early fibroblast lineage marker established as a robust marker of EMT), vimentin, and pSmad 2/3 [a marker of transforming growth factor beta (TGF-beta) pathway signaling] were identified immunohistochemically in most BECs in liver tissue from this patient at the point of diagnosis of recurrent disease. BEC expression of S100A4 and pSmad 2/3 was seen as early as 24 days after orthotopic liver transplantation (OLT), although no other features of recurrent PBC were present at this time.S100A4, vimentin, and pSmad 2/3 expression in early recurrent PBC after OLT suggests that BEC EMT is occurring (potentially explaining BEC loss) and that this process is driven by TGF-beta. S100A4 expression by BEC appears to occur before the development of any other features of recurrent PBC, suggesting that EMT may be an initiating event.},
+  Doi                      = {10.1002/hep.21624},
+  Institution              = {Applied Immunobiology and Transplantation Research Group, Newcastle University, Newcastle-upon-Tyne, NE2 4HH, UK.},
+  Keywords                 = {Adult; Biological Markers, metabolism; Epithelial Cells, metabolism/pathology; Female; Fibroblasts, metabolism/pathology; Humans; Immunohistochemistry; Liver Cirrhosis, Biliary, metabolism/pathology; Liver Transplantation; Liver, metabolism/pathology; Recurrence},
+  Language                 = {eng},
+  Medline-pst              = {ppublish},
+  Owner                    = {mkoenig},
+  Pmid                     = {17393507},
+  Timestamp                = {2015.09.08},
+  Url                      = {http://dx.doi.org/10.1002/hep.21624}
+}
+
 @Article{Rockey2013,
   Title                    = {Translating an understanding of the pathogenesis of hepatic fibrosis to novel therapies.},
   Author                   = {Rockey, Don C.},
@@ -884,6 +1701,7 @@
   Number                   = {3},
   Pages                    = {224--31.e1-5},
   Volume                   = {11},
+
   Abstract                 = {The response to injury is one of wound healing and fibrogenesis, which ultimately leads to fibrosis. The fibrogenic response to injury is a generalized one across virtually all organ systems. In the liver, the injury response, typically occurring over a prolonged period of time, leads to cirrhosis (although it should be pointed out that not all patients with liver injury develop cirrhosis). The fact that many different diseases result in cirrhosis suggests a common pathogenesis. The study of hepatic fibrogenesis over the past 2 decades has been remarkably active, leading to a considerable understanding of this process. It clearly has been shown that the hepatic stellate cell is a central component in the fibrogenic process. It also has been recognized that other effector cells are important in the fibrogenic process, including resident fibroblasts, bone marrow-derived cells, fibrocytes, and even perhaps cells derived from epithelial cells (ie, through epithelial to mesenchymal transition). A key aspect of the biology of fibrogenesis is that the fibrogenic process is dynamic; thus, even advanced fibrosis (or cirrhosis) is reversible. Together, an understanding of the cellular basis for liver fibrogenesis, along with multiple aspects of the basic pathogenesis of fibrosis, have highlighted many exciting potential therapeutic opportunities. Thus, although the most effective antifibrotic therapy is simply treatment of the underlying disease, in situations in which this is not possible, specific antifibrotic therapy is likely not only to become feasible, but will soon become a reality. This review highlights the mechanisms underlying fibrogenesis that may be translated into future antifibrotic therapies and to review the current state of clinical development.},
   Doi                      = {10.1016/j.cgh.2013.01.005},
   Institution              = {Department of Internal Medicine, Medical University of South Carolina, Charleston, South Carolina 29425, USA. rockey@musc.edu},
@@ -918,6 +1736,86 @@
   Url                      = {http://dx.doi.org/10.1146/annurev.biochem.72.121801.161712}
 }
 
+@Article{Russell1999,
+  Title                    = {Nuclear orphan receptors control cholesterol catabolism.},
+  Author                   = {Russell, D. W.},
+  Journal                  = {Cell},
+  Year                     = {1999},
+
+  Month                    = {May},
+  Number                   = {5},
+  Pages                    = {539--542},
+  Volume                   = {97},
+  Institution              = {University of Texas Southwestern Medical Center, Dallas 75235, USA.},
+  Keywords                 = {Adult; Animals; Bile Acids and Salts, metabolism; Cell Nucleus, physiology; Cholesterol 7-alpha-Hydroxylase, genetics/metabolism; Cholesterol, metabolism; DNA-Binding Proteins, physiology; Humans; Liver, metabolism; Orphan Nuclear Receptors; RNA-Binding Proteins, physiology; Receptors, Cytoplasmic and Nuclear, physiology; Transcription Factors, physiology; Transcription, Genetic; mRNA Cleavage and Polyadenylation Factors},
+  Language                 = {eng},
+  Medline-pst              = {ppublish},
+  Owner                    = {mkoenig},
+  Pii                      = {S0092-8674(00)80763-1},
+  Pmid                     = {10367881},
+  Timestamp                = {2015.09.08}
+}
+
+@Article{Sancho-Bru2012,
+  Title                    = {Liver progenitor cell markers correlate with liver damage and predict short-term mortality in patients with alcoholic hepatitis.},
+  Author                   = {Sancho-Bru, Pau and Altamirano, Jos{\'{e}} and Rodrigo-Torres, Daniel and Coll, Mar and Mill{\'{a}}n, Cristina and {Jos{\'{e}} Lozano}, Juan and Miquel, Rosa and Arroyo, Vicente and Caballer{\'{\i}}a, Juan and Gin{\`{e}}s, Pere and Bataller, Ramon},
+  Journal                  = {Hepatology},
+  Year                     = {2012},
+
+  Month                    = {Jun},
+  Number                   = {6},
+  Pages                    = {1931--1941},
+  Volume                   = {55},
+  Abstract                 = {Alcoholic hepatitis (AH) is a severe condition developed in patients with underlying alcoholic liver disease. Ductular reaction has been associated with chronic alcohol consumption but there is no information regarding the extent of liver progenitor cell (LPC) proliferation in AH. The aim of this study was to investigate LPC markers in AH and its correlation with disease severity. Fifty-nine patients with clinical and histological diagnosis of AH were included in the study. LPC markers were assessed by real-time polymerase chain reaction (PCR) and immunohistochemistry. Standard logistic regression analysis and classification and regression trees (CART) analysis were used for statistical analysis. A microarray analysis showed an up-regulation of LPC markers in patients with AH. Real-time PCR demonstrated that epithelial cell adhesion molecule (EpCAM), Prominin-1, and Keratin7 were significantly increased in patients with AH compared with normal livers (P ≤ 0.01), chronic hepatitis C (P ≤ 0.01), and HCV-induced cirrhosis (P ≤ 0.01). Immunohistochemistry scores generated for Keratin7 and EpCAM demonstrated a good correlation with gene expression. Keratin7 gene expression correlated with liver failure as assessed by model for endstage liver disease score (r = 0.41, P = 0.006) and Maddrey's discriminant function (r = 0.43, P = 0.004). Moreover, Keratin7 (OR1.14, P = 0.004) and Prominin-1 (OR1.14, P = 0.002), but not EpCAM (OR1.16, P = 0.06), were identified as independent predictors of 90-day mortality. CART analysis generated an algorithm based on the combination of Keratin7 and EpCAM gene expression that stratified three groups of patients with high, intermediate, and low short-term mortality (89\%, 33\%, and 6\%, respectively; area under the receiver operating curve 0.73, 95\% confidence interval 0.60-0.87). Keratin7 expression provided additional discrimination potential to the age, bilirubin, international normalization ratio, creatinine (ABIC) score.LPC markers correlate positively with severity of liver disease and short-term mortality in AH patients. This study suggests that LPC proliferation may be an important feature of AH pathophysiology.},
+  Doi                      = {10.1002/hep.25614},
+  Institution              = {Liver Unit, Hospital Clínic, Institut d'Investigacions Biomèdiques August Pi i Sunyer, Centro de Investigación Biomédica en Red de Enfermedades Hepáticas y Digestivas, Barcelona, Spain. psancho@clinic.ub.es},
+  Keywords                 = {Antigens, CD, analysis; Antigens, Neoplasm, analysis; Biological Markers; Cell Adhesion Molecules, analysis; Female; Glycoproteins, analysis; Hepatitis, Alcoholic, mortality; Humans; Immunohistochemistry; Keratin-7, analysis; Liver, pathology; Male; Middle Aged; Peptides, analysis; Severity of Illness Index; Stem Cells, chemistry},
+  Language                 = {eng},
+  Medline-pst              = {ppublish},
+  Owner                    = {mkoenig},
+  Pmid                     = {22278680},
+  Timestamp                = {2015.09.08},
+  Url                      = {http://dx.doi.org/10.1002/hep.25614}
+}
+
+@Article{Schacter1983,
+  Title                    = {Effect of cholestasis produced by bile duct ligation on hepatic heme and hemoprotein metabolism in rats.},
+  Author                   = {Schacter, B. A. and Joseph, E. and Firneisz, G.},
+  Journal                  = {Gastroenterology},
+  Year                     = {1983},
+
+  Month                    = {Feb},
+  Number                   = {2},
+  Pages                    = {227--235},
+  Volume                   = {84},
+  Abstract                 = {Cholestasis produced by bile duct ligation has been associated with decreased concentrations of hepatic microsomal cytochrome P450 and decreased hepatic microsomal oxidative drug metabolism. Bile duct ligation producing cholestasis results in a marked increase in hepatic microsomal heme oxygenase activity, with corresponding decreases in hepatic microsomal cytochrome P450 concentration, reduced form of nicotinamide adenine dinucleotide phosphate-cytochrome c reductase activity, and hepatic delta-aminolevulinic acid synthetase activity. As sham-operated rats also demonstrate a less prolonged decrease in cytochrome P450 concentration and reduced form of nicotinamide adenine dinucleotide phosphate-cytochrome c reductase activity, the metabolic effects of surgery and anesthesia must also be involved in these alterations in microsomal oxidative drug metabolism. The relative rate of hepatic cytochrome P450 synthesis and of degradation are both decreased after bile duct ligation. These data suggest that decreased hepatic microsomal cytochrome P450 concentrations in cholestasis are partly the result of decreased cytochrome P450 synthesis. Increased levels of heme oxygenase activity are not related to increased cytochrome P450 turnover, but may instead reflect enlargement and increased catabolism of a free heme pool resulting from decreased hemoprotein (cytochrome P450) synthesis.},
+  Keywords                 = {5-Aminolevulinate Synthetase, metabolism; Animals; Bile Ducts, surgery; Cholestasis, etiology/metabolism; Cytochrome P-450 Enzyme System, metabolism; Electrophoresis, Polyacrylamide Gel; Heme Oxygenase (Decyclizing), metabolism; Heme, metabolism; Hemeproteins, metabolism; Ligation; Liver, metabolism; Male; Microsomes, Liver, metabolism; NADPH-Ferrihemoprotein Reductase, metabolism; Rats; Rats, Inbred Strains},
+  Language                 = {eng},
+  Medline-pst              = {ppublish},
+  Owner                    = {mkoenig},
+  Pii                      = {S0016508583000232},
+  Pmid                     = {6401253},
+  Timestamp                = {2015.09.08}
+}
+
+@Article{Schierwagen2013,
+  Title                    = {Serum markers of the extracellular matrix remodeling reflect antifibrotic therapy in bile-duct ligated rats.},
+  Author                   = {Schierwagen, Robert and Leeming, Diana J. and Klein, Sabine and Granzow, Michaela and Nielsen, Mette J. and Sauerbruch, Tilman and Krag, Aleksander and Karsdal, Morten A. and Trebicka, Jonel},
+  Journal                  = {Front Physiol},
+  Year                     = {2013},
+  Pages                    = {195},
+  Volume                   = {4},
+  Abstract                 = {Progression of liver fibrosis is characterized by synthesis and degradation of extracellular matrix (ECM). Matrix-metalloproteinases (MMP) cleave collagen fibers at a specific site and thereby generate soluble fragments of ECM (neo-epitopes). The levels of these neo-epitopes might reflect the stage of liver fibrosis and may allow monitoring of anti-fibrotic therapies. Here we analyzed these neo-epitopes as read-out for a liver directed therapy with statins.Bile duct ligation (BDL) was performed on wild type rats, which received atorvastatin (15 mg/kg(*)d) for 1 week starting at 1, 2, 3, 4 and 5 weeks after BDL (T1-T5), while controls remained untreated. Hepatic fibrosis was analyzed by immunohistochemistry and hepatic hydroxyproline content. TGFβ levels were measured by RT-PCR. Proteolytic activity of MMP-2 was examined by zymography. Levels of degradation MMP driven type I, III, IV and VI collagen degradation (C1M, C3M, C4M, and C6M) and type III and IV collagen formation (PRO-C3 and P4NP7S) markers were assessed by specific ELISAs in serum probes.Serum markers of ECM neo-epitopes reflected significantly the deposition of ECM in the liver and were able to distinguish between early (T1-T3) and severe fibrosis (T4-T5). Statin treatment resulted in reduction of neo-epitope markers, especially when therapy was started in the stage of severe fibrosis (T4-T5). Furthermore, these markers correlated with hepatic expression of profibrotic cytokines TGFβ1 and TGFβ2. Formation markers of type III and IV collagen (PRO-C3 and P4NP7S) and degradation markers C4M and C6M correlated significantly with hepatic MMP-2 activity in rats with severe fibrosis.Determination of ECM remodeling turnover markers in serum allowed a distinction between mild and severe fibrosis. With respect to statin therapy, the markers may serve as read-out for efficacy of anti-fibrotic treatment.},
+  Doi                      = {10.3389/fphys.2013.00195},
+  Institution              = {Department of Internal Medicine I, University of Bonn Bonn, Germany.},
+  Language                 = {eng},
+  Medline-pst              = {epublish},
+  Owner                    = {mkoenig},
+  Pmid                     = {23908632},
+  Timestamp                = {2015.09.08},
+  Url                      = {http://dx.doi.org/10.3389/fphys.2013.00195}
+}
+
 @Article{Schliep2003,
   Title                    = {Using hidden Markov models to analyze gene expression time course data.},
   Author                   = {Schliep, Alexander and Sch{\"{o}}nhuth, Alexander and Steinhoff, Christine},
@@ -946,6 +1844,7 @@
   Number                   = {5},
   Pages                    = {1887--1901},
   Volume                   = {123},
+
   Abstract                 = {Fibrosis is an intrinsic response to chronic injury, maintaining organ integrity when extensive necrosis or apoptosis occurs. With protracted damage, fibrosis can progress toward excessive scarring and organ failure, as in liver cirrhosis. To date, antifibrotic treatment of fibrosis represents an unconquered area for drug development, with enormous potential but also high risks. Preclinical research has yielded numerous targets for antifibrotic agents, some of which have entered early-phase clinical studies, but progress has been hampered due to the relative lack of sensitive and specific biomarkers to measure fibrosis progression or reversal. Here we focus on antifibrotic approaches for liver that address specific cell types and functional units that orchestrate fibrotic wound healing responses and have a sound preclinical database or antifibrotic activity in early clinical trials. We also touch upon relevant clinical study endpoints, optimal study design, and developments in fibrosis imaging and biomarkers.},
   Doi                      = {10.1172/JCI66028},
   Institution              = {Institute of Molecular and Translational Medicine and Department of Medicine I, University Medical Center, Johannes Gutenberg University Mainz, Mainz, Germany. detlef.schuppan@unimedizin-mainz.de},
@@ -957,6 +1856,49 @@
   Pmid                     = {23635787},
   Timestamp                = {2015.09.07},
   Url                      = {http://dx.doi.org/10.1172/JCI66028}
+}
+
+@Article{Sedlaczek2001,
+  Title                    = {Proliferating bile duct epithelial cells are a major source of connective tissue growth factor in rat biliary fibrosis.},
+  Author                   = {Sedlaczek, N. and Jia, J. D. and Bauer, M. and Herbst, H. and Ruehl, M. and Hahn, E. G. and Schuppan, D.},
+  Journal                  = {Am J Pathol},
+  Year                     = {2001},
+
+  Month                    = {Apr},
+  Number                   = {4},
+  Pages                    = {1239--1244},
+  Volume                   = {158},
+  Abstract                 = {Connective tissue growth factor (CTGF) is a downstream mediator of transforming growth factor-beta1 (TGF-beta1) and thus a potential target for antifibrotic treatment strategies. CTGF is up-regulated in disorders such as atherosclerosis, scleroderma, and fibrosis of kidneys and lungs. We investigated the temporospatial expression patterns of CTGF and TGF-beta1 mRNA in rat livers with acute fibrogenesis (after a single dose of CCl(4)) and with advanced fibrosis (6 weeks after complete bile duct occlusion). Multiprobe ribonuclease protection assay revealed increasing TGF-beta1 and CTGF mRNA levels 6 hours after injection of CCl(4), with peak levels after 72 hours. In biliary fibrosis TGF-beta1 and CTGF mRNA levels increased fourfold and sevenfold, respectively (P: < 0.001). In situ hybridization combined with cell-specific markers revealed CTGF transcripts in desmin-positive cells after a single dose of carbon tetrachloride, whereas no transcripts were found in normal livers. In biliary fibrosis, however, proliferating bile duct epithelial cells were the predominant source of CTGF mRNA. We conclude that in rat liver fibrogenesis CTGF is up-regulated in close association with TGF-beta1 and that, contrary to a previous report, not solely hepatic stellate cells but activated bile duct epithelial cells are the main source of this profibrogenic factor.},
+  Doi                      = {10.1016/S0002-9440(10)64074-6},
+  Institution              = {Department of Gastroenterology and Hepatology, Klinikum Benjamin Franklin, Free University of Berlin, Berlin, Germany.},
+  Keywords                 = {Acute Disease; Animals; Bile Ducts, metabolism/pathology; Cell Division; Chronic Disease; Connective Tissue Growth Factor; Epithelial Cells, metabolism/pathology; Growth Substances, genetics/metabolism; Immediate-Early Proteins, genetics/metabolism; Intercellular Signaling Peptides and Proteins; Liver Cirrhosis, Biliary, metabolism/pathology; Liver, metabolism/pathology; RNA, Messenger, metabolism; Rats; Rats, Wistar; Transforming Growth Factor beta, genetics; Transforming Growth Factor beta1},
+  Language                 = {eng},
+  Medline-pst              = {ppublish},
+  Owner                    = {mkoenig},
+  Pii                      = {S0002-9440(10)64074-6},
+  Pmid                     = {11290541},
+  Timestamp                = {2015.09.08},
+  Url                      = {http://dx.doi.org/10.1016/S0002-9440(10)64074-6}
+}
+
+@Article{Seki2009,
+  Title                    = {CCR1 and CCR5 promote hepatic fibrosis in mice.},
+  Author                   = {Seki, Ekihiro and {De Minicis}, Samuele and Gwak, Geum-Youn and Kluwe, Johannes and Inokuchi, Sayaka and Bursill, Christina A. and Llovet, Josep M. and Brenner, David A. and Schwabe, Robert F.},
+  Journal                  = {J Clin Invest},
+  Year                     = {2009},
+
+  Month                    = {Jul},
+  Number                   = {7},
+  Pages                    = {1858--1870},
+  Volume                   = {119},
+  Abstract                 = {Hepatic fibrosis develops as a response to chronic liver injury and almost exclusively occurs in a proinflammatory environment. However, the role of inflammatory mediators in fibrogenic responses of the liver is only poorly understood. We therefore investigated the role of CC chemokines and their receptors in hepatic fibrogenesis. The CC chemokines MIP-1alpha, MIP-1beta, and RANTES and their receptors CCR1 and CCR5 were strongly upregulated in 2 experimental mouse models of fibrogenesis. Neutralization of CC chemokines by the broad-spectrum CC chemokine inhibitor 35k efficiently reduced hepatic fibrosis, and CCR1- and CCR5-deficient mice displayed substantially reduced hepatic fibrosis and macrophage infiltration. Analysis of fibrogenesis in CCR1- and CCR5-chimeric mice revealed that CCR1 mediates its profibrogenic effects in BM-derived cells, whereas CCR5 mediates its profibrogenic effects in resident liver cells. CCR5 promoted hepatic stellate cell (HSC) migration through a redox-sensitive, PI3K-dependent pathway. Both CCR5-deficient HSCs and CCR1- and CCR5-deficient Kupffer cells displayed strong suppression of CC chemokine-induced migration. Finally, we detected marked upregulation of RANTES, CCR1, and CCR5 in patients with hepatic cirrhosis, confirming activation of the CC chemokine system in human fibrogenesis. Our data therefore support a role for the CC chemokine system in hepatic fibrogenesis and suggest distinct roles for CCR1 and CCR5 in Kupffer cells and HSCs.},
+  Institution              = {Department of Medicine, Columbia University, New York, New York 10032, USA. ekseki@ucsd.edu},
+  Keywords                 = {Animals; CCR5 Receptor Antagonists; Cell Movement; Humans; Kupffer Cells, physiology; Liver Cirrhosis, Experimental, etiology/prevention /&/ control; Male; Mice; Mice, Inbred BALB C; Mice, Inbred C57BL; Receptors, CCR1, antagonists /&/ inhibitors/genetics/physiology; Receptors, CCR5, genetics/physiology},
+  Language                 = {eng},
+  Medline-pst              = {ppublish},
+  Owner                    = {mkoenig},
+  Pmid                     = {19603542},
+  Timestamp                = {2015.09.08}
 }
 
 @Article{Sheen2014,
@@ -1024,6 +1966,29 @@
   Url                      = {http://dx.doi.org/10.1371/journal.pone.0073133}
 }
 
+@Article{Smalling2013,
+  Title                    = {Genome-wide transcriptome analysis identifies novel gene signatures implicated in human chronic liver disease.},
+  Author                   = {Smalling, Rana L. and Delker, Don A. and Zhang, Yuxia and Nieto, Natalia and McGuiness, Michael S. and Liu, Shuanghu and Friedman, Scott L. and Hagedorn, Curt H. and Wang, Li},
+  Journal                  = {Am J Physiol Gastrointest Liver Physiol},
+  Year                     = {2013},
+
+  Month                    = {Sep},
+  Number                   = {5},
+  Pages                    = {G364--G374},
+  Volume                   = {305},
+  Abstract                 = {The molecular mechanisms behind human liver disease progression to cirrhosis remain elusive. Nuclear receptor small heterodimer partner (SHP/Nr0b2) is a hepatic tumor suppressor and a critical regulator of liver function. SHP expression is diminished in human cirrhotic livers, suggesting a regulatory role in human liver diseases. The goal of this study was to identify novel SHP-regulated genes that are involved in the development and progression of chronic liver disease. To achieve this, we conducted the first comprehensive RNA sequencing (RNA-seq) analysis of Shp(-/-) mice, compared the results with human hepatitis C cirrhosis RNA-seq and nonalcoholic steatohepatitis (NASH) microarray datasets, and verified novel results in human liver biospecimens. This approach revealed new gene signatures associated with chronic liver disease and regulated by SHP. Several genes were selected for validation of physiological relevance based on their marked upregulation, novelty with regard to liver function, and involvement in gene pathways related to liver disease. These genes include peptidoglycan recognition protein 2, dual specific phosphatase-4, tetraspanin 4, thrombospondin 1, and SPARC-related modular calcium binding protein-2, which were validated by qPCR analysis of 126 human liver specimens, including steatosis, fibrosis, and NASH, alcohol and hepatitis C cirrhosis, and in mouse models of liver inflammation and injury. This RNA-seq analysis identifies new genes that are regulated by the nuclear receptor SHP and implicated in the molecular pathogenesis of human chronic liver diseases. The results provide valuable transcriptome information for characterizing mechanisms of these diseases.},
+  Doi                      = {10.1152/ajpgi.00077.2013},
+  Institution              = {Dept. of Medicine and Huntsman Cancer Institute, Univ. of Utah School of Medicine, Salt Lake City, Utah, 84132. l.wang@hsc.utah.edu.},
+  Keywords                 = {Animals; Biopsy; Cluster Analysis; Computational Biology; Databases, Genetic; Disease Progression; Fatty Liver, genetics; Female; Gene Expression Profiling, methods; Gene Expression Regulation; Gene Regulatory Networks; Genetic Predisposition to Disease; Genome, Human; Genome-Wide Association Study; Hepatitis C, Chronic, genetics; Humans; Immunohistochemistry; Liver Cirrhosis, Experimental, genetics; Liver Cirrhosis, genetics; Liver Diseases, Alcoholic, genetics; Liver Diseases, genetics/pathology; Male; Mice; Mice, 129 Strain; Mice, Inbred C57BL; Mice, Knockout; Non-alcoholic Fatty Liver Disease; Nuclear, deficiency/genetics/metabolism; Oligonucleotide Array Sequence Analysis; Phenotype; Rats; Rats, Sprague-Dawley; Reproducibility of Results; Reverse Transcriptase Polymerase Chain Reaction; Sequence Analysis, RNA},
+  Language                 = {eng},
+  Medline-pst              = {ppublish},
+  Owner                    = {mkoenig},
+  Pii                      = {ajpgi.00077.2013},
+  Pmid                     = {23812039},
+  Timestamp                = {2015.09.08},
+  Url                      = {http://dx.doi.org/10.1152/ajpgi.00077.2013}
+}
+
 @Article{Son2008,
   Title                    = {A modified correlation coefficient based similarity measure for clustering time-course gene expression data},
   Author                   = {Son, Young Sook and Baek, Jangsun},
@@ -1037,6 +2002,29 @@
   Timestamp                = {2015.08.27}
 }
 
+@Article{Sookoian2011,
+  Title                    = {Liver transcriptional profile of atherosclerosis-related genes in human nonalcoholic fatty liver disease.},
+  Author                   = {Sookoian, Silvia and Gianotti, Tomas Fern{\'{a}}ndez and Rosselli, Maria Soledad and Burgue{\~{n}}o, Adriana L. and Casta{\~{n}}o, Gustavo O. and Pirola, Carlos J.},
+  Journal                  = {Atherosclerosis},
+  Year                     = {2011},
+
+  Month                    = {Oct},
+  Number                   = {2},
+  Pages                    = {378--385},
+  Volume                   = {218},
+  Abstract                 = {Epidemiological studies have suggested a role of nonalcoholic fatty liver disease (NAFLD) in the development of cardiovascular disease. We evaluated liver mRNA expression of 84 genes encoding proteins involved in the atherosclerosis pathway in patients with NAFLD proven through biopsy in a case-control design, and examined the putative role of the histological disease severity in the molecular events associated with the atherogenic profile.Nonalcoholic steatohepatitis (NASH), when compared with simple steatosis (SS), significantly increases the expression of TGFB1 (6.8, p<0.005), angiotensin I-converting enzyme (ACE) (2.1, p<0.007), LAMA1 (2.1, p<0.007), SERPINB2 (2.1, p<0.007), CSF2 (2.5, p<0.002), IL1A (2.5, p<0.005), IL3 (2.1, p<0.007), IL4 (2.1, p<0.007), LIF (2.1, p<0.007), and MMP1 (2.1, p<0.007), and decreases the transcript levels of genes involved in the negative regulation of cell-death pathways. A post hoc analysis of liver biopsies of NASH patients who were treated with enalapril monotherapy because of arterial hypertension showed a significant association with lower fibrosis scores in comparison with untreated patients. BIRC3, a severe hypoxia-activated gene, was significantly increased in SS (8.2, p<0.004), when compared with the controls. NASH, but not SS, was also associated with a significant increase in platelet abundance of TGFB1 mRNA. Systems biology analysis revealed highly scored pathways involved in the regulation of programmed cell death, angiogenesis, and immune system, in which TGFB1 was mostly involved.NASH, but not SS, may increase atherosclerotic and cardiovascular risk by local overexpression of mediators of atherogenesis, endothelial damage, and regulators of blood pressure; this observation may have therapeutic implications, because ACE inhibitors may improve both cardiovascular outcomes and liver fibrosis. Hepatocyte hypoxia seems to have an important role in the molecular events activated by liver steatosis.},
+  Doi                      = {10.1016/j.atherosclerosis.2011.05.014},
+  Institution              = {Department of Clinical and Molecular Hepatology, University of Buenos Aires, Ciudad Autónoma de Buenos Aires, Argentina. ssookoian@lanari.fmed.uba.ar},
+  Keywords                 = {Adult; Anoxia, pathology; Atherosclerosis, pathology; Biopsy; Blood Pressure; Cardiovascular Diseases, metabolism; Case-Control Studies; Fatty Liver, metabolism; Female; Fibrosis; Gene Expression Regulation; Hepatocytes, cytology; Humans; Liver, metabolism/pathology; Male; Middle Aged; Non-alcoholic Fatty Liver Disease; RNA, Messenger, metabolism; Transcription, Genetic; Transforming Growth Factor beta1, genetics},
+  Language                 = {eng},
+  Medline-pst              = {ppublish},
+  Owner                    = {mkoenig},
+  Pii                      = {S0021-9150(11)00445-X},
+  Pmid                     = {21664615},
+  Timestamp                = {2015.09.08},
+  Url                      = {http://dx.doi.org/10.1016/j.atherosclerosis.2011.05.014}
+}
+
 @Article{Spurgeon2008,
   Title                    = {High throughput gene expression measurement with real time PCR in a microfluidic dynamic array.},
   Author                   = {Spurgeon, Sandra L. and Jones, Robert C. and Ramakrishnan, Ramesh},
@@ -1045,6 +2033,7 @@
   Number                   = {2},
   Pages                    = {e1662},
   Volume                   = {3},
+
   Abstract                 = {We describe a high throughput gene expression platform based on microfluidic dynamic arrays. This system allows 2,304 simultaneous real time PCR gene expression measurements in a single chip, while requiring less pipetting than is required to set up a 96 well plate. We show that one can measure the expression of 45 different genes in 18 tissues with replicates in a single chip. The data have excellent concordance with conventional real time PCR and the microfluidic dynamic arrays show better reproducibility than commercial DNA microarrays.},
   Doi                      = {10.1371/journal.pone.0001662},
   Institution              = {Fluidigm Corporation, South San Francisco, California, USA.},
@@ -1055,6 +2044,29 @@
   Pmid                     = {18301740},
   Timestamp                = {2015.09.07},
   Url                      = {http://dx.doi.org/10.1371/journal.pone.0001662}
+}
+
+@Article{Sudo2005,
+  Title                    = {Lack of tumor necrosis factor receptor type 1 inhibits liver fibrosis induced by carbon tetrachloride in mice.},
+  Author                   = {Sudo, Kaori and Yamada, Yasuhiro and Moriwaki, Hisataka and Saito, Kuniaki and Seishima, Mitsuru},
+  Journal                  = {Cytokine},
+  Year                     = {2005},
+
+  Month                    = {Mar},
+  Number                   = {5},
+  Pages                    = {236--244},
+  Volume                   = {29},
+  Abstract                 = {Chronic liver injury causes liver regeneration, resulting in fibrosis. The proinflammatory cytokine tumor necrosis factor (TNF) is involved in the pathogenesis of many acute and chronic liver diseases. TNF has pleiotropic functions, but its role in liver fibrosis has not been clarified. Chronic repeated injection of CCl4 induces liver fibrosis in mice. We examined whether signaling through TNF receptors was critical for this process, using mice lacking either TNF receptor (TNFR) type 1 or TNFR type 2 to define the pathophysiologic role of TNFR signals in liver fibrosis. Liver fibrosis caused by chronic CCl4 exposure was TNF-dependent; histological fibrosis was seen in wild-type (WT) and TNFR-2 knockout (KO) mice, but not in TNFR-1 KO mice. Furthermore, a marked reduction in procollagen and TGF-beta synthesis was observed in TNFR-1 KO mice, which also had little detectable NF-kappa B, STAT3, and AP1 binding, and reduced levels of liver interleukin-6 (IL-6) mRNA compared to WT and TNFR-2 KO mice. In conclusion, our results indicate the possibility that NF-kappa B, STAT3, and AP1 binding by signals transduced through TNFR-1 plays an important role in liver fibrosis formation.},
+  Doi                      = {10.1016/j.cyto.2004.11.001},
+  Institution              = {Department of Informative Clinical Medicine, Gifu University Graduate School of Medicine, 1-1 Yanagido, Gifu 501-1194, Japan. kaorin-s@cc.gifu-u.ac.jp},
+  Keywords                 = {Animals; Carbon Tetrachloride, administration /&/ dosage/pharmacology; Gene Deletion; Intercellular Adhesion Molecule-1, genetics; Interleukin-6, genetics; Liver Cirrhosis, chemically induced/metabolism/pathology; Mice; Mice, Knockout; Procollagen, genetics; RNA, Messenger, genetics/metabolism; Receptors, Tumor Necrosis Factor, Type I, deficiency/genetics/metabolism; Receptors, Tumor Necrosis Factor, Type II, deficiency/genetics/metabolism; Transcription Factors, metabolism; Transforming Growth Factor beta, genetics; Transforming Growth Factor beta2; Vascular Cell Adhesion Molecule-1, genetics},
+  Language                 = {eng},
+  Medline-pst              = {ppublish},
+  Owner                    = {mkoenig},
+  Pii                      = {S1043-4666(05)00008-6},
+  Pmid                     = {15760680},
+  Timestamp                = {2015.09.08},
+  Url                      = {http://dx.doi.org/10.1016/j.cyto.2004.11.001}
 }
 
 @Article{Tag2015,
@@ -1120,6 +2132,30 @@
   Url                      = {http://dx.doi.org/10.1186/1471-230X-11-45}
 }
 
+@Article{Tarrats2011,
+  Title                    = {Critical role of tumor necrosis factor receptor 1, but not 2, in hepatic stellate cell proliferation, extracellular matrix remodeling, and liver fibrogenesis.},
+  Author                   = {Tarrats, N{\'{u}}ria and Moles, Anna and Morales, Albert and Garc{\'{\i}}a-Ruiz, Carmen and Fern{\'{a}}ndez-Checa, Jos{\'{e}} C. and Mar{\'{\i}}, Montserrat},
+  Journal                  = {Hepatology},
+  Year                     = {2011},
+
+  Month                    = {Jul},
+  Number                   = {1},
+  Pages                    = {319--327},
+  Volume                   = {54},
+
+  __markedentry            = {[mkoenig:]},
+  Abstract                 = {Tumor necrosis factor (TNF) has been implicated in the progression of many chronic liver diseases leading to fibrosis; however, the role of TNF in fibrogenesis is controversial and the specific contribution of TNF receptors to hepatic stellate cell (HSC) activation remains to be established. Using HSCs from wild-type, TNF-receptor-1 (TNFR1) knockout, TNF-receptor-2 (TNFR2) knockout, or TNFR1/R2 double-knockout (TNFR-DKO) mice, we show that loss of both TNF receptors reduced procollagen-α1(I) expression, slowed down HSC proliferation, and impaired platelet-derived growth factor (PDGF)-induced promitogenic signaling in HSCs. TNFR-DKO HSCs exhibited decreased AKT phosphorylation and in vitro proliferation in response to PDGF. These effects were reproduced in TNFR1 knockout, but not TNFR2 knockout, HSCs. In addition, matrix metalloproteinase 9 (MMP-9) expression was dependent on TNF binding to TNFR1 in primary mouse HSCs. These results were validated in the human HSC cell line, LX2, using neutralizing antibodies against TNFR1 and TNFR2. Moreover, in vivo liver damage and fibrogenesis after bile-duct ligation were reduced in TNFR-DKO and TNFR1 knockout mice, compared to wild-type or TNFR2 knockout mice.TNF regulates HSC biology through its binding to TNFR1, which is required for HSC proliferation and MMP-9 expression. These data indicate a regulatory role for TNF in extracellular matrix remodeling and liver fibrosis, suggesting that targeting TNFR1 may be of benefit to attenuate liver fibrogenesis.},
+  Doi                      = {10.1002/hep.24388},
+  Institution              = {IDIBAPS, Liver Unit-Hospital Clínic, CIBEREHD, Barcelona, Spain.},
+  Keywords                 = {Animals; Antibodies, immunology/pharmacology; Bile Ducts, physiopathology; Cell Line; Cell Proliferation; Collagen Type I, metabolism; Disease Models, Animal; Extracellular Matrix, physiology; Hepatic Stellate Cells, pathology/physiology; Humans; Ligation; Liver Cirrhosis, metabolism/pathology/physiopathology; Matrix Metalloproteinase 9, metabolism; Mice; Mice, Inbred C57BL; Mice, Knockout; Phosphorylation; Proto-Oncogene Proteins c-akt, metabolism; Receptors, Tumor Necrosis Factor, Type I, genetics/immunology/physiology; Receptors, Tumor Necrosis Factor, Type II, genetics/immunology/physiology},
+  Language                 = {eng},
+  Medline-pst              = {ppublish},
+  Owner                    = {mkoenig},
+  Pmid                     = {21523796},
+  Timestamp                = {2015.09.08},
+  Url                      = {http://dx.doi.org/10.1002/hep.24388}
+}
+
 @Book{Trauner2004,
   Title                    = {Molecular pathogenesis of cholestasis},
   Author                   = {Trauner, Michael and Jansen, Peter LM},
@@ -1128,6 +2164,25 @@
 
   Owner                    = {mkoenig},
   Timestamp                = {2015.08.26}
+}
+
+@Article{Trombetta-Esilva2012,
+  Title                    = {The Function of SPARC as a Mediator of Fibrosis.},
+  Author                   = {Trombetta-Esilva, Jessica and Bradshaw, Amy D.},
+  Journal                  = {Open Rheumatol J},
+  Year                     = {2012},
+  Pages                    = {146--155},
+  Volume                   = {6},
+  Abstract                 = {Fibrosis is a common end-point of a number of different diseases such as hypertension, diabetes, liver cirrhosis, and those associated with chronic inflammation. Fibrosis is characterized by excessive deposition of extracellular matrix that interferes with normal tissue architecture and function. Increased expression of secreted protein acidic and rich in cysteine (SPARC) in fibrotic tissues has been reported in numerous studies. SPARC is a 43 kDa collagen-binding protein secreted from several different cell types into the extracellular matrix and has been shown to be anti-proliferative and counter-adhesive in vitro. SPARC is a matricellular protein; meaning SPARC is secreted into the extracellular space but does not serve a structural function. Instead, SPARC modulates interactions between cells and the surrounding extracellular matrix. In animal models of fibrotic disease and in human fibrotic tissues, elevated expression of SPARC has been reported in many tissues including heart, lungs, kidneys, liver, dermis, intestine, and eyes. In this review, we will summarize current studies that have examined the expression and functional importance of SPARC in various animal models of fibrosis and in human tissues. Although cellular mechanisms of SPARC in fibrosis remain to be fully elucidated, the studies summarized here provide impetus to further explore the efficacy of SPARC as a potential target for reducing fibrosis.},
+  Doi                      = {10.2174/1874312901206010146},
+  Institution              = {Department of Craniofacial Biology and Center for Oral Health Research, Medical University of South Carolina, Charleston, SC, USA.},
+  Language                 = {eng},
+  Medline-pst              = {ppublish},
+  Owner                    = {mkoenig},
+  Pii                      = {TORJ-6-146},
+  Pmid                     = {22802913},
+  Timestamp                = {2015.09.08},
+  Url                      = {http://dx.doi.org/10.2174/1874312901206010146}
 }
 
 @Article{Wagner2009,
@@ -1177,6 +2232,26 @@
   Url                      = {http://dx.doi.org/10.1002/hep.20903}
 }
 
+@Article{Wang2011,
+  Title                    = {Cooperative interaction of CTGF and TGF-$\beta$ in animal models of fibrotic disease.},
+  Author                   = {Wang, Qingjian and Usinger, William and Nichols, Blake and Gray, Julia and Xu, Leon and Seeley, Todd W. and Brenner, Mitch and Guo, Guangjie and Zhang, Weihua and Oliver, Noelynn and Lin, Al and Yeowell, David},
+  Journal                  = {Fibrogenesis Tissue Repair},
+  Year                     = {2011},
+  Number                   = {1},
+  Pages                    = {4},
+  Volume                   = {4},
+  Abstract                 = {Connective tissue growth factor (CTGF) is widely thought to promote the development of fibrosis in collaboration with transforming growth factor (TGF)-β; however, most of the evidence for its involvement comes from correlative and culture-based studies. In this study, the importance of CTGF in tissue fibrosis was directly examined in three murine models of fibrotic disease: a novel model of multiorgan fibrosis induced by repeated intraperitoneal injections of CTGF and TGF-β2; the unilateral ureteral obstruction (UUO) renal fibrosis model; and an intratracheal bleomycin instillation model of pulmonary fibrosis.Intraperitoneal coadministration of CTGF and TGF-β2 elicited a profound fibrotic response that was inhibited by the human anti-CTGF antibody FG-3019, as indicated by the ability of FG-3019 to ameliorate the histologic signs of fibrosis and reduce the otherwise increased hydroxyproline:proline (Hyp:Pro) ratios by 25\% in kidney (P < 0.05), 30\% in liver (P < 0.01) and 63\% in lung (P < 0.05). Moreover, administration of either cytokine alone failed to elicit a fibrotic response, thus demonstrating that CTGF is both necessary and sufficient to initiate fibrosis in the presence of TGF-β and vice versa. In keeping with this requirement for CTGF function in fibrosis, FG-3019 also reduced the renal Hyp:Pro response up to 20\% after UUO (P < 0.05). In bleomycin-injured animals, a similar trend towards a FG-3019 treatment effect was observed (38\% reduction in total lung Hyp, P = 0.056). Thus, FG-3019 antibody treatment consistently reduced excessive collagen deposition and the pathologic severity of fibrosis in all models.Cooperative interactions between CTGF and TGF-β signaling are required to elicit overt tissue fibrosis. This interdependence and the observed anti-fibrotic effects of FG-3019 indicate that anti-CTGF therapy may provide therapeutic benefit in different forms of fibroproliferative disease.},
+  Doi                      = {10.1186/1755-1536-4-4},
+  Institution              = {FibroGen Inc,, 409 Illinois St,, San Francisco, CA 94158, USA. tseeley@fibrogen.com.},
+  Language                 = {eng},
+  Medline-pst              = {epublish},
+  Owner                    = {mkoenig},
+  Pii                      = {1755-1536-4-4},
+  Pmid                     = {21284856},
+  Timestamp                = {2015.09.08},
+  Url                      = {http://dx.doi.org/10.1186/1755-1536-4-4}
+}
+
 @Article{Wasmuth2009,
   Title                    = {Antifibrotic effects of CXCL9 and its receptor CXCR3 in livers of mice and humans.},
   Author                   = {Wasmuth, Hermann E. and Lammert, Frank and Zaldivar, Mirko Moreno and Weiskirchen, Ralf and Hellerbrand, Claus and Scholten, David and Berres, Marie-Luise and Zimmermann, Henning and Streetz, Konrad L. and Tacke, Frank and Hillebrandt, Sonja and Schmitz, Petra and Keppeler, Hildegard and Berg, Thomas and Dahl, Edgar and Gassler, Nikolaus and Friedman, Scott L. and Trautwein, Christian},
@@ -1188,7 +2263,6 @@
   Pages                    = {309--19, 319.e1-3},
   Volume                   = {137},
 
-  __markedentry            = {[mkoenig:]},
   Abstract                 = {Fibrosis is the hallmark of chronic liver diseases, yet many aspects of its mechanism remain to be defined. Chemokines are ubiquitous chemotactic molecules that mediate many acute and chronic inflammatory conditions, and CXC chemokine genes colocalize with a locus previously shown to include fibrogenic genes. We investigated the roles of the chemokine CXCL9 and its receptor CXCR3 in liver fibrosis.The effects of CXCL variants on fibrogenesis were analyzed using samples from patients with hepatitis C virus infection and by induction of fibrosis in CXCR3(-/-) and wild-type mice. In mice, intrahepatic immune cell subsets were investigated and interferon gamma messenger RNA levels were measured at baseline and after injury. Human serum CXCL9 levels were measured and correlated with CXCL9 variant and fibrosis severity. The effects of stimulation with CXCL9 were investigated on human hepatic stellate cells (LX-2).Specific CXCL9 variants were associated with liver fibrosis in mice and humans; CXCL9 serum concentrations correlated with genotypes and levels of fibrosis in patients. In contrast to other chemokines, CXCL9 exerted antifibrotic effects in vitro, suppressing collagen production in LX-2 cells. CXCR3(-/-) mice had increased liver fibrosis; progression was associated with decreased numbers of intrahepatic interferon gamma-positive T cells and reduced interferon gamma messenger RNA, indicating that CXCL9-CXCR3 regulates Th1-associated immune pathways.This is the first description of a chemokine-based antifibrotic pathway in the liver; antifibrotic therapies might be developed to modulate CXC chemokine levels.},
   Doi                      = {10.1053/j.gastro.2009.03.053},
   Institution              = {Department of Medicine III, University Hospital Aachen, Aachen, Germany. hwasmuth@ukaachen.de},
@@ -1249,6 +2323,52 @@
   Url                      = {http://dx.doi.org/10.3748/wjg.v18.i36.4985}
 }
 
+@Article{Yang2013,
+  Title                    = {Transforming growth factor-$\beta$ signaling in hepatocytes promotes hepatic fibrosis and carcinogenesis in mice with hepatocyte-specific deletion of TAK1.},
+  Author                   = {Yang, Ling and Inokuchi, Sayaka and Roh, Yoon Seok and Song, Jingyi and Loomba, Rohit and Park, Eek Joong and Seki, Ekihiro},
+  Journal                  = {Gastroenterology},
+  Year                     = {2013},
+
+  Month                    = {May},
+  Number                   = {5},
+  Pages                    = {1042--1054.e4},
+  Volume                   = {144},
+  Abstract                 = {Transforming growth factor (TGF)-β-activated kinase 1 (TAK1) is activated in different cytokine signaling pathways. Deletion of Tak1 from hepatocytes results in spontaneous development of hepatocellular carcinoma (HCC), liver inflammation, and fibrosis. TGF-β activates TAK1 and Smad signaling, which regulate cell death, proliferation, and carcinogenesis. However, it is not clear whether TGF-β signaling in hepatocytes, via TGF-β receptor-2 (Tgfbr2), promotes HCC and liver fibrosis.We generated mice with hepatocyte-specific deletion of Tak1 (Tak1ΔHep), as well as Tak1/Tgfbr2DHep and Tak1/Smad4ΔHep mice. Tak1flox/flox, Tgfbr2ΔHep, and Smad4ΔHep mice were used as controls, respectively. We assessed development of liver injury, inflammation, fibrosis, and HCC. Primary hepatocytes isolated from these mice were used to assess TGF-β-mediated signaling.Levels of TGF-β, TGF-βR2, and phospho-Smad2/3 were increased in HCCs from Tak1ΔHep mice, which developed liver fibrosis and inflammation by 1 month and HCC by 9 months. However, Tak1/Tgfbr2ΔHep mice did not have this phenotype, and their hepatocytes did not undergo spontaneous cell death or compensatory proliferation. Hepatocytes from Tak1ΔHep mice incubated with TGF-β did not activate p38, c-Jun N-terminal kinase, or nuclear factor-κB; conversely, TGF-β-mediated cell death and phosphorylation of Smad2/3 were increased, compared with control hepatocytes. Blocking the Smad pathway inhibited TGF-β-mediated death of Tak1-/- hepatocytes. Accordingly, disruption of Smad4 reduced the spontaneous liver injury, inflammation, fibrosis, and HCC that develops in Tak1ΔHep mice. Levels of the anti-apoptotic protein Bcl-xL, β-catenin, connective tissue growth factor, and vascular endothelial growth factor were increased in HCC from Tak1ΔHep mice, but not in HCCs from Tak1/Tgfbr2ΔHep mice. Injection of N-nitrosodiethylamine induced HCC formation in wild-type mice, but less in Tgfbr2ΔHep mice.TGF-β promotes development of HCC in Tak1ΔHep mice by inducing hepatocyte apoptosis and compensatory proliferation during early phases of tumorigenesis, and inducing expression of anti-apoptotic, pro-oncogenic, and angiogenic factors during tumor progression.},
+  Doi                      = {10.1053/j.gastro.2013.01.056},
+  Institution              = {Division of Gastroenterology, Department of Medicine, University of California, San Diego, School of Medicine, La Jolla, CA 92093, USA.},
+  Keywords                 = {Animals; Apoptosis; Carcinoma, Hepatocellular, genetics/metabolism/pathology; DNA Mutational Analysis; DNA, Neoplasm, genetics; Gene Deletion; Hepatocytes, metabolism/pathology; Liver Cirrhosis, genetics/metabolism/pathology; Liver Neoplasms, Experimental, genetics/metabolism/pathology; Liver Neoplasms, genetics/metabolism/pathology; MAP Kinase Kinase Kinases, genetics/metabolism; Mice; Mice, Transgenic; Phenotype; Signal Transduction, genetics; Transforming Growth Factor beta, genetics/metabolism; Tumor Cells, Cultured},
+  Language                 = {eng},
+  Medline-pst              = {ppublish},
+  Owner                    = {mkoenig},
+  Pii                      = {S0016-5085(13)00152-2},
+  Pmid                     = {23391818},
+  Timestamp                = {2015.09.08},
+  Url                      = {http://dx.doi.org/10.1053/j.gastro.2013.01.056}
+}
+
+@Article{Zeisberg2007,
+  Title                    = {Fibroblasts derive from hepatocytes in liver fibrosis via epithelial to mesenchymal transition.},
+  Author                   = {Zeisberg, Michael and Yang, Changqing and Martino, Margot and Duncan, Michael B. and Rieder, Florian and Tanjore, Harikrishna and Kalluri, Raghu},
+  Journal                  = {J Biol Chem},
+  Year                     = {2007},
+
+  Month                    = {Aug},
+  Number                   = {32},
+  Pages                    = {23337--23347},
+  Volume                   = {282},
+  Abstract                 = {Activated fibroblasts are key contributors to the fibrotic extracellular matrix accumulation during liver fibrosis. The origin of such fibroblasts is still debated, although several studies point to stellate cells as the principal source. The role of adult hepatocytes as contributors to the accumulation of fibroblasts in the fibrotic liver is yet undetermined. Here, we provide evidence that the pro-fibrotic growth factor, TGF-beta1, induces adult mouse hepatocytes to undergo phenotypic and functional changes typical of epithelial to mesenchymal transition (EMT). We perform lineage-tracing experiments using AlbCre. R26RstoplacZ double transgenic mice to demonstrate that hepatocytes which undergo EMT contribute substantially to the population of FSP1-positive fibroblasts in CCL(4)-induced liver fibrosis. Furthermore, we demonstrate that bone morphogenic protein-7 (BMP7), a member of the TGFbeta superfamily, which is known to antagonize TGFbeta signaling, significantly inhibits progression of liver fibrosis in these mice. BMP7 treatment abolishes EMT-derived fibroblasts, suggesting that the therapeutic effect of BMP7 was at least partially due to the inhibition of EMT. These results provide direct evidence for the functional involvement of adult hepatocytes in the accumulation of activated fibroblasts in the fibrotic liver. Furthermore, our findings suggest that EMT is a promising therapeutic target for the attenuation of liver fibrosis.},
+  Doi                      = {10.1074/jbc.M700194200},
+  Institution              = {Division of Matrix Biology, Department of Medicine, Beth Israel Deaconess Medical Center and Harvard Medical School, Boston, Massachussetts 02215, USA.},
+  Keywords                 = {Animals; Bone Morphogenetic Protein 7; Bone Morphogenetic Proteins, metabolism; Cell Differentiation; Cell Lineage; Epithelium, pathology; Fibroblasts, cytology/metabolism; Fibrosis, pathology; Hepatocytes, cytology/metabolism; Humans; Liver, pathology; Mesoderm, pathology; Mice; Mice, Inbred C57BL; Mice, Transgenic; Models, Biological; Transforming Growth Factor beta, metabolism},
+  Language                 = {eng},
+  Medline-pst              = {ppublish},
+  Owner                    = {mkoenig},
+  Pii                      = {M700194200},
+  Pmid                     = {17562716},
+  Timestamp                = {2015.09.08},
+  Url                      = {http://dx.doi.org/10.1074/jbc.M700194200}
+}
+
 @Article{Zhang2012,
   Title                    = {Effect of bile duct ligation on bile acid composition in mouse serum and liver.},
   Author                   = {Zhang, Youcai and Hong, Ji-Young and Rockwell, Cheryl E. and Copple, Bryan L. and Jaeschke, Hartmut and Klaassen, Curtis D.},
@@ -1270,6 +2390,72 @@
   Pmid                     = {22098667},
   Timestamp                = {2015.08.24},
   Url                      = {http://dx.doi.org/10.1111/j.1478-3231.2011.02662.x}
+}
+
+@Article{Zhang2014,
+  Title                    = {E2F1 is a novel fibrogenic gene that regulates cholestatic liver fibrosis through the Egr-1/SHP/EID1 network.},
+  Author                   = {Zhang, Yuxia and Xu, Ningyi and Xu, Jun and Kong, Bo and Copple, Bryan and Guo, Grace L. and Wang, Li},
+  Journal                  = {Hepatology},
+  Year                     = {2014},
+
+  Month                    = {Sep},
+  Number                   = {3},
+  Pages                    = {919--930},
+  Volume                   = {60},
+  Abstract                 = {E2F transcription factor 1 (E2F1) is an important regulator of metabolic diseases; however, its role in liver function remains elusive. This study unraveled a regulatory cascade involving E2F1, early growth response-1 (Egr-1), nuclear receptor small heterodimer partner (SHP, NR0B2), and EIA-like inhibitor of differentiation 1 (EID1) in cholestatic liver fibrosis. Liver E2F1 messenger RNA (mRNA) and protein expression was strongly up-regulated in human nonalcoholic steatohepatitis (NASH) and alcohol cirrhosis; the latter was inversely correlated with diminished SHP expression. E2F1 was also highly induced by 3,5-diethoxycarbonyl-1, 4-dihydrocollidine (DDC) feeding and bile-duct ligation (BDL) in mice. E2F1-/- mice exhibited reduced biliary fibrosis by DDC as determined by Masson Trichrome and Picro Sirius red staining, and decreased serum bile acid (BA), BA pool size, and fecal BA excretion. In addition, cholestatic liver fibrosis induced by BDL, as determined by immunohistochemistry analysis of a1 collagen expression, was increased in SHP-/- mice but attenuated in hepatocyte SHP-overexpressed transgenic (STG) mice. Egr-1 exhibited marked induction in livers of SHP-/- mice compared to the wild-type mice in both sham and BDL groups, and reduction in STG livers. Egr-1 promoter was activated by E2F1, and the activation was abrogated by expression of SHP and its co-repressor EID1 in hepatoma cells Huh7, Hepa1, and stellate cells LX2. Chromatin immunoprecipitation assays further confirmed the association of E2F1, SHP, and EID1 proteins with the Egr-1 promoter, and their direct protein interactions were determined by glutathione S-transferase pull-down assays. Interestingly, E2F1 activated Egr-1 expression in a biphasic fashion as described in both human and mouse hepatocytes.E2F1 is a fibrogenic gene and could serve as a potential new diagnostic marker for nonalcoholic and alcoholic liver fibrosis/cirrhosis.},
+  Doi                      = {10.1002/hep.27121},
+  Institution              = {Departments of Medicine and Oncological Sciences, University of Utah School of Medicine, Salt Lake City, UT, USA.},
+  Keywords                 = {Animals; Cholestasis, genetics/metabolism/pathology; E2F1 Transcription Factor, genetics/physiology; Early Growth Response Protein 1, physiology; Gene Regulatory Networks, genetics/physiology; Hepatocytes, metabolism/pathology; Humans; Liver Cirrhosis, chemically induced/genetics/pathology; Mice; Mice, Inbred C57BL; Mice, Knockout; Mice, Transgenic; Nuclear Proteins, genetics/physiology; Promoter Regions, Genetic, genetics; Pyridines; Receptors, Cytoplasmic and Nuclear, deficiency/genetics/physiology; Repressor Proteins, genetics/physiology},
+  Language                 = {eng},
+  Medline-pst              = {ppublish},
+  Owner                    = {mkoenig},
+  Pmid                     = {24619556},
+  Timestamp                = {2015.09.08},
+  Url                      = {http://dx.doi.org/10.1002/hep.27121}
+}
+
+@Article{Zimmermann2011,
+  Title                    = {Interleukin-8 is activated in patients with chronic liver diseases and associated with hepatic macrophage accumulation in human liver fibrosis.},
+  Author                   = {Zimmermann, Henning W. and Seidler, Sebastian and Gassler, Nikolaus and Nattermann, Jacob and Luedde, Tom and Trautwein, Christian and Tacke, Frank},
+  Journal                  = {PLoS One},
+  Year                     = {2011},
+  Number                   = {6},
+  Pages                    = {e21381},
+  Volume                   = {6},
+  Abstract                 = {Interleukin-8 (IL-8, CXCL8) is a potent chemoattractant for neutrophils and contributes to acute liver inflammation. Much less is known about IL-8 in chronic liver diseases (CLD), but elevated levels were reported from alcoholic and hepatitis C-related CLD. We investigated the regulation of IL-8, its receptors CXCR1 and CXCR2 and possible IL-8 responding cells in CLD patients.Serum IL-8 levels were measured in CLD patients (n = 200) and healthy controls (n = 141). Intrahepatic IL-8, CXCR1 and CXCR2 gene expression was quantified from liver samples (n = 41), alongside immunohistochemical neutrophil (MPO) and macrophage (CD68) stainings. CXCR1 and CXCR2 expression was analyzed on purified monocytes from patients (n = 111) and controls (n = 31). In vitro analyses explored IL-8 secretion by different leukocyte subsets.IL-8 serum levels were significantly increased in CLD patients, especially in end-stage cirrhosis. Interestingly, patients with cholestatic diseases exhibited highest IL-8 serum concentrations. IL-8 correlated with liver function, inflammatory cytokines and non-invasive fibrosis markers. Intrahepatically, IL-8 and CXCR1 expression were strongly up-regulated. However, intrahepatic IL-8 could only be associated to neutrophil infiltration in patients with primary biliary cirrhosis (PBC). In non-cholestatic cirrhosis, increased IL-8 and CXCR1 levels were associated with hepatic macrophage accumulation. In line, CXCR1, but not CXCR2 or CXCR3, expression was increased on circulating monocytes from cirrhotic patients. Moreover, monocyte-derived macrophages from CLD patients, especially the non-classical CD16⁺ subtype, displayed enhanced IL-8 secretion in vitro.IL-8 is strongly activated in CLD, thus likely contributing to hepatic inflammation. Our study suggests a novel role of IL-8 for recruitment and activation of hepatic macrophages via CXCR1 in human liver cirrhosis.},
+  Doi                      = {10.1371/journal.pone.0021381},
+  Institution              = {Department of Medicine III, University Hospital, Aachen, Germany.},
+  Keywords                 = {Adolescent; Adult; Aged; Aged, 80 and over; Case-Control Studies; Chronic Disease; Female; Humans; Inflammation Mediators, metabolism; Interleukin-8, blood/genetics; Liver Cirrhosis, blood/etiology/genetics/pathology; Liver, metabolism; Macrophages, metabolism; Male; Middle Aged; Monocytes, metabolism; Neutrophils, metabolism; Receptors, Interleukin-8A, genetics/metabolism; Severity of Illness Index; Up-Regulation, genetics; Young Adult},
+  Language                 = {eng},
+  Medline-pst              = {ppublish},
+  Owner                    = {mkoenig},
+  Pii                      = {PONE-D-11-06044},
+  Pmid                     = {21731723},
+  Timestamp                = {2015.09.08},
+  Url                      = {http://dx.doi.org/10.1371/journal.pone.0021381}
+}
+
+@Article{Znoyko2005,
+  Title                    = {Expression of oncostatin M and its receptors in normal and cirrhotic human liver.},
+  Author                   = {Znoyko, Iya and Sohara, Naondo and Spicer, Samuel S. and Trojanowska, Maria and Reuben, Adrian},
+  Journal                  = {J Hepatol},
+  Year                     = {2005},
+
+  Month                    = {Nov},
+  Number                   = {5},
+  Pages                    = {893--900},
+  Volume                   = {43},
+  Abstract                 = {In the cirrhotic liver, gene expression of the multifunctional cytokine oncostatin M (OSM) is up-regulated, but its cellular origin is unknown. Therefore, we investigated the expression of OSM protein and its specific receptor subunits, OSMRbeta and LIFRbeta in normal and cirrhotic human liver using immunohistochemical and Western blot analysis.OSM protein was expressed in Kupffer cells, variably in normal liver but consistently in cirrhosis. OSMRbeta was expressed at low level in hepatocytes of all normal livers examined, but in no cirrhotic sample. In contrast, LIFRbeta receptor was expressed weakly in normal livers, but much more intensely in cirrhosis, in reactive ductules, bile duct epithelial cells and perisinusoidal areas. Double immunostaining showed co-localization of LIFRbeta with cytokeratin 7, proliferating cell nuclear antigen (PCNA) and leukemia inhibitory factor (LIF), in bile duct epithelial cells, but not with alpha-smooth muscle actin, a myofibroblast marker.In human liver, OSM protein is expressed in Kupffer cells, variably in normals but universally in cirrhosis. The differential expression pattern of OSM and its receptors could allow for differential OSM signaling by alternative utilization of receptors to promote hepatocyte proliferation in acute injury and, with its homologue LIF, for the bile ductular reaction in cirrhosis.},
+  Doi                      = {10.1016/j.jhep.2005.04.020},
+  Institution              = {Division of Gastroenterology and Hepatology, Department of Medicine, Medical University of South Carolina, Charleston, South Carolina 29425, USA.},
+  Keywords                 = {Animals; Antineoplastic Agents, metabolism; Gene Expression; Growth Inhibitors, metabolism; Hepatocytes, cytology/metabolism; Humans; Inflammation Mediators, metabolism; Keratin-7; Keratins, metabolism; Leukemia Inhibitory Factor Receptor alpha Subunit; Liver Cirrhosis, metabolism/pathology; Liver, cytology/metabolism; Oncostatin M; Peptides, metabolism; Protein Subunits, metabolism; Receptors, Cytokine, metabolism; Receptors, OSM-LIF; Receptors, Oncostatin M},
+  Language                 = {eng},
+  Medline-pst              = {ppublish},
+  Owner                    = {mkoenig},
+  Pii                      = {S0168-8278(05)00454-X},
+  Pmid                     = {16169119},
+  Timestamp                = {2015.09.08},
+  Url                      = {http://dx.doi.org/10.1016/j.jhep.2005.04.020}
 }
 
 @Article{Zollner2007,

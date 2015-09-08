@@ -14,19 +14,41 @@
 rm(list=ls())
 setwd("/home/mkoenig/git/bdl-analysis/BDLanalysis")
 
-samples <- read.csv('inst/extdata/samples.csv', sep="\t")
-histology <- read.csv('inst/extdata/histology.csv', sep="\t")
-adme <- read.csv('inst/extdata/fluidigm_ADME.csv', sep="\t")
-cytokines <- read.csv('inst/extdata/fluidigm_cytokines.csv', sep="\t")
-fibrosis1 <- read.csv('inst/extdata/fluidigm_fibrosis_01.csv', sep="\t")
-fibrosis2 <- read.csv('inst/extdata/fluidigm_fibrosis_02.csv', sep="\t")
-antibodies <- read.csv('inst/extdata/antibodies.csv', sep="\t")
+samples <- read.csv('inst/extdata/01_samples.csv', sep="\t")
+histology <- read.csv('inst/extdata/02_histology.csv', sep="\t")
+adme <- read.csv('inst/extdata/03_fluidigm_ADME.csv', sep="\t")
+cytokines <- read.csv('inst/extdata/04_fluidigm_cytokines.csv', sep="\t")
+fibrosis1 <- read.csv('inst/extdata/05_fluidigm_fibrosis_01.csv', sep="\t")
+fibrosis2 <- read.csv('inst/extdata/06_fluidigm_fibrosis_02.csv', sep="\t")
+antibodies <- read.csv('inst/extdata/07_antibodies.csv', sep="\t")
 
 # Two repeats of the fibrosis fluidigm chip were measured. 
 # The mean value of the two chips is used for analysis.
 fibrosis <- (fibrosis1 + fibrosis2) / 2
 fibrosis$time <- fibrosis1$time
-rm(fibrosis1, fibrosis2)
+
+# Quality control between the two arrays
+par(mfrow=c(1,2))
+fibrosis_diff <- (fibrosis1[, 3:ncol(fibrosis1)]-fibrosis2[, 3:ncol(fibrosis2)])
+hist(as.matrix(abs(fibrosis_diff)), breaks=seq(from=0, to=5000, by=25),
+     ylim=c(0,10), col="gray", 
+     main="All probes",
+     xlab="Difference fibrosis panels")
+# there are some probes with very high difference. Prelimanary analyis shows this are the repeats
+# of Mmp10. 
+tmp <- fibrosis_diff
+tmp[abs(tmp)<10] <- NA
+tmp
+# Removing Mmp10
+hist(as.matrix(abs(fibrosis_diff[, colnames(fibrosis_diff)!="Mmp10"])), breaks=seq(from=0, to=5000, by=25),
+     ylim=c(0,10), col="gray",
+     main="All probes - Mmp10",
+     xlab="Difference fibrosis panels")
+par(mfrow=c(1,2))
+
+# Remove the Mmp10 probe
+fibrosis <- fibrosis[, colnames(fibrosis)!="Mmp10"]
+rm(fibrosis1, fibrosis2, fibrosis_diff, tmp)
 
 # subset of data is prepared and merged
 d <- list()
@@ -34,22 +56,22 @@ d$gldh <- data.frame(histology[, c("sid_GLDH", "GLDH")])
 names(d$gldh) <- c("sid", "GLDH")
 d$alt <- data.frame(histology[, c("sid_ALT", "ALT")])
 names(d$alt) <- c("sid", "ALT")
-d$bilirubin <- data.frame(histology[, c("sid_Bilirubin", "Bilirubin")])
+d$bilirubin <- data.frame(histology[, c("sid_bilirubin", "bilirubin")])
 names(d$bilirubin) <- c("sid", "bilirubin")
 d$albumin <- data.frame(histology[, c("sid_albumin", "albumin")])
 names(d$albumin) <- c("sid", "albumin")
 d$hc <- data.frame(histology[, c("sid_BrdU_HC", "BrdU_HC")])
-names(d$hc) <- c("sid", "BrdU_HC")
+names(d$hc) <- c("sid", "HC")
 d$nhc <- data.frame(histology[, c("sid_BrdU_NHC", "BrdU_NHC")])
-names(d$nhc) <- c("sid", "BrdU_NHC")
+names(d$nhc) <- c("sid", "NHC")
 d$kupffer <- data.frame(histology[, c("sid_BrdU_Kupffer", "BrdU_Kupffer")])
-names(d$kupffer) <- c("sid", "BrdU_Kupffer")
-d$hsc <- data.frame(histology[, c("sid_BrdU_HSC", "BrdU_HSC")])
-names(d$hsc) <- c("sid", "BrdU_HSC")
+names(d$kupffer) <- c("sid", "Kupffer")
+d$bec <- data.frame(histology[, c("sid_BrdU_BEC", "BrdU_BEC")])
+names(d$bec) <- c("sid", "BEC")
 d$siriusRed <- data.frame(histology[, c("sid_BrdU_SiriusRed", "BrdU_SiriusRed")])
-names(d$siriusRed) <- c("sid", "BrdU_SirirusRed")
+names(d$siriusRed) <- c("sid", "Sirius.red")
 d$bileInfarcts <- data.frame(histology[, c("sid_bileInfarcts", "bileInfarcts")])
-names(d$bileInfarcts) <- c("sid", "bileInfarcts")
+names(d$bileInfarcts) <- c("sid", "bile.infarcts")
 summary(d)
 
 # Merge the histological & antibody datasets on sample ids
@@ -60,7 +82,7 @@ biochemistry <- tmp
 
 tmp <- merge(d$hc, d$nhc, by="sid")
 tmp <- merge(tmp, d$kupffer, by="sid")
-tmp <- merge(tmp, d$hsc, by="sid")
+tmp <- merge(tmp, d$bec, by="sid")
 tmp <- merge(tmp, d$siriusRed, by="sid")
 tmp <- merge(tmp, d$bileInfarcts, by="sid")
 histology.processed <- tmp
@@ -83,11 +105,15 @@ ftype <- c(rep("GE_ADME", ncol(adme)-2),
            rep("Biochemistry", ncol(biochemistry)-1),
            rep("Histology", ncol(histology.processed)-1),
            rep("Antibodies", ncol(antibodies)-1))
+ftype.short <- c(rep("", ncol(adme)-2),
+           rep("", ncol(cytokines)-2),
+           rep("", ncol(fibrosis)-2),
+           rep("B", ncol(biochemistry)-1),
+           rep("H", ncol(histology.processed)-1),
+           rep("A", ncol(antibodies)-1))
 
 # Create the factor information
-BDLfactors <- data.frame(id=colnames(data)[3:ncol(data)], ftype=ftype)
-           
-
+BDLfactors <- data.frame(id=colnames(data)[3:ncol(data)], ftype=ftype, ftype.short=ftype.short)
 
 
 # Set sample ids as row numbers for data and samples

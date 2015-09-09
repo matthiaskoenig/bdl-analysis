@@ -769,19 +769,18 @@ list_cluster_members <- function(method){
 list_cluster_members(method="ys3")
 ```
 
-## Correlations for non-RNA factors
-Plot correlation matrix for histological, biochemical and antibody markers. Calculation of the largest correlation between the non-transcript factors and other factors. The columns in which no correlation coefficient has `abs(value) >= cor.cutoff` are filtered out, i.e. only factors are retained with a absolute correlation coeffient above this threshold.
+## Correlations for non-transcript factors
+In the following steps we look at specific parts of the correlation matrix. First we are interested in the top correlations between transcripts and classical factors, i.e. biochemical, histological and immunostaining based factors. The genes are filtered based on a cutoff for the correlation, i.e. columns in which no correlation coefficient `abs(value) >= cor.cutoff` exists are filtered out. Consequently, only transcripts are retained with a absolute correlation coeffient above this threshold.
 ``` {r correlation_histological}
 get_histological_correlations <- function(method="ys3", cor.cutoff=0.6){
   # correlation matrix
   cor_mat <- cor.matrices[[method]]
   
-  # non RNA factors which were accepted by ANOVA
+  # non-transcipt factors accepted by ANOVA
   hist_facs <- BDLfactors$id[anova.accept & 
-                               (BDLfactors$ftype %in% c("Antibodies", "Biochemistry", "Histology"))]
-  # print(hist_facs)
+                (BDLfactors$ftype %in% c("Antibodies", "Biochemistry", "Histology"))]
   
-  # get the indices of these factors in the correlation matrix
+  # get indices of these factors in correlation matrix
   hist_idx <- rep(NA, length(hist_facs))
   for (k in 1:length(hist_facs)){
     hist_idx[k] <- which(colnames(cor_mat) == hist_facs[k])

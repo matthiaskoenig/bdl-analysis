@@ -9,7 +9,7 @@ Ccr2	6.94e-11	***	GE_Cytokines
 Mrc1	6.95e-11	***	GE_Cytokines	
 Tnfrsf1b	7.89e-11	***	GE_Cytokines	
 Cxcl5	6.26e-10	***	GE_Cytokines	
-CTGF	7.82e-10	***	Antibodies	A
+CTGF	7.82e-10	***	Histochemistry	H
 Il10ra	1.64e-09	***	GE_Cytokines	
 Gstm1	9.18e-09	***	GE_ADME	
 Ccl7	3.4e-08	***	GE_Cytokines	
@@ -19,11 +19,11 @@ Osmr	1.01e-07	***	GE_Cytokines
 Ccl4	1.04e-07	***	GE_Cytokines	
 Nr0b2	1.3e-07	***	GE_ADME	
 Tgfbr2	1.71e-07	***	GE_Fibrosis	
-BEC	2.09e-07	***	Histology	H
+BEC	2.09e-07	***	Histochemistry	H
 Ccl5	2.78e-07	***	GE_Cytokines	
 Col1a1	4.4e-07	***	GE_Fibrosis	
 Ifnar1	7.71e-07	***	GE_Cytokines	
-S100a4	9.19e-07	***	Antibodies	A
+S100a4	9.19e-07	***	Histochemistry	H
 Sparc	1.07e-06	***	GE_Fibrosis	
 Cyp2e1	1.5e-06	***	GE_Fibrosis	
 Cxcr2	1.75e-06	***	GE_Cytokines	
@@ -63,17 +63,17 @@ Bad	0.000384	***	GE_Fibrosis
 Timp1	0.00043	***	GE_Fibrosis	
 Cdh1	0.000448	***	GE_Fibrosis	
 Cebpa	0.000493	***	GE_ADME	
-alpha.SMA	0.000502	***	Antibodies	A
-NHC	0.000528	***	Histology	H
+alpha.SMA	0.000502	***	Histochemistry	H
+NPC	0.000528	***	Histochemistry	H
 Cdh2	0.000538	***	GE_Fibrosis	
-Sirius.red	0.000759	***	Histology	H
+Sirius.red	0.000759	***	Histochemistry	H
 Pdgfb	0.000768	***	GE_Fibrosis	
 Il6st	0.000871	***	GE_Cytokines	
 Fn1	0.00121	**	GE_Fibrosis	
 Mki67	0.00146	**	GE_Fibrosis	
 Ifna1	0.00146	**	GE_Cytokines	
 Egfr	0.00159	**	GE_Cytokines	
-Kupffer	0.00195	**	Histology	H
+Kupffer	0.00195	**	Histochemistry	H
 Tnc	0.00204	**	GE_Fibrosis	
 Ugt1a1	0.00275	**	GE_ADME	
 Sult1a1	0.00298	**	GE_ADME	
@@ -88,7 +88,7 @@ Actb.y	0.0191	*	GE_Cytokines
 Bak1	0.0273	*	GE_Fibrosis	
 Bax	0.0289	*	GE_Fibrosis	
 Rarres1	0.0357	*	GE_Fibrosis	
-bile.infarcts	0.0378	*	Histology	H
+bile.infarcts	0.0378	*	Histochemistry	H
 Cyp3a11	0.053	.	GE_ADME	
 Sult1b1	0.0574	.	GE_ADME	
 Cyp4a10	0.0679	.	GE_ADME	
@@ -97,7 +97,7 @@ Hk2	0.075	.	GE_ADME
 ALT	0.0879	.	Biochemistry	B
 Smad6	0.0949	.	GE_Fibrosis	
 Cyp2b10	0.117	 	GE_ADME	
-HC	0.127	 	Histology	H
+HC	0.127	 	Histochemistry	H
 Il1rn	0.135	 	GE_Cytokines	
 Nes	0.137	 	GE_Fibrosis	
 Nfkbia	0.157	 	GE_ADME	

@@ -62,8 +62,8 @@ d$albumin <- data.frame(histology[, c("sid_albumin", "albumin")])
 names(d$albumin) <- c("sid", "albumin")
 d$hc <- data.frame(histology[, c("sid_BrdU_HC", "BrdU_HC")])
 names(d$hc) <- c("sid", "HC")
-d$nhc <- data.frame(histology[, c("sid_BrdU_NHC", "BrdU_NHC")])
-names(d$nhc) <- c("sid", "NHC")
+d$npc <- data.frame(histology[, c("sid_BrdU_NPC", "BrdU_NPC")])
+names(d$npc) <- c("sid", "NPC")
 d$kupffer <- data.frame(histology[, c("sid_BrdU_Kupffer", "BrdU_Kupffer")])
 names(d$kupffer) <- c("sid", "Kupffer")
 d$bec <- data.frame(histology[, c("sid_BrdU_BEC", "BrdU_BEC")])
@@ -80,7 +80,7 @@ tmp <- merge(tmp, d$bilirubin, by="sid")
 tmp <- merge(tmp, d$albumin, by="sid")
 biochemistry <- tmp
 
-tmp <- merge(d$hc, d$nhc, by="sid")
+tmp <- merge(d$hc, d$npc, by="sid")
 tmp <- merge(tmp, d$kupffer, by="sid")
 tmp <- merge(tmp, d$bec, by="sid")
 tmp <- merge(tmp, d$siriusRed, by="sid")
@@ -103,14 +103,14 @@ ftype <- c(rep("GE_ADME", ncol(adme)-2),
            rep("GE_Cytokines", ncol(cytokines)-2),
            rep("GE_Fibrosis", ncol(fibrosis)-2),
            rep("Biochemistry", ncol(biochemistry)-1),
-           rep("Histology", ncol(histology.processed)-1),
-           rep("Antibodies", ncol(antibodies)-1))
+           rep("Histochemistry", ncol(histology.processed)-1),
+           rep("Histochemistry", ncol(antibodies)-1))
 ftype.short <- c(rep("", ncol(adme)-2),
            rep("", ncol(cytokines)-2),
            rep("", ncol(fibrosis)-2),
            rep("B", ncol(biochemistry)-1),
            rep("H", ncol(histology.processed)-1),
-           rep("A", ncol(antibodies)-1))
+           rep("H", ncol(antibodies)-1))
 
 # Create the factor information
 BDLfactors <- data.frame(id=colnames(data)[3:ncol(data)], ftype=ftype, ftype.short=ftype.short)

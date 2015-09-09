@@ -2,15 +2,15 @@
 title: "Statistical Analysis of Pathobiochemical Signatures in Bile Duct Ligated Mice"
 author: '[Matthias Koenig](http://www.charite.de/sysbio/people/koenig) (`r Sys.Date()`)'
 output:
-  pdf_document:
-    fig_caption: yes
-    keep_tex: yes
-    toc: yes
   html_document:
     pandoc_args:
     - +RTS
     - -K64m
     - -RTS
+  pdf_document:
+    fig_caption: yes
+    keep_tex: yes
+    toc: yes
   word_document: default
 header-includes: \usepackage{graphicx}
 ---
@@ -80,6 +80,9 @@ if (identical(resultsPath, "")){
 dir.create(file.path(resultsPath, 'data'), showWarnings=FALSE)
 ```
 
+<!-- --------------------------------------------------------------------------------------------------- -->
+<!-- EXPLORATIVE DATA ANALYSIS  -->
+<!-- --------------------------------------------------------------------------------------------------- --> 
 # Explorative data analysis
 ## Data import
 In a first step the processed data sets are loaded from the `data` folder: These are the time course data for all factors (`BDLdata`), additional information for the factors (`BDLfactors`), the sample definition, i.e. the assignment of sample ids to respective time point and repeat (`BDLsamples`), and a mapping of the Fluidigm (gene) probe ids to UniProt identifiers and names (`BDLprobes`).
@@ -297,3 +300,222 @@ rm(actb.pearson, actb.spearman)
 ```
 
 **Results**: The Actb Fluidigm gene expression measurements are highly reproducible for the measured chips,  with Spearman as well as Pearson correlation coefficients all > 0.9 for pairwise Actb comparison.
+
+<!-- --------------------------------------------------------------------------------------------------- -->
+<!-- DIMENSION REDUCTION  -->
+<!-- --------------------------------------------------------------------------------------------------- --> 
+# Dimension reduction
+A one-way analysis of variance (ANOVA) was applied to reduce the factors to the subset showing significant ($p_{adj}< 0.05$) changes during the time course. In its simplest form, ANOVA provides a statistical test of whether or not the means of several groups are equal, and therefore generalizes the t-test to more than two groups, with the groups being the sampled time points. The Holm's procedure was used to correct the p-values for any artificial p-value inflation due to multiple testing. 
+
+In a first step, an ANOVA was calculated with the groups corresponding to the different time points for every factor in the BDL data set. Dimension reduction was than performed by filtering out those factors which did not significantly change over time.
+
+The `BDLdata` data set is reshaped into matrix format for the ANOVA calculation, with time points in rows and repeats as columns for every factor. 
+```{r bdl_matrices}
+BDLmatrices <- bdl_matrix_data(BDLdata, BDLsamples)
+```
+
+## ANOVA for single factor
+The following shows the ANOVA calculation for a single factor. We use again the example `bilirubin` to demonstrate the method. 
+``` {r single_anova}
+  # example ANOVA for one factor
+  mat.anova <- t(BDLmatrices[['bilirubin']])
+  colnames(mat.anova) <- levels(BDLsamples$time_fac)
+  print(mat.anova)
+  
+  # concatenate the data rows of df1 into a single vector r .
+  r = c(t(as.matrix(mat.anova)))  # response data 
+  
+  # assign new variables for the treatment levels and number of observations.
+  f = levels(BDLsamples$time_fac)   # treatment levels 
+  k = Nt                             # number of treatment levels (time points Nt=8) 
+  n = Nr                             # observations per treatment (repeats Nr=5)
+  
+  # vector of treatment factors that corresponds to each element of r 
+  # in step 3 with the gl function.
+  tm <- gl(k, 1, n*k, factor(f))   # matching treatments 
+  
+  # apply the function aov to a formula that describes the response r 
+  # by the treatment factor tm (fit ANOVA model)
+  av <- aov(r ~ tm) 
+  
+  # print ANOVA summary
+  summary(av)
+  # print p-value
+  p.value <- summary(av)[[1]][["Pr(>F)"]][[1]]
+```
+```{r echo=FALSE}
+  # cleanup
+rm(r, f, k, n, tm, av, p.value, mat.anova) 
+```
+**Results:** The time course fo bilirubin is highly altered after BDL, resulting in a high significance of the ANOVA. This confirms what we saw in the initial visual inspection of bilirubin (see Figure above).
+
+## ANOVA for all factors
+The ANOVA calculation for all individual factors is performed analog to the calculate for bilirubin. As a consequence of the large number of factors, a multitude of tests are performed, namely an ANOVA for every single factor. Consequently, the reported p-values of the ANOVA have to be adjusted for multiple testing. This is done using the `p.adjust` function which given a set of p-values, returns p-values adjusted using one of several methods. We selected the Holm's method designed to give strong control of the family-wise error rate (*Holm, S. (1979). A simple sequentially rejective multiple test procedure. Scandinavian Journal of Statistics 6, 65-70.*).
+
+```{r anova_all}
+# Calculation of ANOVA for all factors
+df.anova <- all_factor_anova()
+df.anova$sig <- sapply(df.anova$p.value, significant_code)  # add significant codes
+
+df.anova$p.holm <- p.adjust(df.anova$p.value, method ="holm", 
+                            n = length(df.anova$p.value))
+df.anova$sig.holm <- sapply(df.anova$p.holm, significant_code) 
+df.anova$ftype <- BDLfactors$ftype
+df.anova$fshort <- BDLfactors$ftype.short
+
+# order factors by adjusted p-values, and cleanup for printing
+df.anova.ordered <- df.anova[with(df.anova, order(p.holm)), ]
+rownames(df.anova.ordered) <- df.anova.ordered$factors
+df.anova.ordered <- df.anova.ordered[c("p.holm", "sig.holm", "ftype", "fshort")]
+df.anova.ordered$p.holm <- as.numeric(sprintf("%1.2E", df.anova.ordered$p.holm))
+
+# save results
+write.table(df.anova.ordered, file=file.path(resultsPath, "data", 'BDLanova.csv'), 
+            sep="\t", quote=FALSE)
+save(df.anova, file=file.path(resultsPath, "data", "BDLanova.Rdata"))
+```
+
+``` {r print_anova_all, fontsize="small"}
+print(df.anova.ordered)
+```
+
+## Filter factors
+The factors are now filtered based on the respective acceptance level of the ANOVA, with the cutoff for the adjusted p-value, i.e. all factors with a ANOVA with $p_{adj} \ge p_{accept}$ are filtered out. The filtered raw data is available as `BDLdata.fil`, the filtered mean data is stored as `BDLmean.fil`.
+``` {r filter_factors}
+p.accept = 0.05  # acceptance level
+anova.accept = (df.anova$p.holm < p.accept)  # accepted subset
+# subset of filtered data
+BDLdata.fil <- BDLdata[, anova.accept]
+BDLmean.fil <- BDLdata[, anova.accept]
+
+# accepted
+table(anova.accept)  # 64 rejected / 90 accepted (adjusted)
+
+# which factors are accepted in which category
+fil_tab <- data.frame(
+  table(BDLfactors$ftype[anova.accept]),
+  table(BDLfactors$ftype),
+  round(table(BDLfactors$ftype[anova.accept])/table(BDLfactors$ftype), 2)
+)
+fil_tab <- fil_tab[, c('Var1', 'Freq', 'Freq.1', 'Freq.2')]
+names(fil_tab) <- c('Category', 'Accepted', 'All', 'Percent')
+# overview of filtered factors
+print(fil_tab)
+rm(fil_tab)
+```
+**Results:** Based on the adjusted p-values the data set was reduced from original `r ncol(BDLdata)` factors to `r ncol(BDLdata.fil)`. Almost all `Cytokines` genes (inflammation panel) were retained in the data set whereas many of the `ADME` and `Fibrosis` genes are filtered. All subsequent analyses are performed on the filtered data set, which is depicted in the following heatmap
+
+### Heatmap of filtered time course data
+We now plot the heatmap of time courses only for the subset of filtered factors.
+
+``` {r heatmap_filtered}
+# vertical time separators
+v_lines <- ((1:Nt)*Nr+0.5)
+
+timecourse_heatmap_filtered <- function(){
+  # prepare data with row names
+  dtmp <- BDLdata.fil
+  rownames(dtmp) <- paste(rownames(BDLsamples), BDLsamples$time_fac, sep=" ")
+  
+  # color definitions
+  hmap_colors <- HeatmapColors()
+  colorset <- brewer.pal(length(factor_types), "Set2")
+  color.map <- function(factor_id) {
+    return(
+      colorset[which(factor_types==BDLfactors$ftype[which(BDLfactors$id==factor_id)])]
+  )}
+  factorColors <- unlist(lapply(colnames(BDLdata.fil), color.map))
+  # heatmap
+  heatmap.2(t(as.matrix(dtmp)), col=hmap_colors(100), scale="row", dendrogram="none", 
+            Rowv=NULL, Colv=NULL,
+            key=TRUE, trace="none", cexRow=0.5, keysize=0.8, density.info="none",
+            RowSideColors=factorColors,
+            add.expr=abline(v=v_lines, col="black", lwd=0.5),
+            main="ANOVA Filtered BDL factors")
+            # xlab="sample", ylab="factor")
+  # legend
+  legend("left",
+      inset=c(-0.03,0),
+      legend = rev(factor_types), # category labels
+      col = rev(colorset),   # color key
+      lty= 1,                # line style
+      lwd = 10,              # line width
+      cex = 0.7,
+      bty="n"
+  )
+}
+
+# plot to file
+pdf(file.path(resultsPath, "control", "timecourse_heatmap_filtered.pdf"), 
+    width=10, height=10, pointsize=12)  
+timecourse_heatmap_filtered()
+invisible(dev.off())
+```
+``` {r echo=FALSE}
+fig.cap.tc_heatmap_fil <- 'Figure: Filtered timecourse data. Plot of ANOVA filtered data set with processing analog to Figure above.'
+```
+``` {r heatmap_filtered_plot, fig.width=10, fig.height=10, error=TRUE, htmlcap=fig.cap.tc_heatmap_fil, fig.cap=fig.cap.tc_heatmap_fil}
+# plot to report
+timecourse_heatmap_filtered()
+``` {r echo=FALSE}
+rm(v_lines)
+```
+
+## t-test for initial phase
+We were in addition interested in the factors changed only in the initial phase, i.e. between control and the 6h time point. Therefore, a t-test was performed to find significantly changed factors in the initial phase after BDL.
+``` {r t_test}
+# t-test for the initial phase changes
+calculate_inital_phase_changes <- function(){
+  # init vectors
+  p.t_test <- rep(NA, ncol(BDLdata))
+  names(p.t_test) <- colnames(BDLdata)
+  up_down <- rep(NA, ncol(BDLdata))
+  names(up_down) <- colnames(BDLdata)
+  
+  for (name in colnames(BDLdata)){
+    # data for control (0h) and initial response (6h)
+    d0 <- BDLdata[BDLsamples$time_fac == "0h", name]
+    d6 <- BDLdata[BDLsamples$time_fac == "6h", name]  
+    # remove NA (for immunostainings Nr=3)
+    d0 <- d0[!is.na(d0)]
+    d6 <- d6[!is.na(d6)]
+    # unpaired two.sided t-test
+    t.test.res <- t.test(d0, d6, alternative="two.sided", var.equal=FALSE)
+    p.t_test[name] <- t.test.res$p.value
+    # going up or down
+    up_down[name] <- "-"
+    if (mean(d6) > mean(d0)){
+      up_down[name] <- "up"
+    } else if (mean(d6) < mean(d0)){
+      up_down[name] <- "down"
+    }
+  }
+  # data.frame for t-test results
+  p.df <- data.frame(p.value=p.t_test, up_down=up_down)
+  p.df$sig <- sapply(p.df$p.value, significant_code) 
+  rownames(p.df) <- colnames(BDLdata)
+  
+  # sort by p.value
+  p.df.ordered <- p.df[order(p.df$p.value),]  
+  
+  return(p.df.ordered)
+}
+
+# top up and down regulated in initial phase
+p.df.ordered <- calculate_inital_phase_changes() 
+p.df.up <- p.df.ordered[p.df.ordered$p.value<0.05 & p.df.ordered$up_down=="up", ]
+p.df.down <- p.df.ordered[p.df.ordered$p.value<0.05 & p.df.ordered$up_down=="down", ]
+```
+
+The top up- and down-regulated factors in the initial phase (independent from the ANOVA analysis, i.e. of all factors in data set) are
+```{r t_test_results, fontsize="small"}
+# top up
+print(p.df.up)
+# top down
+print(p.df.down)
+```
+**Results:** In the initial phase more more up-regulations than down-regulations are observed.
+
+<!-- --------------------------------------------------------------------------------------------------- -->
+<!-- DIMENSION REDUCTION  -->
+<!-- --------------------------------------------------------------------------------------------------- --> 

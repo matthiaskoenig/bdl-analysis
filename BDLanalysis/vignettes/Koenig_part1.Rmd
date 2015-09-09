@@ -25,15 +25,15 @@ knitr::knit_hooks$set(htmlcap = function(before, options, envir) {
     }
 })
 
-knitr::knit_hooks$set(tiny = function(before, options, envir) {
+# set the fontsize of chunk via provided latex hook (only for PDF)
+# just provide the font size via the fontsize argument, e.g. fontsize="tiny"
+knitr::knit_hooks$set(fontsize = function(before, options, envir) {
   if (before) {
-    return(paste('\\tiny', sep = ''))
+    return(paste('\\', options$fontsize, sep = ''))
   } else {
     return(paste('\\normalsize', sep = ''))
   }
 })
-
-
 ```
 
 ```{r global_options, include=FALSE}
@@ -41,8 +41,6 @@ knitr::opts_chunk$set(fig.width=10, fig.path='Figs/',
                       warning=FALSE, message=FALSE,
                       comment=NA, strip.white=TRUE)
 ```
-
-
 
 # Introduction
 This document contains the statistical analysis performed in the publication *Pathobiochemical signatures of cholestatic liver disease in bile duct ligated mice*.
@@ -56,7 +54,7 @@ The following naming conventions are used
     + one of the biomarkers (e.g. ALT, albumin, bilirubin)
     + one of the histological markers (e.g. BrdU-positive Kupffer cells)
     + one of the immunostainings (e.g. CTGF, S100A4)
-* **time point** : a single value $t_i$ from the measured time points 0h (control), 6h, 12h, 18h, 30h, 2d, 5d, 14d
+* **time point** : a single value $t_i$ from the measured time points 0h (control), 6h, 12h, 18h, 30h, 2d, 5d and 14d
 * **sample** : one of the $N_{t}N_{r}=40$ mice, i.e. a one of the repeats for a given time point
 
 The main steps of the analysis comprise
@@ -162,16 +160,15 @@ create_probe_df <- function() {
 probe.df <- create_probe_df()
 ```
 
-``` {r print_gene_table, tiny=TRUE}
+``` {r print_gene_table, fontsize="small"}
 options(width=200)
-print(probe.df, max.levels=NULL, width=200)
+print(probe.df)
 options(width=75)
 ```
 
 ## Data visualization
 ### Time course of single factors
-In a first step overview plots of the raw and mean data for all individual factors were generated. These are available in the `resultsPath/factors` folder
-
+To get an overview over the BDL data set plots of the raw and mean data for all individual factors over time were generated. These are available in the `resultsPath/factors` folder under the respective names of the factors
 ```{r factor_plots}
 # Create figures for all factors
 factors_path <- file.path(resultsPath, 'factors')
@@ -180,20 +177,24 @@ plot_all_factors(path=factors_path)
 rm(factors_path)
 ```
 
-An example plot for a single factor is depicted below, here for the factor `bilirubin`.
-``` {r bilirubin_plot, htmlcap='<b>Figure Single factor</b>: Plot of the raw time course data for bilirubin. On the left the data is plotted against the time [h], on the right against the different time classes. Individual data points are depecticed in blue with the respective sample number shown next to the data points. The mean averaged of the repeats per time point are depicted in red. Box-and-whisker plots were added with default R parameters of boxwex=0.8, staplewex=0.5, outwex=0.5.'}
+An example plot for a single factor is depicted for `bilirubin`. A continous increase in bilirubin can be observed after BDL.
+``` {r echo=FALSE}
+fig.cap.bilirubin <- "Figure: Bilrubin timecourse. Plot of the raw time course data for bilirubin. On the left the data is plotted against the time [h], on the right against the different time classes. Individual data points are depecticed in blue with the respective sample number shown next to the data points. The mean averaged of the repeats per time point are depicted in red."
+```
+``` {r bilirubin_plot, htmlcap=fig.cap.bilirubin, fig.cap=fig.cap.bilirubin}
 plot_single_factor('bilirubin', path=NULL)
 ```
 
-### Time course of all factors (Heatmap)
-In a next step the heatmap of the full data set was generated, i.e. of all time points and repeats. This provides a first overview over the data set. Rows correspond to individual factors (factor order corresponding to the original data set: `GE_ADME`, `GE_Cytokines`, `GE_Fibrosis`, `Biochemistry`, `Histology`, `Antibodies`). Columns correspond to the 40 samples with 5 subsequent samples belonging to one of the 8 time points. The data is row scaled, i.e. every individual factor is scaled to have mean zero and standard deviation one.
+### Time course of all factors
+Next the heatmap overview of the complete data set is generated, i.e. the data of all factors for of all time points and repeats. This provides a first overview over the complete data set. 
 ```{r timecourse_heatmap}
 suppressPackageStartupMessages(library(gplots))
-suppressPackageStartupMessages(library("RColorBrewer"))
+suppressPackageStartupMessages(library(RColorBrewer))
 
 # define horizontal and vertical helper lines
 v_lines <- ((1:Nt)*Nr+0.5)
-factor_types <- c("Antibodies", "Histology", "Biochemistry", "GE_Fibrosis", "GE_Cytokines", "GE_ADME")
+factor_types <- c("Antibodies", "Histology", "Biochemistry", 
+                  "GE_Fibrosis", "GE_Cytokines", "GE_ADME")
 factor_table <- table(BDLfactors$ftype)
 h_lines <- 0.5 + cumsum(factor_table[factor_types])
 
@@ -205,10 +206,15 @@ timecourse_heatmap <- function(){
   hmap_colors <- HeatmapColors()
   # colors for factor groups
   colorset <- brewer.pal(length(factor_types), "Set2")
-  color.map <- function(factor_id) {return(colorset[ which(factor_types==BDLfactors$ftype[which(BDLfactors$id==factor_id)]) ])}
+  color.map <- function(factor_id) {
+    return(
+      colorset[which(factor_types==BDLfactors$ftype[which(BDLfactors$id==factor_id)])]
+    )
+  }
   factorColors <- unlist(lapply(BDLfactors$id, color.map))
   # heatmap
-  heatmap.2(t(as.matrix(dtmp)), col=hmap_colors(100), scale="row", dendrogram="none", Rowv=NULL, Colv=NULL,
+  heatmap.2(t(as.matrix(dtmp)), col=hmap_colors(100), scale="row", 
+            dendrogram="none", Rowv=NULL, Colv=NULL,
             key=TRUE, trace="none", cexRow=0.5, keysize=0.8, density.info="none",
             RowSideColors=factorColors,
             add.expr=abline(v=v_lines, h=h_lines, col="black", lwd=0.5),
@@ -223,26 +229,29 @@ timecourse_heatmap <- function(){
   )
 }
 # plot to file
-pdf(file.path(resultsPath, "control", "timecourse_heatmap.pdf"), width=10, height=10, pointsize=12) 
+pdf(file.path(resultsPath, "control", "timecourse_heatmap.pdf"), 
+    width=10, height=10, pointsize=12) 
 timecourse_heatmap()
 invisible(dev.off())
 ```
 
-``` {r timecourse_heatmap_report, fig.width=10, fig.height=10, error=TRUE, htmlcap='<b>Figure All factors </b>: Heatmap of the complete data set, i.e. all factors and repeats over time. The data is row scaled, i.e. every individual factor is scaled to have mean zero and standard deviation one, with positive Z-score in blue, negative Z-score in red. The row order is according to the the factor categories, the order within the fluidigm chips according to the order of the probes on the chip. the respective categories are depicted on the left.'}
+``` {r echo=FALSE}
+fig.cap.tc_heatmap_all <- 'Figure: Timecourse heatmap of all factors. Rows correspond to individual factors, with factor order corresponding to the original data set: `GE_ADME`, `GE_Cytokines`, `GE_Fibrosis`, `Biochemistry`, `Histology`, `Antibodies`. Columns correspond to the 40 samples with 5 subsequent samples belonging to one of the 8 time points. The data is row scaled, i.e. every individual factor is scaled to have mean zero and standard deviation one.'
+```
+``` {r timecourse_heatmap_report, fig.width=10, fig.height=10, error=TRUE, fig.cap=fig.cap.tc_heatmap_all, htmlcap=fig.cap.tc_heatmap_all}
 timecourse_heatmap()
 ```
-
-``` {r heatmap_clean}
+``` {r heatmap_clean, echo=FALSE}
 # cleanup
 rm(factor_table, h_lines, v_lines)
 ```
-**Results**: Various patterns are visible in the plotted raw data:
+**Results**: Various patterns are visible in the plotted raw data set:
 
-* **Two main classes of time course response were observed**. One class with an increase in the early phase up to 6h after BDL (many of the ADME genes fall in this class) and a second class increasing in the later stage after 2-5 days after BDL. Many of the genes on the Cytokines and Fibrosis  chips as well as some of the biochemical, histological and antibody factors fall in this second class.
+* **Two main classes of time course response are observed**. One class with an increase in the early phase up to 6h after BDL (many of the ADME genes fall in this class) and a second class increasing in the later stage after 2-5 days after BDL. Many of the genes on the Cytokines and Fibrosis  chips as well as some of the biochemical, histological and antibody factors fall in this second class.
 * **The individual animals show heterogeneous responses to BDL**. Within one time point the 5 repeats can show very different patterns. For instance at time 6h after BDL 3/5 of the mice show a marked increase in the ADME genes, whereas 2/5 do not show such a marked increase. Another example is the mice sample 27 at time 2d, with a high increase in the genes on the Fibrosis chip, which is not observed in the other 4 samples at time 2d.
 
 ## Actb quality control
-Actb (Actin, cytoplasmic 1) probes were included on all Fluidigm chips (`GE_ADME`, `GE_Cytokines`, `GE_Fibrosis`) and not used in the normalization of the transcription data. Hence, ActB can serve as quality control for the technical reproducibility of the Fluidigm chips. If the data is reproducible between chips the pairwise correlation between all individual Actb measurements should have high correlation coefficients close to 1. Plotting the data of the Actb measurements of two chips against each other should lie on a straight line
+Actb (Actin, cytoplasmic 1) probes were included on all Fluidigm chips (`GE_ADME`, `GE_Cytokines`, `GE_Fibrosis`) and not used in the normalization of the transcription data. Hence, ActB can serve as quality control for the technical reproducibility of the Fluidigm chips. If the data is reproducible between chips the pairwise correlation between all individual Actb measurements should have high correlation coefficients close to 1. Plotting the data of the Actb measurements of two chips against each other should lie on a straight line.
 ```{r check_actb}
 # Actb control figure
 plot_actb_control <- function(){
@@ -257,7 +266,8 @@ plot_actb_control <- function(){
 }
 
 # plot to file
-pdf(file.path(resultsPath, "control", "Actb_control.pdf"), width=10, height=6, pointsize=12)  
+pdf(file.path(resultsPath, "control", "Actb_control.pdf"), 
+    width=10, height=6, pointsize=12)  
 plot_actb_control()
 invisible(dev.off())
 
@@ -276,8 +286,14 @@ set.caption(sub(".", " ", "Pearson correlation of Actb controls", fixed = TRUE))
 pander(round(actb.pearson, digits=3))
 ```
 
-``` {r actb_control_plot, fig.width=10, fig.height=7,  htmlcap='<b>Figure Actb Control</b>: Correlation plot of the Actb probes from the 3 Fluidigm chips: Actb (fibrosis), Actb.x (ADME), Actb.y (Cytokines). The top row shows the individual time courses, the bottom row the pair wise plot of individual data points.'}
+``` {r echo=FALSE}
+fig.cap.actb_control <- 'Figure: Actb control. Correlation plot of the Actb probes from the 3 Fluidigm chips: Actb (fibrosis), Actb.x (ADME), Actb.y (Cytokines). The top row shows the individual time courses, the bottom row the pair wise plot of individual data points.'
+```
+``` {r actb_control_plot, fig.width=10, fig.height=7,  htmlcap=fig.cap.actb_control, fig.cap=fig.cap.actb_control}
 plot_actb_control()
+```
+``` {r echo=FALSE}
 rm(actb.pearson, actb.spearman)
 ```
+
 **Results**: The Actb Fluidigm gene expression measurements are highly reproducible for the measured chips,  with Spearman as well as Pearson correlation coefficients all > 0.9 for pairwise Actb comparison.

@@ -1,5 +1,6 @@
-
-
+##############################################################################################
+#    Helper functions for ANOVA
+##############################################################################################
 
 #' Perform anova for given factor.
 #' 
@@ -26,10 +27,9 @@ single_factor_anova <- function(name){
   # Fit an analysis of variance model
   av = aov(r ~ tm) 
   
-  # Print out the ANOVA table with the summary function. 
-  # summary(av)
   return(av)
 }
+
 
 #' Performs ANOVA for all factors.
 #' 
@@ -51,7 +51,7 @@ all_factor_anova <- function(){
   return(df.anova)
 }
 
-#' Create significant code for given p.value.
+#' Create significant code for given p-value.
 #' 
 #' Function returns a significance string for the 
 #' given p-value similar to the internal R functions.

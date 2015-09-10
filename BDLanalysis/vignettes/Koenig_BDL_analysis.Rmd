@@ -64,8 +64,10 @@ The main steps of the analysis comprise
 * **Hierarchical clustering** 
 * **Decision trees**
 
-The complete data set, source code and documentation of this analysis is available from  
-https://github.com/matthiaskoenig/bdl-analysis .
+The HTML version of this document is available from  
+http://matthiaskoenig.github.io/bdl-analysis/  
+All data sets, source code and documentation are provided at    
+https://github.com/matthiaskoenig/bdl-analysis
 
 All results of this analysis are written to the results directory defined via the `BDL_RESULTS` environment variable. To reproduce this analysis create the respective variable and run the `Koenig_BDL_analysis.Rmd` file.
 

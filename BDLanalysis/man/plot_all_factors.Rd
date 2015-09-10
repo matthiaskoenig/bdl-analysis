@@ -2,12 +2,13 @@
 % Please edit documentation in R/plots.R
 \name{plot_all_factors}
 \alias{plot_all_factors}
-\title{Creates single factor plots of all factors.}
+\title{Create single factor plots of all factors.}
 \usage{
 plot_all_factors(path)
 }
 \description{
 Iterates over all factor variables in the BDLdata frame and creates
-the individual factor plots.
+the individual factor plots. BDLdata has to be available in the
+environment
 }
 

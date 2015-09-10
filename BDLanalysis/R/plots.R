@@ -1,11 +1,10 @@
 ##############################################################################################
-#    Helper functions to generate plots for certain data sets.
+#    Helper functions to generate plots
 ##############################################################################################
 
-
-#' Create a single factor plot.
+#' Create single factor plot.
 #'
-#' Plot the time course of a single factor, i.e. all individual data points.
+#' Plot time course of a single factor, i.e. all individual data points.
 #' @export
 plot_single_factor <- function(name, path=NULL, k=NULL){
   # get factor for name
@@ -64,7 +63,8 @@ plot_single_factor <- function(name, path=NULL, k=NULL){
   }
 }
 
-#' Creates single factor plots of all factors.
+
+#' Create single factor plots of all factors.
 #' 
 #' Iterates over all factor variables in the BDLdata frame and creates
 #' the individual factor plots. BDLdata has to be available in the 
@@ -80,7 +80,8 @@ plot_all_factors <- function(path){
   }
 }
 
-#' Plot of a single factor.
+
+#' Plot single factor.
 #' 
 #' Plots the mean time course and individual samples.
 #' @export
@@ -107,8 +108,7 @@ plot_single <- function(name_A){
 
 #' Correlation plot between two factors.
 #' 
-#' Plot the two individual factors and the additional correlation plot
-#' for the data.
+#' Plot two individual factors and correlation scatter plot.
 #' @export
 plot_cor_pair <- function(name_A, name_B, single_plots=TRUE){
   require(calibrate)
@@ -150,7 +150,7 @@ plot_cor_pair <- function(name_A, name_B, single_plots=TRUE){
 }
 
 
-#' Fluidigm probe annotation
+#' Fluidigm probe annotation.
 #'
 #' Helper function with information for fluidigm probes.
 #' @export
@@ -167,6 +167,7 @@ ProbeInformation <- function(geneId){
   }
   return(info)
 }
+
 
 #' Heatmap color ramp function.
 #' 

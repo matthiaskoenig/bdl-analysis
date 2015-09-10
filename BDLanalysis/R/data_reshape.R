@@ -1,8 +1,6 @@
-# -----------------------------------------------------------------------------------
-# Data reshaping of raw data. 
-# This consists for instance in the caluclation of mean data,
-# or the reshaping into data matrices.
-# -----------------------------------------------------------------------------------
+##############################################################################################
+#    Data reshaping of raw data
+##############################################################################################
 
 #' Calculate mean data average over time points.
 #' 
@@ -13,6 +11,7 @@ bdl_mean_data <- function(data, samples){
   dmean <- bdl_fun_data(data=data, samples=samples, fun=mean)
   return(dmean)
 }
+
 
 #' Calculate sd data over time points.
 #' 
@@ -39,7 +38,6 @@ bdl_fun_data <- function(data, samples, fun){
   rownames(dfun) <- levels(samples$time_fac)
   return(dfun)
 }
-
 
 
 #' Transform BDL data frame into list of matrices.

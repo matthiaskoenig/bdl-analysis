@@ -2,7 +2,7 @@
 % Please edit documentation in R/plots.R
 \name{plot_single}
 \alias{plot_single}
-\title{Plot of a single factor.}
+\title{Plot single factor.}
 \usage{
 plot_single(name_A)
 }

@@ -7,7 +7,6 @@
 plot_cor_pair(name_A, name_B, single_plots = TRUE)
 }
 \description{
-Plot the two individual factors and the additional correlation plot
-for the data.
+Plot two individual factors and correlation scatter plot.
 }
 

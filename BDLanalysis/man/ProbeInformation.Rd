@@ -2,7 +2,7 @@
 % Please edit documentation in R/plots.R
 \name{ProbeInformation}
 \alias{ProbeInformation}
-\title{Fluidigm probe annotation}
+\title{Fluidigm probe annotation.}
 \usage{
 ProbeInformation(geneId)
 }

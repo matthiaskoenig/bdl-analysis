@@ -2,7 +2,7 @@
 % Please edit documentation in R/anova.R
 \name{significant_code}
 \alias{significant_code}
-\title{Create significant code for given p.value.}
+\title{Create significant code for given p-value.}
 \usage{
 significant_code(p.value)
 }

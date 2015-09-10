@@ -2,9 +2,6 @@
 #
 #    YS and YR correlation measures
 #
-#    Matthias Koenig
-#    2015-08-12
-#
 #    Correlation score for time course data based on 
 #    "A modfied correlation coefficient based similarity measure for clustering
 #     time-course gene expression data" [Son2007]

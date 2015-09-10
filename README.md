@@ -1,8 +1,4 @@
 #    BDL - Regression Analysis
-
-author: Matthias Koenig
-version: 0.3
-
 This repository contains all data, information and the complete statistical analysis for the publication
 **Pathobiochemical signatures of cholestatic liver disease in bile duct ligated mice** (BMC Systems Biology).
 The analysis was performed in `R` and is available via the package `BDLanalysis` and the package vignette `Koenig_BDL_analysis.Rmd`.
@@ -16,6 +12,9 @@ The main steps of the analysis comprise
 * Correlation analysis
 * Hierarchical clustering
 * Decision trees
+
+**author**: Matthias Koenig  
+**version**: 0.3  
 
 ## Run analysis
 For running the analysis checkout the git repository and open the `BDLanalysis.Rproj` with `RStudio`. You can than build the `BDLanalysis` package and recreate the package vignette `Koenig_BDL_analysis.Rmd` with `knitr`.

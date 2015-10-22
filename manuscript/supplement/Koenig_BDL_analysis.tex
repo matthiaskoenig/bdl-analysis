@@ -66,7 +66,7 @@
 \fi
 \hypersetup{breaklinks=true,
             bookmarks=true,
-            pdfauthor={Matthias Koenig (2015-09-10)},
+            pdfauthor={Matthias Koenig (2015-10-22)},
             pdftitle={Statistical Analysis of Pathobiochemical Signatures in Bile Duct Ligated Mice},
             colorlinks=true,
             citecolor=blue,
@@ -99,7 +99,7 @@ Mice}
   \pretitle{\vspace{\droptitle}\centering\huge}
   \posttitle{\par}
   \author{\href{http://www.charite.de/sysbio/people/koenig}{Matthias Koenig}
-(2015-09-10)}
+(2015-10-22)}
   \preauthor{\centering\large\emph}
   \postauthor{\par}
   \date{}
@@ -525,6 +525,56 @@ Xiap           E3 ubiquitin-protein ligase XIAP            Xiap, Aipa, Api3, Bir
 
 \subsection{Data visualization}\label{data-visualization}
 
+\subsubsection{Single chip data}\label{single-chip-data}
+
+Create heatmap of the mean chip data
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{suppressPackageStartupMessages}\NormalTok{(}\KeywordTok{library}\NormalTok{(gplots))}
+\KeywordTok{suppressPackageStartupMessages}\NormalTok{(}\KeywordTok{library}\NormalTok{(RColorBrewer))}
+
+\NormalTok{data_ADME =}\StringTok{ }\KeywordTok{t}\NormalTok{(}\KeywordTok{as.matrix}\NormalTok{(BDLmean[BDLfactors$ftype ==}\StringTok{ "GE_ADME"}\NormalTok{]))}
+\NormalTok{data_ADME <-}\StringTok{ }\NormalTok{data_ADME[}\KeywordTok{rownames}\NormalTok{(data_ADME) !=}\StringTok{ "Actb.x"}\NormalTok{, ]}
+
+\NormalTok{data_Cytokines =}\StringTok{ }\KeywordTok{t}\NormalTok{(}\KeywordTok{as.matrix}\NormalTok{(BDLmean[BDLfactors$ftype ==}\StringTok{ "GE_Cytokines"}\NormalTok{]))}
+\NormalTok{data_Cytokines <-}\StringTok{ }\NormalTok{data_Cytokines[}\KeywordTok{rownames}\NormalTok{(data_Cytokines) !=}\StringTok{ "Actb.y"}\NormalTok{, ]}
+
+\NormalTok{data_Fibrosis =}\StringTok{ }\KeywordTok{t}\NormalTok{(}\KeywordTok{as.matrix}\NormalTok{(BDLmean[BDLfactors$ftype ==}\StringTok{ "GE_Fibrosis"}\NormalTok{]))}
+\NormalTok{data_Fibrosis <-}\StringTok{ }\NormalTok{data_Fibrosis[}\KeywordTok{rownames}\NormalTok{(data_Fibrosis) !=}\StringTok{ "Actb"}\NormalTok{, ]}
+
+\CommentTok{# fold changes relative to sham mice (0 h) displayed in log2 scale}
+\NormalTok{log2_to_control <-}\StringTok{ }\NormalTok{function(data)\{}
+  \NormalTok{data <-}\StringTok{ }\NormalTok{data[}\KeywordTok{sort}\NormalTok{(}\KeywordTok{rownames}\NormalTok{(data)), ]  }\CommentTok{# sort by name}
+  \NormalTok{reldata <-}\StringTok{ }\NormalTok{data[, }\DecValTok{2}\NormalTok{:}\KeywordTok{ncol}\NormalTok{(data)]/data[, }\DecValTok{1}\NormalTok{]}
+  \NormalTok{log2_reldata <-}\StringTok{ }\KeywordTok{log2}\NormalTok{(reldata)  }
+\NormalTok{\}}
+
+\NormalTok{data_list <-}\StringTok{ }\KeywordTok{list}\NormalTok{(}\DataTypeTok{ADME=}\NormalTok{data_ADME, }
+                  \DataTypeTok{Fibrosis=}\NormalTok{data_Fibrosis, }
+                  \DataTypeTok{Cytokines=}\NormalTok{data_Cytokines)}
+\NormalTok{for (name in }\KeywordTok{names}\NormalTok{(data_list))\{}
+  \NormalTok{data <-}\StringTok{ }\NormalTok{data_list[[name]]}
+  \NormalTok{cor_colors <-}\StringTok{ }\KeywordTok{HeatmapColors}\NormalTok{() }\CommentTok{# color palette for correlation (red - white - blue)}
+  \NormalTok{hmap_colors <-}\StringTok{ }\KeywordTok{cor_colors}\NormalTok{(}\DecValTok{100}\NormalTok{)}
+  \CommentTok{# plot to file}
+  \KeywordTok{pdf}\NormalTok{(}\KeywordTok{file.path}\NormalTok{(resultsPath, }\StringTok{"control"}\NormalTok{, }\KeywordTok{paste}\NormalTok{(}\StringTok{"chip_heatmap_"}\NormalTok{, name, }\StringTok{".pdf"}\NormalTok{, }\DataTypeTok{sep=}\StringTok{""}\NormalTok{)), }
+      \DataTypeTok{width=}\DecValTok{8}\NormalTok{, }\DataTypeTok{height=}\DecValTok{10}\NormalTok{, }\DataTypeTok{pointsize=}\DecValTok{12}\NormalTok{) }
+  \KeywordTok{heatmap.2}\NormalTok{(}\KeywordTok{log2_to_control}\NormalTok{(data), }\DataTypeTok{col=}\NormalTok{hmap_colors, }\DataTypeTok{breaks=}\KeywordTok{seq}\NormalTok{(}\DataTypeTok{from=}\NormalTok{-}\DecValTok{2}\NormalTok{, }\DataTypeTok{to=}\DecValTok{2}\NormalTok{, }\DataTypeTok{length.out=}\KeywordTok{length}\NormalTok{(hmap_colors)+}\DecValTok{1}\NormalTok{),}
+            \DataTypeTok{scale=}\StringTok{"none"}\NormalTok{,}
+            \DataTypeTok{key=}\OtherTok{TRUE}\NormalTok{, }\DataTypeTok{symkey=}\OtherTok{FALSE}\NormalTok{, }\DataTypeTok{key.xlab =} \StringTok{"log2"}\NormalTok{,}
+            \DataTypeTok{trace=}\StringTok{"none"}\NormalTok{, }\DataTypeTok{cexRow=}\FloatTok{0.8}\NormalTok{, }\DataTypeTok{cexCol=}\FloatTok{0.8}\NormalTok{,}
+            \DataTypeTok{symm=}\OtherTok{FALSE}\NormalTok{,}
+            \DataTypeTok{density.info=}\StringTok{"none"}\NormalTok{, }\DataTypeTok{dendrogram=}\StringTok{"none"}\NormalTok{, }
+            \DataTypeTok{Rowv=}\OtherTok{NULL}\NormalTok{, }\DataTypeTok{Colv=}\OtherTok{NULL}\NormalTok{, }
+            \DataTypeTok{keysize=}\FloatTok{0.8}\NormalTok{,}
+            \DataTypeTok{sepwidth=}\KeywordTok{c}\NormalTok{(}\FloatTok{0.01}\NormalTok{,}\FloatTok{0.01}\NormalTok{),}
+            \DataTypeTok{sepcolor=}\StringTok{"white"}\NormalTok{)}
+  \KeywordTok{invisible}\NormalTok{(}\KeywordTok{dev.off}\NormalTok{())}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
 \subsubsection{Time course of single
 factors}\label{time-course-of-single-factors}
 
@@ -570,9 +620,6 @@ provides a first overview over the complete data set.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{suppressPackageStartupMessages}\NormalTok{(}\KeywordTok{library}\NormalTok{(gplots))}
-\KeywordTok{suppressPackageStartupMessages}\NormalTok{(}\KeywordTok{library}\NormalTok{(RColorBrewer))}
-
 \CommentTok{# define horizontal and vertical helper lines}
 \NormalTok{v_lines <-}\StringTok{ }\NormalTok{((}\DecValTok{1}\NormalTok{:Nt)*Nr}\FloatTok{+0.5}\NormalTok{)}
 \NormalTok{factor_types <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\StringTok{"Histochemistry"}\NormalTok{, }\StringTok{"Biochemistry"}\NormalTok{, }
@@ -2825,13 +2872,13 @@ rpart(formula = formula.reg, data = treedata.mean, method = "anova",
     control = rpart.control(minsplit = 6, minbucket = 2, cp = 0.01))
   n= 40 
 
-          CP nsplit  rel error    xerror      xstd
-1 0.60308067      0 1.00000000 1.0583482 0.2114697
-2 0.18946910      1 0.39691933 0.8756264 0.2911604
-3 0.15289945      2 0.20745023 0.6849442 0.2942429
-4 0.01605279      3 0.05455078 0.4369677 0.2245846
-5 0.01573853      4 0.03849799 0.4365983 0.2243070
-6 0.01000000      5 0.02275946 0.3595878 0.1860993
+          CP nsplit  rel error     xerror        xstd
+1 0.60308067      0 1.00000000 1.02423310 0.205452411
+2 0.18946910      1 0.39691933 0.43756577 0.062438655
+3 0.15289945      2 0.20745023 0.26253022 0.051583089
+4 0.01605279      3 0.05455078 0.06328074 0.008363276
+5 0.01573853      4 0.03849799 0.07744295 0.013686407
+6 0.01000000      5 0.02275946 0.04970344 0.013909474
 
 Variable importance
 c4 c5 c1 c3 c6 c2 
@@ -2953,13 +3000,13 @@ Root node error: 111.1/40 = 2.7776
 
 n= 40 
 
-        CP nsplit rel error  xerror    xstd
-1 0.603081      0  1.000000 1.05835 0.21147
-2 0.189469      1  0.396919 0.87563 0.29116
-3 0.152899      2  0.207450 0.68494 0.29424
-4 0.016053      3  0.054551 0.43697 0.22458
-5 0.015739      4  0.038498 0.43660 0.22431
-6 0.010000      5  0.022759 0.35959 0.18610
+        CP nsplit rel error   xerror      xstd
+1 0.603081      0  1.000000 1.024233 0.2054524
+2 0.189469      1  0.396919 0.437566 0.0624387
+3 0.152899      2  0.207450 0.262530 0.0515831
+4 0.016053      3  0.054551 0.063281 0.0083633
+5 0.015739      4  0.038498 0.077443 0.0136864
+6 0.010000      5  0.022759 0.049703 0.0139095
 \end{verbatim}
 
 \begin{Shaded}
@@ -3263,7 +3310,7 @@ tree.
 
 \begin{verbatim}
    user  system elapsed 
-119.374   0.120 119.473 
+121.133   0.132 121.277 
 \end{verbatim}
 
 \begin{Shaded}
@@ -3335,7 +3382,7 @@ Create a sample of double combinations from the various clusters.
 
 \begin{verbatim}
    user  system elapsed 
- 33.593   0.024  33.602 
+ 36.120   0.060  36.345 
 \end{verbatim}
 
 The double factor data was created consisting of a random selection of

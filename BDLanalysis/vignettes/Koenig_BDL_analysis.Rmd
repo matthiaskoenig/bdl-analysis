@@ -177,22 +177,44 @@ Create heatmap of the mean chip data
 suppressPackageStartupMessages(library(gplots))
 suppressPackageStartupMessages(library(RColorBrewer))
 
-data = as.matrix(BDLmean[BDLfactors$ftype == "GE_ADME"])
+data_ADME = t(as.matrix(BDLmean[BDLfactors$ftype == "GE_ADME"]))
+data_ADME <- data_ADME[rownames(data_ADME) != "Actb.x", ]
 
-cor_colors <- HeatmapColors() # color palette for correlation (red - white - blue)
-heatmap.2(as.matrix(data), col=cor_colors(10))
+data_Cytokines = t(as.matrix(BDLmean[BDLfactors$ftype == "GE_Cytokines"]))
+data_Cytokines <- data_Cytokines[rownames(data_Cytokines) != "Actb.y", ]
 
-heatmap.2(data, col=cor_colors(10), scale="none",
-          key=TRUE, symkey=FALSE, trace="none", cexRow=0.8, cexCol=0.8,
-          symm=FALSE,
-          density.info="none", dendrogram="none", 
-          Rowv=NULL, Colv=NULL, 
-          keysize=0.8,
-          sepwidth=c(0.01,0.01),
-          sepcolor="black",
-          colsep=1:ncol(data),
-          rowsep=1:nrow(data))
+data_Fibrosis = t(as.matrix(BDLmean[BDLfactors$ftype == "GE_Fibrosis"]))
+data_Fibrosis <- data_Fibrosis[rownames(data_Fibrosis) != "Actb", ]
 
+# fold changes relative to sham mice (0 h) displayed in log2 scale
+log2_to_control <- function(data){
+  data <- data[sort(rownames(data)), ]  # sort by name
+  reldata <- data[, 2:ncol(data)]/data[, 1]
+  log2_reldata <- log2(reldata)  
+}
+
+data_list <- list(ADME=data_ADME, 
+                  Fibrosis=data_Fibrosis, 
+                  Cytokines=data_Cytokines)
+for (name in names(data_list)){
+  data <- data_list[[name]]
+  cor_colors <- HeatmapColors() # color palette for correlation (red - white - blue)
+  hmap_colors <- cor_colors(100)
+  # plot to file
+  pdf(file.path(resultsPath, "control", paste("chip_heatmap_", name, ".pdf", sep="")), 
+      width=8, height=10, pointsize=12) 
+  heatmap.2(log2_to_control(data), col=hmap_colors, breaks=seq(from=-2, to=2, length.out=length(hmap_colors)+1),
+            scale="none",
+            key=TRUE, symkey=FALSE, key.xlab = "log2",
+            trace="none", cexRow=0.8, cexCol=0.8,
+            symm=FALSE,
+            density.info="none", dendrogram="none", 
+            Rowv=NULL, Colv=NULL, 
+            keysize=0.8,
+            sepwidth=c(0.01,0.01),
+            sepcolor="white")
+  invisible(dev.off())
+}
 ```
 
 ### Time course of single factors

@@ -171,6 +171,30 @@ options(width=75)
 ```
 
 ## Data visualization
+### Single chip data
+Create heatmap of the mean chip data
+``` {r chip_plots}
+suppressPackageStartupMessages(library(gplots))
+suppressPackageStartupMessages(library(RColorBrewer))
+
+data = as.matrix(BDLmean[BDLfactors$ftype == "GE_ADME"])
+
+cor_colors <- HeatmapColors() # color palette for correlation (red - white - blue)
+heatmap.2(as.matrix(data), col=cor_colors(10))
+
+heatmap.2(data, col=cor_colors(10), scale="none",
+          key=TRUE, symkey=FALSE, trace="none", cexRow=0.8, cexCol=0.8,
+          symm=FALSE,
+          density.info="none", dendrogram="none", 
+          Rowv=NULL, Colv=NULL, 
+          keysize=0.8,
+          sepwidth=c(0.01,0.01),
+          sepcolor="black",
+          colsep=1:ncol(data),
+          rowsep=1:nrow(data))
+
+```
+
 ### Time course of single factors
 To get an overview over the BDL data set plots of the raw and mean data for all individual factors over time were generated. These are available in the `resultsPath/factors` folder under the respective names of the factors
 ```{r factor_plots}
@@ -192,9 +216,6 @@ plot_single_factor('bilirubin', path=NULL)
 ### Time course of all factors
 Next the heatmap overview of the complete data set is generated, i.e. the data of all factors for of all time points and repeats. This provides a first overview over the complete data set. 
 ```{r timecourse_heatmap}
-suppressPackageStartupMessages(library(gplots))
-suppressPackageStartupMessages(library(RColorBrewer))
-
 # define horizontal and vertical helper lines
 v_lines <- ((1:Nt)*Nr+0.5)
 factor_types <- c("Histochemistry", "Biochemistry", 

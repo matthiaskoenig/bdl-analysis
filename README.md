@@ -1,9 +1,9 @@
 #    BDL - Regression Analysis
-This repository contains all data, information and the complete statistical analysis for the publication  
+This repository contains all data, information and the complete statistical analysis for the publication 
+
 **Pathobiochemical signatures of cholestatic liver disease in bile duct ligated mice**  
 *Kerstin Abshagen¶, Matthias König¶, Andreas Hoppe, Isabell Müller, Matthias Ebert, Honglei Weng, Herrmann-Georg Holzhütter, Ulrich M. Zanger, Johannes Bode, Brigitte Vollmar, Maria Thomas, Steven Dooley*  
 (¶ These authors contributed equally to this work)
-
 
 The results of the analysis are available from http://matthiaskoenig.github.io/bdl-analysis. 
 

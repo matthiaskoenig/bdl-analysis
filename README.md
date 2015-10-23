@@ -1,5 +1,5 @@
 #    BDL - Regression Analysis
-This repository contains all data, information and the complete statistical analysis for the publication 
+This repository contains all data, information and the complete statistical analysis for the publication and can be cited via ([![doi:10.5281/zenodo.32577](https://zenodo.org/badge/5066/matthiaskoenig/bdl-analysis.svg)](https://zenodo.org/badge/latestdoi/5066/matthiaskoenig/bdl-analysis)).
 
 **Pathobiochemical signatures of cholestatic liver disease in bile duct ligated mice**  
 *Kerstin Abshagen¶, Matthias König¶, Andreas Hoppe, Isabell Müller, Matthias Ebert, Honglei Weng, Herrmann-Georg Holzhütter, Ulrich M. Zanger, Johannes Bode, Brigitte Vollmar, Maria Thomas, Steven Dooley*  
